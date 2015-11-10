@@ -1,0 +1,521 @@
+\documentclass{beamer}
+\usepackage{relsize}
+\usepackage{color}
+
+\usepackage{listings}
+\usetheme{CambridgeUS}
+%\usepackage{beamerthemesplit} % new 
+\usepackage{enumitem}
+\usepackage{amsmath}                    % See geometry.pdf to learn the layout options. 
+\usepackage{amsthm}                   % See geometry.pdf to learn the layout options. There 
+\usepackage{amssymb}                    % See geometry.pdf to learn the layout options. 
+\usepackage[utf8]{inputenc} 
+\usepackage{graphicx}
+\usepackage[english,bulgarian]{babel}
+
+\lstset{language=C++,
+                basicstyle=\ttfamily,
+                keywordstyle=\color{blue}\ttfamily,
+                stringstyle=\color{red}\ttfamily,
+                commentstyle=\color{green}\ttfamily,
+                morecomment=[l][\color{magenta}]{\#}
+}
+
+\newtheorem{mydef}{Дефиниция}[section]
+\newtheorem{lem}{Лема}[section]
+\newtheorem{thm}{Твърдение}[section]
+
+\DeclareMathOperator{\restrict}{\upharpoonright}
+
+\setitemize{label=\usebeamerfont*{itemize item}%
+  \usebeamercolor[fg]{itemize item}
+  \usebeamertemplate{itemize item}}
+
+\setbeamercovered{transparent}
+
+
+
+\begin{document}
+\title[Увод в програмирането]{Функции II} 
+\author{Калин Георгиев} 
+\frame{\titlepage} 
+
+
+\section{Функции} 
+
+
+\begin{frame}
+\centerline{Отново функции vs. подпрограми}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+\frametitle{Математически изображения}
+
+\begin{itemize}
+  \item Приличат на ``Формули'': $S=vt + \frac{1}{2}at^2$
+\pause
+  \item Съотвена фунцкия: $S:\mathcal{R}\times\mathcal{R}\times\mathcal{R}\rightarrow\mathcal{R}$, $S(v,t,a)=vt + \frac{1}{2}at^2$
+\pause
+  \item Могат да учстават в изрази: $S(10,60,0) + S(10,60,20)$
+\pause
+  \item Не ``правят'' нищо 
+\end{itemize}
+\pause
+
+\begin{flushleft}
+\relscale{0.8}
+\begin{lstlisting}
+double displacement (double speed, 
+                     double time, 
+                    double acceleration)
+{
+  double S = speed*time + acceleration*time*time/2;
+  return S;
+}
+void main ()
+{
+  //....
+  cout << displacement (10,60,0) + displacement (10,60,20);
+}
+
+\end{lstlisting}
+  
+\end{flushleft}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Подпрограми. Процедури}
+
+\begin{itemize}
+  \item ``Правят'' нещо: Страничен ефект
+  \item ``Стойността'' им няма значение
+\end{itemize}
+
+
+
+\begin{flushleft}
+\relscale{0.7}
+\begin{lstlisting}
+void pritnSequence (long start, long end, long step)
+{
+  for (long element = start; element <= end; element += step)
+  {
+    cout << element;
+    if (element < end)
+      cout << ",";
+  }  
+  cout << endl;
+}
+
+void main ()
+{
+  pritnSequence (1,10,1);
+  pritnSequence (10,30,2);
+  pritnSequence (30,80,5);
+}
+\end{lstlisting}
+
+\end{flushleft}
+
+\end{frame}
+
+
+\begin{frame}
+\centerline{Процес на изпълнение. Програмен стек}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Формални vs. Фактически параметри}
+
+
+
+\begin{columns}[t]
+  \begin{column}{0.75\textwidth}
+
+\relscale{0.72}
+\begin{lstlisting}
+void pritnSequence (long start, long end, long step)
+{
+  for (long element = start; 
+       element <= end;  
+       element += step)
+  {
+    cout << element;
+    if (element < end)
+      cout << ",";
+  }  
+  cout << endl;
+}
+
+void main ()
+{ long step = 1;
+  pritnSequence (1,10,step); //(1)
+  step = 2;
+  pritnSequence (10,30,step); //(2)
+  step = 15;
+  pritnSequence (30,80,5); //(3)
+}
+\end{lstlisting}
+
+
+  \end{column}
+  \begin{column}{0.25\textwidth}
+
+    \alert{(1)}
+
+    \begin{tabular}{|c|c|}
+    step & 1 \\\hline
+
+    \end{tabular}
+    \pause
+    \begin{tabular}{|c|c|}
+    start & 1 \\\hline
+    end & 10 \\\hline
+    step & 1 \\\hline
+
+    \end{tabular}
+  \end{column}
+\end{columns}
+
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+\frametitle{Формални vs. Фактически параметри}
+
+
+
+\begin{columns}[t]
+  \begin{column}{0.75\textwidth}
+
+\relscale{0.72}
+\begin{lstlisting}
+void pritnSequence (long start, long end, long step)
+{
+  for (long element = start; 
+       element <= end;  
+       element += step)
+  {
+    cout << element;
+    if (element < end)
+      cout << ",";
+  }  
+  cout << endl;
+}
+
+void main ()
+{ long step = 1;
+  pritnSequence (1,10,step); //(1)
+  step = 2;
+  pritnSequence (10,30,step); //(2)
+  step = 15;
+  pritnSequence (30,80,5); //(3)
+}
+\end{lstlisting}
+
+
+  \end{column}
+  \begin{column}{0.25\textwidth}
+
+    \alert{(2)}
+
+    \begin{tabular}{|c|c|}
+    step & 2 \\\hline
+
+    \end{tabular}
+    \pause
+    \begin{tabular}{|c|c|}
+    start & 10 \\\hline
+    end & 30 \\\hline
+    step & 2 \\\hline
+
+    \end{tabular}
+  \end{column}
+\end{columns}
+
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]
+\frametitle{Формални vs. Фактически параметри}
+
+
+
+\begin{columns}[t]
+  \begin{column}{0.75\textwidth}
+
+\relscale{0.72}
+\begin{lstlisting}
+void pritnSequence (long start, long end, long step)
+{
+  for (long element = start; 
+       element <= end;  
+       element += step)
+  {
+    cout << element;
+    if (element < end)
+      cout << ",";
+  }  
+  cout << endl;
+}
+
+void main ()
+{ long step = 1;
+  pritnSequence (1,10,step); //(1)
+  step = 2;
+  pritnSequence (10,30,step); //(2)
+  step = 15;
+  pritnSequence (30,80,5); //(3)
+}
+\end{lstlisting}
+
+
+  \end{column}
+  \begin{column}{0.25\textwidth}
+
+    \alert{(3)}
+
+    \begin{tabular}{|c|c|}
+    step & 15 \\\hline
+
+    \end{tabular}
+    \pause
+    \begin{tabular}{|c|c|}
+    start & 30 \\\hline
+    end & 80 \\\hline
+    step & 5 \\\hline
+
+    \end{tabular}
+  \end{column}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Взаимни извиквания}
+
+\begin{columns}[t]
+  \begin{column}{0.8\textwidth}
+\relscale{0.72}
+\begin{lstlisting}
+void g (long x)
+{cout << x;}
+
+void f (long x)
+{
+  x = x + 10;
+  g (x);
+}
+
+void main ()
+{
+  long x = 0;
+  f (x);
+  cout << x;
+}
+
+\end{lstlisting}
+  \end{column}
+  \begin{column}{0.2\textwidth}
+
+    \begin{tabular}{c|c|c|}
+    main: & x & 0 \\\hline
+
+    \end{tabular}
+    \pause
+    \begin{tabular}{c|c|c|}
+    f: & x & 0 \\\hline
+
+    \end{tabular}
+    \pause
+    \begin{tabular}{c|c|c|}
+    f: & x & 10 \\\hline
+
+    \end{tabular}
+    \pause
+    \begin{tabular}{c|c|c|}
+    g: & x & 10 \\\hline
+
+    \end{tabular}
+
+
+  \end{column}
+\end{columns}
+
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Взаимни извиквания}
+
+\begin{columns}[t]
+  \begin{column}{0.8\textwidth}
+\relscale{0.72}
+\begin{lstlisting}
+void g (long x)
+{cout << x;}
+
+void f (long x)
+{
+  x = x + 10;
+  g (x);
+}
+
+void main ()
+{
+  long x = 0;
+  f (x);
+  cout << x;
+}
+
+\end{lstlisting}
+  \end{column}
+  \begin{column}{0.2\textwidth}
+
+    \begin{tabular}{c|c|c|}
+    main: & x & 0 \\\hline
+
+    \end{tabular}
+
+
+
+  \end{column}
+\end{columns}
+
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Самоизвиквания}
+
+
+
+\begin{columns}[t]
+  \begin{column}{0.8\textwidth}
+\relscale{0.72}
+\begin{lstlisting}
+void printSequence (long N)
+{
+  if (N > 0)
+  {
+    printSequence (N-1);
+  }
+  cout << N << " ";
+}
+void main ()
+{
+  printSequence(4);
+}
+\end{lstlisting}
+  \end{column}
+  \begin{column}{0.2\textwidth}
+
+\pause
+    \begin{tabular}{|c|c|}
+    N & 4 \\\hline
+    \end{tabular}
+    \pause
+    \begin{tabular}{|c|c|}
+    N & 3 \\\hline
+    \end{tabular}
+    \pause
+    \begin{tabular}{|c|c|}
+    N & 2 \\\hline
+    \end{tabular}
+    \pause
+    \begin{tabular}{|c|c|}
+    N & 1 \\\hline
+    \end{tabular}
+    \pause
+    \begin{tabular}{|c|c|}
+    N & 0 \\\hline
+    \end{tabular}
+
+
+  \end{column}
+\end{columns}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Размяна}
+
+
+
+\relscale{0.72}
+\begin{lstlisting}
+void printSequence (long N)
+{
+  cout << N << " ";
+  if (N > 0)
+  {
+    printSequence (N-1);
+  }
+}
+void main ()
+{
+  printSequence(4);
+}
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\centerline{Пример:}
+\begin{itemize}
+  \item Въвеждане на число във фиксиран интервал
+\end{itemize}
+
+\begin{flushleft}
+\relscale{0.7}
+\begin{lstlisting}
+void main ()
+{
+  cout << enterNumber (0,100) / enterNumber (1,100);
+}
+\end{lstlisting}
+  
+\end{flushleft}
+
+\begin{itemize}
+  \item Отпечатване на цифри
+\end{itemize}
+
+
+\end{frame}
+
+
+
+\begin{frame}
+\centerline{Благодаря за вниманието!}
+\end{frame}
+
+
+
+\end{document}
+
+
+
+
+\begin{columns}[t]
+  \begin{column}{0.2\textwidth}
+
+  \end{column}
+  \begin{column}{0.8\textwidth}
+
+  \end{column}
+\end{columns}
+
+
