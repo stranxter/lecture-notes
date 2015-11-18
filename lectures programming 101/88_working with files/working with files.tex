@@ -656,7 +656,7 @@ file.write ((char*)&s,sizeof (Student));
   \begin{column}{0.65\textwidth}
 
 \begin{flushleft}
-\relscale{0.70}
+\relscale{0.65}
 \begin{lstlisting}
 Student s,tmp;//...
 fstream file ("stundets.bin", 
@@ -664,10 +664,13 @@ fstream file ("stundets.bin",
               ios::binary);
 
 file.seekg(0);
-while (file.read ((char*)&tmp, sizeof (Student)) 
-       && tmp.deleted == false);
+while (file.read ((char*)&tmp, 
+                  sizeof (Student)) &&
+       tmp.deleted == false){};
 
-file.seekp (file.tellg()-sizeof(Student));
+if (tmp.deleted == true)
+  file.seekp (file.tellg()-sizeof(Student));
+
 file.write ((char*)&s,sizeof (Student));
 \end{lstlisting}
 \end{flushleft}   
@@ -683,7 +686,7 @@ file.write ((char*)&s,sizeof (Student));
   \end{column}
 \end{columns}
 
-\vspace{10px}
+%\vspace{4px}
 \includegraphics[width=12cm]{images/binfileflag}
 
 
@@ -725,7 +728,7 @@ file.write ((char*)&s,sizeof (Student));
 \end{columns}
 
 \begin{remark}[]
-    $sizeof(Student) \neq sizeof (int)+100*sizeof(char)+sizeof(double)$
+    $sizeof(Student) \ge sizeof (int)+100*sizeof(char)+sizeof(double)$
 \end{remark}      
 
 
