@@ -137,7 +137,7 @@ pi = 104; //won't compile
 \begin{flushleft}
 \relscale{0.7}
 \begin{lstlisting}
-*pi = 104; //won't compile
+*pi = 104; 
 \end{lstlisting}
 \end{flushleft}
 
@@ -521,8 +521,8 @@ char charArr[6] = "Hello";
 \end{flushleft}
 
 \begin{itemize}
-  \item \texttt{(long)(charArr+1) - (long)(charArr+2) == 1 == sizeof(char))}
-  \item \texttt{(long)(arr+1) - (long)(arr+2) == 4 == sizeof(long))}
+  \item \texttt{(long)(charArr+1) - (long)(charArr+2) == 1 == sizeof(char)}
+  \item \texttt{(long)(arr+1) - (long)(arr+2) == 4 == sizeof(long)}
   \item Слеводателно \texttt{arr[i] <==> *(arr+i)}, независимо от размера на елементите
 \end{itemize}
 
