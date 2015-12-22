@@ -10,7 +10,7 @@
 \usepackage{enumerate}
 \usepackage{graphicx}
 \usepackage{relsize}
-
+\usepackage[framemethod=tikz]{mdframed}
 
 \lstset{breaklines=true} 
 
@@ -88,48 +88,59 @@
 	Да се напише програма, която по въведено число $n$ отпечатва на екрана инструкции за игра така, че в края на играта всички бели фигури да са вляво на дъската, а всички черни - вдясно. Инструкциите да са от следния вид:
 
 	\begin{verbatim}
-		Прместете бяла фигура от позиция 5 на позиция 3.
+		...
+		Преместете черна фигура фигура от позиция 1 на позиция 2.
+		Преместете бяла фигура от позиция 5 на позиция 3.
+		...
 	\end{verbatim}
 
-	На следните фигури е даден пример за игра:
+	Допустимо е инструкциите да бъдат отпечатани в обратен ред.
 
-	\begin{flushleft}
-	\includegraphics[width=5cm]{images/step0}
+	\vspace{20px}
 
-	\relscale{0.8}
-	1. Начална конфигурация.
-	\end{flushleft}
+	\begin{mdframed}[hidealllines=true,backgroundcolor=gray!20]
+
+		На следните фигури е даден пример за игра:
+
+		\begin{flushleft}
+		\includegraphics[width=5cm]{images/step0}
+
+		\relscale{0.8}
+		1. Начална конфигурация.
+		\end{flushleft}
 
 
-	\begin{flushleft}
-	\includegraphics[width=5cm]{images/step1}
+		\begin{flushleft}
+		\includegraphics[width=5cm]{images/step1}
 
-	\relscale{0.8}
-	2. Преместване на черна фигура с един ход надясно.
-	\end{flushleft}
+		\relscale{0.8}
+		2. Преместване на черна фигура с един ход надясно.
+		\end{flushleft}
 
-	\begin{flushleft}
-	\includegraphics[width=5cm]{images/step2}
+		\begin{flushleft}
+		\includegraphics[width=5cm]{images/step2}
 
-	\relscale{0.8}
-	3. Преместване на бяла фигура с прескачане.
-	\end{flushleft}
+		\relscale{0.8}
+		3. Преместване на бяла фигура с прескачане.
+		\end{flushleft}
 
-	\begin{flushleft}
-	\includegraphics[width=5cm]{images/step3}
+		\begin{flushleft}
+		\includegraphics[width=5cm]{images/step3}
 
-	\relscale{0.8}
-	4. Преместване на черна фигура с един ход надясно.
-	\end{flushleft}
+		\relscale{0.8}
+		4. Преместване на черна фигура с един ход надясно.
+		\end{flushleft}
 
-	\begin{flushleft}
-	\includegraphics[width=5cm]{images/step4}
+		\begin{flushleft}
+		\includegraphics[width=5cm]{images/step4}
 
-	\relscale{0.8}
-	5. Преместване на черна фигура чрез прескачане
-	\end{flushleft}
+		\relscale{0.8}
+		5. Преместване на черна фигура чрез прескачане
+		\end{flushleft}
 
-	След ход 5 конфигурацията на играта е безперспективна.
+		След ход 5 конфигурацията на играта е безперспективна.
+
+	\end{mdframed}
 
 
 \end{enumerate}
