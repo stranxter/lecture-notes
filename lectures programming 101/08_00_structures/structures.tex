@@ -154,7 +154,7 @@ Point western (Point p1, Point p2)
 int main ()
 {
   Point p1,p2;
-  cin << p1.x << p1.y << p2.x << p2.y;
+  cin >> p1.x >> p1.y >> p2.x >> p2.y;
 
   Point p3 = western (p1,p2);
   cout << "The western point is (" 
@@ -297,16 +297,16 @@ void printPerson (Person p)
 
 \relscale{0.7}
 \begin{lstlisting}
-Date earlier (Date d1, Date d2)
+bool earlier (Date d1, Date d2)
 {
-  if (d1.year < d2.year) return d1;
+  if (d1.year < d2.year) return true;
   if (d1.year == d2.year && 
-      d1.month < d2.month) return d1;
+      d1.month < d2.month) return true;
   if (d1.year == d2.year && 
       d1.month == d2.month && 
-      d1.day < d2.day) return d1;
+      d1.day < d2.day) return true;
 
-  return d2;
+  return false;
 }
 
 \end{lstlisting}  
