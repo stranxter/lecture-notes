@@ -4,6 +4,10 @@
 using namespace std;
 
 
+template <typename ResT , typename ElemT > 
+using reduceFn = ResT (*) (ResT, ElemT);
+
+
 template <typename T>
 class DynArr
 {
@@ -38,6 +42,28 @@ private:
 			arr[i] = other.arr[i];
 	}
 
+	//"уголемява" буфера така, че да може да побере
+	//поне minSize на брой елемента
+	void resize (int minSize)
+	{
+		//Дадено:
+		//arr - масив със size на брой елемента
+		//size < minSize
+		//искаме: arr - масив с minSize елемента,
+		//освен първите size елемрнта на arr се запазват
+
+		T* newArray = new T[minSize];
+
+		for (int i = 0; i < size; i++)
+			newArray[i] = arr[i];
+
+		delete []arr;
+
+		arr = newArray;
+
+		size = minSize;
+	}
+
 public:
 
 	DynArr (int n)
@@ -58,9 +84,14 @@ public:
 		arr[index] = newValue;
 	}
 
+
+
 	T& operator [] (int index)
 	{	
-		return getElem (index);
+		if (index >= size)
+			resize (index+1);
+
+		return getElem(index);
 	}
 
 	bool compareTo (DynArr<T> other)
@@ -110,6 +141,16 @@ public:
 	~DynArr ()
 	{
 		delete []arr;	
+	}
+
+	template <typename RestType>
+	RestType reduce (reduceFn<RestType,T> oper, RestType init)
+	{
+		RestType result = init;
+		for (int i = 0; i < size; i++)
+			result = oper (result, arr[i]);
+
+		return result;
 	}
 
 	friend ostream& operator << (ostream& out, const DynArr<int>& ia);
@@ -168,6 +209,11 @@ ostream& operator << (ostream& out, const DynArr<M>& a)
 	return out;
 }
 
+int sum (int curResult, int crrElem)
+{
+	return curResult + crrElem;
+}
+
 int main ()
 {
 
@@ -177,8 +223,14 @@ int main ()
 	//cin >> a[2];
 	//cout << a[2] << endl;
 
-	a[0] = a[1] = 0;
+	a[0] = 1;
+	a[1] = 7;
+	a[2] = 10;
+	a[3] = 100;
 	b[0] = b[1] = 1;
+
+	cout << "sum=" << a.reduce (sum,0) << "\n";
+	cout << "sum=" << a.reduce<int> ([](int x, int y){return x+ y;},0) << "\n";
 
 	cout << a;
 
