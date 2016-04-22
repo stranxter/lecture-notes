@@ -1,4 +1,5 @@
 #include <iostream>
+#include <assert.h>
 
 using namespace std;
 
@@ -16,42 +17,98 @@ class List
 {
 private:
 	box<T> *first;
+	box<T> *last;
 public:
 	List ()
 	{
 		first = NULL;
+		last = NULL;
 	}
 
 	List (const List<T>& other)
 	{
-		box<T> *crr = other.first, *previous;
+		box<T> *crr = other.first;
 
 		if (other.first == NULL)
 		{
-			first = NULL;
+			last = first = NULL;
 			return;
 
 		}
 
 		first = new box<T> (crr->data,NULL);
-		previous = first;
+		last = first;
 		crr = crr->next;
 
 		while (crr != NULL)
 		{
 
-			previous->next = new box<T> (crr->data,NULL);
-			previous = previous->next;
+			last->next = new box<T> (crr->data,NULL);
+			last = last->next;
 
 			crr = crr->next;
 			
-		}	
+		}
+
 	}
 
 	List<T>& push (const T &newElemValue)
 	{
 		first = new box<T> (newElemValue,first);
+		if (last == NULL)
+			last = first;
+		assert (first != NULL);
 		return *this;
+	}
+
+	List<T>& push_back (const T &newElemValue)
+	{
+
+		box<T> *crr = first;
+
+		if (crr == NULL)
+			return push (newElemValue);
+
+
+		last->next = new box<T>(newElemValue,NULL);
+		last = last->next;
+
+		return *this;
+	}
+
+	T operator [] (int i) const
+	{
+		assert (i >= 0);
+
+		box<T> *crr = first;
+
+		while (crr != NULL && i > 0)
+		{			
+			crr = crr->next;			
+			i--;
+		}	
+
+		assert (crr != NULL);
+		return crr->data;
+
+	}
+
+	T& operator [] (int i)
+	{
+
+		assert (i >= 0);
+
+		box<T> *crr = first;
+
+		while (crr != NULL && i > 0)
+		{			
+			crr = crr->next;			
+			i--;
+		}	
+
+		assert (crr != NULL);
+		return crr->data;
+		
 	}
 
 	~List()
@@ -66,7 +123,8 @@ public:
 			crr = crr->next;
 			
 			delete save;
-		}		
+		}	
+
 	}
 
 	template <class U>
@@ -90,21 +148,25 @@ ostream& operator << (ostream& out, const List<U> &l)
 }
 
 
-void f (List<char> li)
-{
-	cout << li << endl;
-}
-
 int main ()
 {
+
+
 
 	List<char> l;
 
 	l.push ('!').push('i').push('h');
 
-	f(l);
+	cout << l << endl;
+
+	l[0] = 'b';
+	l[2] = '?'; 
+
+	l.push_back ('!');
+	l.push_back ('?');
 
 	cout << l << endl;
+
 
 	return 0;
 }
