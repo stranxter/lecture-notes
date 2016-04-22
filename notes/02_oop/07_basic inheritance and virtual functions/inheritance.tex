@@ -182,6 +182,153 @@ double sumSurf (F* figures[], int n)
 
 \end{frame}
 
+
+\begin{frame}[fragile]
+\frametitle{Клас Figure}
+
+
+\begin{flushleft}
+\relscale{0.7}
+\begin{lstlisting}
+class Figure
+{
+  public:
+    char label[15];
+    double surface ()
+    {return 0;}
+};
+\end{lstlisting}  
+\end{flushleft}
+
+
+\begin{center}
+\includegraphics[width=12.0cm]{images/inmem_figure}
+\end{center}
+
+
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+\frametitle{Наследяване на клас Figure}
+
+
+\begin{flushleft}
+\relscale{0.7}
+\begin{lstlisting}
+class Rectangle : public Figure
+{
+  public:
+    double a,b;
+    double surface ()
+    {return a*b;}
+};
+\end{lstlisting}  
+\end{flushleft}
+
+
+\begin{center}
+\includegraphics[width=12.0cm]{images/inmem_rectangle}
+\end{center}
+
+
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+\frametitle{Съвместимост на Figure и Rectangle}
+
+
+\begin{flushleft}
+\relscale{0.7}
+\begin{lstlisting}
+Rectangle r1 (2,4);
+Figure f = r1;
+cout << f.surface();
+\end{lstlisting}  
+\end{flushleft}
+
+
+
+\begin{columns}[t]
+  \hspace{-150px}
+  \begin{column}{0.5\textwidth}
+\begin{center}
+\includegraphics[width=12.0cm]{images/inmem_figure}
+\end{center}
+
+  \end{column}
+  \begin{column}{0.5\textwidth}
+\begin{center}
+  \hspace{-150px}
+\includegraphics[width=12.0cm]{images/inmem_rectangle}
+\end{center}
+
+  \end{column}
+\end{columns}
+
+\begin{center}
+\includegraphics[width=12.0cm]{images/inmem_rectangle}
+\end{center}
+
+
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+\frametitle{Съвместимост на указатели към Figure и Rectangle}
+
+
+\begin{flushleft}
+\relscale{0.7}
+\begin{lstlisting}
+Rectangle r1 (2,4);
+Figure *f = &r1;
+cout << f->surface();
+\end{lstlisting}  
+\end{flushleft}
+
+\begin{center}
+\includegraphics[width=12.0cm]{images/inmen_rect_withptr_r1}
+\end{center}
+
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Ако Figure::surface е виртуален}
+
+
+\begin{flushleft}
+\relscale{0.7}
+\begin{lstlisting}
+cout << f->surface();
+\end{lstlisting}  
+\end{flushleft}
+
+\begin{center}
+\includegraphics[width=12.0cm]{images/inmen_rect_withptr_r2}
+\end{center}
+
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Масив от указатели към фигури}
+
+\begin{center}
+\includegraphics[width=12.0cm]{images/array}
+\end{center}
+
+
+\end{frame}
+
+
 \begin{frame}
 \centerline{Благодаря ви за вниманието!}
 \end{frame}
