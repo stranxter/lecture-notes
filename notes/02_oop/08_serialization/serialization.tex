@@ -1,6 +1,6 @@
 \documentclass{beamer}
 \usepackage{relsize}
-\usepackage{color}
+\usepackage{color} 
 
 \usepackage{listings}
 \usetheme{CambridgeUS}
@@ -125,7 +125,7 @@ ostream& operator << (ostream& out, const DynArr<int>& ia)
 }
 void test ()
 {
-  DynArr<int> arr1 (5), arr2 (4);
+  DynArr<int> arr1 (3), arr2 (4);
   //...
   ofstream out ("data.txt");
 
@@ -160,7 +160,7 @@ ostream& operator << (ostream& out, const DynArr<int>& ia)
 }
 void test ()
 {
-  DynArr<int> arr1 (5), arr2 (4);
+  DynArr<int> arr1 (3), arr2 (4);
   //...
   ofstream out ("data.txt");
 
@@ -203,9 +203,9 @@ istream& operator >> (istream& in, DynArr<int>& ia)
 }
 void test ()
 {
-  DynArr<int> arr (0);
+  DynArr<int> arr1 (0), arr2 (0);
   ifstream in ("data.txt");
-  in >> arr;
+  in >> arr1 >> arr2;
 }
 \end{lstlisting}  
 \end{flushleft}
@@ -272,9 +272,9 @@ istream& operator >> (istream& in, DynArr<int>& ia)
 }
 void test ()
 {
-  DynArr<int> arr (0);
+  DynArr<int> arr1 (0), arr2 (0);
   ifstream in ("data.txt");
-  in >> arr;
+  in >> arr1 >> arr2;
 }
 \end{lstlisting}  
 \end{flushleft}
@@ -520,7 +520,7 @@ istream& operator >> (istream &in, DynArr<Figure*> a)
   for (int i = 0; i < newSize; i++)
   {
     in >> type;
-    result[i] = new Figure::factory (type); 
+    result[i] = Figure::factory (type); 
     result[i]->read(in);
   }
 }
@@ -618,7 +618,7 @@ istream& operator >> (istream &in,
   for (int i = 0; i < newSize; i++)
   {
     in >> type;
-    result[i] = new Figure::factory (type); 
+    result[i] = Figure::factory (type); 
     result[i]->read(in);
   }
 }
