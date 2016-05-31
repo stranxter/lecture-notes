@@ -18,13 +18,36 @@ public:
 
 };
 
+
 class Expression
 {
+
+	//брои колко инстанции от Expression 
+	//са направени
+	static int maxID;
+	//поредният номер на тази инстанция
+	int myID;
+
 public:
+	Expression () 
+	{myID = maxID++;}
+
+	int getID (){return myID;}
 
 	virtual Value* execute () = 0;
+	virtual void print (ostream &) = 0;
+
+	static void printTree (Expression *e, ostream &out)
+	{
+		out << "digraph G{" << endl;
+		e->print (out);
+		out << "}" << endl;
+	}
 
 };
+
+int Expression::maxID = 0;
+
 
 class Constant : public Expression
 {
@@ -39,6 +62,13 @@ public:
 	{
 		return myValue;
 	}
+
+	void print (ostream &out)
+	{
+		out << getID() << "[label=\"const:";
+	    myValue->print(out);
+	    out << "\"];" << endl;
+	}
 };
 
 class DoubleValue : public Value{
@@ -49,9 +79,7 @@ public:
 	DoubleValue (double _v):v(_v){}
 	virtual void print (ostream &out) 
 	{
-		out << "I am a double value: " 
-		    << v 
-		    << endl;
+		out << v;
 	}
 
     Value *plus (Value *other)
@@ -88,6 +116,17 @@ public:
 		return valueOfe1->plus (valueOfe2);
 	}
 
+	void print (ostream &out)
+	{
+		out << getID () << "[label=\"+\"];" << endl;
+		out << getID () << "->" << e1->getID() << ";" << endl;
+		out << getID () << "->" << e2->getID() << ";" << endl;
+
+		e1->print (out);
+		e2->print (out);
+
+	}
+
 
 };
 
@@ -101,5 +140,7 @@ int main ()
 
 	c1.execute ()->print(cout);
 	p1.execute ()->print (cout);
+
+	Expression::printTree (&p1, cerr);
 
 }
