@@ -1,0 +1,24 @@
+digraph G{
+10[label="BLOCK"];
+10->6
+6[label="myFirstVar:="];
+6->5
+5[label="IF"];
+5->2[style=dashed];
+5->3;
+5->4;
+3[shape="box"];
+2[label="+"];
+2->0;
+2->1[style="dashed"];
+0[label="const:-2"];
+1[label="const:2"];
+3[label="const:3"];
+4[label="const:4"];
+10->9
+9[label="+"];
+9->7;
+9->8[style="dashed"];
+7[label="const:1"];
+8[label="myFirstVar",shape=box];
+}
