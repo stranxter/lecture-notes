@@ -3,10 +3,10 @@
 using namespace std;
 
 #include "ast/ast.h"
+#include "lex/tokenizer.h"
 
 int main ()
 {
-
 
 	IfExpr  
 	  *ie1 = new IfExpr 
@@ -34,6 +34,18 @@ int main ()
 	be->execute()->print (cout);
 
 	cout << endl;
+
+
+
+	Tokenizer  tokenizer (cin);
+
+	while (tokenizer.moreTokens())
+	{
+		Token t = tokenizer.getToken ();
+
+		cout << t.type << ":" << t.val_str << endl;
+	}
+
 
 
 }

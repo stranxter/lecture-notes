@@ -22,3 +22,4 @@ digraph G{
 7[label="const:1"];
 8[label="myFirstVar",shape=box];
 }
+Assertion failed: (in >> result.val_str), function getToken, file src/lex/tokenizer.cpp, line 44.
