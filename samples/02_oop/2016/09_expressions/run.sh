@@ -1,3 +1,3 @@
-g++ *cpp
-./a.out 2> test.dot
-dot test.dot -Tpdf > test.pdf
+g++ src/interpreter.cpp src/ast/*cpp -o bin/interpreter
+bin/interpreter 2> output/test.dot
+dot output/test.dot -Tpdf > output/test.pdf

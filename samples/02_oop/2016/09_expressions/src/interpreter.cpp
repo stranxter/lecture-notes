@@ -2,7 +2,7 @@
 
 using namespace std;
 
-#include "ast.h"
+#include "ast/ast.h"
 
 int main ()
 {
