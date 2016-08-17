@@ -29,6 +29,17 @@ Token Tokenizer::peekToken (){
 	return peeked_token;
 
 }
+
+
+const int nkeywords = 6;
+string keywords[nkeywords] = {"start",
+ 		                      "end",
+ 		                      "if",
+ 		                      "then",
+ 		                      "else",
+ 		                      "assign"};
+
+
 Token Tokenizer::getToken (){
 
 	if (token_peeked)
@@ -40,6 +51,7 @@ Token Tokenizer::getToken (){
 
 	token_peeked = false;
 	Token result;
+	result.type = Token::UNKNOWN;
 
 	assert (in >> result.val_str);
 
@@ -56,8 +68,25 @@ Token Tokenizer::getToken (){
 	} 
 	//Uknown token (identifier)
 	else {
-		result.type = Token::UNKNOWN;
+
+		int i;
+		for (i = 0; i < nkeywords && keywords[i] != result.val_str; i++);
+
+		if (i < nkeywords)
+		{
+			result.type = Token::KW_START + i;
+
+		}
+
 	}
+
+	if (result.type == Token::UNKNOWN && 
+	    (result.val_str == "+" ||
+	     result.val_str == "^"))
+	{	
+		result.type = Token::ARITH_OPER;
+	}
+
 
 
 	return result;
