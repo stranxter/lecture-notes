@@ -1,5 +1,5 @@
 # lecture-notes
-Lecture notes on computer programming
+Lecture notes on Computer Programming
 
 NOTES: Lecture notes
 
