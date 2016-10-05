@@ -59,7 +59,7 @@ Token Tokenizer::getToken (){
 	if (result.val_str[0] >= '0' && result.val_str[0] <= '9')
 	{
 		size_t length;
-		result.val_double = stof (result.val_str,&length);
+		result.val_double = std::stof (result.val_str,&length);
 		if (length < result.val_str.length())
 		{
 			error (result.val_str + ":invalid number");

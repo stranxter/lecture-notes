@@ -3,7 +3,7 @@
 #include <math.h>
 
 #include "binaryarithexpr.h"
-#include "DoubleValue.h"
+#include "doublevalue.h"
 
 using namespace std;
 
