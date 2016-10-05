@@ -1,0 +1,10 @@
+start
+	
+	assign x + 2 3
+
+	if x then assign x + x 1 
+	     else 0
+
+	x     
+
+end
