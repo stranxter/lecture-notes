@@ -37,10 +37,9 @@
 
 \begin{document}
 \title[Увод в курса]{Въведение в курса. Програми, езици от високо ниво, базова структура на програма, променливи, вход и изход, условен оператор и цикъл, бройни системи, Машини на Тюринг} 
-\author{Калин Георгиев} 
 \frame{\titlepage} 
 
-\section{Какво е програмиране} 
+\section{Какво е програмиране?} 
 \subsection{Идея}
 
 \frame{\frametitle{Програмиране?} 
@@ -526,7 +525,7 @@ int main ()
 \centerline{Съвсем малко теория}
 \end{frame}
 
-\subsection{Бройни системи} 
+\subsection{Бройни системи}
 
 
 \begin{frame}[fragile]
@@ -582,7 +581,24 @@ int main ()
 \end{frame}
 
 
-\subsection{Модели} 
+\subsection{Модели}
+
+
+\begin{frame}[fragile]
+\frametitle{Машини на Тюринг}
+
+
+\begin{center}
+\includegraphics[width=6cm]{images/turingmachine}
+\end{center}
+\begin{center}
+\relscale{0.5}
+   Машина на Тюринг
+
+   изображение от http://www.worldofcomputing.net/
+\end{center}
+
+\end{frame}
 
 
 \begin{frame}[fragile]
@@ -593,13 +609,134 @@ int main ()
   
 \includegraphics[width=9.5cm]{images/turing}
 
+\begin{itemize}
+  \item Пълно множество от операции
+\end{itemize}
+
 \end{center}
 
 \end{frame}
 
 
-\end{document}
+\begin{frame}[fragile]
+\frametitle{Изчислимост}
 
+
+
+
+
+\begin{columns}[t]
+  \begin{column}{0.2\textwidth}
+    \begin{flushleft}
+    \relscale{0.5}
+    \begin{verbatim}
+    P:
+    LEFT
+    RIGHT
+    TEST 4
+    JUMP 3
+    WRITE 0
+    STOP
+    \end{verbatim}      
+    \end{flushleft}
+  \end{column}
+  \begin{column}{0.2\textwidth}
+    \begin{flushleft}
+    \relscale{0.5}
+    \begin{verbatim}
+    LEFT = 0
+    RIGHT = 1
+    TEST = 2
+    JUMP = 3
+    WRITE = 4
+    STOP = 5
+    \end{verbatim}
+      
+    \end{flushleft}
+
+  \end{column}
+
+  \begin{column}{0.6\textwidth}
+    \begin{flushleft}
+    \relscale{0.5}
+    $P = 0, 1, 2, 4, 3, 3, 4, 0, 5$
+
+    $N_P=2^0 \times 3^1 \times 5^2 \times 7^4 \times 11^4 \times 13^ 3 ...$
+      
+    \end{flushleft}
+
+  \end{column}
+
+
+\end{columns}
+
+
+  \begin{itemize}
+    \item Всяка програма се кодира с едно естествено число
+    \item За всички функции ли могат да се намерят програми? Изчислими и неизчислими функции
+  \end{itemize}
+
+
+\end{frame}
+
+\section{Неизчислими функции}
+
+
+\begin{frame}[fragile]
+\frametitle{Диагоналният метод на Кантор, 1891}
+
+
+\includegraphics[width=5.5cm]{images/diagonal_argument}
+
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Диагоналният метод на Кантор, 1891}
+
+
+\begin{itemize}
+  \item Следователно безкрайните редици от числа са ``повече от числата''
+  \item Какво значи ``повече''?
+\end{itemize}
+
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Неизчислими функции}
+
+
+\begin{itemize}
+  \item Нека $\mathcal{A}$ е множеството на всички безкрайни редици над $N$.
+  \item За всяка редица $\{a\}_\infty \in \mathcal{A}$ да построим функция $f_a : N \rightarrow N$ по следния начин: $f_a(n)=a_n$ за $\forall n \in N$
+  \item Тези функции са ``повече'' от естествените числа
+  \item А програмите колко са?
+\end{itemize}
+
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Разрешими и неразрешими проблеми}
+
+
+\begin{itemize}
+    \item Разрешими и неразрешими проблеми. СТОП проблем
+\end{itemize}
+
+
+\end{frame}
+
+
+\begin{frame}
+\centerline{Благодаря за вниманието!}
+\end{frame}
+
+
+
+\end{document}
 
 
 
@@ -617,3 +754,4 @@ int main ()
   \end{column}
 \end{columns}
 
+#

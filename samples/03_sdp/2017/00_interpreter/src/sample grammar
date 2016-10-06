@@ -1,0 +1,38 @@
+sample grammar:
+
+
+<Expression> ::= <Block> | 
+                 <IfExpr> | 
+                 <ArithExpr> |
+                 <Assignment> |
+                 <Variable> |
+                 <Constant> |
+                 <Print> |
+                 <Loop>
+
+
+<Loop> ::= loop <Variable> from <Expression> to <Expression> step <Expression> do <Expression>
+
+<Print> ::= printline <Expression>* end
+ 
+<Block> ::= start <Expression>* end
+
+<IfExpr> ::= if <Expression> 
+              then <Expression>
+              else <Expression>
+
+
+<ArithExpr> ::= <ArithOper> 
+                <Expression> <Expression>
+
+<ArithOper> ::= + | ^  
+
+<Assignment> ::= assign <Variable> <Expression>
+
+<Varible> ::= {a..z}+
+
+<Constant> ::= <PositiveConstant> | 
+               -<PositiveConstant>
+
+<PositiveConstant> ::= {0..9}+ | {0..9}+.{0..9}+ 
+
