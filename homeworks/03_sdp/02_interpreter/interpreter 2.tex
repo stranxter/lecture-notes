@@ -28,6 +28,9 @@
 Задачи върху разработвания на лекции интерпретатор:
 
 \begin{enumerate}
+
+	\item Да се добави цикъл \texttt{while} към интерпретатора.
+
 	\item Да се измени интерпретаторът така, че да може при извикване на функция да се подават повече параметри, отколкото са необходими. Например фунцията \texttt{recprint} да може да се изпълнява с
 
 	 \texttt{recprint 10 10 10 .}
@@ -55,6 +58,48 @@
 	\end{itemize}
 		
 	\end{flushleft}
+
+	\item Класовете на абстрактното синтактично дърво да се разширят с метод \texttt{void prettyprint (ostream\&)}, чрез който входната програма може да се печата ``подредено'', т.е. всеки оператор - на нов ред, а вложените изрази да са идентирани.
+
+	Пример. Следната програма
+	\begin{verbatim}
+		start define sumall a do if a then + a call sumall - a 1 
+		. else 0 assign a sumall 10 printline a end end
+	\end{verbatim}
+
+	Да може да се отпечата като:
+
+	\begin{verbatim}
+start
+  define sumall a do 
+    if a 
+      then 
+        + a call sumall - a 1 . 
+      else 
+        0 
+   assign a 
+     sumall 10 
+   printline a end
+end   
+	\end{verbatim}
+
+	\item Към горната задача да се донави условието за печатане на ноемра на редовете:
+	\begin{verbatim}
+1: start
+2:    define sumall a do 
+3:      if a 
+4:        then 
+5:          + a call sumall - a 1 . 
+6:        else 
+7:          0 
+8:     assign a 
+9:       sumall 10 
+10:    printline a end
+11: end   
+
+	\end{verbatim}
+
+
 \end{enumerate}
 
 
