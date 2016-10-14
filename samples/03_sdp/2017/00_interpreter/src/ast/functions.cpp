@@ -59,24 +59,40 @@ void CallFunctionExpression::addArgument (Expression *arg)
 Value* CallFunctionExpression::execute ()
 {
 
+	//Стойностите на фактическите параметри се 
+	//изчисляват преди да се създаде новата стекова рамка,
+	//тък като съответните изрази, задаващи фактическите параметри,
+	//може да ползват променливи и следователно имат нужна от
+	//"тяхната си" стекова рамка, а не от новата.
+	//Пример: call fn i .
+	//Това "i" е в стековата рамка, в която се изчислява 
+	//call, а не в тази на изпълнението на fn
+	//Така изчислените стойности се записват в константи
+	vector<Constant*> argumentValues;
+	for (int i = 0; i < arguments.size(); i++)
+		argumentValues.push_back(new Constant (arguments[i]->execute()));
+
+	//създаваме нова стекова рамка за изпълнението на функцията
 	ProgramMemory::pushNewStackFrame();
 
 	DefineFunctionExpression *def = AllFunctions[fnName];
+	assert (def->formalParameters.size() == argumentValues.size());
 
-
-	assert (def->formalParameters.size() == arguments.size());
-
+	//в новата стекова рамка присвояваме на 
+	//формалните параметри стойностите на фактическите
+	//параметри
 	for (int i = 0; i < def->formalParameters.size(); i++)
 	{
 		SetExpression *set 
 		   = new SetExpression (def->formalParameters[i],
-		   	                    arguments[i]);
+		   	                    argumentValues[i]);
 		set->execute();
 	}
 
-
+	//изчисляваме тялото на функцията
 	Value *res = def->body->execute();
 
+	//унищожаваме стековата рамка
 	ProgramMemory::popStackFrame();
 
 	return res;

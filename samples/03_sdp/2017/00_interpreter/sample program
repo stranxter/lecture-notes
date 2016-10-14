@@ -23,8 +23,8 @@ start
 
 	define recprint i do if i then 
 	   						    start 
-	   						          call recprint - i 1 .
 	   						          printline i end 
+	   						          call recprint - i 1 .
 	   						          
 	   						     end
 	   						   else  printline i end

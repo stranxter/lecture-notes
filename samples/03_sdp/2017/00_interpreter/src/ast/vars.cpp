@@ -42,9 +42,17 @@ void VarExpression::print (ostream &out)
 Value* VarExpression::execute ()
 {
 	
-	cout << "READING VAR: " << varName << endl;
+	//cout << "READING VAR: " << varName << " STACK SIZE " << ProgramMemory::AllValuesStack.size() <<endl;
 
-	return ProgramMemory::AllValuesStack.back()[varName];
+	Value* val = ProgramMemory::AllValuesStack.back()[varName];
+
+	/*cout << "===DONE READING VAR: " << varName << " STACK SIZE " << ProgramMemory::AllValuesStack.size() <<endl;
+	val->print (cout);
+	cout << "\n===\n";*/
+
+
+	return val;
+
 }
 
 
@@ -62,8 +70,17 @@ void SetExpression::print (ostream &out)
 
 Value* SetExpression::execute ()
 {
+
+	/*cout << "WRITING VAR: " << varName << " STACK SIZE " << ProgramMemory::AllValuesStack.size() <<endl;*/
+
 	ProgramMemory::AllValuesStack.back()[varName] = newVal->execute();
-	return ProgramMemory::AllValuesStack.back()[varName];
+	Value* val = ProgramMemory::AllValuesStack.back()[varName];
+
+	/*cout << "===DONE WRITING VAR: " << varName << " STACK SIZE " << ProgramMemory::AllValuesStack.size() <<endl;
+	val->print (cout);
+	cout << "\n===\n";	*/
+
+	return val;
 }
 
 
