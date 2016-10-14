@@ -13,12 +13,16 @@ public:
 	virtual void print (ostream &out);
 
     Value* plus (Value *other);
+    Value* minus (Value *other);
 
     Value* power (Value *other);
 
     int getType ();
 
 	virtual bool toNativeBool ();
+
+	bool equals (Value*);
+
 
 };
 

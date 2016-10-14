@@ -10,6 +10,14 @@ Value* Value::plus (Value *other)
 	assert (false);
 	return NULL;
 };
+
+Value* Value::minus (Value *other) 
+{
+	assert (false);
+	return NULL;
+};
+
+
 Value* Value::power (Value *other) 
 {
 	assert (false);

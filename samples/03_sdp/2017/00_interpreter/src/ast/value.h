@@ -12,8 +12,11 @@ public:
 	virtual void print (ostream &out) = 0;
 	
 	virtual Value* plus (Value *other);
+	virtual Value* minus (Value *other);
 	virtual Value* power (Value *other);
 	
+	virtual bool equals (Value*) = 0;
+
 	virtual bool toNativeBool ();
 
 

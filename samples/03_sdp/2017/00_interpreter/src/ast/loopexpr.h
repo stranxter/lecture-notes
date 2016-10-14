@@ -1,0 +1,31 @@
+#ifndef __LOOPEXPR_H
+#define __LOOPEXPR_H
+
+#include <iostream>
+#include "expression.h"
+
+using namespace std;
+
+
+class LoopExpr : public Expression
+{
+private:
+
+	string controlVar;
+	Expression *frome, *toe, *stepe;
+	Expression *bodye;
+
+public:
+	LoopExpr (string _cv,
+		      Expression *_frome, 
+		      Expression *_toe,
+		      Expression *_stepe,
+		      Expression *_bodye);
+
+
+	Value* execute ();
+
+	void print (ostream &out);
+};
+
+#endif

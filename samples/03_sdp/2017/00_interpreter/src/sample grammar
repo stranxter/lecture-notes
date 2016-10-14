@@ -8,7 +8,17 @@ sample grammar:
                  <Variable> |
                  <Constant> |
                  <Print> |
-                 <Loop>
+                 <Loop> |
+                 <DefineFunction> |
+                 <CallFunction>
+
+
+
+
+<DefineFunction> ::= define <Variable> <Variable>* do <Expression>
+
+<CallFunction> ::= call <Variable> <Expression>* .
+
 
 
 <Loop> ::= loop <Variable> from <Expression> to <Expression> step <Expression> do <Expression>

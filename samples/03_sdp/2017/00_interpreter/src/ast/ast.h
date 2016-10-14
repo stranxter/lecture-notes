@@ -18,5 +18,7 @@
 #include "binaryarithexpr.h"
 #include "block.h"
 #include "println.h"
+#include "loopexpr.h"
+#include "functions.h"
 
 #endif

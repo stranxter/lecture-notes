@@ -107,6 +107,84 @@ Expression* Parser::parseArithExpr (Tokenizer& t)
 
 }
 
+Expression* Parser::parseLoop (Tokenizer& t)
+{
+	Token token = t.getToken();//remove "loop"
+	
+	string varName = t.getToken().val_str;
+
+	//read "from"
+	assert (t.getToken().type == Token::KW_FROM);
+	Expression *from_expr = Parser::parse(t);
+
+	//read "to"
+	assert (t.getToken().type == Token::KW_TO);
+	Expression *to_expr = Parser::parse(t);
+
+	//read "step"
+	assert (t.getToken().type == Token::KW_STEP);
+	Expression *step_expr = Parser::parse(t);
+
+	//read "do"
+	assert (t.getToken().type == Token::KW_DO);
+	Expression *do_expr = Parser::parse(t);
+
+	return new LoopExpr (varName,from_expr,to_expr,step_expr,do_expr);
+
+}
+
+Expression* Parser::parseDefineFunction (Tokenizer& t)
+{
+	Token token = t.getToken();//remove "define"
+	
+	//read function name
+	string fnName = t.getToken().val_str;
+
+	DefineFunctionExpression *define = new DefineFunctionExpression(fnName);
+
+	//read parameters
+	string param;
+	while (t.peekToken().type != Token::KW_DO)
+	{
+		param = t.getToken().val_str;
+		define->addFormalParameter (param);
+	}
+
+	//read "do"
+	assert (t.getToken().type == Token::KW_DO);
+
+	//read body
+	Expression *body = Parser::parse (t);
+
+	define->addBody (body);
+
+	return define;
+}
+
+
+Expression* Parser::parseCallFunction (Tokenizer& t)
+{
+	Token token = t.getToken();//remove "call"
+	
+	//read function name
+	string fnName = t.getToken().val_str;
+
+	CallFunctionExpression *call = new CallFunctionExpression(fnName);
+
+	//read arguments
+	Expression* argument;
+	while (t.peekToken().type != Token::KW_DOT)
+	{
+		argument = Parser::parse (t);
+		call->addArgument (argument);
+	}
+
+	//read "."
+	assert (t.getToken().type == Token::KW_DOT);
+
+	return call;
+}
+
 Expression* Parser::parse (Tokenizer& t)
 {
 
@@ -121,7 +199,13 @@ Expression* Parser::parse (Tokenizer& t)
 		case Token::KW_START: return Parser::parseBlock (t);
 	
 		case Token::KW_ASSIGN: return Parser::parseAssign (t);
+
+		case Token::KW_LOOP: return Parser::parseLoop (t);
 	
+		case Token::KW_DEFINE: return Parser::parseDefineFunction (t);
+
+		case Token::KW_CALL: return Parser::parseCallFunction (t);
+
 		case Token::UNKNOWN: return Parser::parseVariable (t);
 	
 		case Token::ARITH_OPER: return Parser::parseArithExpr (t);
@@ -132,3 +216,5 @@ Expression* Parser::parse (Tokenizer& t)
 	assert (false);
 	return NULL;
 }
+
+

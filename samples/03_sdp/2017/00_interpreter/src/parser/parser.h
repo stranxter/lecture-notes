@@ -23,8 +23,18 @@ private:
 	static Expression* parseVariable (Tokenizer& t);
 	static Expression* parseArithExpr (Tokenizer& t);
 	static Expression* parsePrintLn (Tokenizer& t);
+	static Expression* parseLoop (Tokenizer& t);
+
+	static Expression* parseDefineFunction (Tokenizer& t);
+
+	static Expression* parseCallFunction (Tokenizer& t);
+
+
 
 };
+
+
+
 
 
 #endif

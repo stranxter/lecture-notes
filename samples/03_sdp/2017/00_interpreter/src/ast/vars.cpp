@@ -1,15 +1,34 @@
 #include <iostream>
 #include <assert.h>
-#include <map>
 #include <string>
 #include <math.h>
-#include <vector>
+
 
 using namespace std;
 
 #include "vars.h"
 
-map<string,Value*> AllValues;
+
+void ProgramMemory::InitProgramMemory()
+{
+	map<string,Value*> empty;
+	AllValuesStack.push_back(empty);
+}
+
+
+void ProgramMemory::pushNewStackFrame()
+{
+	map<string,Value*> empty;
+	AllValuesStack.push_back(empty);
+
+}
+void ProgramMemory::popStackFrame()
+{
+	AllValuesStack.pop_back();	
+}
+
+
+vector<map<string,Value*> > ProgramMemory::AllValuesStack;
 
 
 VarExpression::VarExpression (string _vn):varName(_vn){}
@@ -22,7 +41,10 @@ void VarExpression::print (ostream &out)
 
 Value* VarExpression::execute ()
 {
-	return AllValues[varName];
+	
+	cout << "READING VAR: " << varName << endl;
+
+	return ProgramMemory::AllValuesStack.back()[varName];
 }
 
 
@@ -40,8 +62,8 @@ void SetExpression::print (ostream &out)
 
 Value* SetExpression::execute ()
 {
-	AllValues[varName] = newVal->execute();
-	return AllValues[varName];
+	ProgramMemory::AllValuesStack.back()[varName] = newVal->execute();
+	return ProgramMemory::AllValuesStack.back()[varName];
 }
 
 

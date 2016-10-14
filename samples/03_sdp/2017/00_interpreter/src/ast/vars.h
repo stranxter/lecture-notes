@@ -2,6 +2,8 @@
 #define __VARS_H
 
 #include <iostream>
+#include <vector>
+#include <map>
 #include "expression.h"
 
 using namespace std;
@@ -36,5 +38,16 @@ public:
 
 
 };
+
+class ProgramMemory
+{
+	public:
+	static vector<map<string,Value*> > AllValuesStack;
+
+	static void InitProgramMemory();
+	static void pushNewStackFrame();
+	static void popStackFrame();
+};
+
 
 #endif

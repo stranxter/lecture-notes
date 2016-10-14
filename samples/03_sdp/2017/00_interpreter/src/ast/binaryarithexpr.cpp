@@ -24,6 +24,7 @@ Value* BinaryArithmOper::BinaryArithmOper::execute ()
 	{
 		case '+': return valueOfe1->plus (valueOfe2); 
 		case '^': return valueOfe1->power (valueOfe2);
+		case '-': return valueOfe1->minus (valueOfe2);
 
 
 	}

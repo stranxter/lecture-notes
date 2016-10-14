@@ -17,7 +17,21 @@ start
     
     printline m + m 1 z end
 
-    loop k from 0 to 10 step 1 do println k end
-    
+    loop k from 0 to 10 step 1 do printline k end
+
+	define fact i j k m do + i + j + k m
+
+	define recprint i do if i then 
+	   						    start 
+	   						          call recprint - i 1 .
+	   						          printline i end 
+	   						          
+	   						     end
+	   						   else  printline i end
+
+	call recprint 10 .
+
+
+	    
 
 end

@@ -18,7 +18,15 @@ struct Token
 	static const int KW_ELSE = 6;
 	static const int KW_ASSIGN = 7;
 	static const int KW_PRINTLINE = 8;
-	static const int ARITH_OPER = 9;
+	static const int KW_LOOP = 9;
+	static const int KW_FROM = 10;
+	static const int KW_TO = 11;
+	static const int KW_DO = 12;
+	static const int KW_STEP = 13;
+	static const int KW_DEFINE = 14;
+	static const int KW_CALL = 15;
+	static const int KW_DOT = 16;
+	static const int ARITH_OPER = 17;
 
 
 	Token ();

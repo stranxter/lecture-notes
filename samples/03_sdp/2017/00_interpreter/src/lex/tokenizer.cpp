@@ -31,14 +31,23 @@ Token Tokenizer::peekToken (){
 }
 
 
-const int nkeywords = 7;
+const int nkeywords = 15;
 string keywords[nkeywords] = {"start",
  		                      "end",
  		                      "if",
  		                      "then",
  		                      "else",
  		                      "assign",
- 		                      "printline"};
+ 		                      "printline",
+ 		                  	  "loop",
+ 		                  	  "from",
+ 		                  	  "to",
+ 		                  	  "do",
+ 		                  	  "step",
+ 		                  	  "define",
+ 		                  	  "call",
+ 		                  	  "."};
+
 
 
 Token Tokenizer::getToken (){
@@ -83,7 +92,8 @@ Token Tokenizer::getToken (){
 
 	if (result.type == Token::UNKNOWN && 
 	    (result.val_str == "+" ||
-	     result.val_str == "^"))
+	     result.val_str == "^" ||
+	     result.val_str == "-"))
 	{	
 		result.type = Token::ARITH_OPER;
 	}
