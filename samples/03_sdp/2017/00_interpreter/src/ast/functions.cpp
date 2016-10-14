@@ -16,6 +16,11 @@ map<string,DefineFunctionExpression*> AllFunctions;
 
 DefineFunctionExpression::DefineFunctionExpression (string _fn):fnName(_fn){}
 
+DefineFunctionExpression::~DefineFunctionExpression()
+{
+	delete body;
+}
+
 void DefineFunctionExpression::print (ostream &out)
 {
 	out << getID () << "[label=\"DEFINE:" << fnName << "\"];" << endl;
@@ -42,6 +47,12 @@ void DefineFunctionExpression::addBody (Expression* b)
 
 
 CallFunctionExpression::CallFunctionExpression (string _fn): fnName(_fn){}
+
+CallFunctionExpression::~CallFunctionExpression()
+{
+	for (int i = 0; i < arguments.size(); i++)
+		delete arguments[i];
+}
 
 void CallFunctionExpression::print (ostream &out)
 {
@@ -78,6 +89,7 @@ Value* CallFunctionExpression::execute ()
 	DefineFunctionExpression *def = AllFunctions[fnName];
 	assert (def->formalParameters.size() == argumentValues.size());
 
+	Value* garbage;
 	//в новата стекова рамка присвояваме на 
 	//формалните параметри стойностите на фактическите
 	//параметри
@@ -86,7 +98,9 @@ Value* CallFunctionExpression::execute ()
 		SetExpression *set 
 		   = new SetExpression (def->formalParameters[i],
 		   	                    argumentValues[i]);
-		set->execute();
+		garbage = set->execute();
+		delete garbage;
+		delete set;
 	}
 
 	//изчисляваме тялото на функцията

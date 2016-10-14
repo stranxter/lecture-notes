@@ -14,6 +14,7 @@ private:
   vector<Expression*> expressions;
 public:
   PrintLnExpression ();
+  ~PrintLnExpression ();
 
   void addExpression (Expression *e);
 

@@ -17,9 +17,12 @@ int main ()
 
 	Expression *program = Parser::parse (tokenizer);
 
-	program->execute();
+	Value* programResult = program->execute();
+
+	ProgramMemory::DeleteProgramMemory();
 
 	Expression::printTree (program,cerr);
 
-
+	delete programResult;
+	delete program;
 }

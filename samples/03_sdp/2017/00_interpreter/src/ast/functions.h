@@ -16,6 +16,7 @@ private:
 
 public:
 	DefineFunctionExpression (string _fn);
+	~DefineFunctionExpression ();
 
 	void addFormalParameter (string paramName);
 	void addBody (Expression*);
@@ -38,6 +39,7 @@ private:
 public:
 
 	CallFunctionExpression (string fnName);
+	~CallFunctionExpression ();
 
 	void addArgument (Expression *);
 

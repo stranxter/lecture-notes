@@ -32,6 +32,11 @@ Value *DoubleValue::power (Value *other)
 	return new DoubleValue (pow (v,((DoubleValue*)other)->v));
 } 
 
+Value* DoubleValue::clone ()
+{
+	return new DoubleValue(v);
+}
+
 int DoubleValue::getType () 
 {
 	return DOUBLE_VALUE;

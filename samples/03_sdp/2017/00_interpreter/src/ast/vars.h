@@ -31,6 +31,7 @@ private:
 public:
 
 	SetExpression (string var, Expression *nv);
+	~SetExpression();
 
 	void print (ostream &out);
 
@@ -47,6 +48,7 @@ class ProgramMemory
 	static void InitProgramMemory();
 	static void pushNewStackFrame();
 	static void popStackFrame();
+	static void DeleteProgramMemory();
 };
 
 

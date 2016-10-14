@@ -15,6 +15,7 @@ private:
 public:
 
 	Constant (Value *v);
+	~Constant ();
 
 	Value* execute ();
 

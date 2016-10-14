@@ -30,3 +30,8 @@ bool Value::toNativeBool ()
 	return false;
 }
 
+Value* Value::clone ()
+{
+	assert(false);
+	return NULL;
+}

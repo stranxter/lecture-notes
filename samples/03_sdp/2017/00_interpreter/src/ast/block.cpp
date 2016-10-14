@@ -8,6 +8,12 @@ using namespace std;
 
 BlockExpression::BlockExpression (){}
 
+BlockExpression::~BlockExpression ()
+{
+	for (int i = 0; i < expressions.size(); i++)
+		delete expressions[i];
+}
+
 void BlockExpression::addExpression (Expression *e)
 {
 	expressions.push_back (e);
@@ -33,10 +39,11 @@ Value* BlockExpression::execute ()
 {
 	Value *res;
 
-	for (int i = 0; i < expressions.size(); i++)
+	for (int i = 0; i < expressions.size() - 1; i++)
+	{
 		res = expressions[i]->execute();
-
-	return res;
-
+		delete res;
+	}
+	return expressions.back()->execute();
 }  
 

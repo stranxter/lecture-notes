@@ -11,12 +11,28 @@ IfExpr::IfExpr (Expression *_c,
 	    Expression *_t,
 	    Expression *_e): conde(_c), thene (_t), elsee (_e){};
 
+IfExpr::~IfExpr()
+{
+	delete conde;
+	delete thene;
+	delete elsee;
+}
+
 
 Value* IfExpr::execute ()
 {
-	if (conde->execute()->toNativeBool())
-		return thene->execute();
-	return elsee->execute();
+	Value* conditionResult = conde->execute();
+	Value* result;
+	if (conditionResult->toNativeBool())
+	{
+		result = thene->execute();
+	}
+	else
+	{
+		result = elsee->execute();
+	}
+	delete conditionResult;
+	return result;
 }
 
 void IfExpr::print (ostream &out)

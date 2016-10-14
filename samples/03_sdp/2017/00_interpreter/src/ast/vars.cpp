@@ -24,9 +24,18 @@ void ProgramMemory::pushNewStackFrame()
 }
 void ProgramMemory::popStackFrame()
 {
+	//изтриваме всички стойности от последната стекова рамка и я махаме
+	for(auto &entry : AllValuesStack.back())
+	{
+		delete entry.second;
+	}
 	AllValuesStack.pop_back();	
 }
 
+void ProgramMemory::DeleteProgramMemory()
+{
+	popStackFrame();
+}
 
 vector<map<string,Value*> > ProgramMemory::AllValuesStack;
 
@@ -41,23 +50,17 @@ void VarExpression::print (ostream &out)
 
 Value* VarExpression::execute ()
 {
-	
-	//cout << "READING VAR: " << varName << " STACK SIZE " << ProgramMemory::AllValuesStack.size() <<endl;
-
-	Value* val = ProgramMemory::AllValuesStack.back()[varName];
-
-	/*cout << "===DONE READING VAR: " << varName << " STACK SIZE " << ProgramMemory::AllValuesStack.size() <<endl;
-	val->print (cout);
-	cout << "\n===\n";*/
-
-
-	return val;
-
+	return ProgramMemory::AllValuesStack.back()[varName]->clone();
 }
 
 
 
 SetExpression::SetExpression (string var, Expression *nv): varName(var), newVal (nv){}
+
+SetExpression::~SetExpression()
+{
+	delete newVal;
+}
 
 void SetExpression::print (ostream &out)
 {
@@ -70,17 +73,14 @@ void SetExpression::print (ostream &out)
 
 Value* SetExpression::execute ()
 {
-
-	/*cout << "WRITING VAR: " << varName << " STACK SIZE " << ProgramMemory::AllValuesStack.size() <<endl;*/
-
-	ProgramMemory::AllValuesStack.back()[varName] = newVal->execute();
-	Value* val = ProgramMemory::AllValuesStack.back()[varName];
-
-	/*cout << "===DONE WRITING VAR: " << varName << " STACK SIZE " << ProgramMemory::AllValuesStack.size() <<endl;
-	val->print (cout);
-	cout << "\n===\n";	*/
-
-	return val;
+	Value* value = newVal->execute();
+	//ако променливата вече съществува, т.е. я презаписваме, трием старата стойност
+	if(ProgramMemory::AllValuesStack.back().find(varName) != ProgramMemory::AllValuesStack.back().end())
+	{
+		delete ProgramMemory::AllValuesStack.back()[varName];
+	}
+	ProgramMemory::AllValuesStack.back()[varName] = value->clone();
+	return value;
 }
 
 

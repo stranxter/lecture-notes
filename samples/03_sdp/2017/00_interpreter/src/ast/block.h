@@ -14,6 +14,7 @@ private:
   vector<Expression*> expressions;
 public:
   BlockExpression ();
+  ~BlockExpression ();
 
   void addExpression (Expression *e);
 
