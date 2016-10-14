@@ -1,0 +1,64 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{url}
+\usepackage[bulgarian]{babel}
+\usepackage{listings}
+\usepackage{enumerate}
+\usepackage{hyperref}
+\usepackage{relsize}
+
+\lstset{breaklines=true} 
+
+
+\author{\textit{email: kalin@fmi.uni-sofia.bg}}
+\title{\textsc{Задачи за задължителна самоподготовка} \\
+по \\
+Структури от данни и програмиране\\
+\textit{Задачи върху интерпретатора}}
+
+
+
+\begin{document}
+\maketitle
+
+Задачи върху разработвания на лекции интерпретатор:
+
+\begin{enumerate}
+	\item Да се измени интерпретаторът така, че да може при извикване на функция да се подават повече параметри, отколкото са необходими. Например фунцията \texttt{recprint} да може да се изпълнява с
+
+	 \texttt{recprint 10 10 10 .}
+
+
+	\item Да реализира възможност функциите да достъпват глобалните променливи. Да се приеме, че глобалните променливи са тези, които са в нулевата стекова рамка.
+
+	\item Да се добави възможност функциите да се предават като параметри и да се връщат като стойности. 
+
+	\begin{flushleft}
+	\relscale{0.6} 
+	Упътване: 
+	\begin{itemize}
+		\item Нужен е нов наследник на \texttt{Value}, който представя ``стойност-функция''. 
+		\item \texttt{define} трябва да записва дефинираната-функция стойност в стековата рамка, заедно с останалите променливи. 
+
+		Най-добре би било \texttt{define} да се елеминира и да се замести с \texttt{lambda}, която само създава стойност-функция, а самото записване в стековата рамка да става с \texttt{assign}. Например:
+
+		\texttt{assign sum lambda a b c do + a + b c}
+
+
+		\item \texttt{call} трябва да се промени така, че вместо име на функция (идентификатор), да получава израз, който да се предполага, че се оценява до стойност-функция. 
+	\end{itemize}
+		
+	\end{flushleft}
+\end{enumerate}
+
+
+
+
+
+
+\end{document}
+
