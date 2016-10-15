@@ -13,24 +13,32 @@ BinaryArithmOper::BinaryArithmOper
 	       Expression *_e2,
 	       char _op):e1(_e1),e2(_e2),op(_op){}
 
+BinaryArithmOper::~BinaryArithmOper()
+{
+	delete e1;
+	delete e2;
+}
+
 Value* BinaryArithmOper::BinaryArithmOper::execute ()
 {
 	//return e1->execute() -> plus (e2->execute());
 
 	Value *valueOfe1 = e1->execute();
 	Value *valueOfe2 = e2->execute();
+	Value *result;
 
 	switch (op)
 	{
-		case '+': return valueOfe1->plus (valueOfe2); 
-		case '^': return valueOfe1->power (valueOfe2);
-		case '-': return valueOfe1->minus (valueOfe2);
-
-
+		case '+': result = valueOfe1->plus (valueOfe2); break;
+		case '^': result = valueOfe1->power (valueOfe2); break;
+		case '-': result = valueOfe1->minus (valueOfe2); break;
+		default: assert(false); break;
 	}
 
-	assert (false);
-	return new DoubleValue (0);
+	delete valueOfe1;
+	delete valueOfe2;
+
+	return result;
 }
 
 void BinaryArithmOper::print (ostream &out)

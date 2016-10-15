@@ -15,34 +15,59 @@ LoopExpr::LoopExpr (string _cv,
 			      Expression *_stepe,
 			      Expression *_bodye):frome(_frome),toe(_toe),stepe(_stepe),bodye(_bodye),controlVar(_cv){};
 
-
-
-Value* LoopExpr::execute ()
+LoopExpr::~LoopExpr()
 {
-
-	Value *control = frome->execute();
-
-	do { 
-	
-		SetExpression *set = new SetExpression (controlVar,new Constant (control));
-		set->execute();
-
-		bodye->execute();
-		control = control->plus(stepe->execute());
-
-	} while (!control->equals (toe->execute()));
-
-	SetExpression *set = new SetExpression (controlVar,new Constant (control));
-	set->execute();
-
-	Value *result = bodye->execute();
-
-
-	return result;
-		 
+	delete frome;
+	delete toe;
+	delete stepe;
+	delete bodye;
 }
 
+Value* LoopExpr::execute()
+{
+	Value* garbage;
 
+	Value *control = frome->execute();
+	Value* to = toe->execute();
+
+	while(!control->equals(to))
+	{
+		setControlVariableTo(control);
+		executeBodyAndDeleteGarbage();
+
+		garbage = control;
+		control = makeStep(control);
+		delete garbage;
+	}
+
+	setControlVariableTo(control);
+	delete control;
+	delete to;
+	return bodye->execute();
+
+}
+
+void LoopExpr::setControlVariableTo(Value* value)
+{
+	SetExpression *set = new SetExpression(controlVar, new Constant(value->clone()));
+	Value* garbage = set->execute();
+	delete garbage;
+	delete set;	
+}
+
+void LoopExpr::executeBodyAndDeleteGarbage()
+{
+	Value* garbage = bodye->execute();
+	delete garbage;
+}
+
+Value* LoopExpr::makeStep(Value* currentControlValue)
+{
+	Value* stepValue = stepe->execute();
+	Value* newControlValue = currentControlValue->plus(stepValue);
+	delete stepValue;
+	return newControlValue;
+}
 
 void LoopExpr::print (ostream &out)
 {

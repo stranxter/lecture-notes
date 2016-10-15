@@ -20,6 +20,7 @@ public:
     int getType ();
 
 	virtual bool toNativeBool ();
+	virtual Value* clone ();
 
 	bool equals (Value*);
 

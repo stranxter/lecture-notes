@@ -8,6 +8,14 @@ using namespace std;
 
 PrintLnExpression::PrintLnExpression (){}
 
+PrintLnExpression::~PrintLnExpression ()
+{
+	for (int i = 0; i < expressions.size(); i++)
+	{
+		delete expressions[i];
+	}	
+}
+
 void PrintLnExpression::addExpression (Expression *e)
 {
 	expressions.push_back (e);
@@ -33,15 +41,16 @@ Value* PrintLnExpression::execute ()
 {
 	Value *res;
 
-	for (int i = 0; i < expressions.size(); i++)
+	for (int i = 0; i < expressions.size() - 1; i++)
 	{
 		res = expressions[i]->execute();
-
 		res->print (cout);
 		cout << " ";
-
+		delete res;
 	}
 
+	res = expressions.back()->execute();
+	res->print (cout);
     cout << endl;
 	return res;
 

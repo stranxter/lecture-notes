@@ -18,7 +18,7 @@ public:
 	      (Expression *_e1, 
 	       Expression *_e2,
 	       char _op);
-
+	~BinaryArithmOper();
 	Value* execute ();
 	void print (ostream &out);
 };

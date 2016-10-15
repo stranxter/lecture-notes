@@ -16,7 +16,7 @@ public:
 		    Expression *_t,
 		    Expression *_e);
 
-
+	~IfExpr();
 	Value* execute ();
 
 	void print (ostream &out);
