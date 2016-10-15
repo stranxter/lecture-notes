@@ -11,6 +11,7 @@ using namespace std;
 #include "constant.h"
 #include "doublevalue.h"
 #include "vars.h"
+#include "../runtime/memory.h"
 
 map<string,DefineFunctionExpression*> AllFunctions;
 

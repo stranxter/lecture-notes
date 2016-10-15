@@ -6,6 +6,7 @@ using namespace std;
 #include "lex/tokenizer.h"
 #include "parser/parser.h"
 #include "ast/vars.h"
+#include "runtime/memory.h"
 
 int main ()
 {

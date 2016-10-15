@@ -35,3 +35,8 @@ Value* Value::clone ()
 	assert(false);
 	return NULL;
 }
+
+Value::~Value()
+{
+	
+}

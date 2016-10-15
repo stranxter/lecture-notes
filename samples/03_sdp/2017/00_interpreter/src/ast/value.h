@@ -29,6 +29,8 @@ public:
 
 	virtual int getType () = 0;
 
+	virtual ~Value();
+
 };
 
 
