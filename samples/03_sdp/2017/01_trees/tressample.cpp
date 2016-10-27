@@ -1,6 +1,7 @@
 #include <iostream>
 #include <assert.h>
 #include <string.h>
+#include <fstream>
 
 
 using namespace std;
@@ -14,8 +15,32 @@ struct Node
 	Node<T> *left, *right;
 	T data;
 
-	Node (const T& d,Node<T> *l, Node<T> *r):left(l),right(r),data(d){}
-	Node ():left(NULL),right(NULL){}
+	Node (const T& d,Node<T> *l, Node<T> *r):
+	    left(l),right(r),data(d)
+    {
+    	makeID();
+    }
+	Node ():left(NULL),right(NULL)
+	{
+		makeID();
+	}
+
+	int getID() const
+	{
+		return id;
+	}
+
+private:
+	int id;
+
+	void makeID ()
+	{
+		static int maxID = 0;
+		maxID++;
+    	id = maxID;
+
+	}
+
 };
 
 template <class T>
@@ -29,19 +54,93 @@ private:
 	bool member (const T&,Node<T> *subTreeRoot) const;
 	void map (mapFn<T>,Node<T> *subTreeRoot);
 
+	void dottyPrint (Node<T> *subTreeRoot,ostream& out) const;
+
+	void serialize (Node<T>*, ostream&) const;
+	Node<T>* parseTree (istream &in);
+
+
 public:
 	BTree();
 	BTree<T>& add (const T& data, const char *trace);
+
+	void deserialize (istream&);
+
 	void simplePrint () const;
-	//void dottyPrint (ostream&);
+	void dottyPrint (ostream&);
 	//bool isEmpty();
 	bool member (const T&) const;
 
 	void map (mapFn<T>);
 
+	void serialize (ostream&)const;
+
 	~BTree();
 
 };
+
+template<class T>
+void BTree<T>::serialize (Node<T> *subTreeRoot, ostream &out) const
+{
+	if (subTreeRoot == NULL)
+	{
+		out << "null ";
+		return;
+	}
+
+	out << subTreeRoot->data << " ";
+
+	serialize (subTreeRoot->left,out);
+	serialize (subTreeRoot->right,out);
+
+}
+
+template<class T>
+void BTree<T>::serialize (ostream &out) const
+{
+	serialize (root,out);
+	cout << endl;
+}
+
+
+
+template<class T>
+void BTree<T>::dottyPrint (ostream &out)
+{
+	out << "digraph G {" << endl;
+	dottyPrint (root,out);
+	out << "}" << endl;
+}
+
+
+
+template<class T>
+void BTree<T>::dottyPrint (Node<T> *subTreeRoot,ostream& out) const
+{
+	if (subTreeRoot == NULL)
+		return;
+
+	out << subTreeRoot->getID() 
+	    << "[label=\"" 
+	    << subTreeRoot->data 
+	    << "\"];" << endl;
+
+	if (subTreeRoot->left != NULL)
+		out << subTreeRoot->getID() 
+	        <<"->"
+	        << subTreeRoot->left->getID()
+	        << endl;
+
+	if (subTreeRoot->right != NULL)
+		out << subTreeRoot->getID() 
+	        <<"->"
+	        << subTreeRoot->right->getID()
+	        << endl;
+
+	dottyPrint (subTreeRoot->left,out);
+	dottyPrint (subTreeRoot->right,out);
+}
+
 
 
 template<class T>
@@ -154,6 +253,48 @@ void BTree<T>::simplePrint(Node<T> *subTreeRoot) const
 	simplePrint (subTreeRoot->right);
 }
 
+void removeWhite (istream &in)
+{
+	while (in.peek() <= 32)
+		in.get();
+}
+
+template <class T>
+Node<T>* BTree<T>::parseTree (istream &in)
+{
+	
+	removeWhite (in);
+
+	if (in.peek() == 'n')
+	{
+		string dummy;
+		in >> dummy;
+		assert (dummy == "null");
+		return NULL;
+	}
+
+	T data;
+	in >> data;
+
+	return new Node<T> (data,
+		 				parseTree(in),
+		 				parseTree(in));
+
+
+}
+
+
+template <class T>
+void BTree<T>::deserialize (istream &in)
+{
+	deleteAll(root);
+
+	root = parseTree (in);
+
+
+}
+
+
 void testMember ()
 {
 	BTree<int> t;
@@ -183,8 +324,21 @@ int main ()
 
 	t.map (plusOne);
 
-	t.simplePrint ();
 
+	t.simplePrint ();
+	//t.dottyPrint (cerr);
+
+	cout << "------------" << endl;
+	t.serialize (cout);
+
+
+	BTree<int> test;
+	ifstream in ("data.txt");
+
+	test.deserialize (in);
+	cout << "---DESERIALIZED TREE-------" << endl;
+	test.serialize(cout);
+	test.dottyPrint (cerr);
 
 	return 0;
 }
