@@ -4,12 +4,12 @@
 
 \usepackage{listings}
 \usetheme{CambridgeUS}
-%\usepackage{beamerthemesplit} % new 
+%\usepackage{beamerthemesplit} % new
 \usepackage{enumitem}
-\usepackage{amsmath}                    % See geometry.pdf to learn the layout options. 
-\usepackage{amsthm}                   % See geometry.pdf to learn the layout options. There 
-\usepackage{amssymb}                    % See geometry.pdf to learn the layout options. 
-\usepackage[utf8]{inputenc} 
+\usepackage{amsmath}                    % See geometry.pdf to learn the layout options.
+\usepackage{amsthm}                   % See geometry.pdf to learn the layout options. There
+\usepackage{amssymb}                    % See geometry.pdf to learn the layout options.
+\usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage[english,bulgarian]{babel}
 
@@ -36,11 +36,11 @@
 
 
 \begin{document}
-\title[Структури от данни и програмиране]{Дървета} 
-\author{Калин Георгиев} 
-\frame{\titlepage} 
+\title[Структури от данни и програмиране]{Дървета}
+\author{Калин Георгиев}
+\frame{\titlepage}
 
-\section{Интуиция} 
+\section{Интуиция}
 
 
 \begin{frame}
@@ -64,7 +64,7 @@
     \begin{itemize}
       \item родител, наследник
       \item корен
-      \item листо 
+      \item листо
       \item път
       \item ниво
     \end{itemize}
@@ -92,14 +92,14 @@
 \end{frame}
 
 
-\section{Дефиниция} 
+\section{Дефиниция}
 
 
 \begin{frame}[fragile]
 \frametitle{Дефиниции}
 
     \begin{itemize}
-      \item Свързан неориентиран граф без цикли 
+      \item Свързан неориентиран граф без цикли
     \end{itemize}
 
     \vspace{1.5em}
@@ -111,7 +111,7 @@
 
     \begin{itemize}
       \item Фиксираме елемент $() \notin D$ и го наричаме \emph{``празно дърво''}
-      \item Празното дърво е дърво 
+      \item Празното дърво е дърво
       \item Ако $L_T$ и $R_T$ са дървета, а $x$ е елемент ($x \in D$), то \emph{тройката (структурата)} $T=(x,L_T,R_T)$ наричаме двоично дърво $T$ с \emph{корен} $x$, ляво поддърво $L_T$ и дясно поддърво $R_T$.
     \end{itemize}
 
@@ -143,7 +143,7 @@
 
 \end{frame}
 
-\section{Представяне и операции} 
+\section{Представяне и операции}
 
 
 \begin{frame}
@@ -197,7 +197,7 @@
 \frametitle{Проверка за принадлежност}
 
     \begin{itemize}
-      \item Среща ли се елементът $y$ сред елементите на дървото $T$? 
+      \item Среща ли се елементът $y$ сред елементите на дървото $T$?
     \end{itemize}
 
 
@@ -205,9 +205,9 @@
   \begin{column}{0.65\textwidth}
 
     \begin{flushleft}
-    \relscale{0.5}  
+    \relscale{0.5}
     \begin{itemize}
-      \item Празното дърво е дърво 
+      \item Празното дърво е дърво
       \item Ако $L_T$ и $R_T$ са дървета, а $x$ е елемент ($x \in D$), то \emph{тройката (структурата)} $T=(x,L_T,R_T)$ наричаме двоично дърво $T$ с \emph{корен} $x$, ляво поддърво $L_T$ и дясно поддърво $R_T$.
     \end{itemize}
     \end{flushleft}
@@ -225,9 +225,9 @@
  \texttt{bool member (int y, T):}
 
     \begin{itemize}
-      \item Ако дървото е празно, то $y$ не е елемент на дървото. \texttt{return false} 
+      \item Ако дървото е празно, то $y$ не е елемент на дървото. \texttt{return false}
       \item  Ако $T=(x,L_T,R_T)$ е непразно, то $y$ е елемент на $T$, ако $y==x$ или $y$ е елемент на $L_T$ или $y$ е елемент на $R_T$.
-      \item \texttt{return y==root(t) || member (y, LT) || member (y,RT)} 
+      \item \texttt{return y==root(t) || member (y, LT) || member (y,RT)}
     \end{itemize}
 
 \end{frame}
@@ -237,10 +237,10 @@
 
 
 \begin{frame}[fragile]
-\frametitle{Сума не елементите}
+\frametitle{Сума на елементите}
 
     \begin{itemize}
-      \item Каква е сумата на елементите на дървото? 
+      \item Каква е сумата на елементите на дървото?
     \end{itemize}
 
 
@@ -248,9 +248,9 @@
   \begin{column}{0.65\textwidth}
 
     \begin{flushleft}
-    \relscale{0.5}  
+    \relscale{0.5}
     \begin{itemize}
-      \item Празното дърво е дърво 
+      \item Празното дърво е дърво
       \item Ако $L_T$ и $R_T$ са дървета, а $x$ е елемент ($x \in D$), то \emph{тройката (структурата)} $T=(x,L_T,R_T)$ наричаме двоично дърво $T$ с \emph{корен} $x$, ляво поддърво $L_T$ и дясно поддърво $R_T$.
     \end{itemize}
     \end{flushleft}
@@ -268,9 +268,9 @@
  \texttt{int sum (T):}
 
     \begin{itemize}
-      \item Ако дървото е празно, то сумата на елементите е $0$. \texttt{return 0} 
+      \item Ако дървото е празно, то сумата на елементите е $0$. \texttt{return 0}
       \item  Ако $T=(x,L_T,R_T)$ е непразно, то сумата на елементите е сбора на сумата на елементите на $L_T$, на сумата на елементите на $R_T$ и на числото $x$.
-      \item \texttt{return root(t) + sum (LT) + sum (RT)} 
+      \item \texttt{return root(t) + sum (LT) + sum (RT)}
     \end{itemize}
 
 \end{frame}
@@ -281,7 +281,7 @@
 \frametitle{Други прости рекурсивни операции}
 
     \begin{itemize}
-      \item Най-голям елемент в дървото 
+      \item Най-голям елемент в дървото
       \item Брой на елементитите в дървото
       \item Височина на дървото
       \item Брой на листата в дървото
@@ -292,9 +292,9 @@
   \begin{column}{0.65\textwidth}
 
     \begin{flushleft}
-    \relscale{0.5}  
+    \relscale{0.5}
     \begin{itemize}
-      \item Празното дърво е дърво 
+      \item Празното дърво е дърво
       \item Ако $L_T$ и $R_T$ са дървета, а $x$ е елемент ($x \in D$), то \emph{тройката (структурата)} $T=(x,L_T,R_T)$ наричаме двоично дърво $T$ с \emph{корен} $x$, ляво поддърво $L_T$ и дясно поддърво $R_T$.
     \end{itemize}
     \end{flushleft}
@@ -316,11 +316,11 @@
 
 \vspace{-200px}
 \centerline{Сериализация}
- 
 
-\end{frame} 
 
-\section{Двоични наредени дървета} 
+\end{frame}
+
+\section{Двоични наредени дървета}
 
 
 
@@ -368,7 +368,7 @@
 
 \end{frame}
 
-\section{Обхождания} 
+\section{Обхождания}
 
 
 \begin{frame}
@@ -380,7 +380,7 @@
 \frametitle{Отпечатване}
 
 \begin{itemize}
-  \item Отпечатване с рекурсия 
+  \item Отпечатване с рекурсия
 \end{itemize}
 
 \begin{flushleft}
@@ -441,7 +441,7 @@
 \frametitle{Отпечатване чрез стек}
 
 \begin{itemize}
-  \item Отпечатване с рекурсия 
+  \item Отпечатване с рекурсия
 \end{itemize}
 
 
@@ -462,7 +462,7 @@
 
   \end{column}
   \begin{column}{0.6\textwidth}
-  
+
       \begin{flushleft}
         \relscale{0.7}
         \begin{lstlisting}
@@ -470,10 +470,10 @@
             stack.push (t);
             while (!empty (stack)){
               x = stack.pop();
-              if (x is a number) 
+              if (x is a number)
                  cout << x;
               else {
-                stack.push (left(x)); 
+                stack.push (left(x));
                 stack.push (root(x));
                 stack.push (right(x));}
             }
@@ -503,7 +503,7 @@
 \includegraphics[width=11cm]{images/tree_bot_clean}
   \end{column}
   \begin{column}{0.6\textwidth}
-  
+
       \begin{flushleft}
         \relscale{0.7}
         \begin{lstlisting}
@@ -511,10 +511,10 @@
             stack.push (t);
             while (!empty (stack)){
               x = stack.pop();
-              if (x is a number) 
+              if (x is a number)
                  cout << x;
               else {
-                stack.push (left(x)); 
+                stack.push (left(x));
                 stack.push (root(x));
                 stack.push (right(x));}
             }
@@ -566,5 +566,3 @@
 
   \end{column}
 \end{columns}
-
-
