@@ -2,6 +2,7 @@
 #include <assert.h>
 #include <string.h>
 #include <fstream>
+#include <stack>
 
 
 using namespace std;
@@ -20,7 +21,7 @@ struct Node
     {
     	makeID();
     }
-	Node ():left(NULL),right(NULL)
+	Node ():left(nullptr),right(nullptr)
 	{
 		makeID();
 	}
@@ -43,9 +44,91 @@ private:
 
 };
 
+
+#define OPER_PRINT 0
+#define OPER_TRAV 1
+
+template <class T>
+using waiting = pair<int,Node<T>*>;
+
 template <class T>
 class BTree
 {
+
+public:
+	class LeftRootRightIterator
+	{
+
+	public:
+
+		LeftRootRightIterator (Node<T> *root)
+		{
+			if (root != nullptr)
+			{
+				operations.push (waiting<T>(OPER_TRAV,root));
+				unwind();
+			}
+		}
+
+		void unwind ();
+
+		T operator * ()
+		{
+	
+			assert (!operations.empty());
+			assert (operations.top().first == OPER_PRINT);
+			assert (operations.top().second != nullptr);
+	
+			//сигурни сме, че на върха на стека
+			//стои число "за печатане"
+			
+			return operations.top().second->data;
+
+		}
+
+		LeftRootRightIterator& operator ++ ()
+		{
+			
+			assert (!operations.empty());
+			operations.pop();
+			unwind();
+			return *this;
+		}
+
+		bool operator != (const LeftRootRightIterator &other)
+		{
+			
+			if (operations.empty())
+				return !other.operations.empty();
+
+			if (other.operations.empty())
+				return !operations.empty();
+
+			//и двете са непразни
+
+			return operations.top() != other.operations.top();
+		}
+
+		private:
+			stack<waiting<T>> operations;
+
+
+	};
+
+public:
+
+	
+	LeftRootRightIterator end ()
+	{
+		return LeftRootRightIterator (nullptr);
+	}
+
+	LeftRootRightIterator begin ()
+	{
+		
+		return LeftRootRightIterator (root);
+	}
+
 private:
 	Node<T> *root;
 	void simplePrint (Node<T> *subTreeRoot) const;
@@ -70,9 +153,45 @@ private:
 
 	T minelement (Node<T> *subTreeRoot) const;
 
+	/*
+	//преподлогаме, че имеме T::operator +
+	//n - колко елемента ОСТАВА да сумираме
+	int firstHalfHelper (Node<int> *subTreeRoot, int &n)
+	{
+		
+		if (n == 0)
+			return 0;
+
+		if (subTreeRoot == nullptr)
+			return 0;
+
+		int part1 = firstHalfHelper (subTreeRoot->left,n);
+
+		if (n == 0)
+			return part1;
+
+		part1 += subTreeRoot->data;
+		n--;
+
+		return part1 + firstHalfHelper (subTreeRoot->right,n);	
+
+	}*/
+
 public:
 	BTree();
 	BTree (const BTree<T> &other);
+
+	/*
+	ако разглеждаме елементи на ДНД като
+	редица от числа, подредени в нарастващ ред,
+	да се намери сумата на първата половината на редицата
+	
+	T firstHalfSum ();
+	T secondHalfSum ();
+	*/
+
+
+
 
 	BTree<T>& operator = (const BTree<T> &other);
 
@@ -102,20 +221,50 @@ public:
 };
 
 template<class T>
+void BTree<T>::LeftRootRightIterator::unwind ()
+{
+
+	if (operations.empty())
+		return;
+
+	waiting<T> topOperation = operations.top();
+	Node<T>* topNode = topOperation.second;
+
+	while (!operations.empty() && topOperation.first != OPER_PRINT)
+	{
+
+		operations.pop();
+
+		if (topNode->right != nullptr)
+			operations.push (waiting<T>(OPER_TRAV,topNode->right));
+		operations.push (waiting<T>(OPER_PRINT,topNode));
+		if (topNode->left != nullptr)
+			operations.push (waiting<T>(OPER_TRAV,topNode->left));
+
+		topOperation = operations.top();
+		topNode = topOperation.second;
+
+	}
+
+	//стекът е или празен или на върха му има операция PRINT
+}
+
+
+template<class T>
 void BTree<T>::deleteElement (Node<T> *&subTreeRoot, const T&x)
 {
 	//триене от празно дърво
-	if (subTreeRoot==NULL)
+	if (subTreeRoot==nullptr)
 		return;
 
 	//триене от листо
 	if (subTreeRoot->data == x &&
-		subTreeRoot->left == NULL &&
-		subTreeRoot->right == NULL)
+		subTreeRoot->left == nullptr &&
+		subTreeRoot->right == nullptr)
 
 	{
 		delete subTreeRoot;
-		subTreeRoot = NULL;	
+		subTreeRoot = nullptr;	
 		return;
 	}
 
@@ -138,7 +287,7 @@ void BTree<T>::deleteElement (Node<T> *&subTreeRoot, const T&x)
 	//наследник
 
 	//триене на корен само с 1 наследник
-	if (subTreeRoot->right == NULL)
+	if (subTreeRoot->right == nullptr)
 	{
 		Node<T> *tmp = subTreeRoot;
 		subTreeRoot = subTreeRoot->left;
@@ -148,7 +297,7 @@ void BTree<T>::deleteElement (Node<T> *&subTreeRoot, const T&x)
 
 	//триене на корен само с 1 наследник
 	//този случй може да не се разглежда
-	if (subTreeRoot->left == NULL)
+	if (subTreeRoot->left == nullptr)
 	{
 		Node<T> *tmp = subTreeRoot;
 		subTreeRoot = subTreeRoot->right;
@@ -175,10 +324,10 @@ void BTree<T>::deleteElement (const T&x)
 template<class T>
 T BTree<T>::minelement (Node<T> *subTreeRoot) const
 {
-	assert (subTreeRoot != NULL);
+	assert (subTreeRoot != nullptr);
 	Node<T> *current = subTreeRoot;
 
-	while (current->left != NULL)
+	while (current->left != nullptr)
 	{
 		current = current->left;
 	}
@@ -208,9 +357,9 @@ BTree<T> BTree<T>::insertedBOT (const T& x)
 template<class T>
 Node<T>* BTree<T>::insertedBOT (Node<T>*subTreeRoot, const T& x)
 {
-	if (subTreeRoot == NULL)
+	if (subTreeRoot == nullptr)
 	{
-		return new Node<T> (x,NULL,NULL);
+		return new Node<T> (x,nullptr,nullptr);
 	}
 
 	if (x > subTreeRoot->data)
@@ -232,9 +381,9 @@ template<class T>
 void BTree<T>::insertBOT (Node<T>* &subTreeRoot,const T& x)
 {
 
-	if (subTreeRoot == NULL)
+	if (subTreeRoot == nullptr)
 	{
-		subTreeRoot = new Node<T> (x,NULL,NULL);
+		subTreeRoot = new Node<T> (x,nullptr,nullptr);
 		return;
 	}
 
@@ -271,8 +420,8 @@ BTree<T>& BTree<T>::operator = (const BTree<T> &other)
 template<class T>
 Node<T>* BTree<T>::copyTree (const Node<T> *subTreeRoot)
 {
-	if (subTreeRoot == NULL)
-		return NULL;
+	if (subTreeRoot == nullptr)
+		return nullptr;
 
 	return new Node<T> (subTreeRoot->data,
 		                copyTree(subTreeRoot->left),
@@ -289,9 +438,9 @@ BTree<T>::BTree (const BTree<T> &other)
 template<class T>
 void BTree<T>::serialize (Node<T> *subTreeRoot, ostream &out) const
 {
-	if (subTreeRoot == NULL)
+	if (subTreeRoot == nullptr)
 	{
-		out << "null ";
+		out << "nullptr ";
 		return;
 	}
 
@@ -322,7 +471,7 @@ void BTree<T>::dottyPrint (ostream &out)
 template<class T>
 void BTree<T>::dottyPrint (Node<T> *subTreeRoot,ostream& out) const
 {
-	if (subTreeRoot == NULL)
+	if (subTreeRoot == nullptr)
 		return;
 
 	out << subTreeRoot->getID() 
@@ -330,13 +479,13 @@ void BTree<T>::dottyPrint (Node<T> *subTreeRoot,ostream& out) const
 	    << subTreeRoot->data 
 	    << "\"];" << endl;
 
-	if (subTreeRoot->left != NULL)
+	if (subTreeRoot->left != nullptr)
 		out << subTreeRoot->getID() 
 	        <<"->"
 	        << subTreeRoot->left->getID()
 	        << endl;
 
-	if (subTreeRoot->right != NULL)
+	if (subTreeRoot->right != nullptr)
 		out << subTreeRoot->getID() 
 	        <<"->"
 	        << subTreeRoot->right->getID()
@@ -351,7 +500,7 @@ void BTree<T>::dottyPrint (Node<T> *subTreeRoot,ostream& out) const
 template<class T>
 void BTree<T>::map (mapFn<T> f,Node<T> *subTreeRoot)
 {
-	if (subTreeRoot == NULL)
+	if (subTreeRoot == nullptr)
 		return;
 
 	subTreeRoot->data = f (subTreeRoot->data);
@@ -376,7 +525,7 @@ bool BTree<T>::member (const T& x) const
 template<class T>
 bool BTree<T>::member (const T& x,Node<T> *subTreeRoot) const
 {
-	if (subTreeRoot == NULL)
+	if (subTreeRoot == nullptr)
 		return false;
 
 
@@ -391,7 +540,7 @@ bool BTree<T>::member (const T& x,Node<T> *subTreeRoot) const
 template<class T>
 void BTree<T>::deleteAll (Node<T> *subTreeRoot)
 {
-	if (subTreeRoot == NULL)
+	if (subTreeRoot == nullptr)
 		return;
 
 	deleteAll (subTreeRoot->left);
@@ -403,7 +552,7 @@ template <class T>
 BTree<T>::~BTree()
 {
 	deleteAll (root);
-	root = NULL;
+	root = nullptr;
 
 }
 
@@ -419,10 +568,10 @@ BTree<T>& BTree<T>::add(const T& x, const char *trace)
 template <class T>
 bool BTree<T>::add(const T& x, const char *trace, Node<T>* &subTreeRoot)
 {
-	if (subTreeRoot == NULL)
+	if (subTreeRoot == nullptr)
 	{
 		assert (strlen(trace) == 0);
-		subTreeRoot = new Node<T> (x,NULL,NULL);
+		subTreeRoot = new Node<T> (x,nullptr,nullptr);
 		return true;
 	}
 
@@ -439,7 +588,7 @@ bool BTree<T>::add(const T& x, const char *trace, Node<T>* &subTreeRoot)
 }
 
 template <class T>
-BTree<T>::BTree ():root(NULL){}
+BTree<T>::BTree ():root(nullptr){}
 
 template <class T>
 void BTree<T>::simplePrint() const
@@ -448,16 +597,49 @@ void BTree<T>::simplePrint() const
 	cout << endl;
 }
 
+
+
 template <class T>
 void BTree<T>::simplePrint(Node<T> *subTreeRoot) const
 {
-	if (subTreeRoot == NULL)
+	stack<waiting<T>> operations;
+
+	operations.push (waiting<T>(OPER_TRAV,subTreeRoot));
+
+	cout << "{";
+
+	while (!operations.empty())
+	{
+		waiting<T> topOperation = operations.top();
+		Node<T>* topNode = topOperation.second;
+		operations.pop();
+
+		if (topOperation.first == OPER_PRINT)
+		{
+			cout << topNode->data << " ";
+		} else if (topNode != nullptr) {
+			operations.push (waiting<T>(OPER_TRAV,topNode->right));
+			operations.push (waiting<T>(OPER_PRINT,topNode));
+			operations.push (waiting<T>(OPER_TRAV,topNode->left));
+		}
+	}
+
+	cout << "}\n";
+}
+
+/*
+template <class T>
+void BTree<T>::simplePrint(Node<T> *subTreeRoot) const
+{
+	if (subTreeRoot == nullptr)
 		return;
 
 	simplePrint (subTreeRoot->left);
 	cout << subTreeRoot->data << " ";
 	simplePrint (subTreeRoot->right);
 }
+
+*/
 
 void removeWhite (istream &in)
 {
@@ -475,8 +657,8 @@ Node<T>* BTree<T>::parseTree (istream &in)
 	{
 		string dummy;
 		in >> dummy;
-		assert (dummy == "null");
-		return NULL;
+		assert (dummy == "nullptr");
+		return nullptr;
 	}
 
 	T data;
@@ -553,12 +735,45 @@ void testMinEl ()
 	 assert (t.minelement() == 23);
 }
 
+void testIterator ()
+{
+	BTree<int> t;
+
+	t.insertBOT(59)
+	 .insertBOT(23)
+	 .insertBOT(68)
+	 .insertBOT(190)
+	 .insertBOT(41)
+	 .insertBOT(67);
+
+	 	
+	 BTree<int>::LeftRootRightIterator it = t.begin();
+
+	 assert (*it == 23);
+
+	 ++it; 
+	 ++it;
+	 assert (*it == 59);;
+
+	 int count = 0;
+	 for (it = t.begin(); it != t.end(); ++it)
+	 {
+	    cout << "it=" << *it << "c=" << count << endl;
+	 	count++;
+	 }
+
+
+	 assert (count == 6);
+
+}
+
 int main ()
 {
 	
 	testMember ();
 	testAssignment();
 	testMinEl();
+	testIterator();
 
 	BTree<int> t;
 
@@ -583,6 +798,11 @@ int main ()
 	cerr << "}";
 
 	t1.simplePrint ();
+
+	for (int x : t1)
+		cout << x << " ";
+	cout << endl;
+
 
 	return 0;
 }
