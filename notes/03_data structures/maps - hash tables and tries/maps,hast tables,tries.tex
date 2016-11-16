@@ -36,7 +36,7 @@
 
 
 \begin{document}
-\title[Структури от данни и програмиране]{Речници. Хеш таблици} 
+\title[Структури от данни и програмиране]{Речници: Хеш таблици и Trie} 
 \author{Калин Георгиев} 
 \frame{\titlepage} 
 
@@ -186,9 +186,9 @@
 
   \end{column}
   \begin{column}{0.6\textwidth}
+
 \begin{center}
-\includegraphics[width=7cm]{images/hast1}
-  
+\includegraphics[width=7cm]{images/hast1}  
 \end{center}
 \begin{center}
 \relscale{0.3}
@@ -198,6 +198,51 @@
   \end{column}
 \end{columns}
 \end{frame}
+
+\section{Trie}
+
+
+\begin{frame}
+\centerline{Trie}
+\end{frame}
+
+
+\begin{columns}[t]
+  \begin{column}{0.20\textwidth}
+
+
+  	\begin{tabular}{c | c}
+  		\textit{key} & \textit {value} \\\hline
+  		to & 7 \\
+  		tea & 3 \\
+  		ted & 4 \\
+  		ten & 12 \\
+  		A & 15 \\
+  		i & 11 \\
+  		in & 5 \\
+  		inn & 9 \\
+  	\end{tabular}
+
+  \end{column}
+  \begin{column}{0.80\textwidth}
+	\begin{center}
+	\includegraphics[width=5cm]{images/trie}  
+	\end{center}
+	\begin{center}
+	\relscale{0.3}
+	Източник: Wikipedia
+	\end{center}
+
+  \end{column}
+\end{columns}
+
+\begin{itemize}	
+	\item Няма колизии
+	\item Няма нужда от рехеширане
+	\item Ползволява итериране по наредба на ключовете
+\end{itemize}	
+
+
 
 \begin{frame}
 \centerline{Въпроси?}
