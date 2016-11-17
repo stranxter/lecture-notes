@@ -1,6 +1,7 @@
 #include <iostream>
 #include <assert.h>
 #include <stack>
+#include <iomanip>
 
 #include "btree.cpp"
 
@@ -93,6 +94,34 @@ void testIterator ()
 }
 
 
+template <class T>
+void prettyPrint (typename BTree<T>::HierarchicalIterator it,int depth=0)
+{
+	if (it.empty())
+		return;
+
+	prettyPrint<T> (it.goLeft(), depth + 1);
+
+	cout << setw (depth*4) << " " << *it << endl;
+
+	prettyPrint<T> (it.goRight(), depth + 1);
+}
+
+void testMakeTree ()
+{
+	BTree<int> t;
+	typename BTree<int>::HierarchicalIterator it = t.rootIter();
+
+	*it = 10;
+	*it.goLeft() = 12;
+	*it.goRight() = 14;
+
+	prettyPrint<int> (it);
+
+}
+
+
+
 int main ()
 {
 	
@@ -116,6 +145,10 @@ int main ()
 	cerr << "digraph G{" << endl;
 	t.dottyPrint (cerr);
 	cerr << "}\n";
+
+	prettyPrint<int> (t.rootIter());
+
+	testMakeTree();
 
 
 	return 0;

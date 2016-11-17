@@ -59,6 +59,23 @@ public:
 	};
 
 
+	//йерархичен итератор за дървото
+	class HierarchicalIterator
+	{
+
+	public:
+		HierarchicalIterator (Node *&root);
+		T operator * () const;
+		T& operator * ();
+		HierarchicalIterator goLeft ();
+		HierarchicalIterator goRight ();
+		bool empty();
+	private:
+		Node *&currentSubtree;
+	};
+
+
+
 private:
 	Node *root;
 	bool add (const T& data, const char *trace, Node*&);
@@ -84,7 +101,7 @@ public:
 
 	void deleteElement (const T&x);
 
-	void dottyPrint (ostream&);
+	void dottyPrint (ostream&); 
 
 	bool member (const T&) const;
 
@@ -92,9 +109,51 @@ public:
 
 	T minelement ()const;
 
+	HierarchicalIterator rootIter();
+
 	~BTree();
 
 };
+
+template<class T>
+BTree<T>::HierarchicalIterator::HierarchicalIterator (Node *&root):currentSubtree(root)
+{}
+
+template<class T>
+T BTree<T>::HierarchicalIterator::operator * () const
+{
+	assert (currentSubtree != nullptr);
+	return currentSubtree->data;
+}
+
+
+template<class T>
+T& BTree<T>::HierarchicalIterator::operator * ()
+{
+	if (currentSubtree == nullptr)
+		currentSubtree = new Node (T(),nullptr,nullptr);
+	return currentSubtree->data;
+}
+
+
+template<class T>
+typename BTree<T>::HierarchicalIterator BTree<T>::HierarchicalIterator::goLeft ()
+{
+	assert (currentSubtree != nullptr);
+	return HierarchicalIterator(currentSubtree->left);
+}
+template<class T>
+typename BTree<T>::HierarchicalIterator BTree<T>::HierarchicalIterator::goRight ()
+{
+	assert (currentSubtree != nullptr);
+	return HierarchicalIterator(currentSubtree->right);
+}
+template<class T>
+bool BTree<T>::HierarchicalIterator::empty()
+{
+	return currentSubtree == nullptr;
+}
+
 
 
 template <class T>
@@ -504,5 +563,11 @@ bool BTree<T>::add(const T& x, const char *trace, BTree<T>::Node* &subTreeRoot)
 
 template <class T>
 BTree<T>::BTree ():root(nullptr){}
+
+template <class T>
+typename BTree<T>::HierarchicalIterator BTree<T>::rootIter()
+{
+	return typename BTree<T>::HierarchicalIterator(root);
+}
 
 
