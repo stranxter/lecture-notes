@@ -25,7 +25,7 @@ void printBoard (int size)
 	cout << "+++++++++++++++++++\n";
 }
 
-bool hasHorse (int r, int c, int size)
+bool hasKnight (int r, int c, int size)
 {
 	return r >= 0 && 
 	       c >= 0 && 
@@ -34,21 +34,21 @@ bool hasHorse (int r, int c, int size)
 	       board[r][c];
 }
 
-bool canPlaceHorse (int r, int c, int size)
+bool canPlaceKnight (int r, int c, int size)
 {
-	return !hasHorse(r-2,c-1,size) &&
-	       !hasHorse(r-2,c+1,size) &&
-	       !hasHorse(r-1,c-2,size) &&
-	       !hasHorse(r-1,c+2,size) &&
-	       !hasHorse(r+1,c-2,size) &&
-	       !hasHorse(r+1,c+2,size) &&
-	       !hasHorse(r+2,c-1,size) &&
-	       !hasHorse(r+2,c+1,size) &&
-	       !hasHorse (r,c,size);
+	return !hasKnight(r-2,c-1,size) &&
+	       !hasKnight(r-2,c+1,size) &&
+	       !hasKnight(r-1,c-2,size) &&
+	       !hasKnight(r-1,c+2,size) &&
+	       !hasKnight(r+1,c-2,size) &&
+	       !hasKnight(r+1,c+2,size) &&
+	       !hasKnight(r+2,c-1,size) &&
+	       !hasKnight(r+2,c+1,size) &&
+	       !hasKnight (r,c,size);
 }
 
-#define OPER_PLACE_HORSE 0
-#define OPER_REMOVE_HORSE 1
+#define OPER_PLACE_KNIGHT 0
+#define OPER_REMOVE_KNIGHT 1
 #define OPER_FIND_SOLUTION 2
 
 struct Operation
@@ -80,10 +80,10 @@ void configStack (int k, int size)
 		if (k==0)
 		{
 			printBoard (size);
-		}else if (topOperation.operType == OPER_PLACE_HORSE)
+		}else if (topOperation.operType == OPER_PLACE_KNIGHT)
 		{
 			board[topOperation.r][topOperation.c]=true;
-		}else if (topOperation.operType == OPER_REMOVE_HORSE)
+		}else if (topOperation.operType == OPER_REMOVE_KNIGHT)
 		{
 			board[topOperation.r][topOperation.c]=false;
 		}else
@@ -92,11 +92,11 @@ void configStack (int k, int size)
 			{
 				for (int c = 0; c < size; c++)
 				{
-					if (canPlaceHorse (r,c,size))
+					if (canPlaceKnight (r,c,size))
 					{
-						operations.push (Operation(OPER_REMOVE_HORSE,1,size,r,c));
+						operations.push (Operation(OPER_REMOVE_KNIGHT,1,size,r,c));
 						operations.push (Operation(OPER_FIND_SOLUTION,k-1,size));
-						operations.push (Operation(OPER_PLACE_HORSE,1,size,r,c));
+						operations.push (Operation(OPER_PLACE_KNIGHT,1,size,r,c));
 					}
 				}
 			}			
@@ -120,7 +120,7 @@ void config (int k, int size)
 	{
 		for (int c = 0; c < size; c++)
 		{
-			if (canPlaceHorse (r,c,size))
+			if (canPlaceKnight (r,c,size))
 			{
 				board[r][c] = true;
 				config (k-1,size);
