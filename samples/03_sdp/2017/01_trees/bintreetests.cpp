@@ -3,13 +3,13 @@
 #include <stack>
 #include <iomanip>
 
-#include "btree.cpp"
+#include "bintree.cpp"
 
 template <class T>
 using mapFn = T (*)(const T&);
 
 template <class T>
-void simplePrint (BTree<T> &t)
+void simplePrint (BinTree<T> &t)
 {
 	cout << "{";
 	for (T& x : t)
@@ -19,7 +19,7 @@ void simplePrint (BTree<T> &t)
 
 void testMember ()
 {
-	BTree<int> t;
+	BinTree<int> t;
 
 	t.add(10,"").add(12,"L").add(14,"R").add(15,"LR");	
 
@@ -31,12 +31,12 @@ void testMember ()
 
 void testAssignment()
 {
-	BTree<int> t;
+	BinTree<int> t;
 
 	t.add(10,"").add(12,"L").add(14,"R").add(15,"LR");
 	simplePrint(t);
 
-	BTree<int> t1;
+	BinTree<int> t1;
 
 	t1 = t;
 
@@ -49,7 +49,7 @@ void testAssignment()
 }
 void testMinEl ()
 {
-	BTree<int> t;
+	BinTree<int> t;
 
 	t.insertBOT(59)
 	 .insertBOT(23)
@@ -64,7 +64,7 @@ void testMinEl ()
 
 void testIterator ()
 {
-	BTree<int> t;
+	BinTree<int> t;
 
 	t.insertBOT(59)
 	 .insertBOT(23)
@@ -74,7 +74,7 @@ void testIterator ()
 	 .insertBOT(67);
 
 	 	
-	 BTree<int>::LeftRootRightIterator it = t.begin();
+	 BinTree<int>::LeftRootRightIterator it = t.begin();
 
 	 assert (*it == 23);
 
@@ -95,7 +95,7 @@ void testIterator ()
 
 
 template <class T>
-void prettyPrint (typename BTree<T>::HierarchicalIterator it,int depth=0)
+void prettyPrint (typename BinTree<T>::HierarchicalIterator it,int depth=0)
 {
 	if (it.empty())
 		return;
@@ -109,12 +109,13 @@ void prettyPrint (typename BTree<T>::HierarchicalIterator it,int depth=0)
 
 void testMakeTree ()
 {
-	BTree<int> t;
-	typename BTree<int>::HierarchicalIterator it = t.rootIter();
+	BinTree<int> t;
+	typename BinTree<int>::HierarchicalIterator it = t.rootIter();
 
 	*it = 10;
 	*it.goLeft() = 12;
 	*it.goRight() = 14;
+	*it.goRight().goLeft() = 20;
 
 	prettyPrint<int> (it);
 
@@ -130,7 +131,7 @@ int main ()
 	testMinEl();
 	testIterator();
 
-	BTree<int> t;
+	BinTree<int> t;
 
 	t.insertBOT(56)
 	 .insertBOT(23)

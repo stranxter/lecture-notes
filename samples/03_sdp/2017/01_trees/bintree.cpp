@@ -6,7 +6,7 @@ using namespace std;
 
 
 template <class T>
-class BTree
+class BinTree
 {
 
 private:
@@ -85,19 +85,19 @@ private:
 	void insertBOT (Node*&subTreeRoot,const T& x);
 	void deleteElement (Node *&subTreeRoot, const T&x);
 	T minelement (Node *subTreeRoot) const;
-	bool member (const T& x,BTree<T>::Node *subTreeRoot) const;
+	bool member (const T& x,BinTree<T>::Node *subTreeRoot) const;
 
 
 public:
-	BTree();
-	BTree (const BTree<T> &other);
+	BinTree();
+	BinTree (const BinTree<T> &other);
 
 	LeftRootRightIterator end ();
 	LeftRootRightIterator begin ();
 
-	BTree<T>& operator = (const BTree<T> &other);
+	BinTree<T>& operator = (const BinTree<T> &other);
 
-	BTree<T>& add (const T& data, const char *trace);
+	BinTree<T>& add (const T& data, const char *trace);
 
 	void deleteElement (const T&x);
 
@@ -105,22 +105,22 @@ public:
 
 	bool member (const T&) const;
 
-	BTree<T>& insertBOT (const T& x);
+	BinTree<T>& insertBOT (const T& x);
 
 	T minelement ()const;
 
 	HierarchicalIterator rootIter();
 
-	~BTree();
+	~BinTree();
 
 };
 
 template<class T>
-BTree<T>::HierarchicalIterator::HierarchicalIterator (Node *&root):currentSubtree(root)
+BinTree<T>::HierarchicalIterator::HierarchicalIterator (Node *&root):currentSubtree(root)
 {}
 
 template<class T>
-T BTree<T>::HierarchicalIterator::operator * () const
+T BinTree<T>::HierarchicalIterator::operator * () const
 {
 	assert (currentSubtree != nullptr);
 	return currentSubtree->data;
@@ -128,7 +128,7 @@ T BTree<T>::HierarchicalIterator::operator * () const
 
 
 template<class T>
-T& BTree<T>::HierarchicalIterator::operator * ()
+T& BinTree<T>::HierarchicalIterator::operator * ()
 {
 	if (currentSubtree == nullptr)
 		currentSubtree = new Node (T(),nullptr,nullptr);
@@ -137,19 +137,19 @@ T& BTree<T>::HierarchicalIterator::operator * ()
 
 
 template<class T>
-typename BTree<T>::HierarchicalIterator BTree<T>::HierarchicalIterator::goLeft ()
+typename BinTree<T>::HierarchicalIterator BinTree<T>::HierarchicalIterator::goLeft ()
 {
 	assert (currentSubtree != nullptr);
 	return HierarchicalIterator(currentSubtree->left);
 }
 template<class T>
-typename BTree<T>::HierarchicalIterator BTree<T>::HierarchicalIterator::goRight ()
+typename BinTree<T>::HierarchicalIterator BinTree<T>::HierarchicalIterator::goRight ()
 {
 	assert (currentSubtree != nullptr);
 	return HierarchicalIterator(currentSubtree->right);
 }
 template<class T>
-bool BTree<T>::HierarchicalIterator::empty()
+bool BinTree<T>::HierarchicalIterator::empty()
 {
 	return currentSubtree == nullptr;
 }
@@ -157,25 +157,25 @@ bool BTree<T>::HierarchicalIterator::empty()
 
 
 template <class T>
-BTree<T>::Node::Node (const T& d,BTree<T>::Node *l, BTree<T>::Node *r)
+BinTree<T>::Node::Node (const T& d,BinTree<T>::Node *l, BinTree<T>::Node *r)
   :left(l),right(r),data(d)
 {
 	makeID();
 }
 template <class T>
-BTree<T>::Node::Node ():left(nullptr),right(nullptr)
+BinTree<T>::Node::Node ():left(nullptr),right(nullptr)
 {
 	makeID();
 }
 
 template <class T>
-int BTree<T>::Node::getID() const
+int BinTree<T>::Node::getID() const
 {
 	return id;
 }
 
 template <class T>
-void BTree<T>::Node::makeID ()
+void BinTree<T>::Node::makeID ()
 {
 	static int maxID = 0;
 	maxID++;
@@ -189,11 +189,11 @@ void BTree<T>::Node::makeID ()
 операция за обхождане, започвайки от корена на дървото
 */
 template<class T>
-BTree<T>::LeftRootRightIterator::LeftRootRightIterator (BTree<T>::Node *root)
+BinTree<T>::LeftRootRightIterator::LeftRootRightIterator (BinTree<T>::Node *root)
 {
 	if (root != nullptr)
 	{
-		operations.push (BTree<T>::pendingTraverseStep (STEP_TRAVERSE_SUBTREE,root));
+		operations.push (BinTree<T>::pendingTraverseStep (STEP_TRAVERSE_SUBTREE,root));
 		//unwind осигурява, че на върха на стека
 		//има операция за извличане или стекът е празен. Други
 		//състояния на стека не са допустими.
@@ -202,7 +202,7 @@ BTree<T>::LeftRootRightIterator::LeftRootRightIterator (BTree<T>::Node *root)
 }
 
 template<class T>
-T& BTree<T>::LeftRootRightIterator::operator * ()
+T& BinTree<T>::LeftRootRightIterator::operator * ()
 {
 
 	//всички операции с итератора осигуряват, че на върха му
@@ -222,7 +222,7 @@ T& BTree<T>::LeftRootRightIterator::operator * ()
 }
 
 template<class T>
-typename BTree<T>::LeftRootRightIterator& BTree<T>::LeftRootRightIterator::operator++ ()
+typename BinTree<T>::LeftRootRightIterator& BinTree<T>::LeftRootRightIterator::operator++ ()
 {
 	//всички операции с итератора осигуряват, че на върха му
 	//има операция за извличане или стекът е празен. Други
@@ -240,7 +240,7 @@ typename BTree<T>::LeftRootRightIterator& BTree<T>::LeftRootRightIterator::opera
 }
 
 template<class T>
-bool BTree<T>::LeftRootRightIterator::operator != (const LeftRootRightIterator &other)
+bool BinTree<T>::LeftRootRightIterator::operator != (const LeftRootRightIterator &other)
 {
 	
 	if (operations.empty())
@@ -255,7 +255,7 @@ bool BTree<T>::LeftRootRightIterator::operator != (const LeftRootRightIterator &
 }  
 
 template<class T>
-void BTree<T>::LeftRootRightIterator::unwind ()
+void BinTree<T>::LeftRootRightIterator::unwind ()
 {
 
 	//всички операции с итератора осигуряват, че на върха му
@@ -272,8 +272,8 @@ void BTree<T>::LeftRootRightIterator::unwind ()
 	if (operations.empty())
 		return;
 
-	BTree<T>::pendingTraverseStep topOperation = operations.top();
-	BTree<T>::Node* topNode = topOperation.second;
+	BinTree<T>::pendingTraverseStep topOperation = operations.top();
+	BinTree<T>::Node* topNode = topOperation.second;
 
 	while (!operations.empty() && topOperation.first != STEP_EXTRACT_ROOT)
 	{
@@ -281,11 +281,10 @@ void BTree<T>::LeftRootRightIterator::unwind ()
 		operations.pop();
 
 		if (topNode->right != nullptr)
-			operations.push (BTree<T>::pendingTraverseStep(STEP_TRAVERSE_SUBTREE,topNode->right));
-		operations.push (BTree<T>::pendingTraverseStep(STEP_EXTRACT_ROOT,topNode));
+			operations.push (BinTree<T>::pendingTraverseStep(STEP_TRAVERSE_SUBTREE,topNode->right));
+		operations.push (BinTree<T>::pendingTraverseStep(STEP_EXTRACT_ROOT,topNode));
 		if (topNode->left != nullptr)
-			operations.push (BTree<T>::pendingTraverseStep(STEP_TRAVERSE_SUBTREE,topNode->left));
-
+			operations.push (BinTree<T>::pendingTraverseStep(STEP_TRAVERSE_SUBTREE,topNode->left));
 		topOperation = operations.top();
 		topNode = topOperation.second;
 
@@ -295,19 +294,19 @@ void BTree<T>::LeftRootRightIterator::unwind ()
 }
 
 template<class T>
-typename BTree<T>::LeftRootRightIterator BTree<T>::end ()
+typename BinTree<T>::LeftRootRightIterator BinTree<T>::end ()
 {
 	return LeftRootRightIterator (nullptr);
 }
 
 template<class T>
-typename BTree<T>::LeftRootRightIterator BTree<T>::begin ()
+typename BinTree<T>::LeftRootRightIterator BinTree<T>::begin ()
 {
 	return LeftRootRightIterator (root);
 }
 
 template<class T>
-void BTree<T>::deleteElement (BTree<T>::Node *&subTreeRoot, const T&x)
+void BinTree<T>::deleteElement (BinTree<T>::Node *&subTreeRoot, const T&x)
 {
 	//триене от празно дърво
 	if (subTreeRoot==nullptr)
@@ -345,7 +344,7 @@ void BTree<T>::deleteElement (BTree<T>::Node *&subTreeRoot, const T&x)
 	//триене на корен само с 1 наследник
 	if (subTreeRoot->right == nullptr)
 	{
-		BTree<T>::Node *tmp = subTreeRoot;
+		BinTree<T>::Node *tmp = subTreeRoot;
 		subTreeRoot = subTreeRoot->left;
 		delete tmp;
 		return;
@@ -355,7 +354,7 @@ void BTree<T>::deleteElement (BTree<T>::Node *&subTreeRoot, const T&x)
 	//този случй може да не се разглежда
 	if (subTreeRoot->left == nullptr)
 	{
-		BTree<T>::Node *tmp = subTreeRoot;
+		BinTree<T>::Node *tmp = subTreeRoot;
 		subTreeRoot = subTreeRoot->right;
 		delete tmp;
 		return;
@@ -372,16 +371,16 @@ void BTree<T>::deleteElement (BTree<T>::Node *&subTreeRoot, const T&x)
 }
 
 template<class T>
-void BTree<T>::deleteElement (const T&x)
+void BinTree<T>::deleteElement (const T&x)
 {
 	deleteElement (root,x);
 }
 
 template<class T>
-T BTree<T>::minelement (BTree<T>::Node *subTreeRoot) const
+T BinTree<T>::minelement (BinTree<T>::Node *subTreeRoot) const
 {
 	assert (subTreeRoot != nullptr);
-	BTree<T>::Node *current = subTreeRoot;
+	BinTree<T>::Node *current = subTreeRoot;
 
 	while (current->left != nullptr)
 	{
@@ -394,19 +393,19 @@ T BTree<T>::minelement (BTree<T>::Node *subTreeRoot) const
 
 
 template<class T>
-T BTree<T>::minelement () const
+T BinTree<T>::minelement () const
 {
 	return minelement (root);
 
 }
 
 template<class T>
-void BTree<T>::insertBOT (BTree<T>::Node* &subTreeRoot,const T& x)
+void BinTree<T>::insertBOT (BinTree<T>::Node* &subTreeRoot,const T& x)
 {
 
 	if (subTreeRoot == nullptr)
 	{
-		subTreeRoot = new BTree<T>::Node (x,nullptr,nullptr);
+		subTreeRoot = new BinTree<T>::Node (x,nullptr,nullptr);
 		return;
 	}
 
@@ -421,14 +420,14 @@ void BTree<T>::insertBOT (BTree<T>::Node* &subTreeRoot,const T& x)
 
 
 template<class T>
-BTree<T>& BTree<T>::insertBOT (const T& x)
+BinTree<T>& BinTree<T>::insertBOT (const T& x)
 {
 	insertBOT (root,x);	
 	return *this;
 }
 
 template<class T>
-BTree<T>& BTree<T>::operator = (const BTree<T> &other)
+BinTree<T>& BinTree<T>::operator = (const BinTree<T> &other)
 {
 	if (this == &other)
 		return *this;
@@ -441,30 +440,30 @@ BTree<T>& BTree<T>::operator = (const BTree<T> &other)
 
 
 template<class T>
-typename BTree<T>::Node* BTree<T>::copyTree (const BTree<T>::Node *subTreeRoot)
+typename BinTree<T>::Node* BinTree<T>::copyTree (const BinTree<T>::Node *subTreeRoot)
 {
 	if (subTreeRoot == nullptr)
 		return nullptr;
 
-	return new BTree<T>::Node (subTreeRoot->data,
+	return new BinTree<T>::Node (subTreeRoot->data,
 		                copyTree(subTreeRoot->left),
 		                copyTree(subTreeRoot->right));
 }
 
 template<class T>
-BTree<T>::BTree (const BTree<T> &other)
+BinTree<T>::BinTree (const BinTree<T> &other)
 {
 	root = copyTree (other.root);
 }
 
 template<class T>
-void BTree<T>::dottyPrint (ostream &out)
+void BinTree<T>::dottyPrint (ostream &out)
 {
 	dottyPrint (root,out);
 }
 
 template<class T>
-void BTree<T>::dottyPrint (BTree<T>::Node *subTreeRoot,ostream& out) const
+void BinTree<T>::dottyPrint (BinTree<T>::Node *subTreeRoot,ostream& out) const
 {
 	if (subTreeRoot == nullptr)
 		return;
@@ -491,14 +490,14 @@ void BTree<T>::dottyPrint (BTree<T>::Node *subTreeRoot,ostream& out) const
 }
 
 template<class T>
-bool BTree<T>::member (const T& x) const
+bool BinTree<T>::member (const T& x) const
 {
 	return member (x,root);
 }
 
 
 template<class T>
-bool BTree<T>::member (const T& x,BTree<T>::Node *subTreeRoot) const
+bool BinTree<T>::member (const T& x,BinTree<T>::Node *subTreeRoot) const
 {
 	if (subTreeRoot == nullptr)
 		return false;
@@ -512,7 +511,7 @@ bool BTree<T>::member (const T& x,BTree<T>::Node *subTreeRoot) const
 }
 
 template<class T>
-void BTree<T>::deleteAll (BTree<T>::Node *subTreeRoot)
+void BinTree<T>::deleteAll (BinTree<T>::Node *subTreeRoot)
 {
 	if (subTreeRoot == nullptr)
 		return;
@@ -523,7 +522,7 @@ void BTree<T>::deleteAll (BTree<T>::Node *subTreeRoot)
 }
 
 template <class T>
-BTree<T>::~BTree()
+BinTree<T>::~BinTree()
 {
 	deleteAll (root);
 	root = nullptr;
@@ -532,20 +531,20 @@ BTree<T>::~BTree()
 
 
 template <class T>
-BTree<T>& BTree<T>::add(const T& x, const char *trace)
-{
+BinTree<T>& BinTree<T>::add(const T& x, const char *trace)
+{ 
    add (x,trace,root);
    return *this;
 }
 
 
 template <class T>
-bool BTree<T>::add(const T& x, const char *trace, BTree<T>::Node* &subTreeRoot)
+bool BinTree<T>::add(const T& x, const char *trace, BinTree<T>::Node* &subTreeRoot)
 {
 	if (subTreeRoot == nullptr)
 	{
 		assert (strlen(trace) == 0);
-		subTreeRoot = new BTree<T>::Node (x,nullptr,nullptr);
+		subTreeRoot = new BinTree<T>::Node (x,nullptr,nullptr);
 		return true;
 	}
 
@@ -557,17 +556,15 @@ bool BTree<T>::add(const T& x, const char *trace, BTree<T>::Node* &subTreeRoot)
 	assert (trace[0]=='R');
 	return add (x,trace+1,subTreeRoot->right);
 
-	return true;
-
 }
 
 template <class T>
-BTree<T>::BTree ():root(nullptr){}
+BinTree<T>::BinTree ():root(nullptr){}
 
 template <class T>
-typename BTree<T>::HierarchicalIterator BTree<T>::rootIter()
+typename BinTree<T>::HierarchicalIterator BinTree<T>::rootIter()
 {
-	return typename BTree<T>::HierarchicalIterator(root);
+	return typename BinTree<T>::HierarchicalIterator(root);
 }
 
 
