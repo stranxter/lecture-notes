@@ -1,0 +1,58 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{url}
+\usepackage[bulgarian]{babel}
+\usepackage{listings}
+
+
+\lstset{breaklines=true} 
+
+
+\author{\textit{email: kalin@fmi.uni-sofia.bg}}
+\title{\textsc{Задачи за задължителна самоподготовка} \\
+по \\
+Структури от данни и програмиране}
+
+
+
+\begin{document}
+\maketitle
+
+
+\begin{enumerate}
+
+	\item Да се дефинира \texttt{operator *} на шаблона на хеш-таблицата. Хеш-таблицата \texttt{c}, която си получава при \texttt{c = a * b}, да съдържа като ключове сечението на ключове на \texttt{a} и \texttt{b}, със съответните им стойности от \texttt{b}. Хеш-функцията на \texttt{c} да е същата като на \texttt{b}.
+
+	\item Да се дефинира \texttt{operator +} на шаблона на хеш-таблицата. Хеш-таблицата \texttt{c}, която си получава при \texttt{c = a + b}, да съдържа като ключове симетричната разлика на ключовете на \texttt{a} и \texttt{b}, със съответните им стойности от \texttt{a} и \texttt{b}. Хеш-функцията на \texttt{c} да е същата като на \texttt{b}.
+
+	\emph{Симетрична разлика на множествата $A$ и $B$ наричаме множеството $C = A \Delta B = A \cup B - A \cap B$, съдържащо тези елементи на $A$, които не са елементи на $B$ и тези елементи на $B$, които не са елементи на $A$.}
+
+	\item Да се дефинира метод 
+
+	\texttt{void map (void (*f) (ValueType\&))} 
+
+	на хеш-таблицата, който прилага функцията \texttt{f} над всички стойности в хеш-таблицата.
+
+	\item Да се дефинира метод 
+
+	\texttt{void mapKeys (KeyType (*f) (const KeyType\&))} 
+
+	на хеш-таблицата, който замества всеки ключ \texttt{key} на хеш-таблицата с \texttt{f(key)}, като се запазва старата му стойност. 
+
+	\emph{Упътване: Да се извърши съответното ре-хеширане на елемента и той да се премести на съответния нов индекс в таблицата.}
+
+
+	\item Методът \texttt{begin} на хеш-таблицата да се допълни така, че да може да получава и предикат $p:KeyType \rightarrow bool$. Резултатният итератор да итерира само през тези ключове от таблицата, които удовлетворяват $p$.
+
+
+\end{enumerate}
+
+
+
+
+\end{document}
+
