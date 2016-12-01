@@ -58,8 +58,47 @@ void testHMapCannonical ()
 	assert (m1.containsKey("Zdravko") == false);
 }
 
+void testHMapIterator ()
+{
+
+	HashMap<string,double> m(7,stringhash1);
+
+	m["Kalin"] = 1.85;
+	m["Ivan"] = 1.86;
+
+	int count = 0;
+	for (string key : m)
+	{
+		assert (key == "Kalin" || key == "Ivan");
+		cout << "key:" << count << "=" << key << endl;
+		count++;
+	}
+
+	assert (count == 2);
+}
+
+void testHMapResize ()
+{
+	HashMap<string,double> m(1,stringhash1);
+
+	m["Kalin"] = 1.85;
+	m["Ivan"] = 1.86;
+
+	m.resize (7);
+
+	assert (m["Kalin"] == 1.85);
+	assert (m["Ivan"] == 1.86);
+	assert (m.containsKey("Kalin") == true);
+	assert (m.containsKey("Petar") == false);
+
+}
+
+
 int main ()
 {
 	testHMapCore();
 	testHMapCannonical();
+	testHMapIterator();
+	testHMapResize();
+
 }
