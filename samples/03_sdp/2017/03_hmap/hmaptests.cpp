@@ -93,6 +93,39 @@ void testHMapResize ()
 
 }
 
+void testHMMultiply ()
+{
+	HashMap<string,double> m(5,stringhash1);
+
+	m["Kalin"] = 1.85;
+	m["Ivan"] = 1.86;
+
+	HashMap<string,double> m1(3,stringhash1);
+
+	m1["Kalin"] = 2;
+	m1["Petar"] = 2;
+
+	HashMap<string,vector<double>> mult = m * m1;
+
+	mult = mult * mult;
+
+	assert (mult.containsKey("Kalin"));
+	assert (!mult.containsKey("Ivan"));
+	assert (!mult.containsKey("Petar"));
+
+	assert (mult["Kalin"].size() == 4);
+
+	for (string key : mult)
+	{
+		cout << key << ":";
+		for (double val : mult[key])
+		{
+			cout << val << " "; 
+		}
+		cout << endl;
+	}
+
+}
 
 int main ()
 {
@@ -100,5 +133,7 @@ int main ()
 	testHMapCannonical();
 	testHMapIterator();
 	testHMapResize();
+
+	testHMMultiply();
 
 }

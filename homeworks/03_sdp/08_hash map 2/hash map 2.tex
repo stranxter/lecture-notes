@@ -7,6 +7,10 @@
 \usepackage{url}
 \usepackage[bulgarian]{babel}
 \usepackage{listings}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{relsize}
+
+
 
 
 \lstset{breaklines=true} 
@@ -47,6 +51,114 @@
 
 
 	\item Методът \texttt{begin} на хеш-таблицата да се допълни така, че да може да получава и предикат $p:KeyType \rightarrow bool$. Резултатният итератор да итерира само през тези ключове от таблицата, които удовлетворяват $p$.
+
+
+	\item Да се дефинира \texttt{operator *} на шаблона на хеш-таблицата. Хеш-таблицата \texttt{c}, която се получава при \texttt{c = a * b}, да съдържа като множество от ключове сечението на множествата на ключове на \texttt{a} и \texttt{b}, като стойноста на всеки ключ е:
+
+	\begin{itemize}
+		\item Вектор с два елемента -- стойността на ключа от \texttt{a} и стойността на ключа от \texttt{b}, ако тези стойност \emph{не са вектори}.
+		\item Конкатенацията на стойността на ключа от \texttt{a} и стойността на ключа от \texttt{b}, ако тези стойност \emph{\underline{са} вектори}.
+	\end{itemize}
+
+	Хеш-функцията на \texttt{c} да е като хеш-функцията на \texttt{b}.
+	\\
+	\\
+
+	\begin{mdframed}[hidealllines=true,backgroundcolor=gray!20]
+	\relscale{0.75}
+	Пример: Операторът да удовлетворява следния тест:
+
+\begin{lstlisting}
+HashMap<string,double> m(5,stringhash1);
+m["Kalin"] = 1.85; m["Ivan"] = 1.86;
+HashMap<string,double> m1(3,stringhash1);
+m1["Kalin"] = 2; m1["Petar"] = 2;
+HashMap<string,vector<double>> mult = m * m1;
+mult = mult * mult;
+
+assert (mult.containsKey("Kalin"));
+assert (!mult.containsKey("Ivan"));
+assert (!mult.containsKey("Petar"));
+assert (mult["Kalin"].size() == 4);		
+\end{lstlisting}
+
+	\end{mdframed}
+
+	\begin{mdframed}[hidealllines=true,backgroundcolor=gray!20]
+	\relscale{0.75}
+	Решение. 
+
+	Можем да реализираме глобален шаблон на оператор за умножение на хеш-таблици:
+
+\begin{verbatim}
+template <class KeyType, class ValueType>
+HashMap<KeyType,vector<ValueType>> 
+  operator * (const HashMap<KeyType,ValueType> &hm1,
+              const HashMap<KeyType,ValueType> &hm2)
+	
+\end{verbatim}
+
+	Както се вижда, аргументите на оператора са две хеш-таблици с тип на стойностите \texttt{ValueType}, а стойността на оператора е от типа \texttt{vector<ValueType>}. Един лесен начин да реализираме тялото на оператора е:
+	\\
+
+
+\begin{verbatim}
+HashMap<KeyType,vector<ValueType>> 
+  result(hm2.size(),hm2.getHashFunction());
+for (const KeyType &key : hm1)
+{
+    //key е в сечението на ключовете
+    if (hm2.containsKey (key))
+    {
+        result[key].push_back(hm1[key]);
+        result[key].push_back(hm2[key]);
+    }
+}
+return result;
+
+\end{verbatim}
+
+	Очевидно е, че ако типа \texttt{ValueType} се случи да е самият той \emph{вектор}, ефектът от горната реализация ще бъдат стойности, които са \emph{вектори от вектори}, а това не е търсеният резултат. Следователно нашата реализация трябва да ``знае'' кога \texttt{ValueType} е вектор и да вземе съответните мерки да конкатенира векторите, които са стойности на ключа \texttt{key} в двете таблици \texttt{hm1} и \texttt{hm2}.
+
+	От друга страна, няма как по време на изпълнението на програмата да определим в тялото на оператора дали \texttt{ValueType} е вектор или не е. Дори да използваме някакъв \texttt{RTTI} трик и все пак да разберем в \emph{run time}, че \texttt{ValueType} е вектор, ще се наложи да приложим още трикове, с които да преобразуваме \texttt{ValueType} така, че да можем да използваме методите на \texttt{std::vector} за достъп до елементите и да извършим конкатенацията. Би се получило неелегантно и неразбираемо решение.
+
+	За щастие, шаблоните в \texttt{C++} ни позволяват да направим частен случай на шаблона на оператора \texttt{*}, който да се предпочете от компилатора тогава, когато хеш-таблицата е със стойност вектори. Необходимо е единствено да добавим още един шаблон:
+
+\begin{verbatim}
+template <class KeyType, class ValueType>
+HashMap<KeyType,vector<ValueType>> 
+  operator * (const HashMap<KeyType,vector<ValueType>> &hm1,
+              const HashMap<KeyType,vector<ValueType>> &hm2)
+\end{verbatim}
+
+
+	Забележете, че хеш-таблиците са дефинирани с тип на стойностите \texttt{vector<ValueType>}, което е частен случай на простото \texttt{ValueType} в предишния оператор \texttt{*}, но е достатъчно на компилатора да подбере именно този оператор при опит да умножим две хеш-таблици, чиито стойности са от тип вектор. Съответната реализация на оператора е:
+	\\
+	\\
+
+\begin{verbatim}
+HashMap<KeyType,vector<ValueType>> 
+  result(hm2.size(),hm2.getHashFunction());
+for (const KeyType &key : hm1)
+{
+    //key е в сечението на ключовете
+    if (hm2.containsKey (key))
+    {
+        result[key] = append (hm1[key], hm2[key]);
+    }
+}
+return result;
+
+\end{verbatim}
+
+    Тук \texttt{append} е помощна функция за конкатенация на вектори.
+
+
+
+
+	\end{mdframed}
+
+
 
 
 \end{enumerate}

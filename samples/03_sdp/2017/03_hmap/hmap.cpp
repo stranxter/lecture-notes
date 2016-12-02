@@ -26,7 +26,7 @@ public:
 	{
 		public:
 		
-		Iterator (vector<list<KeyValue>> &_table,bool=false);
+		Iterator (const vector<list<KeyValue>> &_table,bool=false);
 
 		KeyType operator * ();
 		Iterator& operator ++ ();
@@ -36,16 +36,16 @@ public:
 
 		void goToActualEntry();
 		
-		typename vector<list<KeyValue>>::iterator currentTableEntry;
-		typename list<KeyValue>::iterator currentCollision;
-		vector<list<KeyValue>> &table;
+		typename vector<list<KeyValue>>::const_iterator currentTableEntry;
+		typename list<KeyValue>::const_iterator currentCollision;
+		const vector<list<KeyValue>> &table;
 
 
 	};
 
 
-	Iterator begin();
-	Iterator end();
+	Iterator begin() const;
+	Iterator end() const;
 
 	HashMap (size_t size, hashFnType<KeyType> f);
 
@@ -54,18 +54,89 @@ public:
 	bool containsKey (const KeyType&) const;
 
 	void resize (size_t size);
+	size_t size () const;
+	hashFnType<KeyType> getHashFunction () const;
+
+
 
 private:
 	hashFnType<KeyType> hashFunction;
 	vector<list<KeyValue>> table;
 
+
 };
 
+
+template <class T>
+vector<T> append (const vector<T> &v1,const vector<T> &v2)
+{
+	vector<T> result = v1;
+	result.insert (result.end(),v2.begin(),v2.end());
+	return result;
+}
+
+template <class KeyType, class ValueType>
+HashMap<KeyType,vector<ValueType>> 
+  operator * (const HashMap<KeyType,vector<ValueType>> &hm1,
+  			  const HashMap<KeyType,vector<ValueType>> &hm2)
+{
+
+	HashMap<KeyType,vector<ValueType>> 
+	  result(hm2.size(),hm2.getHashFunction());
+
+	for (const KeyType &key : hm1)
+	{
+		//key е в сечението на ключовете
+		if (hm2.containsKey (key))
+		{
+			result[key] = append (hm1[key], hm2[key]);
+		}
+	}
+
+	return result;
+
+}
+
+template <class KeyType, class ValueType>
+HashMap<KeyType,vector<ValueType>> 
+  operator * (const HashMap<KeyType,ValueType> &hm1,
+  			  const HashMap<KeyType,ValueType> &hm2)
+{
+
+	HashMap<KeyType,vector<ValueType>> 
+	  result(hm2.size(),hm2.getHashFunction());
+
+	for (const KeyType &key : hm1)
+	{
+		//key е в сечението на ключовете
+		if (hm2.containsKey (key))
+		{
+			result[key].push_back(hm1[key]);
+			result[key].push_back(hm2[key]);
+		}
+	}
+
+
+	return result;
+
+
+}
 
 template <class KeyType, class ValueType>
 using HMIterator 
    = typename HashMap<KeyType,ValueType>::Iterator;
 
+template <class KeyType, class ValueType>
+hashFnType<KeyType> HashMap<KeyType,ValueType>::getHashFunction () const
+{
+	return hashFunction;
+}
+
+template <class KeyType, class ValueType>
+size_t HashMap<KeyType,ValueType>::size () const
+{
+	return table.size();
+}
 
 template <class KeyType, class ValueType>
 void HashMap<KeyType,ValueType>::resize (size_t size)
@@ -123,7 +194,7 @@ ValueType HashMap<KeyType,ValueType>::operator [] (const KeyType &key) const
 	assert (index < table.size());
 
 
-	for (KeyValue &pair : table[index])
+	for (const KeyValue &pair : table[index])
 	{
 		if (pair.key == key)
 			return pair.value;
@@ -151,7 +222,7 @@ bool HashMap<KeyType,ValueType>::containsKey (const KeyType &key) const
 
 template <class KeyType, class ValueType>
 HashMap<KeyType,ValueType>::Iterator::Iterator 
-     (vector<list<typename HashMap<KeyType,ValueType>::KeyValue>> &_table,
+     (const vector<list<typename HashMap<KeyType,ValueType>::KeyValue>> &_table,
      	bool goToEnd)
        :table(_table)
 {
@@ -235,7 +306,7 @@ bool HashMap<KeyType,ValueType>::Iterator::operator !=
 
 template <class KeyType, class ValueType>
 HMIterator<KeyType,ValueType> 
-   HashMap<KeyType,ValueType>::begin()
+   HashMap<KeyType,ValueType>::begin() const
 {
 	return HashMap<KeyType,ValueType>::Iterator (table);
 }
@@ -243,7 +314,7 @@ HMIterator<KeyType,ValueType>
 
 template <class KeyType, class ValueType>
 HMIterator<KeyType,ValueType> 
-   HashMap<KeyType,ValueType>::end()
+   HashMap<KeyType,ValueType>::end() const
 {
   return HMIterator<KeyType,ValueType> (table,true);
 
