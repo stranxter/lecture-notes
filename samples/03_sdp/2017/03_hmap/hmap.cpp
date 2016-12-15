@@ -115,16 +115,8 @@ HashMap<KeyType,vector<ValueType>>
 			result[key].push_back(hm2[key]);
 		}
 	}
-
-
 	return result;
-
-
 }
-
-template <class KeyType, class ValueType>
-using HMIterator 
-   = typename HashMap<KeyType,ValueType>::Iterator;
 
 template <class KeyType, class ValueType>
 hashFnType<KeyType> HashMap<KeyType,ValueType>::getHashFunction () const
@@ -274,7 +266,7 @@ KeyType HashMap<KeyType,ValueType>::Iterator::operator * ()
 
 
 template <class KeyType, class ValueType>
-HMIterator<KeyType,ValueType>& 
+typename HashMap<KeyType,ValueType>::Iterator& 
   HashMap<KeyType,ValueType>::Iterator::operator ++ ()
 {
 	++currentCollision;
@@ -285,7 +277,7 @@ HMIterator<KeyType,ValueType>&
 
 template <class KeyType, class ValueType>
 bool HashMap<KeyType,ValueType>::Iterator::operator != 
-    (HMIterator<KeyType,ValueType> &other)
+    (typename HashMap<KeyType,ValueType>::Iterator &other)
 {
 		
 
@@ -305,7 +297,7 @@ bool HashMap<KeyType,ValueType>::Iterator::operator !=
 }
 
 template <class KeyType, class ValueType>
-HMIterator<KeyType,ValueType> 
+typename HashMap<KeyType,ValueType>::Iterator
    HashMap<KeyType,ValueType>::begin() const
 {
 	return HashMap<KeyType,ValueType>::Iterator (table);
@@ -313,10 +305,10 @@ HMIterator<KeyType,ValueType>
 
 
 template <class KeyType, class ValueType>
-HMIterator<KeyType,ValueType> 
+typename HashMap<KeyType,ValueType>::Iterator 
    HashMap<KeyType,ValueType>::end() const
 {
-  return HMIterator<KeyType,ValueType> (table,true);
+  return HashMap<KeyType,ValueType>::Iterator (table,true);
 
 }
 
