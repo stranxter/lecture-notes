@@ -11,12 +11,8 @@ void testTrie()
 {
 	Trie<int> m;
 
-	cout << "here" << endl;
-
 
 	m.set ("to",7);
-
-	cout << "here" << endl;
 
 	m.set ("tea",3);
 	m.set ("inn",9);

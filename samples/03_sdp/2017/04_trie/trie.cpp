@@ -33,7 +33,10 @@ template <class ValueType>
 TrieNode<ValueType>::TrieNode (const TrieNode<ValueType> &other):
       children (other.children)
 {
-	data = new ValueType (*(other.data));
+	if (other.data)
+		data = new ValueType (*(other.data));
+	else
+		data = nullptr;
 }
 
 template <class ValueType>
@@ -49,7 +52,10 @@ TrieNode<ValueType>& TrieNode<ValueType>::operator =
 	if (this != &other)
 	{
 		delete data;
-		data = new ValueType (*(other.data));
+		if (other.data)
+			data = new ValueType (*(other.data));
+		else
+			data = nullptr;
 		children = other.children;
 	}
 
@@ -101,14 +107,10 @@ void Trie<ValueType>::setValue (const string& key,
 	
 	} else {
 
-		cout << "1\n";
-
 		if (!node.children.containsKey (key[0]))
 		{
-		cout << "2\n";
 			node.children[key[0]] = TrieNode<ValueType>();
 		}
-		cout << "3\n";
 
 		setValue (key.substr(1),
 			      value,
