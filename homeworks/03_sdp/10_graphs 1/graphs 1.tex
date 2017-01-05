@@ -1,0 +1,59 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{url}
+\usepackage[bulgarian]{babel}
+\usepackage{listings}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{relsize}
+
+
+
+
+\lstset{breaklines=true} 
+
+
+\author{\textit{email: kalin@fmi.uni-sofia.bg}}
+\title{\textsc{Задачи за задължителна самоподготовка} \\
+по \\
+Структури от данни и програмиране}
+
+
+
+\begin{document}
+\maketitle
+
+
+\begin{enumerate}
+
+	\item Да се дефинира функция, която проверява дали в даден граф има поне един цикъл.
+
+	\item За клас \texttt{Graph} да се дефинира оператор за събиране, реализиращ обединение на графи. 
+	\\
+	\\
+	\textit{Дефиниция:} Нека $G_1=<V_1,E_1,w_1>$ и $G_2 = <V_2,E_2,w_2>$, са графи с теглови функции съответно $w_1$ и $w_2$. Тегловите функции $w_k$ са от вида $w_k:E_k \rightarrow 2^C$ и допускат произволен брой дъги между два дадени върха, стига дъгите да имат различни тегла. Множеството от допустими стойности на теглата $C$ е еднакво за двата графа. 
+	\\
+	\\
+	Обединение на $G_1$ и $G_2$ наричаме графа $G=<V_1 \cup V_2,E_1 \cup E_2,w_1 \cup w_2>$, където $\forall e \in E_1 \cup E_2$, 
+
+$w_1 \cup w_2 (e) = \begin{cases} 
+				      w_1(e) \cup w_2(e) & e \in E_1 \& e \in E_2 \\
+				      w_1(e) & e \in E_1 \& e \notin E_2  \\
+				      w_2(e) & e \notin E_1 \& e \in E_2  \\ 
+				      \emptyset & ow
+				   \end{cases}$
+
+	\item За клас \texttt{Graph} да се дефинира оператор за сравнение \texttt{<=}, реализиращ проверка дали даден граф е подграф на друг граф. 
+
+	\textit{Дефиниция:} Нека $G_1=<V_1,E_1,w_1>$ и $G_2 = <V_2,E_2,w_2>$, са графи с теглови функции съответно $w_1$ и $w_2$. Тегловите функции $w_k$ са от вида $w_k:E_k \rightarrow 2^C$, за дадено множество от допустими стойности на теглата $C$, еднакво за двата графа. Казваме, че $G_1 \le G_2$, т.с.т.к. $V_1 \subseteq V_2$, $E_1 \subseteq E_2$ и $\forall e \in E_1, w_1(e) \subseteq w_2 (e)$.
+
+\end{enumerate}
+
+
+
+
+\end{document}
+
