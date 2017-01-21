@@ -18,6 +18,8 @@ public:
 
     list<pair<VT,LT>> edgesFrom (const VT&) const;
 
+    LT getLabel (const VT&, const VT&) const;
+
 	void toDotty (ostream&) const;
 private:
 
@@ -78,4 +80,29 @@ list<pair<VT,LT>> Graph<VT,LT>::edgesFrom (const VT &out) const
 {
 	return edges.at(out);	
 }
+
+template <class VT, class LT>
+LT Graph<VT,LT>::getLabel (const VT &out, const VT &in) const
+{
+	//map<VT,list<pair<VT,LT>>> edges;
+
+	assert (edges.count(out) != 0);
+	assert (edges.count(in) != 0);
+
+	for (const pair<int,char>& edge : edgesFrom (out))
+	{
+		if (in == edge.first)
+		{
+			return edge.second;
+		}
+	}
+
+	assert (false);
+
+	LT dummy;
+	return dummy;
+
+}
+
+
 #endif
