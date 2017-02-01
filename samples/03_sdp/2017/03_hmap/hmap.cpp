@@ -7,8 +7,7 @@
 using namespace std;
 
 template <class KeyType>
-using hashFnType = size_t (*) (const KeyType&, 
-	     							 size_t);
+using hashFnType = size_t (*) (const KeyType&, size_t);
 
 template <class KeyType, class ValueType>
 class HashMap
