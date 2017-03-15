@@ -1,15 +1,40 @@
+#include <assert.h>
 #include <iostream>
 
 using namespace std;
 
 class Rational
 {
-public:
+
+private:
+
 	int nom;
 	unsigned int denom;
 
+public:
+
+	//конструктор
+	/*...*/ Rational (int i)
+	{
+		nom = i;
+		denom = 1;
+	}
+
+	//конструктор
+	/*...*/ Rational (int nom, int denom)
+	{
+		init (nom,denom);
+	}
+
+	void init (int i)
+	{
+		nom = i;
+		denom = 1;
+	}
+
 	void init (int nom, unsigned denom)
 	{
+		assert (denom != 0);
 		this->nom = nom;
 		this->denom = denom;
 	}
@@ -59,6 +84,12 @@ public:
 			 << denom
 			 << endl;
 	}
+
+	Rational ()
+	{
+		denom = 1;
+	}
+
 };
 
 Rational operator * (int x, Rational rat)
@@ -71,8 +102,14 @@ Rational operator * (int x, Rational rat)
 int main ()
 {
 
+	//int x = 0; <=> int x (0);
 
-	Rational r1,r2,r3,r4;
+
+	Rational r (3,4); //r(0);
+
+	r.print ();
+
+	Rational r1(),r2(),r3(),r4();
 
 	//r1.nom = 10;
 	//r1.denom = 5;
@@ -80,6 +117,8 @@ int main ()
 
 	r2.init (7,3);
 	r3.init (8,3);
+
+
 
 	r4 = r1 + r2;
 
