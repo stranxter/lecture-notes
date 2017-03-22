@@ -22,6 +22,7 @@ public:
 
 	DynArray (const DynArray<T>& other);
 	DynArray (size_t _size);
+	T operator [] (size_t index) const;
 	T& operator [] (size_t index);
 	void print ();
 	void remove (const T& x);
@@ -32,6 +33,20 @@ public:
 	DynArray<T>& operator = (const DynArray<T>& other);
 	bool operator == (const DynArray<T>& other);
 };
+
+template <typename T>
+T DynArray<T>::operator [] (size_t index) const
+{
+	assert (index >= 0 && index < size);
+	return array[index];
+}
+
+template <typename T>
+T& DynArray<T>::operator [] (size_t index)
+{
+	assert (index >= 0 && index < size);
+	return array[index];
+}
 
 template <typename T>
 DynArray<T>::DynArray ()
@@ -64,12 +79,6 @@ DynArray<T>::DynArray (size_t _size)
 	size = _size;
 }
 
-template <typename T>
-T& DynArray<T>::operator [] (size_t index)
-{
-	assert (index >= 0 && index < size);
-	return array[index];
-}
 
 template <typename T>
 void DynArray<T>::print ()
