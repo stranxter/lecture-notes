@@ -22,8 +22,7 @@ public:
 
 	DynArray (const DynArray<T>& other);
 	DynArray (size_t _size);
-	T operator [] (size_t index) const;
-	T& operator [] (size_t index);
+	T&  operator [] (const size_t index) const;
 	void print ();
 	void remove (const T& x);
 	size_t getsize ();
@@ -35,14 +34,7 @@ public:
 };
 
 template <typename T>
-T DynArray<T>::operator [] (size_t index) const
-{
-	assert (index >= 0 && index < size);
-	return array[index];
-}
-
-template <typename T>
-T& DynArray<T>::operator [] (size_t index)
+T& DynArray<T>::operator [] (const size_t index) const
 {
 	assert (index >= 0 && index < size);
 	return array[index];
@@ -212,65 +204,62 @@ bool DynArray<T>::operator == (const DynArray<T>& other)
 
 void testCopy ()
 {
-DynArray<int> a1(4);
-a1.operator [](0) = 1;
-a1[1] = 2;
-a1[2] = 3;
-a1[3] = 4;
+	DynArray<int> a1(4);
+	a1.operator [](0) = 1;
+	a1[1] = 2;
+	a1[2] = 3;
+	a1[3] = 4;
 
-DynArray<int> a2 (a1);
+	DynArray<int> a2 (a1);
 
-a2[0]= 999;
-assert (a1[0] == 1);
+	a2[0]= 999;
+	assert (a1[0] == 1);
 
-DynArray<int> a3  = a1+a2; // a3(a1+a2)
+	DynArray<int> a3  = a1+a2; // a3(a1+a2)
 }
 
 void testRemove ()
 {
-DynArray<int> a1(4);
-a1[0] = 1;
-a1[1] = 2;
-a1[2] = 3;
-a1[3] = 4;
+	DynArray<int> a1(4);
+	a1[0] = 1;
+	a1[1] = 2;
+	a1[2] = 3;
+	a1[3] = 4;
 
 
-a1.remove (1);
-a1.remove (3);
+	a1.remove (1);
+	a1.remove (3);
 
-assert (a1[0] == 2 && a1[1] == 4);
-a1.print();
-
+	assert (a1[0] == 2 && a1[1] == 4);
+	a1.print();
 }
 
 void testAssign ()
 {
-DynArray<int> a1(4);
-a1[0] = 1;
-a1[1] = 2;
-a1[2] = 3;
-a1[3] = 4;
+	DynArray<int> a1(4);
+	a1[0] = 1;
+	a1[1] = 2;
+	a1[2] = 3;
+	a1[3] = 4;
 
-DynArray<int> a2(2), a3(2);
+	DynArray<int> a2(2), a3(2);
 
-//DynArray<int> a2 = a1;
-a3 = a2 = a1;
-//a3.operator = (a2.operator(a1));
+	//DynArray<int> a2 = a1;
+	a3 = a2 = a1;
+	//a3.operator = (a2.operator(a1));
 
-a2[0] = 9;
-assert (a1[0] == 1);
-
+	a2[0] = 9;
+	assert (a1[0] == 1);
 }
 
 void testConcat ()
 {
-DynArray<int> a1(3);
-a1[0] = 1;
-a1[1] = 2;
-a1[2] = 3;
+	DynArray<int> a1(3);
+	a1[0] = 1;
+	a1[1] = 2;
+	a1[2] = 3;
 
-assert ((a1+a1)[3] == 1);
-
+	assert ((a1+a1)[3] == 1);
 }
 
 int main ()
