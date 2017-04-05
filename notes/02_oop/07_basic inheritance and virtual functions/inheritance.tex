@@ -4,12 +4,12 @@
 
 \usepackage{listings}
 \usetheme{CambridgeUS}
-%\usepackage{beamerthemesplit} % new 
+%\usepackage{beamerthemesplit} % new
 \usepackage{enumitem}
-\usepackage{amsmath}                    % See geometry.pdf to learn the layout options. 
-\usepackage{amsthm}                   % See geometry.pdf to learn the layout options. There 
-\usepackage{amssymb}                    % See geometry.pdf to learn the layout options. 
-\usepackage[utf8]{inputenc} 
+\usepackage{amsmath}                    % See geometry.pdf to learn the layout options.
+\usepackage{amsthm}                   % See geometry.pdf to learn the layout options. There
+\usepackage{amssymb}                    % See geometry.pdf to learn the layout options.
+\usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage[english,bulgarian]{babel}
 
@@ -36,11 +36,11 @@
 
 
 \begin{document}
-\title[Обектно ориентирано програмиране]{Наследяване. Базови сведения} 
-\author{Калин Георгиев} 
-\frame{\titlepage} 
+\title[Обектно ориентирано програмиране]{Наследяване. Базови сведения}
+\author{Калин Георгиев}
+\frame{\titlepage}
 
-\section{Споделяне на памет} 
+\section{Споделяне на памет}
 
 
 \begin{frame}
@@ -71,13 +71,13 @@
 \begin{lstlisting}
 int main ()
 {
-  Square* squares[] =  
-     {new Square (2,0,0,0), 
+  Square* squares[] =
+     {new Square (2,0,0,0),
       new Square (4,0,0,0),
       new Square (3,0,0,0)};
 
-  Circle* circles[] =  
-     {new Circle (2,0,0), 
+  Circle* circles[] =
+     {new Circle (2,0,0),
       new Circle (4,0,0)};
 
   cout << sumSurf<Square> (squares,3) +
@@ -85,7 +85,7 @@ int main ()
 
   return 0;
 }
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
   \end{column}
   \begin{column}{0.5\textwidth}
@@ -98,13 +98,13 @@ template <typename F>
 double sumSurf (F* figures[], int n)
 {
   double sum = 0;
-  
+
   for (int i = 0; i < n; i++)
     sum += figures[i]->surface();
 
   return sum;
 }
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
 
   \end{column}
@@ -124,7 +124,7 @@ double sumSurf (F* figures[], int n)
 \frametitle{Какво е фигура? Йерархия от фигури}
 
 \begin{center}
-\includegraphics[width=10.0cm]{images/figures_figure} 
+\includegraphics[width=10.0cm]{images/figures_figure}
 \end{center}
 
 \end{frame}
@@ -141,9 +141,9 @@ double sumSurf (F* figures[], int n)
 \begin{lstlisting}
 int main ()
 {
-  Figure* figures[] =  
-     {new Square (2,0,0,0), 
-      new Circle (2,0,0), 
+  Figure* figures[] =
+     {new Square (2,0,0,0),
+      new Circle (2,0,0),
       new Square (4,0,0,0),
       new Square (3,0,0,0),
       new Circle (4,0,0)};
@@ -152,7 +152,7 @@ int main ()
 
   return 0;
 }
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
   \end{column}
   \begin{column}{0.5\textwidth}
@@ -165,13 +165,13 @@ template <typename F>
 double sumSurf (F* figures[], int n)
 {
   double sum = 0;
-  
+
   for (int i = 0; i < n; i++)
     sum += figures[i]->surface();
 
   return sum;
 }
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
 
   \end{column}
@@ -194,10 +194,12 @@ class Figure
 {
   public:
     char label[15];
-    double surface ()
-    {return 0;}
+    double surface (){
+      assert (false);
+      return -1;
+    }
 };
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
 
 
@@ -224,7 +226,7 @@ class Rectangle : public Figure
     double surface ()
     {return a*b;}
 };
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
 
 
@@ -247,7 +249,7 @@ class Rectangle : public Figure
 Rectangle r1 (2,4);
 Figure f = r1;
 cout << f.surface();
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
 
 
@@ -289,7 +291,7 @@ cout << f.surface();
 Rectangle r1 (2,4);
 Figure *f = &r1;
 cout << f->surface();
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
 
 \begin{center}
@@ -307,7 +309,7 @@ cout << f->surface();
 \relscale{0.7}
 \begin{lstlisting}
 cout << f->surface();
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
 
 \begin{center}
