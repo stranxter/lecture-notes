@@ -1,15 +1,15 @@
 \documentclass{beamer}
 \usepackage{relsize}
-\usepackage{color} 
+\usepackage{color}
 
 \usepackage{listings}
 \usetheme{CambridgeUS}
-%\usepackage{beamerthemesplit} % new 
+%\usepackage{beamerthemesplit} % new
 \usepackage{enumitem}
-\usepackage{amsmath}                    % See geometry.pdf to learn the layout options. 
-\usepackage{amsthm}                   % See geometry.pdf to learn the layout options. There 
-\usepackage{amssymb}                    % See geometry.pdf to learn the layout options. 
-\usepackage[utf8]{inputenc} 
+\usepackage{amsmath}                    % See geometry.pdf to learn the layout options.
+\usepackage{amsthm}                   % See geometry.pdf to learn the layout options. There
+\usepackage{amssymb}                    % See geometry.pdf to learn the layout options.
+\usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage[english,bulgarian]{babel}
 
@@ -36,11 +36,11 @@
 
 
 \begin{document}
-\title[Обектно ориентирано програмиране]{Сериализация} 
-\author{Калин Георгиев} 
-\frame{\titlepage} 
+\title[Обектно ориентирано програмиране]{Сериализация}
+\author{Калин Георгиев}
+\frame{\titlepage}
 
-\section{Сериализация} 
+\section{Сериализация}
 
 \begin{frame}
 \centerline{\texttt{f << data;}}
@@ -70,12 +70,12 @@ void test ()
 
   out << arr;
 }
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
 
 \begin{lstlisting}
 [1,20,301,4,5] => 12030145
-\end{lstlisting}  
+\end{lstlisting}
 
 \end{frame}
 
@@ -100,12 +100,12 @@ void test ()
 
   out << arr;
 }
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
 
 \begin{lstlisting}
 [1,20,301,4,5] => 1 20 301 4 5
-\end{lstlisting}  
+\end{lstlisting}
 
 \end{frame}
 
@@ -131,12 +131,12 @@ void test ()
 
   out << arr1 << arr2;
 }
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
 
 \begin{lstlisting}
 [1,2,3]; [4,5,6,7] => 1 2 3 4 5 6 7
-\end{lstlisting}  
+\end{lstlisting}
 
 \end{frame}
 
@@ -166,12 +166,12 @@ void test ()
 
   out << arr1 << arr2;
 }
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
 
 \begin{lstlisting}
 [1,2,3]; [4,5,6,7] => [1,2,3][4,5,6,7]
-\end{lstlisting}  
+\end{lstlisting}
 
 \end{frame}
 
@@ -181,8 +181,8 @@ void test ()
 \frametitle{Оптимизация: предвидимост}
 
 \begin{lstlisting}
-[1,2,3]; [4,5,6,7] => [1,2,3][4,5,6,7]
-\end{lstlisting}  
+[121,233,356]; [4,5,6,7] => [121,233,356][4,5,6,7]
+\end{lstlisting}
 
 \begin{flushleft}
 \relscale{0.63}
@@ -207,7 +207,7 @@ void test ()
   ifstream in ("data.txt");
   in >> arr1 >> arr2;
 }
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
 
 
@@ -238,12 +238,12 @@ void test ()
 
   out << arr1 << arr2;
 }
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
 
 \begin{lstlisting}
 [1,2,3]; [4,5,6,7] => 3 1 2 3 4 4 5 6 7
-\end{lstlisting}  
+\end{lstlisting}
 
 \end{frame}
 
@@ -255,7 +255,7 @@ void test ()
 
 \begin{lstlisting}
 [1,2,3]; [4,5,6,7] => 3 1 2 3 4 4 5 6 7
-\end{lstlisting}  
+\end{lstlisting}
 
 \begin{flushleft}
 \relscale{0.63}
@@ -276,7 +276,7 @@ void test ()
   ifstream in ("data.txt");
   in >> arr1 >> arr2;
 }
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
 
 
@@ -302,7 +302,7 @@ void test ()
 DynArr<Figure*> arr[10];
 file << arr;
 file >> arr;
-\end{lstlisting}  
+\end{lstlisting}
 
 \end{frame}
 
@@ -331,7 +331,7 @@ void test ()
   ofstream out ("data.txt");
   out << arr;
 }
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
 
 \begin{itemize}
@@ -362,8 +362,8 @@ void test ()
 \end{itemize}
 
 \begin{lstlisting}
-array => 6 1 1 1 2 2 2 2 1 
-\end{lstlisting}  
+array => 6 1 1 1 2 2 2 2 1
+\end{lstlisting}
 
 \end{frame}
 
@@ -382,8 +382,8 @@ array => 6 1 1 1 2 2 2 2 1
 \end{itemize}
 
 \begin{lstlisting}
-array => 6 1 1 1 2 2 2 2 1 
-\end{lstlisting}  
+array => 6 1 1 1 2 2 2 2 1
+\end{lstlisting}
 
 \end{frame}
 
@@ -399,14 +399,14 @@ void circle::save (ostream& out)
 { out << "circle " << r << " "; }
 void rectangle::save (ostream& out)
 { out << "rect " << a << " " << b << " "; }
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
 
 \begin{flushleft}
 \relscale{0.73}
 \begin{lstlisting}
-array => 6 circle 1 circle 1 circle 1 rect 2 2 rect 2 2 circle 1 
-\end{lstlisting}  
+array => 6 circle 1 circle 1 circle 1 rect 2 2 rect 2 2 circle 1
+\end{lstlisting}
 \end{flushleft}
 
 \end{frame}
@@ -420,8 +420,8 @@ array => 6 circle 1 circle 1 circle 1 rect 2 2 rect 2 2 circle 1
 \begin{flushleft}
 \relscale{0.73}
 \begin{lstlisting}
-array => 6 circle 1 circle 1 circle 1 rect 2 2 rect 2 2 circle 1 
-\end{lstlisting}  
+array => 6 circle 1 circle 1 circle 1 rect 2 2 rect 2 2 circle 1
+\end{lstlisting}
 \end{flushleft}
 
 \begin{flushleft}
@@ -436,7 +436,7 @@ istream& operator >> (istream &in, DynArr<Figure*> a)
     result[i]->read(in);
   }
 }
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
 \begin{itemize}
   \item read!
@@ -453,8 +453,8 @@ istream& operator >> (istream &in, DynArr<Figure*> a)
 \begin{flushleft}
 \relscale{0.73}
 \begin{lstlisting}
-array => 6 circle 1 circle 1 circle 1 rect 2 2 rect 2 2 circle 1 
-\end{lstlisting}  
+array => 6 circle 1 circle 1 circle 1 rect 2 2 rect 2 2 circle 1
+\end{lstlisting}
 \end{flushleft}
 
 \begin{flushleft}
@@ -469,7 +469,7 @@ istream& operator >> (istream &in, DynArr<Figure*> a)
     result[i]->read(in);
   }
 }
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
 
 
@@ -499,7 +499,7 @@ istream& operator >> (istream &in, DynArr<Figure*> a)
     result[i]->read(in);
   }
 }
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
 
 
@@ -520,11 +520,11 @@ istream& operator >> (istream &in, DynArr<Figure*> a)
   for (int i = 0; i < newSize; i++)
   {
     in >> type;
-    result[i] = Figure::factory (type); 
+    result[i] = Figure::factory (type);
     result[i]->read(in);
   }
 }
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
 
 
@@ -550,7 +550,7 @@ class Figure
     return NULL;
   }
 };
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
 
 
@@ -581,7 +581,7 @@ void Circle::read (istream &in)
 { in >> r; }
 void Rectangle::read (istream &in)
 { in >> a >> b; }
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
 
 
@@ -599,8 +599,8 @@ void Rectangle::read (istream &in)
 \begin{flushleft}
 \relscale{0.73}
 \begin{lstlisting}
-array => 6 circle 1 circle 1 circle 1 rect 2 2 rect 2 2 circle 1 
-\end{lstlisting}  
+array => 6 circle 1 circle 1 circle 1 rect 2 2 rect 2 2 circle 1
+\end{lstlisting}
 \end{flushleft}
 
 \begin{columns}[t]
@@ -608,21 +608,21 @@ array => 6 circle 1 circle 1 circle 1 rect 2 2 rect 2 2 circle 1
 \begin{flushleft}
 \relscale{0.5}
 \begin{lstlisting}
-istream& operator >> (istream &in, 
+istream& operator >> (istream &in,
                       DynArr<Figure*> a)
 {
-  int newSize; 
-  in >> newSize; 
+  int newSize;
+  in >> newSize;
   DynArr<Figure*> result (newSize);
   string type;
   for (int i = 0; i < newSize; i++)
   {
     in >> type;
-    result[i] = Figure::factory (type); 
+    result[i] = Figure::factory (type);
     result[i]->read(in);
   }
 }
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
   \end{column}
   \begin{column}{0.5\textwidth}
@@ -633,12 +633,12 @@ class Figure
 {
   //....
   virtual void read (istream &in) = 0;
-  
+
   static Figure* factory (string type)
   {
-    if (type == "circle") 
+    if (type == "circle")
        return new Circle (0);
-    if (type == "rect") 
+    if (type == "rect")
        return new Rectangle (0,0);
     assert (false);
     return NULL;
@@ -648,7 +648,7 @@ void Circle::read (istream &in)
 { in >> r; }
 void Rectangle::read (istream &in)
 { in >> a >> b; }
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
 
   \end{column}
