@@ -9,6 +9,9 @@
 \usepackage{listings}
 \usepackage{enumerate}
 \usepackage{hyperref}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{relsize}
+
 
 
 \newcommand{\code}[1]{\texttt{#1}}
@@ -20,7 +23,7 @@
 \title{\textsc{Задачи за задължителна самоподготовка} \\
 по \\
 Обектно-ориентирано програмиране\\
-\textit{Предефиниране на типове, функции от високо ниво, шаблони на указатели към функции}}
+\textit{Предефиниране на типове, функции от високо ниво, шаблони на указатели към функции. MapReduce}}
 
 
 
@@ -52,6 +55,78 @@
 
 
 \end{enumerate}
+
+\item По подобие на функцията \texttt{reduce} за масиви, обсъдена на лекции, да се дефинира функция \texttt{reduce} за \texttt{std::vector} с елементи от тип \texttt{T}. Чрез тазси функция и с подходящи помощни функции:
+
+	\begin{enumerate}
+		\item Да се намери броя на главните букви в масив от символи.
+		\item По масив от точки в равнината (\texttt{struct Point \{double x,y;\};}) да се определи колко от тях са в първи квадрант.
+		\item По масив от точки в равнината (\texttt{struct Point \{double x,y;\};}) да се определи дали всички точки лежат на правата с уравнение $5x + y + 1 = 0$.
+		\item По масив от числа да се намери най-голямото от тях.
+		\item По масив от указатели към низове (\texttt{char*}), да се намери конкатенацията им. (Внимавайте с паметта!).
+		\begin{mdframed}[hidealllines=true,backgroundcolor=gray!20]
+		\relscale{0.75}
+		Упътване:\\
+
+		Като първа стъпка осигурете получаване на конкатенацията без да се грижите за освобождаване на междинна памет. Операторът на \texttt{reduce} може да използва \texttt{strlen}, \texttt{strcpy} и \texttt{strcat} от \texttt{string.h}, като на всяка стъпка на конкатенацията се заделя необходимата памет. Проверете, че конкатенация се построява правилно.\\
+
+		След това е нужно също заделената за междинния резултат памет да се освобождава на всяка стъпка. Внимавайте с какво инициализирате началото на цикъла. Това трябва да е памет, която може да бъде освободена безопасно.
+		\end{mdframed}
+		\item По масив от коефициенти на полинома $P(x)=a_0x^n + a_1x^{n-1} + ...+ a_n$, където $a_i$ е $i$-тия елемент на масива, да се изчисли стойността на полинома в точката $x=2$.
+		\begin{itemize}
+			\item Опитайте с помощта на \textit{lambda} функции да изчислите стойността на полинома в няколко различни точки.
+		\end{itemize}
+
+	\end{enumerate}
+
+	Да се напишат подходящ тестове за всяка от точките!!!
+
+	\item Да се дефинира типа на едноместни числови функции \texttt{doubleFunction = double (*) (double)}. Да се създаде вектор \texttt{std::vector<doubleFunction> functions} от едноместни числови функции.
+
+	\begin{enumerate}
+		\item Векторът \texttt{functions} да се инициализира с \textit{поне} 3 различни функции.
+		\begin{mdframed}[hidealllines=true,backgroundcolor=gray!20]
+		\relscale{0.75}
+		Например: $f(x)=x^2$, $g(x)=sin(x)$, $h(x) = 2x$\\
+
+		Можете ли да използвате \textit{lambda} функции, за да попълните елементите на масива?
+		\end{mdframed}
+
+		\item Чрез използване на функцията \texttt{reduce}, да се намери най-голямата стойност измежду стойностите на всички функции в масива в точката \texttt{x=2}. Приемаме, че всички функции са дефинирани в тази точка.
+			\begin{itemize}
+				\item Опитайте с помощта на \textit{lambda} функции да изчислите максималната стойност на функциите в няколко различни точки.
+			\end{itemize}
+		\begin{mdframed}[hidealllines=true,backgroundcolor=gray!20]
+		\relscale{0.75}
+				Упътване: Ако операторът, който подавате на \texttt{reduce}  e $OP: R \times E \rightarrow R$, то типът на елементите е \texttt{doubleFunction}, а на резултата - \texttt{double}. Т.е. търсите функция:\\
+
+				\texttt{double op (double crrResult, doubleFunction crrElem)}
+		\end{mdframed}
+
+		\item Чрез използване на функцията \texttt{reduce}, да се намери тази (една от тези) от функциите в масива, която получава най-голяма стойност в точката \texttt{x = 2} спрямо всички функции в масива.
+
+		\begin{mdframed}[hidealllines=true,backgroundcolor=gray!20]
+		\relscale{0.75}
+				Упътване: Следният израз\\
+
+				\texttt{reduce(functions,findMaxFun,functions[0])},\\
+
+				където \texttt{fundMaxFun} е операторът за \texttt{reduce}, който трябва да дефинирате, ще даде търсеният в условието резултат - функция. Съответно, така намерената функция можем да приложим в точката \texttt{x=2} и да отпечатаме резултата:\\
+
+				\texttt{cout << reduce(functions,findMaxFun,functions[0])(2)}\\
+
+				Така получената стойност ще е най-голяма измежду стойностите на всички функции в масива \texttt{functions} в точката \texttt{x=2} и ще съвпада с намерената в точка (б) стойност.\\
+
+				Можете ли да замените \texttt{findMaxFun} с \texttt{lambda} функция?
+
+
+
+		\end{mdframed}
+
+		Напишете подходящи тестове за всяка от точките!!!
+
+	\end{enumerate}
+
 
 \end{enumerate}
 

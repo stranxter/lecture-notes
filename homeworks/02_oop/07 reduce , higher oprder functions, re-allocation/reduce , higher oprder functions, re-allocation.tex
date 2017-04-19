@@ -15,7 +15,7 @@
 
 \newcommand{\code}[1]{\texttt{#1}}
 
-\lstset{breaklines=true} 
+\lstset{breaklines=true}
 
 
 \author{\textit{email: kalin@fmi.uni-sofia.bg}}
@@ -43,19 +43,19 @@
 			\begin{mdframed}[hidealllines=true,backgroundcolor=gray!20]
 			\relscale{0.75}
 			Упътване:\\
-			
+
 			Като първа стъпка осигурете получаване на конкатенацията без да се грижите за освобождаване на междинна памет. Операторът на \texttt{reduce} може да използва \texttt{strlen}, \texttt{strcpy} и \texttt{strcat} от \texttt{string.h}, като на всяка стъпка на конкатенацията се заделя необходимата памет. Проверете, че конкатенация се построява правилно.\\
 
 			След това е нужно също заделената за междинния резултат памет да се освобождава на всяка стъпка. Внимавайте с какво инициализирате началото на цикъла. Това трябва да е памет, която може да бъде освободена безопасно.
 			\end{mdframed}
-			\item По масив от коефициенти на полинома $P(x)=a_0x^n + a_1x^{n-1} + ...+ a_n$, където $a_i$ е $i$-тия елемент на масива, да се изчисли стойността на полинома в точката $x=2$. 
+			\item По масив от коефициенти на полинома $P(x)=a_0x^n + a_1x^{n-1} + ...+ a_n$, където $a_i$ е $i$-тия елемент на масива, да се изчисли стойността на полинома в точката $x=2$.
 			\begin{itemize}
 				\item Опитайте с помощта на \textit{lambda} функции да изчислите стойността на полинома в няколко различни точки.
 			\end{itemize}
-			
+
 		\end{enumerate}
-		
-	\item Да се дефинира типа на едноместни числови функции \texttt{doubleFunction = double (*) (double)}. Да се създаде масив \texttt{DynArray<doubleFunction> functions} от едноместни числови функции. 
+
+	\item Да се дефинира типа на едноместни числови функции \texttt{doubleFunction = double (*) (double)}. Да се създаде масив \texttt{DynArray<doubleFunction> functions} от едноместни числови функции.
 
 	\begin{enumerate}
 		\item Масивът \texttt{functions} да се инициализира с \textit{поне} 3 различни функции.
@@ -69,7 +69,7 @@
 		\item Чрез използване на метода DynArray::reduce да се намери най-голямата стойност измежду стойностите на всички функции в масива в точката \texttt{x=2}. Приемаме, че всички функции са дефинирани в тази точка.
 			\begin{itemize}
 				\item Опитайте с помощта на \textit{lambda} функции да изчислите максималната стойност на функциите в няколко различни точки.
-			\end{itemize}		
+			\end{itemize}
 		\begin{mdframed}[hidealllines=true,backgroundcolor=gray!20]
 		\relscale{0.75}
 				Упътване: Ако операторът, който подавате на \texttt{reduce}  e $OP: R \times E \rightarrow R$, то типът на елементите е \texttt{doubleFunction}, а на резултата - \texttt{double}. Т.е. търсите функция:\\
@@ -104,17 +104,17 @@
 		\relscale{0.75}
 	Пример:
 	\begin{lstlisting}
-		
+
 	DynArray<int> da(1);
 	da[0] = 0; //no resize
 	da[1] = 1; //increase capacity with 1
 	da[2] = 2; //increase capacity with 1
 	da[2] = 0; //no resize
-	da[3] = 3; //increase capacity with 1 
+	da[3] = 3; //increase capacity with 1
 	           //(last operation did not require resize)
 	da[4] = 4; //increase capacity with 1
 	da[5] = 5; //increase capacity with 1
-	da[6] = 6; //double capacity 
+	da[6] = 6; //double capacity
 	           //(after three subsequent resizings)
 
 	\end{lstlisting}
@@ -132,4 +132,3 @@
 
 
 \end{document}
-
