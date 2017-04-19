@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <cassert>
 #include <vector>
 
@@ -60,15 +61,29 @@ std::cout << "PolymorphicSum test passed!\n";
 void testSerialize ()
 {
 
+  std::ofstream outfile ("data.txt");
+
   std::vector<Figure*> figures;
 
   figures.push_back (new Square (0,0,1,0));
   figures.push_back (new Circle (0,0,1));
   figures.push_back (new Square (0,0,3,0));
 
+  outfile << figures;
+
+
+
+}
+
+void testDeserialize ()
+{
+  std::ifstream input ("data.txt");
+
+  std::vector<Figure*> figures;
+
+  input >> figures;
+
   std::cout << figures;
-
-
 }
 
 int main ()
@@ -79,6 +94,7 @@ int main ()
   testPolymorphicSum ();
 
   testSerialize();
+  testDeserialize();
 
   //Figure f;
   ///f.surface ();

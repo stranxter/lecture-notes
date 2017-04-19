@@ -20,3 +20,21 @@ void Square::save (std::ostream &out)
 {
   out << "square " << x << " " << y << " " << a << " " << tga << " ";
 }
+
+void Square::load (std::istream &in)
+{
+  in >> x >> y >> a >> tga;
+}
+
+
+int Square::dummy = Square::registerClass();
+int Square::registerClass ()
+{
+  Square::addFigureType ("square",new Square (0,0,0,0));
+  return -1;
+}
+
+Figure* Square::spawn ()
+{
+  return new Square (0,0,0,0);  
+}

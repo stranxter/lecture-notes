@@ -17,6 +17,13 @@ public:
   double perim ();
 
   void save (std::ostream &out);
+  void load (std::istream &in);
+  Figure* spawn ();
+
+private:
+  static int dummy;
+  static int registerClass ();
+
 
 };
 #endif

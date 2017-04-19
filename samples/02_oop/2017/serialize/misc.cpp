@@ -6,9 +6,16 @@ class Person
 public:
   double grade;
   std::string name;
-
+  static int x;
 
 };
+
+int f ()
+{
+  std::cout << "F!";
+}
+
+int Person::x = f();
 
 
 std::ostream& operator << (std::ostream& out, Person &p)

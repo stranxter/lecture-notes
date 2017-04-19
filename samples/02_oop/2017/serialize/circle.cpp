@@ -19,3 +19,20 @@ void Circle::save (std::ostream &out)
 {
   out << "circle " << x << " " << y << " " << r << " ";
 }
+
+void Circle::load (std::istream &in)
+{
+  in >> x >> y >> r;
+}
+
+int Circle::dummy = Circle::registerClass();
+int Circle::registerClass ()
+{
+  Figure::addFigureType ("circle",new Circle (0,0,0));
+  return -1;
+}
+
+Figure* Circle::spawn ()
+{
+  return new Circle(0,0,0);
+}
