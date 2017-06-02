@@ -1,0 +1,12 @@
+<Expr> ::= <IfExpr> | <ArithExpression>
+
+<IfExpr> ::= if <Expr>
+                then <Expr>
+                else <Expr>
+
+<ArithExpression> ::= <constant>
+<ArithExpression> ::= (<Expr> <op> <Expr>)
+<op> ::= + | * | -
+<constant> ::= {0,..,9}+
+
+(if 1 then 2 else 3 + if 4 then 5 else 6)
