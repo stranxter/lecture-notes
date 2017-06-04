@@ -7,6 +7,7 @@
 #include "parser/parser.h"
 
 #include "interpreter/evalvisitor.h"
+#include "parser/dottyprinter.h"
 
 void testTokenizer ()
 {
@@ -47,6 +48,13 @@ void testParser ()
   std::cout << "Your program = "
             << programVisitor.getComputedValue()
             << "\n";
+
+ std::ofstream dotfile ("ast.dot");
+
+ DottyPrinter dottyPrinter (dotfile);
+
+ dottyPrinter.print (tree);
+
 
 }
 
