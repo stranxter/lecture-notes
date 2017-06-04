@@ -2,9 +2,9 @@
 #include <fstream>
 #include <iostream>
 
-#include "tokenizer.h"
-#include "expression.h"
-#include "parser.h"
+#include "parser/tokenizer.h"
+#include "ast/expression.h"
+#include "parser/parser.h"
 
 void testTokenizer ()
 {

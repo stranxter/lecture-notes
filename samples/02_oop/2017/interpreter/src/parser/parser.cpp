@@ -3,11 +3,7 @@
 #include "parser.h"
 #include "tokenizer.h"
 
-#include "expression.h"
-#include "constexpr.h"
-#include "binexpr.h"
-#include "ifexpr.h"
-
+#include "../ast/ast.h"
 
 Expression* Parser::parse (std::istream &input)
 {

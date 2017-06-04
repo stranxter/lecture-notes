@@ -1,7 +1,7 @@
 #ifndef __PARSER_H
 #define __PARSER_H
 
-#include "expression.h"
+#include "../ast/expression.h"
 #include "tokenizer.h"
 #include <iostream>
 

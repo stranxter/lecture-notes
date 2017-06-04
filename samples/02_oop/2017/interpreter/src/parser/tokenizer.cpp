@@ -1,4 +1,4 @@
-#include <cassert> 
+#include <cassert>
 #include <iostream>
 #include <sstream>
 #include "tokenizer.h"
@@ -41,7 +41,7 @@ bool Tokenizer::IsDoubleConst (const std::string &w, double &parsedVal)
 
   wstream >> parsedVal;
 
-  return wstream == true;
+  return (bool)wstream == true;
 }
 
 void Tokenizer::removeWhiteSpaces ()
