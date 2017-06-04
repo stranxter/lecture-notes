@@ -11,7 +11,13 @@ private:
   Expression *elseExpr;
 public:
   IfExpr (Expression *_cond, Expression *_then, Expression *_else);
-  double value ();
+
+  void accept (Visitor*);
+
+  Expression* getCondition();
+  Expression* getThenExpr();
+  Expression* getElseExpr();
+
 };
 
 #endif

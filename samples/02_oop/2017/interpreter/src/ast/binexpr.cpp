@@ -1,20 +1,25 @@
-#include "binexpr.h"
+#include "ast.h"
+#include "visitor.h"
+
 #include <cassert>
 
 BinExpr::BinExpr (Expression *_left,
                   char _op,
                   Expression *_right):left(_left),op(_op),right(_right){}
 
-double BinExpr::value ()
+void BinExpr::accept (Visitor *visitor)
 {
-  switch (op)
-  {
-    case '+' : return left->value() + right->value();
-    case '-' : return left->value() - right->value();
-    case '*' : return left->value() * right->value();
-  }
-
-  assert (false);
-  return 0;
-
+  visitor->visit(this);
+}
+Expression* BinExpr::getLeft()
+{
+  return left;
+}
+Expression* BinExpr::getRight()
+{
+  return right;
+}
+char BinExpr::getOperator()
+{
+  return op;
 }

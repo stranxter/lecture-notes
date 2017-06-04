@@ -1,10 +1,12 @@
 #ifndef __EXPR_H
 #define __EXPR_H
 
+class Visitor;
+
 class Expression
 {
 public:
-  virtual double value () = 0;
+  virtual void accept (Visitor*)=0;
 
 };
 

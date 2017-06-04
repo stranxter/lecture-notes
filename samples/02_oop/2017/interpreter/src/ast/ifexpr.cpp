@@ -1,15 +1,24 @@
-#include "ifexpr.h"
+#include "ast.h"
+#include "visitor.h"
 
 IfExpr::IfExpr (Expression *_cond,
                 Expression *_then,
                 Expression *_else):condExpr(_cond),thenExpr(_then),elseExpr(_else){}
 
-double IfExpr::value ()
+void IfExpr::accept (Visitor *visitor)
 {
-  if (condExpr->value())
-  {
-    return thenExpr->value();
-  }
+  visitor->visit (this);
+}
 
-  return elseExpr->value();
+Expression* IfExpr::getCondition()
+{
+  return condExpr;
+}
+Expression* IfExpr::getThenExpr()
+{
+  return thenExpr;
+}
+Expression* IfExpr::getElseExpr()
+{
+  return elseExpr;
 }

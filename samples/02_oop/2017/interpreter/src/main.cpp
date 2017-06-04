@@ -6,6 +6,8 @@
 #include "ast/expression.h"
 #include "parser/parser.h"
 
+#include "interpreter/evalvisitor.h"
+
 void testTokenizer ()
 {
 
@@ -38,11 +40,18 @@ void testParser ()
 
   Expression *tree = Parser::parse (inputProgram);
 
-  std::cout << "YOUR PROGRAM = " << tree->value();
+  EvalVisitor programVisitor;
+
+  tree->accept (&programVisitor);
+
+  std::cout << "Your program = "
+            << programVisitor.getComputedValue()
+            << "\n";
+
 }
 
 int main ()
 {
-  testTokenizer();
+  //testTokenizer();
   testParser();
 }

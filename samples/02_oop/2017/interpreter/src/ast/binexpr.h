@@ -11,7 +11,12 @@ private:
   Expression *right;
 public:
   BinExpr (Expression *_left, char _op, Expression *_right);
-  double value ();
+
+  void accept (Visitor*);
+
+  Expression* getLeft();
+  Expression* getRight();
+  char getOperator();
 };
 
 #endif

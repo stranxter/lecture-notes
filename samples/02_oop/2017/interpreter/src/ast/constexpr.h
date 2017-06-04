@@ -9,7 +9,8 @@ private:
   double val;
 public:
   ConstExpr (double _val);
-  double value ();
+  void accept (Visitor*);
+  double getDoubleVal ();
 
 };
 
