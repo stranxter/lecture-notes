@@ -1,0 +1,49 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{url}
+\usepackage[bulgarian]{babel}
+\usepackage{listings}
+\usepackage{enumerate}
+\usepackage{hyperref}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{relsize}
+
+
+\newcommand{\code}[1]{\texttt{#1}}
+
+\lstset{breaklines=true}
+
+
+\author{\textit{email: kalin@fmi.uni-sofia.bg}}
+\title{\textsc{Задачи за задължителна самоподготовка} \\
+по \\
+Обектно-ориентирано програмиране\\
+\textit{Линеен едносвързан списък}}
+
+
+
+\begin{document}
+\maketitle
+
+Следните задачи да се решат като упражнение за директно боравене с указателите и двойните кутии на линеен едносвързан списък.
+
+\begin{enumerate}
+
+	\item  Функция \code{int count(box* l,int x)}, която преброява колко пъти елементът \code{x} се среща в списъка с първи елемент \code{l}.
+	\item  Фунцкция \code{box* range (int x, int y)} която създава и връща първия елемент на списък с елементи $x, x+1, ..., y$, при положение, че $x \leq y$.
+	\item  Функция \code{removeAll (box*\& l,int x)}, която изтрива всички срещания на елемента \code{x} от списъка \code{l}.
+	\item  Функция \code{void append(box*\& l1, box* l2)}, която добавя към края на списъка $l_1$ всички елементи на списъка $l_2$.
+	\item  Функция \code{box* concat(box *l1, box* l2)}, който съединява два списъка в нов, трети списък. Т.е. \code{concat($l_1,l_2$)} създава и връща нов списък от елементите на \code{$l_1$}, следвани от елементите на \code{$l_2$}.
+	\item  Функция \code{map}, която прилага едноаргументна функция $f:int \rightarrow int$ към всеки от елементите на списък.
+	\item  Функция \code{reverse}, която обръща реда на елементите на списък. Например, списъкът с елементи $1,2,3$ ще се преобразува до списъка с елементи $3,2,1$.
+\end{enumerate}
+
+
+	\vspace{20px}
+
+
+\end{document}
