@@ -85,14 +85,33 @@ void testBasic ()
   assert (copiedList[1] == 1);
   assert (copiedList[2] == 2);
   assert (copiedList[3] == 3);
+}
 
+void testIterator ()
+{
+  LList<int> list;
+  list.push (2);
+  list.push (1);
+  list.push(0);
 
+  list.iterStart();
+
+  int last = list.getNext(), next;
+  assert (last == 0);
+
+  while (list.more())
+  {
+    next = list.getNext();
+    assert (last+1 == next);
+    last = next;
+  }
 }
 
 
 int main ()
 {
   testBasic();
-  testInsertWithFile ();
+  testIterator();
+  //testInsertWithFile ();
   return 0;
 }

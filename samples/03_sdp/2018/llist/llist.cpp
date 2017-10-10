@@ -37,9 +37,12 @@ bool LList<ElemType>::pop ()
 }
 
 template <class ElemType>
-typename LList<ElemType>::Node* LList<ElemType>::locate (unsigned int index) const
+typename LList<ElemType>::Node*
+  LList<ElemType>::locate (unsigned int index) const
+
 {
   Node *tmp = first;
+
   while (tmp != nullptr && index > 0)
   {
     tmp = tmp->next;
@@ -164,4 +167,26 @@ template <class ElemType>
 LList<ElemType>::~LList()
 {
     clear();
+}
+
+template <class ElemType>
+bool LList<ElemType>::more ()
+{
+  return nextToBeAccessed != nullptr;
+}
+
+template <class ElemType>
+ElemType& LList<ElemType>::getNext ()
+{
+
+  assert (nextToBeAccessed != nullptr);
+  ElemType& save = nextToBeAccessed->data;
+  nextToBeAccessed = nextToBeAccessed->next;
+  return save;
+}
+
+template <class ElemType>
+void LList<ElemType>::iterStart ()
+{
+  nextToBeAccessed = first;
 }

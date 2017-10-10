@@ -19,6 +19,10 @@ public:
   const ElemType& operator [] (unsigned int) const;
   LList<ElemType>& operator = (const LList<ElemType>&);
 
+  void iterStart();
+  ElemType& getNext ();
+  bool more ();
+
   ~LList();
 
 private:
@@ -35,6 +39,7 @@ private:
   Node *locate (unsigned int) const;
 
   Node *first;
+  Node *nextToBeAccessed;
 };
 
 
