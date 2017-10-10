@@ -1,6 +1,27 @@
 #ifndef __LIST_H
 #define __LIST_H
 
+#include "baseiterator.h"
+
+template <class ElemType>
+struct Node
+{
+  Node<ElemType> *next;
+  ElemType data;
+  Node (const ElemType&, Node<ElemType>*);
+};
+
+template <class ElemType>
+class ListIterator : public BaseIterator<ElemType>
+{
+public:
+  ListIterator(Node<ElemType>*);
+  ElemType& getNext ();
+  bool more ();
+private:
+  Node<ElemType> *nextToBeAccessed;
+};
+
 template <class ElemType>
 class LList
 {
@@ -19,28 +40,21 @@ public:
   const ElemType& operator [] (unsigned int) const;
   LList<ElemType>& operator = (const LList<ElemType>&);
 
-  void iterStart();
-  ElemType& getNext ();
-  bool more ();
+  ListIterator<ElemType> begin();
 
   ~LList();
 
 private:
-  struct Node
-  {
-    Node *next;
-    ElemType data;
-    Node (const ElemType&, Node*);
-  };
 
 
   void copy (const LList <ElemType>&);
   void clear();
-  Node *locate (unsigned int) const;
+  Node<ElemType> *locate (unsigned int) const;
 
-  Node *first;
-  Node *nextToBeAccessed;
+  Node<ElemType> *first;
 };
+
+
 
 
 #endif

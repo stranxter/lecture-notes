@@ -4,7 +4,7 @@
 #include <fstream>
 
 #include "llist.cpp"
-
+#include "arrayiterator.cpp"
 
 void testInsertWithFile ()
 {
@@ -32,14 +32,19 @@ void testInsertWithFile ()
   inf.open (fname);
   //comparing
   int index = 0;
+  std::string listWord;
+
+  ListIterator<std::string> it = allwords.begin();
+
   while (inf >> word)
   {
+    listWord = it.getNext();
     std::cerr << "Comparing: "
               << word
               << " vs. "
-              << allwords[index]
+              << listWord
               << std::endl;
-    assert (word == allwords[index]);
+    assert (word == listWord);
     index++;
   }
 
@@ -94,24 +99,56 @@ void testIterator ()
   list.push (1);
   list.push(0);
 
-  list.iterStart();
+  ListIterator<int> it = list.begin();
 
-  int last = list.getNext(), next;
+  int last = it.getNext(), next;
   assert (last == 0);
 
-  while (list.more())
+  while (it.more())
   {
-    next = list.getNext();
+    next = it.getNext();
     assert (last+1 == next);
     last = next;
   }
 }
+
+template <class E>
+E sumAll (BaseIterator<E>& i)
+{
+  E sum = 0;
+  while (i.more())
+  {
+    sum += i.getNext();
+  }
+  return sum;
+}
+
+
+
+
+void testSum ()
+{
+  LList<int> list;
+  list.push (2);
+  list.push (1);
+  list.push(0);
+
+  int arr[] = {1,2,3,4};
+
+  ListIterator<int> it = list.begin();
+  ArrayIterator<int> ai(arr,4);
+
+  assert (sumAll<int>(it) == 3);
+  assert (sumAll<int>(ai) == 10);
+}
+
 
 
 int main ()
 {
   testBasic();
   testIterator();
+  testSum ();
   //testInsertWithFile ();
   return 0;
 }
