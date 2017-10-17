@@ -124,6 +124,17 @@ E sumAll (BaseIterator<E>& i)
 }
 
 
+template <class E>
+void map (BaseIterator<E>& i, E (*f) (const E&))
+{
+  while (i.more())
+  {
+    E &current = i.getNext();
+    current = f (current);
+  }
+}
+
+
 void testModification ()
 {
   LList<int> list;
@@ -138,6 +149,26 @@ void testModification ()
 
   assert (list[0] == 10);
   assert (list[1] == 11);
+}
+
+int plus10 (const int& i)
+{
+  return i+10;
+}
+
+void testMap ()
+{
+  LList<int> list;
+  list.push (1);
+  list.push(0);
+
+  ListIterator<int> it = list.begin();
+
+  map (it,plus10);
+
+  assert (list[0] == 10);
+  assert (list[1] == 11);
+
 }
 
 void testSum ()
@@ -164,6 +195,7 @@ int main ()
   testIterator();
   testSum ();
   testModification();
+  testMap();
   //testInsertWithFile ();
   return 0;
 }
