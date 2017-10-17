@@ -124,7 +124,21 @@ E sumAll (BaseIterator<E>& i)
 }
 
 
+void testModification ()
+{
+  LList<int> list;
+  list.push (1);
+  list.push(0);
 
+  ListIterator<int> it1 = list.begin();
+  it1.getNext() += 10;
+
+  int &ref = it1.getNext();
+  ref += 10;
+
+  assert (list[0] == 10);
+  assert (list[1] == 11);
+}
 
 void testSum ()
 {
@@ -149,6 +163,7 @@ int main ()
   testBasic();
   testIterator();
   testSum ();
+  testModification();
   //testInsertWithFile ();
   return 0;
 }
