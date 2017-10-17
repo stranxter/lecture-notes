@@ -1,0 +1,76 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{url}
+\usepackage[bulgarian]{babel}
+\usepackage{listings}
+\usepackage{enumerate}
+\usepackage{hyperref}
+\usepackage{relsize}
+\usepackage{graphicx}
+
+
+\lstset{breaklines=true}
+
+
+\author{\textit{email: kalin@fmi.uni-sofia.bg}}
+\title{\textsc{Задачи за задължителна самоподготовка} \\
+по \\
+Структури от данни и програмиране\\
+\textit{Привеждане на рекурсивни решения към решения със стек}}
+
+
+
+
+\begin{document}
+\maketitle
+
+ \underline{Упътване}:Решете задачите с рекурсия и след това преобразувайте решението в решение със стек.
+
+
+
+\begin{enumerate}
+
+	\item (*)Да се дефинира функция за намиране на стойността на полинома на Ермит $Hn(x)$ (x е реална променлива, а n неотрицателна цяла променлива), дефиниран по следния начин:
+
+	$H_0(x)=1$
+
+	$H_1(x)=2x$
+
+	$H_n(x)=2xH_{n-1}(x)+2(n-1)H_{n-2}(x), n>1$,
+
+	за дадени $n$ и $x$ \underline{с използване на стек}.
+
+
+	\item Нека е дадена абстрактна шахматна дъска с размери $n \times n$, $4 \le n \le 8$ и число $k$, $0 \le k \le n$. Казваме, че разположени на дъската  $k$ коня образуват ``валидна конфигурация'', ако никоя фигура не е поставена на поле, което се ``бие'' от друга фигура според съответните шахматни правила.
+
+	Да се дефинира клас \texttt{KnightConfig}, представящ ``конфигуратор'' на шахматни коне. Конструкторът на класа инициализира конфигуратора с числата $n$ и $k$. Класът позволява ``обхождането'' една по една на всички валидни конфигурации за дадените параметри, по подобие на \texttt{forward} итератор на структура от данни. Класът да притежава следните методи:
+
+	\begin{itemize}
+		\item \texttt{void KnightConfig::printCurrentConfig()}: Отпечатва текущо намерената конфигурация.
+			Пример за отпечатана конфигурация с $n=5, k=2$:
+			\begin{verbatim}
+			_ _ _ _ _
+			_ _ H _ _
+			_ _ _ _ _
+			_ _ _ _ H
+			_ _ _ _ _
+
+			\end{verbatim}
+		\item \texttt{void KnightConfig::findNextConfig()}: Намира следваща конфигурация.
+		\item \texttt{bool KnightConfig::noMoreConfigs()}: Показва дали всички възможни конфигурации са вече изчерпани.
+	\end{itemize}
+
+
+
+\end{enumerate}
+
+
+
+
+
+
+\end{document}
