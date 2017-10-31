@@ -33,7 +33,7 @@ template <class T>
 BTree<T>::BTree(const T data, const BTree<T> &lt, const BTree<T> &rt)
 {
   //TODO: НЕ ТАКА!!!
-  root = new TreeNode<T> (data,lt.root,rt.root);
+  root = new TreeNode<T> (data,copyFrom(lt.root),copyFrom(rt.root));
 
 }
 
@@ -46,11 +46,11 @@ void printNodesLISP (std::ostream& out, TreeNode<T> *root)
     return;
   }
 
-  out << "(" << root->data << ",";
-  printNodes (out, root->left);
-  out << ",";
-  printNodes (out, root->right);
-  out << ")";
+  out << "( " << root->data << " ";
+  printNodesLISP (out, root->left);
+  out << " ";
+  printNodesLISP (out, root->right);
+  out << " )";
 }
 
 template <class T>
@@ -93,9 +93,12 @@ void printNodesDotty (std::ostream& out, TreeNode<T> *root)
 
 std::ostream& operator << (std::ostream &out,const BTree<int> &t)
 {
-  out << "digraph G {" << std::endl;
+/*  out << "digraph G {" << std::endl;
   printNodesDotty (out, t.root);
-  out << "}" << std::endl;
+  out << "}" << std::endl;*/
+
+  printNodesLISP (out,t.root);
+
   return out;
 }
 
@@ -114,12 +117,12 @@ bool BTree<T>::insertElement (std::string trace, const T& x, TreeNode<T> *&crr)
   //=> trace != "" && current != nullptr
   if (trace[0] == 'L')
   {
-    trace.erase (0);
+    trace.erase (trace.begin());
     return insertElement (trace,x,crr->left);
   }
   if (trace[0] == 'R')
   {
-    trace.erase (0);
+    trace.erase (trace.begin());
     return insertElement (trace,x,crr->right);
   }
   return false;
@@ -155,6 +158,163 @@ template <class T>
 void BTree<T>::insertBOT (const T& x)
 {
   insertBOT (x, root);
+}
+
+template <class T>
+bool BTree<T>::member (const T& y) const
+{
+  return member (y, root);
+}
+
+
+template <class T>
+bool BTree<T>::member (const T& y, const TreeNode<T> *crr) const
+{
+  if (crr == nullptr)
+  {
+      return false;
+  }
+
+  return crr->data == y ||
+         member (y,crr->left) ||
+         member (y,crr->right);
+}
+
+
+template <class T>
+void BTree<T>::read (std::istream &in)
+{
+  //приемаме, че дървото е празно
+  root = readFromStream (in);
+}
+
+
+template <class T>
+TreeNode<T>* BTree<T>::readFromStream (std::istream &in)
+{ //()..............
+  //( 7 ( 30 () ( 12 ( 90 () () ) () ) ) ( 5 ( 50 () () ) () ) )
+
+  char nextChar;
+  nextChar = in.get();
+  assert (nextChar == '(');
+
+  nextChar = in.get();
+  assert (nextChar == ' ' || nextChar == ')');
+
+  if (nextChar == ')')
+  {
+    return nullptr;
+  }
+  //уверени сме, че в потока следват следните неща:
+  //1. СТОЙНОСТ НА КОРЕНА. ПРИЕМАМЕ, ЧЕ ОПЕРАТОР >>T КОРЕКТНО ЩЕ Я ИЗЧЕТЕ
+
+  T rootValue;
+  in >> rootValue;
+
+  //2. интервал
+
+  nextChar = in.get();
+  assert (nextChar == ' ');
+
+  //3. ЛЯВО ПОДДЪРВО
+
+  TreeNode<T> *leftSubTree;
+  leftSubTree = readFromStream (in);
+
+  //4. интервал
+
+  nextChar = in.get();
+  assert (nextChar == ' ');
+
+  //5. ДЯСНО ПОДДЪРВО
+
+  TreeNode<T> *rightSubTree;
+  rightSubTree = readFromStream (in);
+
+  //6. интервал
+
+  nextChar = in.get();
+  assert (nextChar == ' ');
+
+  //7. затваряща скоба
+
+  nextChar = in.get();
+  assert (nextChar == ')');
+
+  return new TreeNode<T> (rootValue,leftSubTree,rightSubTree);
+
+}
+
+
+template <class T>
+void BTree<T>::del (TreeNode<T> *crr)
+{
+  if (crr == nullptr)
+  {
+    return;
+  }
+
+  del (crr->left);
+  del (crr->right);
+  delete crr;
+}
+
+
+template <class T>
+BTree<T>::~BTree ()
+{
+  del (root);
+}
+
+template <class T>
+TreeNode<T>* BTree<T>::copyFrom (const TreeNode<T> *crr)
+{
+  if (crr == nullptr)
+  {
+    return nullptr;
+  }
+
+  return new TreeNode<T> (crr->data,
+                          copyFrom (crr->left),
+                          copyFrom (crr->right));
+}
+
+
+template <class T>
+BTree<T>::BTree (const BTree<T> &other)
+{
+  root = copyFrom (other.root);
+}
+
+template <class T>
+BTree<T>& BTree<T>::operator = (const BTree<T> &other)
+{
+  if (this != &other)
+  {
+      del (root);
+      root = copyFrom (other.root);
+  }
+  return *this;
+}
+
+template <class T>
+bool BTree<T>::operator == (const BTree<T> &other) const
+{
+  return compare (root, other.root);
+}
+
+template <class T>
+bool BTree<T>::compare (const TreeNode<T> *t1, const TreeNode<T> *t2) const
+{
+  if (t1 == nullptr)
+    return t2 == nullptr;
+
+  if (t2 == nullptr)
+    return t1 == nullptr;
+
+  return t1->data == t2->data &&
+         compare (t1->left,t2->left) &&
+         compare (t1->right, t2->right);
 }
 
 
