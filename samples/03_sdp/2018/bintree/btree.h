@@ -26,7 +26,6 @@ public:
   BTree();
   BTree(const T, const BTree<T>&, const BTree<T>&);
   BTree (const BTree<T>&);
-  //TODO: ГОЛЯМА ЧЕТВОРКА
 
   BTree<T>& operator = (const BTree<T>&);
 
@@ -36,18 +35,30 @@ public:
 
   bool insertElement (std::string, const T&);
   void insertBOT (const T&);
+  void deleteBOT (const T&);
+
+  void fillGaps (const T&, unsigned int);
+
+  TreeNode<T>* removeFromSubtree (const T&, TreeNode<T> *);
+  void removeFromSubtreeProc (const T&, TreeNode<T> *&);
+
 
   bool member (const T& x) const;
 
   void read (std::istream&);
+  void printDotty (std::ostream&);
 
   ~BTree ();
 
 private:
   TreeNode<T> *root;
+
+  void fillGaps (const T&, TreeNode<T> *&, unsigned int);
+
   bool insertElement (std::string, const T&, TreeNode<T>*&);
   void insertBOT (const T&, TreeNode<T>*&);
   void del (TreeNode<T>*);
+  T& findmin (TreeNode<T> *);
 
   bool member (const T& x, const TreeNode<T> *) const;
   TreeNode<T>* readFromStream (std::istream &);

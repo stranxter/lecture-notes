@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <cstdlib>
 
 #include "btree.cpp"
 
@@ -100,14 +101,73 @@ void testMemory ()
 
 }
 
+
+void testDelete ()
+{
+  BTree<int> t;
+
+  int save = -1, toInsert=-1;
+
+  for (int i = 0; i < 50; i++)
+  {
+
+    toInsert = rand()%100;
+    if (i == 25)
+    {
+      save = toInsert;
+    }
+    t.insertBOT (toInsert);
+  }
+
+  std::ofstream f1 ("before.dot");
+  t.printDotty (f1);
+
+  assert (t.member (save));
+
+  t.deleteBOT (save);
+
+  std::ofstream f2 ("after.dot");
+  t.printDotty (f2);
+  assert (!t.member (save));
+
+  std::cout << save;
+}
+
+
+void testFill ()
+{
+  BTree<int> empty;
+  BTree<int> t90 (90,empty,empty),
+             t12 (12,t90,empty),
+             t30 (30,empty,t12),
+             t50 (50,empty,empty),
+             t5  (5,t50, empty),
+             t7  (7,t30,t5);
+
+
+
+ std::ofstream f1 ("before.dot");
+ t7.printDotty (f1);
+
+ t7.fillGaps (0,5);
+
+ std::ofstream f2 ("after.dot");
+ t7.printDotty (f2);
+}
+
 int main ()
 {
+  srand (0);
 
-  testBuild ();
+  /*testBuild ();
   testTrace();
   testBOT();
   testMemory();
 
-  testSerialize ();
+  testDelete ();
+*/
+
+  testFill();
+  //testSerialize ();
 
 }

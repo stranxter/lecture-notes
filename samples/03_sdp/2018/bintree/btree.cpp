@@ -32,7 +32,6 @@ BTree<T>::BTree():root(nullptr)
 template <class T>
 BTree<T>::BTree(const T data, const BTree<T> &lt, const BTree<T> &rt)
 {
-  //TODO: НЕ ТАКА!!!
   root = new TreeNode<T> (data,copyFrom(lt.root),copyFrom(rt.root));
 
 }
@@ -144,7 +143,7 @@ void BTree<T>::insertBOT (const T &x, TreeNode<T> *&crr)
     return;
   }
 
-  if (x <= crr->data){
+  if (x < crr->data){
     insertBOT (x,crr->left);
     return;
   }
@@ -317,51 +316,147 @@ bool BTree<T>::compare (const TreeNode<T> *t1, const TreeNode<T> *t2) const
          compare (t1->right, t2->right);
 }
 
-
-/*
 template <class T>
-bool BTree<T>::insertElement (std::string trace, const T& x)
+void BTree<T>::deleteBOT (const T &x)
 {
-  if (trace == "")
+
+  removeFromSubtreeProc (x,root);
+
+}
+
+template <class T>
+T& BTree<T>::findmin (TreeNode<T> *crr)
+{
+  assert (crr != nullptr);
+
+  while (crr->left != nullptr)
   {
-    assert (root == nullptr);
-    root = new TreeNode<T> (x,nullptr,nullptr);
-    return true;
+    crr = crr->left;
   }
 
-  TreeNode<T> *crr = root;
+  return crr->data;
 
-  int letter = 0;
-  assert (root != nullptr);
-  for (letter = 0; letter < trace.size()-1; letter++)
-  {
-    assert (trace[letter] == 'L' || trace[letter] == 'R');
-    if (trace[letter] == 'L')
+}
+
+template <class T>
+TreeNode<T>* BTree<T>::removeFromSubtree (const T &x, TreeNode<T> *crr)
+{
+    //1
+    if (crr == nullptr)
+      return nullptr;
+
+    //2
+    if (crr->data == x && crr->left == nullptr)
     {
-      crr = crr->left;
-    } else if (trace[letter] == 'R')
-    {
-      crr = crr->right;
+      TreeNode <T> *save = crr->right;
+      delete crr;
+      return save;
     }
-    assert (crr != nullptr);
-  }
+    //3
+    if (crr->data == x && crr->right == nullptr)
+    {
+      TreeNode <T> *save = crr->left;
+      delete crr;
+      return save;
+    }
+    //4
+    if (crr->data == x)
+    {
+      T rightmin = findmin (crr->right);
+      crr->data = rightmin;
+      crr->right = removeFromSubtree (rightmin,crr->right);
+      crr = removeFromSubtree (x,crr);
+      return crr;
 
-  assert (trace[letter] == 'L' || trace[letter] == 'R');
-  //crr сочи родителя на "дупката"
-  if (trace[letter] == 'L')
+    }
+    //5, 6
+    if (crr->data < x)
+    {
+      crr->right = removeFromSubtree (x,crr->right);
+    } else {
+      crr->left = removeFromSubtree (x,crr->left);
+    }
+
+    return crr;
+
+}
+
+
+template <class T>
+void BTree<T>::removeFromSubtreeProc (const T &x, TreeNode<T> *&crr)
+{
+    //1
+    if (crr == nullptr)
+      return;
+
+    //2
+    if (crr->data == x && crr->left == nullptr)
+    {
+      TreeNode <T> *save = crr->right;
+      delete crr;
+      crr = save;
+      return;
+    }
+    //3
+    if (crr->data == x && crr->right == nullptr)
+    {
+      TreeNode <T> *save = crr->left;
+      delete crr;
+      crr = save;
+      return;
+    }
+    //4
+    if (crr->data == x)
+    {
+      T rightmin = findmin (crr->right);
+      crr->data = rightmin;
+      removeFromSubtreeProc (rightmin,crr->right);
+      removeFromSubtreeProc (x,crr);
+      return;
+
+    }
+    //5, 6
+    if (crr->data < x)
+    {
+      removeFromSubtreeProc (x,crr->right);
+    } else {
+      removeFromSubtreeProc (x,crr->left);
+    }
+
+    return;
+
+}
+
+
+template <class T>
+void BTree<T>::printDotty (std::ostream &out)
+{
+  out << "digraph G{" << std::endl;
+  printNodesDotty (out,root);
+  out << "}" << std::endl;
+}
+
+template <class T>
+void BTree<T>::fillGaps (const T& x, unsigned int h)
+{
+  fillGaps (x,root,h);
+}
+
+
+template <class T>
+void BTree<T>::fillGaps (const T &x, TreeNode<T> *&crr, unsigned int h)
+{
+  if (h == 0)
   {
-    assert (crr->left == nullptr);
-    crr->left = new TreeNode<T> (x,nullptr,nullptr);
-    return true;
+    return;
   }
 
-  if (trace[letter] == 'R')
+  if (crr == nullptr)
   {
-    assert (crr->right == nullptr);
-    crr->right = new TreeNode<T> (x,nullptr,nullptr);
-    return true;
+    crr = new TreeNode<T> (x,nullptr,nullptr);
   }
 
-  return false;
+  fillGaps (x,crr->left,h-1);
+  fillGaps (x,crr->right,h-1);
 
-}*/
+}
