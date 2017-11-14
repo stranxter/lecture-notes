@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
+#include <sstream>
 
 #include "btree.cpp"
 
@@ -155,19 +156,79 @@ void testFill ()
  t7.printDotty (f2);
 }
 
+void testPrintWithStack ()
+{
+  BTree<int> empty;
+  BTree<int> t90 (90,empty,empty),
+             t12 (12,t90,empty),
+             t30 (30,empty,t12),
+             t50 (50,empty,empty),
+             t5  (5,t50, empty),
+             t7  (7,t30,t5);
+
+
+  t7.printWithStack(std::cout);
+
+  std::stringstream str;
+  t7.printWithStack(str);
+
+  int x, y, z;
+  str >> x >> y >> z;
+  assert (x == 30);
+  assert (y == 90);
+  assert (z == 12);
+
+  //или
+  assert (str.str() == "30 90 12 7 50 5 ");
+
+}
+
+void testIterator ()
+{
+  BTree<int> empty;
+  BTree<int> t90 (90,empty,empty),
+             t12 (12,t90,empty),
+             t30 (30,empty,t12),
+             t50 (50,empty,empty),
+             t5  (5,t50, empty),
+             t7  (7,t30,t5);
+
+  LRoRTreeIterator<int> it = t7.begin ();
+
+  while (it != t7.end())
+  {
+    std::cout << *it << " ";
+    it++;
+  }
+}
+
+void testBFS ()
+{
+  BTree<int> empty;
+  BTree<int> t90 (90,empty,empty),
+             t12 (12,t90,empty),
+             t30 (30,empty,t12),
+             t50 (50,empty,empty),
+             t5  (5,t50, empty),
+             t7  (7,t30,t5);
+
+  t7.levelsPrint(std::cout);  
+}
+
 int main ()
 {
   srand (0);
 
-  /*testBuild ();
-  testTrace();
-  testBOT();
-  testMemory();
+//  testBuild ();
+//  testTrace();
+//  testBOT();
+//  testMemory();
+//  testDelete ();
+//  testFill();
+//  testSerialize ();
+//  testPrintWithStack();
+//  testIterator();
 
-  testDelete ();
-*/
-
-  testFill();
-  //testSerialize ();
+  testBFS ();
 
 }

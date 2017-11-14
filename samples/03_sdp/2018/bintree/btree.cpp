@@ -1,6 +1,8 @@
 #include "btree.h"
 #include <iostream>
 #include <cassert>
+#include <stack>
+#include <queue>
 
 template <class T>
 TreeNode<T>::TreeNode (const T& _data,
@@ -459,4 +461,140 @@ void BTree<T>::fillGaps (const T &x, TreeNode<T> *&crr, unsigned int h)
   fillGaps (x,crr->left,h-1);
   fillGaps (x,crr->right,h-1);
 
+}
+
+template <class T>
+void BTree<T>::printWithStack (std::ostream &out)
+{
+  std::stack<task<T>> s;
+
+  s.push (task<T> (root,false));
+
+  task<T> currentTask;
+
+  while (!s.empty())
+  {
+    currentTask = s.top(); s.pop();
+    if (currentTask.node != nullptr)
+    {
+      if (currentTask.toPrintNow)
+      {
+        out << currentTask.node->data << " ";
+      } else {
+        s.push (task<T> (currentTask.node->right,false));
+        s.push (task<T> (currentTask.node,true));
+        s.push (task<T> (currentTask.node->left,false));
+      }
+    }
+  }
+}
+
+template <class T>
+LRoRTreeIterator<T>::LRoRTreeIterator (TreeNode<T> *root)
+{
+    if (root != nullptr)
+    {
+      s.push (task<T> (root,false));
+      windStack(); //!!!
+    }
+}
+
+template <class T>
+void LRoRTreeIterator<T>::windStack ()
+{
+  //!!! s.top().toPrintNow == false
+  while (!s.empty() && s.top().toPrintNow == false)
+  {
+
+    task<T> currentTask = s.top(); s.pop();
+
+    if (currentTask.node->right != nullptr)
+      s.push (task<T> (currentTask.node->right,false));
+
+    s.push (task<T> (currentTask.node,true));
+
+    if (currentTask.node->left != nullptr)
+      s.push (task<T> (currentTask.node->left,false));
+
+  }
+}
+
+template <class T>
+T LRoRTreeIterator<T>::operator * ()
+{
+  assert (!s.empty());
+
+  task<T> topTask = s.top();
+  return topTask.node->data;
+}
+
+template <class T>
+bool LRoRTreeIterator<T>::operator != (const LRoRTreeIterator<T> &other)
+{
+  return !(*this == other);
+}
+
+
+template <class T>
+bool LRoRTreeIterator<T>::operator == (const LRoRTreeIterator<T> &other)
+{
+  //!!***!!!***!!
+  //s == other.s следва от това нещо:
+
+    return (s.empty() && other.s.empty()) ||
+            (!s.empty () && !other.s.empty() &&
+               (s.top().node == other.s.top().node) && (s.top().toPrintNow == other.s.top().toPrintNow));
+
+}
+
+template <class T>
+LRoRTreeIterator<T>& LRoRTreeIterator<T>::operator ++ (int)
+{
+  assert (!s.empty());
+  s.pop();
+  windStack(); //!!!
+
+  return *this;
+}
+
+template <class T>
+LRoRTreeIterator<T> BTree<T>::begin()
+{
+  return LRoRTreeIterator<T> (root);
+}
+template <class T>
+LRoRTreeIterator<T> BTree<T>::end()
+{
+  return LRoRTreeIterator<T> (nullptr);
+}
+
+template <class T>
+void BTree<T>::levelsPrint (std::ostream &out)
+{
+  std::queue<TreeNode<T>*> q;
+
+  if (root == nullptr)
+    return;
+
+  q.push (root);
+  q.push (nullptr);
+
+  while (q.size() > 1)
+  {
+    TreeNode<T>* currentNode = q.front();
+    q.pop();
+
+    if (currentNode != nullptr)
+    {
+      out << currentNode->data << " ";
+
+      if (currentNode->left != nullptr)
+        q.push (currentNode->left);
+      if (currentNode->right != nullptr)
+        q.push (currentNode->right);
+    }else{
+      out << std::endl;
+      q.push (nullptr);
+    }
+  }
 }

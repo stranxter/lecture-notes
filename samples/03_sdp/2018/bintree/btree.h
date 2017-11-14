@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <stack>
 
 template <class T>
 struct TreeNode
@@ -18,11 +19,47 @@ private:
   int id;
 };
 
+template <class T>
+struct task
+{
+  task(){}
+  task (TreeNode<T> *_n, bool _p): node(_n), toPrintNow (_p){}
+  TreeNode<T> *node;
+  bool toPrintNow;
+};
+
+
+template <class T>
+class LRoRTreeIterator
+{
+public:
+  LRoRTreeIterator (TreeNode<T> *root);
+
+  T operator * ();
+  bool operator == (const LRoRTreeIterator<T>&);
+  bool operator != (const LRoRTreeIterator<T>&);
+  LRoRTreeIterator<T>& operator ++ (int);
+
+
+private:
+  std::stack<task<T>> s;
+
+  void windStack ();
+};
+
 
 template <class T>
 class BTree
 {
 public:
+
+
+  void levelsPrint (std::ostream&);
+
+
+  LRoRTreeIterator<T> begin();
+  LRoRTreeIterator<T> end();
+
   BTree();
   BTree(const T, const BTree<T>&, const BTree<T>&);
   BTree (const BTree<T>&);
@@ -47,6 +84,9 @@ public:
 
   void read (std::istream&);
   void printDotty (std::ostream&);
+
+
+  void printWithStack (std::ostream &out);
 
   ~BTree ();
 
