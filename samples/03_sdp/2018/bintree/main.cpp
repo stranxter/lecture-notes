@@ -212,7 +212,30 @@ void testBFS ()
              t5  (5,t50, empty),
              t7  (7,t30,t5);
 
-  t7.levelsPrint(std::cout);  
+  t7.levelsPrint(std::cout);
+}
+
+void testMutationIt ()
+{
+
+  BTree<int> t;
+
+  MutIterator<int> it = t.beginMut();
+
+  it.set (10);
+  it.left().set (11);
+  it.left().set (15);
+  it.left().right().set(12);
+  it.left().left().set(14);
+
+  std::stringstream str;
+  t.printWithStack(str);
+
+  assert (str.str() == "14 15 12 10 ");
+  std::cout << str.str() << std::endl;
+
+  std::cout << t << std::endl;
+
 }
 
 int main ()
@@ -229,6 +252,8 @@ int main ()
 //  testPrintWithStack();
 //  testIterator();
 
-  testBFS ();
+//  testBFS ();
+
+  testMutationIt();
 
 }

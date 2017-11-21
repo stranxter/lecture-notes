@@ -28,6 +28,22 @@ struct task
   bool toPrintNow;
 };
 
+template <class T>
+class MutIterator
+{
+public:
+  MutIterator (TreeNode<T>*&);
+
+  MutIterator<T> left();
+  MutIterator<T> right();
+
+  void set (const T&);
+  T operator *();
+  bool empty ();
+
+private:
+  TreeNode<T> *&current;
+};
 
 template <class T>
 class LRoRTreeIterator
@@ -56,6 +72,7 @@ public:
 
   void levelsPrint (std::ostream&);
 
+  MutIterator<T> beginMut ();
 
   LRoRTreeIterator<T> begin();
   LRoRTreeIterator<T> end();

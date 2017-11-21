@@ -598,3 +598,56 @@ void BTree<T>::levelsPrint (std::ostream &out)
     }
   }
 }
+
+template <class T>
+MutIterator<T> BTree<T>::beginMut ()
+{
+  return MutIterator<T> (root);
+}
+
+
+template <class T>
+MutIterator<T>::MutIterator (TreeNode<T> *&c):current(c)
+{
+
+}
+
+template <class T>
+MutIterator<T> MutIterator<T>::left()
+{
+    assert (current != nullptr);
+    return MutIterator (current->left);
+}
+
+
+template <class T>
+MutIterator<T> MutIterator<T>::right()
+{
+  assert (current != nullptr);
+  return MutIterator (current->right);
+
+}
+
+template <class T>
+void MutIterator<T>::set (const T &x)
+{
+  if (current != nullptr)
+  {
+    current->data = x;
+  } else {
+    current = new TreeNode<T> (x,nullptr,nullptr);
+  }
+}
+
+template <class T>
+T MutIterator<T>::operator * ()
+{
+  assert (current != nullptr);
+  return current->data;
+}
+
+template <class T>
+bool MutIterator<T>::empty ()
+{
+  return current == nullptr;
+}

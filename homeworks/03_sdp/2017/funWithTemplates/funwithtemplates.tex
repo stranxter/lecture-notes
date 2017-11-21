@@ -1,0 +1,83 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{url}
+\usepackage[bulgarian]{babel}
+\usepackage{listings}
+\usepackage{enumerate}
+\usepackage{hyperref}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{relsize}
+
+
+\newcommand{\code}[1]{\texttt{#1}}
+
+\lstset{breaklines=true}
+
+
+\author{\textit{email: kalin@fmi.uni-sofia.bg}}
+\title{\textsc{Задачи за задължителна самоподготовка} \\
+по \\
+Структури от данни и програмиране\\
+\textit{``Реактивни'' безкрайни потоци}}
+
+
+
+\begin{document}
+\maketitle
+
+
+ВНИМАНИЕ: Решението на следите задачи е публикувано към кода от лекции. Разглeдайте решенията, осмислете ги и ги пресъздайте самостоятелно (или предложете друго решение на задачата за реализация на операции над безкрайни потоци).
+
+\begin{enumerate}
+
+	\item  Към класа \texttt{StreamBase} от реализираната на лекции йерархия да се добави метод за печатане на първите \texttt{n} елемента от потока. Методът да връща остатъка от потока.
+
+
+	Следният пример отпечатва първите 5 нечетни числа:
+	\begin{verbatim}
+			ints.filter(odd).print(2).print(3);
+	\end{verbatim}
+
+	\item Да се дефинира поток \texttt{RepeatStream} състоящ се от безкрайно повторение на дадено число.
+
+	Следният пример отпечатва 5 единици:
+	\begin{verbatim}
+RepeatStream ones(1);
+ones.print(5);
+	\end{verbatim}
+
+
+	\item Да се дефинира клас \texttt{SumStream}, който позволява по дадени два потока \texttt{A} и \texttt{B} да се генерира нов поток, всеки от елементите на който е сумата (получена с оператора \texttt{+}) на двата съответни елемента на \texttt{A} и \texttt{B}.
+
+	Следният пример отпечатва първите 5 четни числа:
+	\begin{verbatim}
+			ints.sum(ints).print (5);
+	\end{verbatim}
+
+	Следният пример отпечатва 5 двойки:
+	\begin{verbatim}
+			ones.sum(ones).print (5);
+	\end{verbatim}
+
+
+	\item Да се дефинира клас \texttt{ZipStream}, който позволява по дадени два потока $A=(a_i)$ и $B=(b_i)$ да се генерира нов поток $C=(c_i)$, всеки от елементите на който е резултат от приложението на някаква функция $f:int \times int \rightarrow int$ над двата съответни елемента на \texttt{A} и \texttt{B}, т.е. $c_i=f(a_i,b_i)$.
+
+	Следният пример отпечатва първите 5 точни квадрата:
+	\begin{verbatim}
+			ints.zip(ints,mult).print (5);
+	\end{verbatim}
+	 Където $mult(x,y)=x*y$
+
+	 \item Какво трябва да се промени в йерархията така, че да може да се конструират потоци с елементи, различни от $int$?
+
+\end{enumerate}
+
+
+	\vspace{20px}
+
+
+\end{document}
