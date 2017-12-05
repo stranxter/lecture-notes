@@ -1,9 +1,9 @@
 #include <iostream>
 
-template <class T>
+template <class ElemType, class StreamType>
 class FilterStream;
 
-template <class T>
+/*template <class T>
 class MapStream;
 
 template <class A, class B>
@@ -14,23 +14,24 @@ class ZipStream;
 
 template <class A, class B>
 class ZigZagStream;
-
-template <typename T>
+*/
+template <class ElemType,class StreamType>
 class StreamBase
 {
 public:
-  FilterStream<T> filter (bool(*pred)(long));
-  MapStream<T> map (long(*f)(long));
-  T print (unsigned long n, std::ostream& out =std::cout);
+  FilterStream<ElemType,StreamType> filter (bool(*pred)(ElemType));
+  StreamType print (unsigned long n, std::ostream& out =std::cout);
+  /*MapStream<T> map (long(*f)(long));
   template <class SecondStream>
   SumStream<T,SecondStream> sum (SecondStream s2);
   template <class SecondStream>
   ZipStream<T,SecondStream> zip (SecondStream s2, long (*comb)(long,long));
   template <class SecondStream>
   ZigZagStream<T,SecondStream> zigzag (SecondStream s2);
-
+*/
 };
 
+/*
 class RepeatStream : public StreamBase<RepeatStream>
 {
 public:
@@ -45,13 +46,15 @@ public:
 public:
   long element;
 };
+*/
 
-class Alllongs : public StreamBase<Alllongs>
+template <class ElemType>
+class Alllongs : public StreamBase<ElemType,Alllongs<ElemType>>
 {
 public:
 
-  Alllongs ():crr (0){}
-  long operator * () {return crr;}
+  Alllongs (ElemType init):crr (init){}
+  ElemType operator * () {return crr;}
   Alllongs operator ++ ()
   {
     crr++;
@@ -59,19 +62,19 @@ public:
   }
 
 public:
-  long crr;
+  ElemType crr;
 };
 
-template <class T>
-class FilterStream : public StreamBase<FilterStream<T>>
+template <class ElemType, class StreamType>
+class FilterStream : public StreamBase<ElemType,FilterStream<ElemType,StreamType>>
 {
 public:
-  FilterStream (bool(*_p)(long), T src):p(_p),source(src)
+  FilterStream (bool(*_p)(ElemType), StreamType src):p(_p),source(src)
   {
     wind();
   };
 
-  long operator * () {return *source;}
+  ElemType operator * () {return *source;}
 
   FilterStream& operator ++ ()
   {
@@ -88,10 +91,10 @@ private:
       ++source;
     }
   }
-  bool(*p)(long);
-  T source;
+  bool(*p)(ElemType);
+  StreamType source;
 };
-
+/*
 template <class T>
 class MapStream : public StreamBase<MapStream<T>>
 {
@@ -211,30 +214,35 @@ private:
   long(*f)(long);
   long y;
 };
-
-template <class T>
-FilterStream<T> StreamBase<T>::filter (bool(*pred)(long))
+*/
+template <class ElemType, class StreamType>
+FilterStream<ElemType,StreamType> StreamBase<ElemType,StreamType>::filter (bool(*pred)(ElemType))
 {
-  return FilterStream<T>(pred,(T&)(*this));
+  return FilterStream<ElemType,StreamType>(pred,(StreamType&)(*this));
 }
+
+template <class ElemType, class StreamType>
+StreamType StreamBase<ElemType,StreamType>::print (unsigned long n, std::ostream &out)
+{
+
+  while (n-- > 0)
+  {
+    out << *((StreamType&)(*this)) << " ";
+    ++((StreamType&)(*this));
+  }
+
+  return (StreamType&)(*this);
+}
+
+
+/*
+
 template <class T>
 MapStream<T> StreamBase<T>::map (long(*f)(long))
 {
   return MapStream<T>(f,(T&)(*this));
 }
 
-template <class T>
-T StreamBase<T>::print (unsigned long n, std::ostream &out)
-{
-
-  while (n-- > 0)
-  {
-    out << *((T&)(*this)) << " ";
-    ++((T&)(*this));
-  }
-
-  return (T&)(*this);
-}
 
 template <class T>
 template <class SecondStrem>
@@ -257,22 +265,29 @@ ZigZagStream<T,SecondStream> StreamBase<T>::zigzag (SecondStream s2)
   return ZigZagStream<T,SecondStream> ((T&)(*this),s2);
 }
 
-
+*/
 bool even (long x) {return x % 2 == 0;}
 bool endsWith2 (long x) {return x % 10 == 2;}
 long plus1 (long x) {return x+1;}
 long mult (long x, long y) {return x*y;}
 long sqr (long x) {return x*x;}
 
+bool pred (char x)
+{
+  return x > 'e';
+}
+
 int main ()
 {
-  Alllongs longs;
+  Alllongs<char> longs ('a');
+
+  longs.filter (pred).print (5);
 
   //отпечатване на числата, които се получават при
   //добавяме на 1 към първите 3 четни числа, които
   //завършват на цифрата 2. Следват следващите 3 такива
   //числа, но с добавена още 1 единица
-  longs.filter(even)
+  /*longs.filter(even)
       .filter(endsWith2)
       .map(plus1)
       .print(3,std::cout)
@@ -306,5 +321,7 @@ int main ()
   std::cout << std::endl;
 
   (axis.sum(ones)).print (2);
+*/
 
+  return 0;
 }
