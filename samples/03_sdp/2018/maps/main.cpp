@@ -1,7 +1,10 @@
 #include <cassert>
 #include <string>
 #include <iostream>
+
 #include "hashmap.cpp"
+#include "triemap.cpp"
+
 
 unsigned int h (const std::string &s, unsigned int n)
 {
@@ -50,12 +53,33 @@ void testCompare ()
 
   assert (map1 != map2);
 
+  map1 = map2;
+
+}
+
+void testTrie ()
+{
+  TrieMap<int> tr;
+
+  tr["t"] = 1;
+  tr["te"] = 2;
+  tr["tea"] = 3;
+  tr["A"] = 4;
+  tr["A"] = 5;
+
+  assert (tr["t"] == 1);
+  assert (tr["te"] == 2);
+  assert (tr["tea"] == 3);
+  assert (tr["A"] == 5);
+
+
 }
 
 int main ()
 {
   testBasicOp ();
   testCompare ();
+  testTrie();
   std::cout << "Passed!\n";
   return 0;
 }

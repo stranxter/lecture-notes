@@ -76,7 +76,7 @@ HashMap<KeyType,ValueType>&
   {
     delete buckets;
     buckets = new std::vector<std::vector<kvpair>>;
-    *buckets = other.buckets;
+    *buckets = *other.buckets;
     size = other.size;
     count = other.count;
   }
@@ -139,7 +139,7 @@ bool HashMap<KeyType,ValueType>::operator == (const HashMap<KeyType,ValueType> &
     for (int el = 0; el < bucket.size(); el++)
     {
       const KeyType &key = bucket[el].key;
-      const ValueType & value = bucket[el].value;
+      const ValueType &value = bucket[el].value;
       if (other.hasKey (key) && other[key] != value)
       {
         return false;
@@ -166,7 +166,7 @@ bool HashMap<KeyType,ValueType>::operator != (const HashMap<KeyType,ValueType> &
 template <class KeyType, class ValueType>
 void HashMap<KeyType,ValueType>::resize (unsigned int newSize)
 {
-  HashMap<KeyType,ValueType> newMap (size,h);
+  HashMap<KeyType,ValueType> newMap (newSize,h);
 
   for (int ibucket = 0; ibucket < buckets->size(); ibucket++)
   {
