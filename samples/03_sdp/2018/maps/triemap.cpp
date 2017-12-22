@@ -65,6 +65,7 @@ ValueType& TrieMap<ValueType>::operator [] (const std::string &key)
   //   възел на дървото, и той никога не NULL
   while (index < key.length())
   {
+    assert (key[index] >= 'a' && key[index] <= 'z');
     Node *&child = crr->children[key[index]-'a'];
 
     if (child == nullptr)

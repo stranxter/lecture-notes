@@ -64,13 +64,13 @@ void testTrie ()
   tr["t"] = 1;
   tr["te"] = 2;
   tr["tea"] = 3;
-  tr["A"] = 4;
-  tr["A"] = 5;
+  tr["a"] = 4;
+  tr["a"] = 5;
 
   assert (tr["t"] == 1);
   assert (tr["te"] == 2);
   assert (tr["tea"] == 3);
-  assert (tr["A"] == 5);
+  assert (tr["a"] == 5);
 
 
 }
