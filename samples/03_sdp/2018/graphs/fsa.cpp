@@ -9,8 +9,39 @@
 class DFSA
 {
 
-private:
+public:
+  class StatesIterator
+  {
+  public:
+
+    StatesIterator (DFSA const*,bool=false);
+    int operator * () const;
+    StatesIterator& operator ++ ();
+    bool operator != (const StatesIterator&) const;
+
+  private:
+    DFSA const *a;
+    int currentStateIndex;
+  };
+
+  private:
   struct state;
+  public:
+  class SymbolIterator
+  {
+  public:
+
+    SymbolIterator (state const*,bool=false);
+    char operator * () const;
+    SymbolIterator& operator ++ ();
+    bool operator != (const SymbolIterator&) const;
+
+  private:
+    std::map<char,unsigned int>::const_iterator transitionsIterator;
+  };
+
+
+private:
   struct transitionProxy
   {
     transitionProxy (state*,char);
@@ -23,15 +54,21 @@ private:
 
   struct state
   {
+    friend class transitionProxy;
+    friend class DFSA;
+    transitionProxy operator [] (char);
+    unsigned int operator [] (char) const;
+    SymbolIterator begin() const;
+    SymbolIterator end() const;
+    bool final ();
+
+    private:
+    state (DFSA *);
     bool isFinal;
     int label;
     //table[i] -> редът на състоянието i в таблицата
     //table[i]['a'] -> целево състояние при преход от i с 'a'
     std::map<char,unsigned int> transitions;
-
-    transitionProxy operator [] (char);
-    state (DFSA *);
-
     DFSA *a;
   };
 
@@ -39,16 +76,18 @@ public:
 
   DFSA (unsigned int=0);
 
-  std::vector<char> getSymbolsFrom (unsigned int);
-
   void setFinalState (unsigned int);
   void addTransition (unsigned int, unsigned int, char);
 
   state& operator [] (unsigned int);
+  const state& operator [] (unsigned int) const;
 
   unsigned int toState (unsigned int, char);
 
   bool hasSymbol (unsigned int, char);
+
+  StatesIterator begin() const;
+  StatesIterator end() const;
 
 private:
 
@@ -59,27 +98,9 @@ private:
   unsigned int initialState;
 
   unsigned int indexof (unsigned int);
-  unsigned int labelof (unsigned int);
+  unsigned int indexof (unsigned int) const;
+  unsigned int labelof (unsigned int) const;
 };
-
-std::vector<char> DFSA::getSymbolsFrom (unsigned int labelFrom)
-{
-  unsigned int indexFrom = indexof (labelFrom);
-
-  std::map<char,unsigned int> &transations
-     = table[indexFrom].transitions;
-
-  std::vector<char> result;
-
-  for (std::map<char, unsigned int>::iterator it = transations.begin();
-       it != transations.end();
-       it++)
-   {
-     result.push_back (it->first);
-   }
-
-   return result;
-}
 
 
 
@@ -108,12 +129,28 @@ DFSA::state& DFSA::operator [] (unsigned int label)
   return table[indexof(label)];
 }
 
+const DFSA::state& DFSA::operator [] (unsigned int label) const
+{
+  return table[indexof(label)];
+}
+
 
 DFSA::state::state(DFSA *_a):a(_a),isFinal (false){}
+
+unsigned int DFSA::state::operator [] (char symbol) const
+{
+  return a->labelof(transitions.at(symbol));
+}
+
 
 DFSA::transitionProxy DFSA::state::operator [] (char symbol)
 {
   return transitionProxy (this,symbol);
+}
+
+bool DFSA::state::final ()
+{
+  return isFinal;
 }
 
 void DFSA::setFinalState (unsigned int s)
@@ -123,10 +160,16 @@ void DFSA::setFinalState (unsigned int s)
   table[ix].isFinal = true;
 }
 
-unsigned int DFSA::labelof (unsigned int ix)
+unsigned int DFSA::labelof (unsigned int ix) const
 {
   assert (ix < table.size());
   return table[ix].label;
+}
+
+unsigned int DFSA::indexof (unsigned int L) const
+{
+  assert (labelToIndex.count (L) != 0);
+  return labelToIndex.at(L);
 }
 
 
@@ -181,6 +224,77 @@ bool DFSA::hasSymbol (unsigned int label, char symbol)
   return table[indexof(label)].transitions.count (symbol) > 0;
 }
 
+DFSA::StatesIterator DFSA::begin() const
+{
+  return DFSA::StatesIterator (this);
+}
+
+DFSA::StatesIterator DFSA::end() const
+{
+  return DFSA::StatesIterator (this,true);
+}
+
+
+DFSA::StatesIterator::StatesIterator (DFSA const *_a, bool end):a(_a)
+{
+  if (!end)
+  {
+    currentStateIndex = 0;
+  } else {
+    currentStateIndex = a->table.size();
+  }
+}
+int DFSA::StatesIterator::operator * () const
+{
+  assert (currentStateIndex < a->table.size());
+  return a->table[currentStateIndex].label;
+}
+
+DFSA::StatesIterator& DFSA::StatesIterator::operator ++ ()
+{
+  assert (currentStateIndex < a->table.size());
+  currentStateIndex++;
+  return *this;
+}
+
+bool DFSA::StatesIterator::operator != (const DFSA::StatesIterator &o) const
+{
+  return a != o.a || currentStateIndex != o.currentStateIndex;
+}
+
+
+DFSA::SymbolIterator::SymbolIterator (state const *s,bool end)
+{
+
+  if (!end)
+  {
+    transitionsIterator = s->transitions.begin();
+  } else {
+    transitionsIterator = s->transitions.end();
+  }
+}
+char DFSA::SymbolIterator::operator * () const
+{
+  return transitionsIterator->first;
+}
+DFSA::SymbolIterator& DFSA::SymbolIterator::operator ++ ()
+{
+  ++transitionsIterator;
+  return *this;
+}
+bool DFSA::SymbolIterator::operator != (const DFSA::SymbolIterator &o) const
+{
+  return transitionsIterator != o.transitionsIterator;
+}
+
+DFSA::SymbolIterator DFSA::state::begin() const
+{
+  return DFSA::SymbolIterator (this);
+}
+DFSA::SymbolIterator DFSA::state::end() const
+{
+  return DFSA::SymbolIterator (this,true);
+}
 
 
 #endif

@@ -1,0 +1,81 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{url}
+\usepackage[bulgarian]{babel}
+\usepackage{listings}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{relsize}
+
+
+
+
+\lstset{breaklines=true}
+
+
+\author{\textit{email: kalin@fmi.uni-sofia.bg}}
+\title{\textsc{Задачи за задължителна самоподготовка} \\
+по \\
+Структури от данни и програмиране}
+
+
+
+\begin{document}
+\maketitle
+
+
+
+\begin{enumerate}
+
+
+	\item (решена) Към разработения на лекции клас \texttt{DFSA} да се добави итератор за сътояния (\texttt{StatesIterator}), чрез който да могат да бъдат обхождани състоянията на автомата, например по следния начин:
+
+\begin{verbatim}
+for (uint state : A)
+{
+   std::cout << "State label =  "
+             << state
+             << std::endl;
+}
+\end{verbatim}
+
+
+\item (решена) Към структурата \texttt{state} на разработения на лекции клас \texttt{DFSA} да се добави итератор за символи (\texttt{SymbolsIterator}), чрез който да могат да бъдат обхождани всички изходящи преходи от състоянието, например по следния начин:
+
+\begin{verbatim}
+for (uint state : A)
+{
+   for (char symbol : A[state])
+   {
+       std::cout << "Transition="
+                 << state
+                 << ":"
+                 << symbol
+                 << "->"
+                 << A[state][symbol]
+                 << std::endl;
+}
+\end{verbatim}
+
+\item (решена) С така създадените методи за достъп да се релизира печатане в \texttt{Dotty} формат.
+
+\item (ренеша) Да се подобри класа \texttt{DFSA}, така че да могат да бъдат обхождани преходите на константен автомат.
+
+\emph{Упътване: Двата итератора трябва да осигурявят константен достъп. По-особената част е за всеки от операторите за индексиране \texttt{[]} (на автомата и на състоянието) да се добави константна версия. Обърнете внимание на разликата между оператор \texttt{map::operator []} и метода \texttt{map::at(...)}. Случаят е най-интересен за константната версия на \texttt{state::operator[]}, за която не се налага proxy.}
+
+\item (решена) При условие, че в автомата няма цикли, да се намери най-дългата дума в езика му.
+
+\item (не е решена) Да се намери най-дългата крайна дума в езика на автомат, в който може да има цикли.
+
+\item (не е решена) Да се намери броя на крайните думи в езика на автомат, в който може да има цикли.
+
+
+\end{enumerate}
+
+
+
+
+\end{document}
