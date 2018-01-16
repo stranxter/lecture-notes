@@ -60,7 +60,7 @@ private:
     unsigned int operator [] (char) const;
     SymbolIterator begin() const;
     SymbolIterator end() const;
-    bool final ();
+    bool final () const;
 
     private:
     state (DFSA *);
@@ -148,7 +148,7 @@ DFSA::transitionProxy DFSA::state::operator [] (char symbol)
   return transitionProxy (this,symbol);
 }
 
-bool DFSA::state::final ()
+bool DFSA::state::final () const
 {
   return isFinal;
 }
