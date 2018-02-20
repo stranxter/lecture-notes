@@ -1,0 +1,97 @@
+\documentclass{beamer}
+\usepackage{relsize}
+\usepackage{color}
+
+\usepackage{listings}
+\usetheme{CambridgeUS}
+%\usepackage{beamerthemesplit} % new
+\usepackage{enumitem}
+\usepackage{amsmath}                    % See geometry.pdf to learn the layout options.
+\usepackage{amsthm}                   % See geometry.pdf to learn the layout options. There
+\usepackage{amssymb}                    % See geometry.pdf to learn the layout options.
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage[english,bulgarian]{babel}
+
+\lstset{language=C++,
+                basicstyle=\ttfamily,
+                keywordstyle=\color{blue}\ttfamily,
+                stringstyle=\color{red}\ttfamily,
+                commentstyle=\color{green}\ttfamily,
+                morecomment=[l][\color{magenta}]{\#}
+}
+
+\newtheorem{mydef}{Дефиниция}[section]
+\newtheorem{lem}{Лема}[section]
+\newtheorem{thm}{Твърдение}[section]
+
+\DeclareMathOperator{\restrict}{\upharpoonright}
+
+\setitemize{label=\usebeamerfont*{itemize item}%
+  \usebeamercolor[fg]{itemize item}
+  \usebeamertemplate{itemize item}}
+
+\setbeamercovered{transparent}
+
+
+
+\begin{document}
+\title[Информационни системи 2017/18]{Структура на курса по \\
+Обектно-ориентирано програмиране \\
+спец. Информацонни системи 2017/2018}
+\frame{\titlepage}
+
+\frame{\frametitle{Изпитни компоненти}
+
+Задължителни компоненти:
+\begin{itemize}
+ \item Контролно 1 (седмица 6)
+ \item Контролно 2 (седмица 11)
+ \item Писмет изпит (последна седмица или сесия)
+ \item Теоретичен изпит (тест, сесия)
+\end{itemize}
+
+Незадължителни компоненти:
+\begin{itemize}
+	\item Домашни работи (3)
+	\item Курсов проект (1, на две части)
+\end{itemize}
+
+}
+
+\frame{\frametitle{Формула за оценката}
+
+\relscale{1.5}
+\centerline{$\frac{K_1 + K_2 + PI + T + k(\sum{H}+PR)}{4}$}
+\bigskip
+\relscale{0.75}
+\centerline{$k \in (0,1]$}
+
+}
+
+
+\begin{frame}
+\centerline{Благодаря за вниманието!}
+\end{frame}
+
+
+
+\end{document}
+
+
+
+\begin{columns}[t]
+  \begin{column}{0.2\textwidth}
+
+\relscale{0.63}
+\begin{lstlisting}
+\end{lstlisting}
+\relscale{1}
+
+  \end{column}
+  \begin{column}{0.8\textwidth}
+
+  \end{column}
+\end{columns}
+
+#
