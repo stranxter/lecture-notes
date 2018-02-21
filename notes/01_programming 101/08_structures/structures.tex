@@ -4,12 +4,12 @@
 
 \usepackage{listings}
 \usetheme{CambridgeUS}
-%\usepackage{beamerthemesplit} % new 
+%\usepackage{beamerthemesplit} % new
 \usepackage{enumitem}
-\usepackage{amsmath}                    % See geometry.pdf to learn the layout options. 
-\usepackage{amsthm}                   % See geometry.pdf to learn the layout options. There 
-\usepackage{amssymb}                    % See geometry.pdf to learn the layout options. 
-\usepackage[utf8]{inputenc} 
+\usepackage{amsmath}                    % See geometry.pdf to learn the layout options.
+\usepackage{amsthm}                   % See geometry.pdf to learn the layout options. There
+\usepackage{amssymb}                    % See geometry.pdf to learn the layout options.
+\usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage[english,bulgarian]{babel}
 
@@ -36,11 +36,11 @@
 
 
 \begin{document}
-\title[Увод в програмирането]{Структури} 
-\author{Калин Георгиев} 
-\frame{\titlepage} 
+\title[Увод в програмирането]{Структури}
+\author{Калин Георгиев}
+\frame{\titlepage}
 
-\section{Структури} 
+\section{Структури}
 \subsection{Идея}
 
 \begin{frame}[fragile]
@@ -53,12 +53,12 @@ double distance (double x1, double y1, double x2, double y2)
   return sqrt ((x1-x2)*(x1-x2) - (y1-y2)*(y1-y2));
 }
 
-\end{lstlisting}	
+\end{lstlisting}
 \end{frame}
 
 
 \begin{frame}[fragile]
-\frametitle{``Пакетиране'' на стойности} 
+\frametitle{``Пакетиране'' на стойности}
 
 \relscale{0.7}
 \begin{lstlisting}
@@ -69,24 +69,24 @@ double distance (double x1, double y1, double x2, double y2)
 
    return /* (x2,y2) */;
 }
-\end{lstlisting}  
+\end{lstlisting}
 
 \end{frame}
 
 \begin{frame}[fragile]
-\frametitle{Структури} 
+\frametitle{Структури}
 
 
 \begin{columns}[t]
   \begin{column}{0.3\textwidth}
       \relscale{0.7}
 \begin{lstlisting}
-struct Point  
+struct Point
 {
   double x; //field x
   double y; //field y
-}
-\end{lstlisting}  
+};
+\end{lstlisting}
 
   \end{column}
   \begin{column}{0.7\textwidth}
@@ -96,10 +96,10 @@ struct Point
 \begin{flushleft}
 \relscale{0.65}
 \begin{lstlisting}
-double a; 
+double a;
 int x,y;
 Point p1, p2;
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
 
 \item Достъп до полета
@@ -109,7 +109,7 @@ Point p1, p2;
 p1.x = 10;
 cout << p1.x;
 p1.x = p2.x + 5;
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
 
 
@@ -123,7 +123,7 @@ Point western (Point p1, Point p2)
     return p1;
   return p2;
 }
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
 
 
@@ -140,7 +140,7 @@ Point western (Point p1, Point p2)
 
 
 \begin{frame}[fragile]
-\frametitle{Пример} 
+\frametitle{Пример}
 
 \relscale{0.7}
 \begin{lstlisting}
@@ -157,8 +157,8 @@ int main ()
   cin >> p1.x >> p1.y >> p2.x >> p2.y;
 
   Point p3 = western (p1,p2);
-  cout << "The western point is (" 
-       << p3.x 
+  cout << "The western point is ("
+       << p3.x
        << ","
        << p3.y
        << ")" << endl;
@@ -166,20 +166,20 @@ int main ()
   //cout << p3 ???
 }
 
-\end{lstlisting}  
+\end{lstlisting}
 
 \end{frame}
 
 \begin{frame}[fragile]
-\frametitle{Пример: Рационални числа} 
+\frametitle{Пример: Рационални числа}
 
 \relscale{0.7}
 \begin{lstlisting}
-sturct Rational
+struct Rational
 {
   double nom, denom;
 };
-\end{lstlisting}  
+\end{lstlisting}
 \flushright{$\frac{a_{nom}}{a_{denom}}+\frac{b_{nom}}{b_{denom}}=\frac{a_{nom}*b_{denom}+b_{nom}*a_{denom}}{a_{denom}}$}
 
 \relscale{0.7}
@@ -206,13 +206,13 @@ void print (Rational a)
 }
 
 
-\end{lstlisting}  
+\end{lstlisting}
 
 \end{frame}
 
 
 \begin{frame}[fragile]
-\frametitle{Пример: Рационални числа} 
+\frametitle{Пример: Рационални числа}
 
 
 \center{\relscale{1.5}{$a*b + c$}}
@@ -223,7 +223,7 @@ double an,ad,bn,db,cn,cd;
 cout << an*bn*cd + cn*ad*bd;
      << "/"
      << ad*bd*cd;
-\end{lstlisting}  
+\end{lstlisting}
 
 \begin{itemize}
   \item Алтернативно:
@@ -234,13 +234,13 @@ cout << an*bn*cd + cn*ad*bd;
 Rational a,b,c;
 //...
 print (sum (multiply (a,b) , c));
-\end{lstlisting}  
+\end{lstlisting}
 
 \end{frame}
 
 
 \begin{frame}[fragile]
-\frametitle{По-сложни примери} 
+\frametitle{По-сложни примери}
 
 \begin{columns}[t]
   \begin{column}{0.4\textwidth}
@@ -256,7 +256,7 @@ struct Person
   char name[100];
   Date birthdate;
 };
-\end{lstlisting} 
+\end{lstlisting}
 \relscale{1}
 
   \end{column}
@@ -270,52 +270,52 @@ void readPerson (Person& p)
   cin.getline (p.name,99);
   cout << "Please enter day, month,"
        << " and year:";
-  cin >> p.birthdate.day 
-      >> p.birthdate.month 
+  cin >> p.birthdate.day
+      >> p.birthdate.month
       >> p.birthdate.year;
 }
 void printPerson (Person p)
 {
-  cout << "Name:" << p.name 
-       << " birthdate: " 
-       << p.birthdate. day << "/" 
+  cout << "Name:" << p.name
+       << " birthdate: "
+       << p.birthdate. day << "/"
        << p.birthdate.month << "/"
        << p.birthdate.year << endl;
 }
 
-\end{lstlisting}  
+\end{lstlisting}
   \end{column}
 \end{columns}
 
- 
+
 
 \end{frame}
 
 
 \begin{frame}[fragile]
-\frametitle{Помощна функция} 
+\frametitle{Помощна функция}
 
 \relscale{0.7}
 \begin{lstlisting}
 bool earlier (Date d1, Date d2)
 {
   if (d1.year < d2.year) return true;
-  if (d1.year == d2.year && 
+  if (d1.year == d2.year &&
       d1.month < d2.month) return true;
-  if (d1.year == d2.year && 
-      d1.month == d2.month && 
+  if (d1.year == d2.year &&
+      d1.month == d2.month &&
       d1.day < d2.day) return true;
 
   return false;
 }
 
-\end{lstlisting}  
+\end{lstlisting}
 
 \end{frame}
 
 
 \begin{frame}[fragile]
-\frametitle{Масив от структури} 
+\frametitle{Масив от структури}
 
 \relscale{0.7}
 \begin{lstlisting}
@@ -330,13 +330,13 @@ Person findYoungest (Person people[], int n)
 }
 
 
-\end{lstlisting}  
+\end{lstlisting}
 
 \end{frame}
 
 
 \begin{frame}[fragile]
-\frametitle{Група от хора} 
+\frametitle{Група от хора}
 
 
 \begin{lstlisting}
@@ -348,12 +348,12 @@ for (i=0; i<10; i++)
 
 printPerson (findYoungest (people,10));
 
-\end{lstlisting}  
+\end{lstlisting}
 
 \end{frame}
- 
 
-\subsection{Представяне} 
+
+\subsection{Представяне}
 
 \begin{frame}
 \centerline{Представяне в паметта}
@@ -361,27 +361,27 @@ printPerson (findYoungest (people,10));
 
 
 \begin{frame}[fragile]
-\frametitle{Представяне в паметта} 
+\frametitle{Представяне в паметта}
 
 \begin{figure}
 \includegraphics[width=8.5cm]{images/padding}
-\caption{Подравняване (padding)\cite{wirth}}  
+\caption{Подравняване (padding)\cite{wirth}}
 \end{figure}
 
 \end{frame}
 
 
 \begin{frame}[fragile]
-\frametitle{Представяне в паметта} 
+\frametitle{Представяне в паметта}
 
 
 \begin{columns}[t]
   \begin{column}{0.7\textwidth}
-  
+
   \begin{flushleft}
-  
+
   \relscale{0.5}
-  
+
 \begin{lstlisting}
 struct S {Ta a; Tb b; Tc c;};
 S x;
@@ -419,7 +419,7 @@ sizeof (S) == sizeof (Ta) + sizeof (Tb) + sizeof (Tc)
 
 
 \begin{frame}[fragile]
-\frametitle{Указатели} 
+\frametitle{Указатели}
 
 
 \begin{columns}[t]
@@ -437,10 +437,10 @@ pb = &arr[3].b;
 *pb = 10;
 cout << *pb << arr[3].b;
 
-S* ps = &art[3];
+S* ps = &arr[3];
 ps->b = 15;
-cout << ps->b 
-     << (*ps).b 
+cout << ps->b
+     << (*ps).b
      << arr[3].b;
 
 \end{lstlisting}
@@ -451,10 +451,10 @@ cout << ps->b
 \begin{flushleft}
 \relscale{0.6}
 \begin{lstlisting}
-struct S 
+struct S
 {
-  int a; 
-  double b; 
+  int a;
+  double b;
   char c;
 };
 S x;
@@ -473,7 +473,7 @@ S x;
 
 
 \begin{frame}[fragile]
-\frametitle{Функции} 
+\frametitle{Функции}
 
 
 \begin{columns}[t]
@@ -484,8 +484,8 @@ S x;
 \begin{lstlisting}
 void f (S z)
 {
-  cout << z.b; 
-  z.b = 10; 
+  cout << z.b;
+  z.b = 10;
   cout << z.b;}
 
 void g (S& z)
@@ -513,7 +513,7 @@ int main ()
   f(x); cout << x.b;
   g (x); cout << x.b;
   h (&x); cout << x.b;
-  
+
 
   cout << i(x).b;
   cout << x.b;
@@ -561,4 +561,3 @@ int main ()
 
   \end{column}
 \end{columns}
-
