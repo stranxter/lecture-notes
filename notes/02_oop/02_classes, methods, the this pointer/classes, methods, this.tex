@@ -4,12 +4,12 @@
 
 \usepackage{listings}
 \usetheme{CambridgeUS}
-%\usepackage{beamerthemesplit} % new 
+%\usepackage{beamerthemesplit} % new
 \usepackage{enumitem}
-\usepackage{amsmath}                    % See geometry.pdf to learn the layout options. 
-\usepackage{amsthm}                   % See geometry.pdf to learn the layout options. There 
-\usepackage{amssymb}                    % See geometry.pdf to learn the layout options. 
-\usepackage[utf8]{inputenc} 
+\usepackage{amsmath}                    % See geometry.pdf to learn the layout options.
+\usepackage{amsthm}                   % See geometry.pdf to learn the layout options. There
+\usepackage{amssymb}                    % See geometry.pdf to learn the layout options.
+\usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage[english,bulgarian]{babel}
 
@@ -36,9 +36,9 @@
 
 
 \begin{document}
-\title[Обектно ориентирано програмиране]{Класове, методи, this} 
-\author{Калин Георгиев} 
-\frame{\titlepage} 
+\title[Обектно ориентирано програмиране]{Класове, методи, this}
+\author{Калин Георгиев}
+\frame{\titlepage}
 
 
 \begin{frame}[fragile]
@@ -62,7 +62,7 @@ struct River
   char name[100];
   double waterLevels[365];
 }
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
   \end{column}
 \end{columns}
@@ -87,7 +87,7 @@ struct Person
   char name[100];
   Date birthdate;
 }
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
   \end{column}
 \end{columns}
@@ -149,12 +149,12 @@ struct CharSet
 {
   bool contents[26];
 };
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
 
 \begin{flushleft}
 \relscale{1}
-$x \in A \Leftrightarrow $ 
+$x \in A \Leftrightarrow $
 \begin{lstlisting}
 A.contents[x-'a'] == true
 \end{lstlisting}
@@ -187,7 +187,7 @@ bool empty (CharSet s)
 {
   ....
 }
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
 
 
@@ -218,7 +218,7 @@ CharSet setUnion (CharSet a, CharSet b)
     result.contents[i] = a.contents[i] || b.contents[i];
   return result;
 }
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
 
 
@@ -257,7 +257,7 @@ class CharSet
     return result;
   }
 }
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
 
 
@@ -291,12 +291,12 @@ class CharSet
   {
     CharSet result;
     for (int i = 0; i < 26; i++)
-      result.contents[i] = 
+      result.contents[i] =
         contents[i] || b.contents[i];
     return result;
   }
 }
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
   \end{column}
   \begin{column}{0.5\textwidth}
@@ -318,11 +318,11 @@ CharSet setUnion (CharSet a, CharSet b)
 {
   CharSet result;
   for (int i = 0; i < 26; i++)
-    result.contents[i] = 
+    result.contents[i] =
       a.contents[i] || b.contents[i];
   return result;
 }
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
 
   \end{column}
@@ -350,7 +350,7 @@ int main ()
   s3 = s1.setUnion (s2);
 
 }
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
   \end{column}
   \begin{column}{0.5\textwidth}
@@ -372,12 +372,12 @@ class CharSet
   {
     CharSet result;
     for (int i = 0; i < 26; i++)
-      result.contents[i] = 
+      result.contents[i] =
         contents[i] || b.contents[i];
     return result;
   }
 }
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
 
   \end{column}
@@ -412,7 +412,7 @@ int main ()
   s3 = s1.setUnion (s2);
 
 }
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
   \end{column}
   \begin{column}{0.5\textwidth}
@@ -434,12 +434,12 @@ class CharSet
   {
     CharSet result;
     for (int i = 0; i < 26; i++)
-      result.contents[i] = 
+      result.contents[i] =
         this->contents[i] || b.contents[i];
     return result;
   }
 }
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
 
   \end{column}
@@ -450,8 +450,63 @@ class CharSet
 
 
 \begin{frame}
+\centerline{Прости оператори}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Прости оператори}
+
+
+\begin{center}
+\relscale{1.5}
+c = a.setUnion (b) $\sim$ c = setUnion (a,b)
+\end{center}
+
+\pause
+
+\begin{center}
+\relscale{1.5}
+c = a + b
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Прости оператори}
+
+\begin{flushleft}
+\relscale{0.8}
+\begin{lstlisting}
+class CharSet
+{
+//....
+  CharSet setUnion (CharSet b){...}
+};
+\end{lstlisting}
+\end{flushleft}
+
+\pause
+
+\begin{flushleft}
+\relscale{0.8}
+\begin{lstlisting}
+class CharSet
+{
+//....
+  CharSet operator + (CharSet b){...}
+};
+\end{lstlisting}
+\end{flushleft}
+
+\end{frame}
+
+
+
+\begin{frame}
 \centerline{Благодаря за вниманието!}
 \end{frame}
+
 
 \end{document}
 
