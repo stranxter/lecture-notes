@@ -4,12 +4,12 @@
 
 \usepackage{listings}
 \usetheme{CambridgeUS}
-%\usepackage{beamerthemesplit} % new 
+%\usepackage{beamerthemesplit} % new
 \usepackage{enumitem}
-\usepackage{amsmath}                    % See geometry.pdf to learn the layout options. 
-\usepackage{amsthm}                   % See geometry.pdf to learn the layout options. There 
-\usepackage{amssymb}                    % See geometry.pdf to learn the layout options. 
-\usepackage[utf8]{inputenc} 
+\usepackage{amsmath}                    % See geometry.pdf to learn the layout options.
+\usepackage{amsthm}                   % See geometry.pdf to learn the layout options. There
+\usepackage{amssymb}                    % See geometry.pdf to learn the layout options.
+\usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage[english,bulgarian]{babel}
 
@@ -98,11 +98,11 @@ showstringspaces=false}
 
 
 \begin{document}
-\title[MongoDB]{Основни сведения за NoSQL бази от данни. Шаблони за денормализация. Прости CRUD примери с MongoDB} 
-\author{Калин Георгиев} 
-\frame{\titlepage} 
+\title[MongoDB]{Основни сведения за NoSQL бази от данни. Шаблони за денормализация. Прости CRUD примери с MongoDB}
+\author{Калин Георгиев}
+\frame{\titlepage}
 
-\section{Увод} 
+\section{Увод}
 \subsection{Сравнение}
 
 
@@ -110,7 +110,7 @@ showstringspaces=false}
 \frametitle{Relational  vs. NoSQL DB}
 
 \begin{center}
-  
+
 \begin{tabular}{ c | c }
 
 \includegraphics[width=5cm]{images/the_matrix}
@@ -189,15 +189,15 @@ SELECT Authors.name FROM (Books INNER JOIN BooksAuthors ON Books.id = BooksAutho
 \relscale{0.6}
 
 \begin{lstlisting}[breaklines=true]
-Books[0] = {id:0, 
-            title:"Програмиране на C++", 
+Books[0] = {id:0,
+            title:"Програмиране на C++",
             authors:
               [{id:0, name: "Магдалина Тодорова"}]}
-Books[1] = {id:1, 
-            title:"Сборник задачи C++", 
+Books[1] = {id:1,
+            title:"Сборник задачи C++",
             authors:
               [{id:0, name: "Магдалина Тодорова"},
-               {id:1, name: "Калин Георгиев"}]}  
+               {id:1, name: "Калин Георгиев"}]}
 \end{lstlisting}
 \pause
 
@@ -230,7 +230,7 @@ Node.js
 \\
 
 \relscale{0.5}
-  
+
 \begin{lstlisting}
 
 package com.helloworld;
@@ -268,21 +268,21 @@ console.log("Hello World");
 
 \begin{columns}[t]
   \begin{column}{0.6\textwidth}
-Характеристика  
+Характеристика
  \begin{itemize}
 \item Класическият релационен модел е неприложим
 \item Не поддържат информацията под формата на таблици и не предоставят поддръжка на стандартния език за структурирани заявки SQL
 \item Често не предоставят функционалност отвъд съхранението на записите
 \item Нарушават ACID
-\end{itemize} 
+\end{itemize}
   \end{column}
   \begin{column}{0.3\textwidth}
 \pause
-Видове  
+Видове
   \begin{itemize}
 \item key-value
-\item Графови бази данни 
-\item Документни бази данни 
+\item Графови бази данни
+\item Документни бази данни
 \end{itemize}
   \end{column}
 \end{columns}
@@ -306,7 +306,7 @@ console.log("Hello World");
 \frametitle{Някои представители и приложения}
 
 \begin{itemize}
-  \item key-value (KV):Apache Cassandra, Dynamo, memcached, Redis, BigTable, 
+  \item key-value (KV):Apache Cassandra, Dynamo, memcached, Redis, BigTable,
   \item Document: Apache CouchDB, MongoDB, SimpleDB
 \end{itemize}
 
@@ -342,14 +342,14 @@ console.log("Hello World");
 \frametitle{Collapsing relations}
 
 \begin{verbatim}
-CUSTOMER (Customer_ID, Customer_Name, Address) 
-CUSTOMER_ACCOUNT (Customer_ID, Account_Bal, Market_Segment)  
+CUSTOMER (Customer_ID, Customer_Name, Address)
+CUSTOMER_ACCOUNT (Customer_ID, Account_Bal, Market_Segment)
 \end{verbatim}
 
 \vspace{\baselineskip}
 
 \begin{verbatim}
-CUSTOMER (Customer_ID, Customer_Name, 
+CUSTOMER (Customer_ID, Customer_Name,
           Address, Account_Bal, Market_Segment)
 \end{verbatim}
 
@@ -361,16 +361,16 @@ CUSTOMER (Customer_ID, Customer_Name,
 
 
 \begin{verbatim}
-PART (Part_ID, Width, Length, Height, Weight, ···, 
+PART (Part_ID, Width, Length, Height, Weight, ···,
       Price, Stock, Supplier_ID, Warehouse,···)
 \end{verbatim}
 
 \vspace{\baselineskip}
 
 \begin{verbatim}
-PART_SPEC_INFO (Part_ID, Width, Length, 
+PART_SPEC_INFO (Part_ID, Width, Length,
                 Height, Weight, Strength,···)
-PART_INVENTORY_INFO (Part_ID, Price, 
+PART_INVENTORY_INFO (Part_ID, Price,
                      Stock, Supplier_ID, Warehouse,···)
 \end{verbatim}
 
@@ -382,17 +382,17 @@ PART_INVENTORY_INFO (Part_ID, Price,
 
 
 \begin{verbatim}
-SALE_HISTORY (Sale_ID, Timestamp, Store_ID, 
+SALE_HISTORY (Sale_ID, Timestamp, Store_ID,
               Customer_ID, Amount, ···)
 \end{verbatim}
 
 \vspace{\baselineskip}
 
 \begin{verbatim}
-SALE_HISTORY_Period_1 (Sale_ID, Timestamp, Store_ID, 
-                       Customer_ID, Amount, ···) 
-SALE_HISTORY_Period_2 (Sale_ID, Timestamp, Store_ID, 
-                       Customer_ID, Amount, ···) 
+SALE_HISTORY_Period_1 (Sale_ID, Timestamp, Store_ID,
+                       Customer_ID, Amount, ···)
+SALE_HISTORY_Period_2 (Sale_ID, Timestamp, Store_ID,
+                       Customer_ID, Amount, ···)
 \end{verbatim}
 
 \end{frame}
@@ -401,18 +401,18 @@ SALE_HISTORY_Period_2 (Sale_ID, Timestamp, Store_ID,
 \frametitle{Redundant attributes}
 
 \begin{verbatim}
-PART (Part_ID, Width, Length, Height, 
-      Weight, Price, Stock, Supplier_ID, ···) 
-SUPPLIER (Supplier_ID, Supplier_Name, Address, 
-          State, ZIP, Phone, Sales_Rep, ···) 
+PART (Part_ID, Width, Length, Height,
+      Weight, Price, Stock, Supplier_ID, ···)
+SUPPLIER (Supplier_ID, Supplier_Name, Address,
+          State, ZIP, Phone, Sales_Rep, ···)
 \end{verbatim}
 
 \vspace{\baselineskip}
 
 \begin{verbatim}
-PART (Part_ID, Width, Length, Height, Weight, 
-      Price, Stock, Supplier_ID, Supplier_Name, ···) 
-SUPPLIER (Supplier_ID, Supplier_Name, Address, 
+PART (Part_ID, Width, Length, Height, Weight,
+      Price, Stock, Supplier_ID, Supplier_Name, ···)
+SUPPLIER (Supplier_ID, Supplier_Name, Address,
           State, ZIP, Phone, Sales_Rep, ···)
 \end{verbatim}
 
@@ -425,16 +425,16 @@ SUPPLIER (Supplier_ID, Supplier_Name, Address,
 
 \begin{verbatim}
 CUSTOMER (Customer_ID, Customer_Name, Address, ZIP)
-ORDER (Order_ID, Customer_ID, Order_Date, 
-       Standard_Price, Quantity) 
+ORDER (Order_ID, Customer_ID, Order_Date,
+       Standard_Price, Quantity)
 \end{verbatim}
 
 \vspace{\baselineskip}
 
 \begin{verbatim}
-CUSTOMER (Customer_ID, Customer_Name, 
-          Address, ZIP, Sum_Of_Purchases) 
-ORDER (Order_ID, Customer_ID, Order_Date, 
+CUSTOMER (Customer_ID, Customer_Name,
+          Address, ZIP, Sum_Of_Purchases)
+ORDER (Order_ID, Customer_ID, Order_Date,
        Standard_Price, Quantity)
 \end{verbatim}
 
@@ -446,7 +446,7 @@ ORDER (Order_ID, Customer_ID, Order_Date,
 \centerline{Прости CRUD заявки с MongoDB}
 \end{frame}
 
-  
+
 
 \begin{frame}[fragile]
 \frametitle{``CRUD'' заявки}
@@ -456,7 +456,7 @@ ORDER (Order_ID, Customer_ID, Order_Date,
   \item Create
   \item Read
   \item Udpate
-  \item Delete  
+  \item Delete
 \end{itemize}
 
 \end{frame}
@@ -473,22 +473,22 @@ ORDER (Order_ID, Customer_ID, Order_Date,
 
 \relscale{0.7}
 \begin{lstlisting}
-var bookOne = 
+var bookOne =
   db.books.findOne ({id:1});
 \end{lstlisting}
 
 
 \begin{lstlisting}
-var books = 
+var books =
   db.books.find ({id: { $lt: 2}});
 \end{lstlisting}
 
 
 \begin{lstlisting}
-var kalinsBooks = 
-  db.books.find( 
-    {authors: 
-      {$elemMatch: 
+var kalinsBooks =
+  db.books.find(
+    {authors:
+      {$elemMatch:
         {name: "Калин Георгиев" }}});
 \end{lstlisting}
 
@@ -497,17 +497,17 @@ var kalinsBooks =
   \relscale{0.5}
 \begin{lstlisting}
 
-Books[0] = 
-  {id:0, 
-   title:"Програмиране на C++", 
+Books[0] =
+  {id:0,
+   title:"Програмиране на C++",
    authors:
      [{id:0, name: "Магдалина Тодорова"}]}
-Books[1] = 
-  {id:1, 
-   title:"Сборник задачи C++", 
+Books[1] =
+  {id:1,
+   title:"Сборник задачи C++",
    authors:
      [{id:0, name: "Магдалина Тодорова"},
-      {id:1, name: "Калин Георгиев"}]} 
+      {id:1, name: "Калин Георгиев"}]}
 \end{lstlisting}
   \end{column}
 \end{columns}
@@ -520,9 +520,9 @@ Books[1] =
 \frametitle{Create}
 
 \begin{lstlisting}
-KalinsNewBook = 
-  {id:3, 
-   title:"Нещо умно", 
+KalinsNewBook =
+  {id:3,
+   title:"Нещо умно",
    authors:
      [{id:1, name: "Калин Георгиев"}]};
 
@@ -572,16 +572,14 @@ db.books.remove({ id: 3 });
 
 
 \begin{lstlisting}
-[1,2,3].map (function (x) {return x+1;});
+[1,2,3].map ((x)=>x+1);
 \end{lstlisting}
 
 \vspace{0.2cm}
 \pause
 
 \begin{lstlisting}
-[1,2,3].reduce (
-    function (sum,current) {
-      return sum+current;});
+[1,2,3].reduce ((sum,current)=>sum+current);
 \end{lstlisting}
 
 
@@ -597,10 +595,10 @@ db.books.remove({ id: 3 });
 \relscale{0.5}
 
 \begin{lstlisting}
-people[0] = {sex:"male", age:34}
-people[1] = {sex:"female", age:24}
-people[2] = {sex:"male", age:35}
-people[3] = {sex:"female", age:54}
+people[0] = {sex:"male", age:34};
+people[1] = {sex:"female", age:24};
+people[2] = {sex:"male", age:35};
+people[3] = {sex:"female", age:54};
 \end{lstlisting}
 
 
@@ -609,9 +607,8 @@ people[3] = {sex:"female", age:54}
 
 
 \begin{lstlisting}
-var map = function (document){
-  emit (document.sex, document.age);
-}
+var map =
+  ()=>{emit (this.sex,this.age);}
 \end{lstlisting}
 
 \vspace{0.2cm}
@@ -631,13 +628,8 @@ var map = function (document){
 \pause
 
 \begin{lstlisting}
-var reduce = function (key,values){
-  var sum = values.reduce(
-    function(a, b) { 
-       return a + b });
-
-  return sum/values.length;
-}
+var reduce =
+   (key,values)=>Array.sum(val)/val.length;
 \end{lstlisting}
 
 \vspace{0.2cm}
@@ -647,6 +639,11 @@ var reduce = function (key,values){
 \begin{lstlisting}
 reduce ("male", [34,35]) --> 34.5
 redece ("female", [24,54]) --> 39
+\end{lstlisting}
+
+\pause
+\begin{lstlisting}
+db.people.mapReduce (map, reduce, { out: "mptest1" });
 \end{lstlisting}
 
 
@@ -671,4 +668,3 @@ redece ("female", [24,54]) --> 39
 
 
 \end{document}
-
