@@ -1,0 +1,64 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{url}
+\usepackage[bulgarian]{babel}
+\usepackage{listings}
+\usepackage{enumerate}
+
+
+\lstset{breaklines=true}
+
+
+\author{\textit{email: kalin@fmi.uni-sofia.bg}}
+\title{\textsc{Задачи за задължителна самоподготовка} \\
+по \\
+Обектно-ориентирано програмиране\\
+\textit{Шаблони и динамични масиви}}
+
+
+
+\begin{document}
+\maketitle
+
+
+\begin{enumerate}
+	\item Да се реализира шаблон на функция \texttt{void input ([подходящ тип] array, int n)}, която въвежда от клавиатурата стойностите на елементите на масива \texttt{array} от произволен тип \texttt{T} с големина \texttt{n}. \\
+
+	\textit{Какви са допустимите типове \texttt{T} за този шаблон? Защо функцията е от тип \texttt{void}?}\\
+
+	Да се реализира и изпълни подходящ тест за функцията.
+
+	\item Да се реализира шаблон на фукнция \texttt{bool ordered ([подходящ тип] array, int n)}, която проверява дали елементите на масива \texttt{array} от произволен тип \texttt{T} с големина \texttt{n} образуват монотонно-растяща редица спрямо релацията \texttt{<}.\\
+
+	\textit{Какви са допустимите типове \texttt{T} за този шаблон?}\\
+
+	Да се реализира и изпълни подходящ тест за функцията.
+
+	\item Да се реализира шаблон на фукнция \texttt{bool member ([подходящ тип] array, int n, [подходящ тип]x)}, която проверява дали \texttt{x} е елемент на масива \texttt{array} от произволен тип \texttt{T} с големина \texttt{n}.\\
+
+	\textit{Има ли в C++ тип \texttt{T}, който не е съвместим с този шаблон?}\\
+
+	Да се реализира и изпълни подходящ тест за функцията.
+
+	\item За разработения на лекции клас \texttt{Array} да се добави метод \texttt{bool member (T x)}, който проверява дали елемента \texttt{x} е елемент на масива.
+
+	Да се реализира и изпълни подходящ тест за метода.
+
+	\item За разработения на лекции клас \texttt{Array} да се добави метод \texttt{bool remove (T x)}, който изтрива първото срещане на елемента \texttt{x} от масива (ако има такова).
+
+	Да се реализира и изпълни подходящ тест за метода.
+
+	\item За разработения на лекции клас \texttt{Array} да се добави оператор за събиране, с който могат да се конкатенират два масива. Да се реализира съответен оператор +=.
+
+	Да се реализира и изпълни подходящ тест за метода.
+
+\end{enumerate}
+
+
+
+
+\end{document}

@@ -31,4 +31,6 @@ int main ()
 
   delete []s3;
 
+  s3 = s1 + s2;
+
 }
