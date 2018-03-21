@@ -15,6 +15,50 @@ public:
     buffer = nullptr;
   }
 
+  /*Array ()
+  {
+
+  }*/
+
+  Array (const Array<T> &other)
+  {/* Този метод ще бъде изпълнен автоматично
+    при декларация на обект по следния начин:
+    Array<X> a (b);
+    където b също е обект от клас Array
+    */
+
+    buffer = new T[other._size];
+    _size = other._size;
+
+    for (int i = 0; i < _size; i++)
+    {
+      buffer[i] = other.buffer[i];
+    }
+  }
+
+  Array (unsigned int x)
+  {
+    buffer = new T [x];
+    for (int i = 0; i < x; i++)
+    {
+      buffer[i] = x;
+    }
+    _size = x;
+  }
+
+  Array (const char *s)
+  {
+    //buffer, _size
+    _size = strlen (s) + 1;
+    buffer = new T [_size];
+
+    for (int i = 0; i < _size; i++)
+    {
+      buffer[i] = s[i];
+    }
+  }
+
+
   void insert (T x)
   {
     /*
@@ -60,16 +104,22 @@ public:
     return buffer[index];
   }
 
-  void print ()
+  void print (std::ostream& out)
   {
-    std::cout << "[";
+    out << "[";
     for (int i = 0; i < _size; i++)
     {
-      std::cout << buffer[i] << " ";
+      out << buffer[i];
+      out << " ";
     }
-    std::cout << "]";
+    out << "]";
   }
 
+/*  void operator << (ostream& out)
+  {
+    print (out);
+  }
+*/
   void operator = (Array<T> other)
   {
     /*
@@ -113,16 +163,34 @@ public:
     return true;
   }
 
+  ~Array ()
+  {
+    delete []buffer;
+  }
+
   T* buffer;
   int _size;
 };
 
+template <class T>
+void operator << (std::ostream& out, Array<T> a)
+{
+    a.print (out);
+}
+
+template <class T>
+void f (const Array<T> &a)
+{
+  std::cout << a;
+}
 
 int main ()
 {
-
   //Array<int> a = {1,2,3,4,5,6};
   Array<int> a;
+
+  f(a);
+  f<int>(7);
 
   a.insert (1);
   a.insert (2);
@@ -133,7 +201,8 @@ int main ()
 
   assert (a.size () == 6);
 
-  a.print();
+  //a.print (std::cout)
+  std::cout << a;
 
   assert (a[0] == 1);
   assert (a[5] == 6);
@@ -152,7 +221,7 @@ int main ()
   b.insert (10);
   assert (b.size () == a.size() + 1);
 
-  b.print();
+  b.print(std::cout);
 
   b = a;
   assert (a == b);
@@ -166,6 +235,34 @@ int main ()
   assert (a[0] == 10);
   assert (b[0] == 1);
 
+  Array<int> c = a;
+  assert (c.size() == a.size());
+  assert (c[1] == a[1]);
+  a[1] =200;
+  assert (c[1] != a[1]);
+
+  Array<int> z = 4;
+  assert (z.size() == 4);
+  assert (z[3] == 4);
+
+  Array<int> r = "Hello";
+  assert (r.size () == 6);
+  assert (r[0] == 'H');
+
+  Array<Array<int>> iaa;
+
+  iaa.insert (a);
+  iaa.insert (b);
+  iaa.insert (c);
+  iaa.insert (r);
+  iaa.insert (z);
+
+  assert (iaa[2][0] == 10);
+
+  std::cout << iaa;
+
+  //Array<T> d = {1,2,3,4};
+
 
 /*  assert (a.member(4));
   assert (!a.member(7));
@@ -175,5 +272,7 @@ int main ()
   assert (a.member(2));
 
 */
+
+
 
 }
