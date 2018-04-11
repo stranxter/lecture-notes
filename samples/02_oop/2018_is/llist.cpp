@@ -53,9 +53,16 @@ public:
 
   bool insertAt (unsigned int pos, const T& x)
   {
+
+    if (pos == 0)
+    {
+      push (x);
+      return true;
+    }
+
     box<T> *crr = first;
 
-    while (crr != nullptr && pos > 0)
+    while (crr != nullptr && pos > 1)
     {
       crr = crr->next;
       pos--;
@@ -67,6 +74,17 @@ public:
     crr->next = new box<T> (x,crr->next);
 
     return true;
+  }
+
+  void pop ()
+  {
+    if (first == nullptr)
+    {
+      return;
+    }
+    box<T> *save = first;
+    first = first->next;
+    delete save;
   }
 
   template <class W>
@@ -112,7 +130,12 @@ int main ()
   assert (l.count(5) == 0);
   assert (l.count(4) == 1);
 
-  l.insertAt (3, 100);
+  l.insertAt (0, 100);
+  l.insertAt (1, 200);
+
+  assert (l.member(100));
+  l.pop();
+  assert (!l.member(100));
 
   std::cout << l;
 }
