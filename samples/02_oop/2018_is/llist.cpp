@@ -51,6 +51,24 @@ public:
 
   }
 
+  bool insertAt (unsigned int pos, const T& x)
+  {
+    box<T> *crr = first;
+
+    while (crr != nullptr && pos > 0)
+    {
+      crr = crr->next;
+      pos--;
+    }
+    if (crr == nullptr)
+    {
+      return false;
+    }
+    crr->next = new box<T> (x,crr->next);
+
+    return true;
+  }
+
   template <class W>
   friend std::ostream& operator << (std::ostream& out, const LList<W> &l);
 
@@ -94,6 +112,7 @@ int main ()
   assert (l.count(5) == 0);
   assert (l.count(4) == 1);
 
+  l.insertAt (3, 100);
 
   std::cout << l;
 }
