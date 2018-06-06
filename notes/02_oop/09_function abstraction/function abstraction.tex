@@ -450,6 +450,79 @@ int main ()
 \end{frame}
 
 
+
+
+
+
+
+\begin{frame}[fragile]
+\frametitle{$\Gamma:(double \rightarrow double) \times (double \rightarrow double) \rightarrow(double \rightarrow double)$}
+
+\begin{center}
+$$
+\Gamma(f,g)(x) = f(g(x))
+$$
+
+\relscale{0.95}
+\begin{lstlisting}
+class Composition : public Function
+{
+  private:
+    Function* f;
+    Function* g;
+  public:
+    Composition (Function *_f, Function *_g)
+        :f(_f),g(_g){}
+    double value (double x){
+      return f->value (g->value (x));
+    }
+}
+\end{lstlisting}
+
+\end{center}
+
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Използване на Composition}
+
+
+\begin{flushleft}
+
+\relscale{0.80}
+\begin{lstlisting}
+int main ()
+{
+  Linear fn (-2,10);
+  CutFunction cfn (&fn);
+  Composition comp (&fn,&cfn);
+
+  cout << comp.value (10);
+
+  Function *functions[] = {&fn,&cfn,&comp};
+  printall (functions,3,10);
+
+}
+\end{lstlisting}
+
+\end{flushleft}
+
+
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+
+
 \begin{frame}
 \centerline{Програмите като оператори}
 \end{frame}
@@ -630,109 +703,109 @@ class ForOperator : public Function
 
 
 
-\begin{frame}[fragile]
-\frametitle{WHILE като ператор}
-
-\begin{center}
-
-\relscale{0.95}
-\begin{lstlisting}
-double G (double x)
-{
-  z = x;
-  while (h(z) != 0)
-  {
-    z = f(z);
-  }
-  return z;
-}
-\end{lstlisting}
-
-\end{center}
-
-
-$$
-\Gamma(f,h)(x) = \left\{
-        \begin{array}{ll}
-            x & \quad h(x) == 0 \\
-            \Gamma(f,h)(f(x)) & \quad otherwise
-        \end{array}
-    \right.
-$$
-
-
-
-\end{frame}
-
-
-\begin{frame}[fragile]
-\frametitle{WHILE като оператор}
-
-\begin{center}
-$$
-\Gamma(f,h)(x) = \left\{
-        \begin{array}{ll}
-            x & \quad h(x) == 0 \\
-            \Gamma(f,h)(f(x)) & \quad otherwise
-        \end{array}
-    \right.
-$$
-
-
-\relscale{0.95}
-\begin{lstlisting}
-class WhileOperator : public Function
-{
-  private:
-    Function* condfn;
-    Function* operation;
-  public:
-    WhileOperator (Function *_c,
-                   Function *_o):condfn(_c),
-                                 operation(_o){};
-}
-\end{lstlisting}
-
-\end{center}
-
-
-\end{frame}
-
-
-
-\begin{frame}[fragile]
-\frametitle{WHILE като оператор}
-
-\begin{center}
-
-$$
-\Gamma(f,h)(x) = \left\{
-        \begin{array}{ll}
-            x & \quad h(x) == 0 \\
-            \Gamma(f,h)(f(x)) & \quad otherwise
-        \end{array}
-    \right.
-$$
-
-
-\relscale{0.95}
-\begin{lstlisting}
-class WhileOperator : public Function
-{
-    double value (double x)
-    {
-      double z  = x;
-      while (condfn->value(z))
-        z = operation->value(z);
-      return z;
-    }
-}
-\end{lstlisting}
-
-\end{center}
-
-
-\end{frame}
+%%   \begin{frame}[fragile]
+%%   \frametitle{WHILE като ператор}
+%%   
+%%   \begin{center}
+%%   
+%%   \relscale{0.95}
+%%   \begin{lstlisting}
+%%   double G (double x)
+%%   {
+  %%   z = x;
+  %%   while (h(z) != 0)
+  %%   {
+    %%   z = f(z);
+  %%   }
+  %%   return z;
+%%   }
+%%   \end{lstlisting}
+%%   
+%%   \end{center}
+%%   
+%%   
+%%   $$
+%%   \Gamma(f,h)(x) = \left\{
+        %%   \begin{array}{ll}
+            %%   x & \quad h(x) == 0 \\
+            %%   \Gamma(f,h)(f(x)) & \quad otherwise
+        %%   \end{array}
+    %%   \right.
+%%   $$
+%%   
+%%   
+%%   
+%%   \end{frame}
+%%   
+%%   
+%%   \begin{frame}[fragile]
+%%   \frametitle{WHILE като оператор}
+%%   
+%%   \begin{center}
+%%   $$
+%%   \Gamma(f,h)(x) = \left\{
+        %%   \begin{array}{ll}
+            %%   x & \quad h(x) == 0 \\
+            %%   \Gamma(f,h)(f(x)) & \quad otherwise
+        %%   \end{array}
+    %%   \right.
+%%   $$
+%%   
+%%   
+%%   \relscale{0.95}
+%%   \begin{lstlisting}
+%%   class WhileOperator : public Function
+%%   {
+  %%   private:
+    %%   Function* condfn;
+    %%   Function* operation;
+  %%   public:
+    %%   WhileOperator (Function *_c,
+                   %%   Function *_o):condfn(_c),
+                                 %%   operation(_o){};
+%%   }
+%%   \end{lstlisting}
+%%   
+%%   \end{center}
+%%   
+%%   
+%%   \end{frame}
+%%   
+%%   
+%%   
+%%   \begin{frame}[fragile]
+%%   \frametitle{WHILE като оператор}
+%%   
+%%   \begin{center}
+%%   
+%%   $$
+%%   \Gamma(f,h)(x) = \left\{
+        %%   \begin{array}{ll}
+            %%   x & \quad h(x) == 0 \\
+            %%   \Gamma(f,h)(f(x)) & \quad otherwise
+        %%   \end{array}
+    %%   \right.
+%%   $$
+%%   
+%%   
+%%   \relscale{0.95}
+%%   \begin{lstlisting}
+%%   class WhileOperator : public Function
+%%   {
+    %%   double value (double x)
+    %%   {
+      %%   double z  = x;
+      %%   while (condfn->value(z))
+        %%   z = operation->value(z);
+      %%   return z;
+    %%   }
+%%   }
+%%   \end{lstlisting}
+%%   
+%%   \end{center}
+%%   
+%%   
+%%   \end{frame}
 
 
 \begin{frame}
