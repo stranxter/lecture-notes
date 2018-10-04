@@ -4,12 +4,12 @@
 
 \usepackage{listings}
 \usetheme{CambridgeUS}
-%\usepackage{beamerthemesplit} % new 
+%\usepackage{beamerthemesplit} % new
 \usepackage{enumitem}
-\usepackage{amsmath}                    % See geometry.pdf to learn the layout options. 
-\usepackage{amsthm}                   % See geometry.pdf to learn the layout options. There 
-\usepackage{amssymb}                    % See geometry.pdf to learn the layout options. 
-\usepackage[utf8]{inputenc} 
+\usepackage{amsmath}                    % See geometry.pdf to learn the layout options.
+\usepackage{amsthm}                   % See geometry.pdf to learn the layout options. There
+\usepackage{amssymb}                    % See geometry.pdf to learn the layout options.
+\usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage[english,bulgarian]{babel}
 
@@ -36,22 +36,22 @@
 
 
 \begin{document}
-\title[Увод в курса]{Въведение в курса. Програми, езици от високо ниво, базова структура на програма, променливи, вход и изход, условен оператор и цикъл, бройни системи, Машини на Тюринг} 
-\frame{\titlepage} 
+\title[Увод в курса]{Въведение в курса. Програми, езици от високо ниво, базова структура на програма, променливи, вход и изход, условен оператор и цикъл, бройни системи, Машини на Тюринг}
+\frame{\titlepage}
 
-\section{Какво е програмиране?} 
+\section{Какво е програмиране?}
 \subsection{Идея}
 
-\frame{\frametitle{Програмиране?} 
+\frame{\frametitle{Програмиране?}
 
 \begin{figure}
 \includegraphics[width=9.5cm]{images/doom}
 \end{figure}
-  
+
 }
 
 
-\frame{\frametitle{Как работи?} 
+\frame{\frametitle{Как работи?}
 
 \begin{figure}
 \includegraphics[width=9.5cm]{images/fig_display_memory}
@@ -60,7 +60,7 @@
 
 
 
-\frame{\frametitle{Програми} 
+\frame{\frametitle{Програми}
 
 \begin{figure}
 \includegraphics[width=12.5cm]{images/fig_program}
@@ -96,7 +96,7 @@
 \end{columns}
 
 
-\end{frame} 
+\end{frame}
 
 \begin{frame}[fragile]
 \frametitle{Променливи}
@@ -121,7 +121,7 @@ b = a + b;
 int a = 5;
 int b = 10;
 b = a + b;
-b = a + b;
+b = 17 + b;
 \end{lstlisting}
 \end{itemize}
 
@@ -138,7 +138,7 @@ b = a + b;
 
 \end{frame}
 
-\subsection{C++} 
+\subsection{C++}
 
 \begin{frame}
 \centerline{Език за програмиране C++}
@@ -157,7 +157,7 @@ using namespace std;
 
 int main ()
 {
-  
+
   int a;
 
   cout << "Please, input the value of a=";
@@ -187,7 +187,7 @@ int main ()
 \end{columns}
 
 
-\end{frame} 
+\end{frame}
 
 \begin{frame}[fragile]
 \frametitle{Пример: Средно аритметично}
@@ -199,7 +199,7 @@ using namespace std;
 
 int main ()
 {
-  
+
   int a,b,c;  //DOUBLE!!!
 
   cout << "Please, input the value of a=";
@@ -208,7 +208,7 @@ int main ()
   cin >> b;
   cout << "Please, input the value of c=";
   cin >> c;
-  
+
   cout << "average=" << (a+b+c)/3 << endl;
 
   return 0;
@@ -216,13 +216,13 @@ int main ()
 }
 \end{lstlisting}
 
-\end{frame} 
+\end{frame}
 
 
 \begin{frame}[fragile]
 \frametitle{Условен оператор}
 \begin{itemize}
-\item Проверка на условие: 
+\item Проверка на условие:
 \relscale{0.7}
 \begin{lstlisting}
 int a;
@@ -239,7 +239,7 @@ if (a > 5) {
 \item Прости видове условия за числа: >, >=, <, <=, ==, !=
 \end{itemize}
 
-\end{frame} 
+\end{frame}
 
 \begin{frame}[fragile]
 \frametitle{Вложени оператори}
@@ -275,12 +275,12 @@ int a = 701;
 if (a > 20){
   if (a < 200){
     cout << "CASE 1";
-  } 
-  else 
+  }
+  else
      if (a < 700) {
        cout << "CASE 2";
      }
-} 
+}
 else {
   cout << "CASE 3";
 }
@@ -306,15 +306,15 @@ if (a > b){
   if (b > c){
     cout << "max = " << a << endl;
   } else if (a > c)
-    cout << "max = " << a << endl;    
+    cout << "max = " << a << endl;
   } else {
     cout << "max = " << c << endl;
   }
-} else //b >= a { 
+} else //b >= a {
   if (a > c){
     cout << "max = " << b << endl;
   } else if (b > c)
-    cout << "max = " << b << endl;    
+    cout << "max = " << b << endl;
   } else {
     cout << "max = " << c << endl;
   }
@@ -329,16 +329,16 @@ if (a > b){
 \begin{lstlisting}
 if (a > b){
   if (b > c || a > c){
-      cout << "max = " << a << endl;  
-  } else {   
-      cout << "max = " << c << endl;  
+      cout << "max = " << a << endl;
+  } else {
+      cout << "max = " << c << endl;
   }
 } else {
   if (a > c || b > c){
-      cout << "max = " << b << endl;  
-  } else {   
-      cout << "max = " << c << endl;  
-  }  
+      cout << "max = " << b << endl;
+  } else {
+      cout << "max = " << c << endl;
+  }
 }
 \end{lstlisting}
 
@@ -346,11 +346,11 @@ if (a > b){
 
 \begin{lstlisting}
 if (a > b && a > c){
-  cout << "max = " << a << endl; 
+  cout << "max = " << a << endl;
 } else if (b > a && b > c) {
-  cout << "max = " << b << endl; 
+  cout << "max = " << b << endl;
 } else {
-  cout << "max = " << c << endl; 
+  cout << "max = " << c << endl;
 }
 \end{lstlisting}
   \end{column}
@@ -364,24 +364,24 @@ if (a > b && a > c){
 \frametitle{Булеви (логически) операции AND ($\wedge$) и OR ($\vee$)}
 
 \begin{center}
-  
+
 
 \begin{tabular}{ c c }
 
 \begin{tabular}{ c | c  c }
-  \hline                        
-  \&\&  & true  & false \\ \hline  
+  \hline
+  \&\&  & true  & false \\ \hline
   true  & true  & false \\
   false & false & false \\
-  
+
 \end{tabular} &
 
 \begin{tabular}{ c | c  c }
-  \hline                        
-  ||  & true  & false \\ \hline  
+  \hline
+  ||  & true  & false \\ \hline
   true  & true  & true \\
   false & true & false \\
-  
+
 \end{tabular}
 
 \end{tabular}
@@ -419,7 +419,7 @@ if (D < 0){
 \end{frame}
 
 
-\subsection{For} 
+\subsection{For}
 
 \begin{frame}
 \centerline{Циклични процеси}
@@ -437,7 +437,7 @@ using namespace std;
 
 int main ()
 {
-  
+
   int a,b,c;  //DOUBLE!!!
 
   cout << "Please, input the value of a=";
@@ -446,7 +446,7 @@ int main ()
   cin >> b;
   cout << "Please, input the value of c=";
   cin >> c;
-  
+
   cout << "average=" << (a+b+c)/3 << endl;
 
   return 0;
@@ -454,7 +454,7 @@ int main ()
 }
 \end{lstlisting}
 
-\end{frame} 
+\end{frame}
 
 \begin{frame}[fragile]
 \frametitle{Пример: Средно аритметично на 10 числа}
@@ -466,7 +466,7 @@ using namespace std;
 
 int main ()
 {
-  
+
   int number, sum = 0;
 
 
@@ -485,7 +485,7 @@ int main ()
 }
 \end{lstlisting}
 
-\end{frame} 
+\end{frame}
 
 \begin{frame}[fragile]
 \frametitle{Пример: Средно аритметично на N числа}
@@ -497,7 +497,7 @@ using namespace std;
 
 int main ()
 {
-  
+
   int number, sum = 0, numbersCount;
 
   cout << "Numbers count = ";
@@ -516,10 +516,10 @@ int main ()
 }
 \end{lstlisting}
 
-\end{frame} 
+\end{frame}
 
 
-\subsection{Теория} 
+\subsection{Теория}
 
 \begin{frame}
 \centerline{Съвсем малко теория}
@@ -535,16 +535,16 @@ int main ()
 
 \begin{tabular}{ c | c | c  c}
    2 & 3 & 4 & = $2 * 10^2 + 3 * 10 + 4$ \\
-\end{tabular} 
+\end{tabular}
 
 \pause
 
 \begin{itemize}
-  \item Какво става, ако имаме не 10, а 16 цифри 
+  \item Какво става, ако имаме не 10, а 16 цифри
 \pause
   \item 0,1,2,3,4,5,6,7,8,9,... ???
  \pause
-  \item A,B,C,D,E,F 
+  \item A,B,C,D,E,F
 
 \end{itemize}
 
@@ -554,10 +554,10 @@ int main ()
 
 \begin{tabular}{ c | c | c  c}
    2 & 3 & 4 & = $2 * 16^2 + 3 * 16 + 4$ \\
-\end{tabular} 
+\end{tabular}
 
 \begin{itemize}
-  \item Ами ако имаме само две цифри? 
+  \item Ами ако имаме само две цифри?
 \end{itemize}
 
 
@@ -567,7 +567,7 @@ int main ()
 
 \begin{tabular}{ c | c | c  c}
    1 & 0 & 1 & = $1 * 2^2 + 0 * 2 + 1$ \\
-\end{tabular} 
+\end{tabular}
 
 \pause
 
@@ -606,7 +606,7 @@ int main ()
 
 
 \begin{center}
-  
+
 \includegraphics[width=9.5cm]{images/turing}
 
 \begin{itemize}
@@ -637,7 +637,7 @@ int main ()
     JUMP 3
     WRITE 0
     STOP
-    \end{verbatim}      
+    \end{verbatim}
     \end{flushleft}
   \end{column}
   \begin{column}{0.2\textwidth}
@@ -651,7 +651,7 @@ int main ()
     WRITE = 4
     STOP = 5
     \end{verbatim}
-      
+
     \end{flushleft}
 
   \end{column}
@@ -662,7 +662,7 @@ int main ()
     $P = 0, 1, 2, 4, 3, 3, 4, 0, 5$
 
     $N_P=2^0 \times 3^1 \times 5^2 \times 7^4 \times 11^4 \times 13^ 3 ...$
-      
+
     \end{flushleft}
 
   \end{column}
