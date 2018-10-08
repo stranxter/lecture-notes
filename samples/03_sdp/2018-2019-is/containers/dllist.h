@@ -29,6 +29,9 @@ public:
 
 private:
   dllnode<T> *first;
+
+  void copy (const DLList<T> &other);
+  void erase ();
 };
 
 #endif

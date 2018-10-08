@@ -42,6 +42,9 @@ int testDDList ()
 
   DLList<int> l1;
 
+
+  //test push && pop
+
   l1. push(0);
   l1. push(1);
   l1. push(2);
@@ -52,10 +55,31 @@ int testDDList ()
   l1.pop();
   assert (l1.top() == 0);
 
+  //test copy
+
   l1. push(1);
   l1. push(2);
 
   DLList<int> l2 (l1);
+  assert (l2.top() == 2);
+  l2.pop();
+  assert (l2.top() == 1);
+  l2.pop();
+  assert (l2.top() == 0);
+
+  assert (l1.top() == 2);
+  l1.pop();
+  assert (l1.top() == 1);
+  l1.pop();
+  assert (l1.top() == 0);
+
+  //test assignmrnt
+  l1. push(0);
+  l1. push(1);
+  l1. push(2);
+
+  l2 = l1;
+
   assert (l2.top() == 2);
   l2.pop();
   assert (l2.top() == 1);
