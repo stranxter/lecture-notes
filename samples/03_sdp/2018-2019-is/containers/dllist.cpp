@@ -1,5 +1,6 @@
 #include "dllist.h"
 #include <cassert>
+#include <iostream>
 
 template <class T>
 dllnode<T>::dllnode (const T &_data, dllnode *_next, dllnode *_prev)
@@ -10,6 +11,9 @@ template <class T>
 DLList<T>::DLList ()
 {
     first = nullptr;
+    crrsize = 0;
+    lastFoundIndex = -1;
+    lastFound = nullptr;
 }
 
 template <class T>
@@ -38,6 +42,12 @@ void DLList<T>::copy (const DLList<T> &other)
     nexttocopy = nexttocopy->next;
   }
 
+  crrsize = other.crrsize;
+
+  /*RESTART ITERATION*/
+  lastFoundIndex = -1;
+  lastFound = nullptr;
+
 }
 
 template <class T>
@@ -51,6 +61,11 @@ void DLList<T>::erase ()
     first = next;
   }
 
+  crrsize = 0;
+  /*RESTART ITERATION*/
+  lastFoundIndex = -1;
+  lastFound = nullptr;
+
 }
 
 
@@ -61,6 +76,9 @@ DLList<T>& DLList<T>::operator= (const DLList<T> &other)
   {
     erase();
     copy (other);
+    /*RESTART ITERATION*/
+    lastFoundIndex = -1;
+    lastFound = nullptr;
   }
   return *this;
 }
@@ -70,7 +88,30 @@ T& DLList<T>::operator [] (size_t index)
 {
   assert (first != nullptr);
   //само за да се компилира
-  return first->data;
+
+  if (lastFoundIndex != -1 &&
+      lastFoundIndex == index-1)
+  {
+      assert (lastFound != nullptr);
+      lastFound = lastFound->next;
+  } else if (lastFoundIndex != -1 &&
+             lastFoundIndex == index+1)
+  {
+      assert (lastFound != nullptr);
+      lastFound = lastFound->prev;
+  } else {
+    lastFound = first;
+    while (lastFound != nullptr && index > 0)
+    {
+      lastFound = lastFound->next;
+      index--;
+    }
+  }
+
+  //ИЗКЛЮЧЕНА ОПТИМИЗИАЦИЯ!
+  //lastFoundIndex = index;
+  assert (lastFound != nullptr);
+  return lastFound->data;
 }
 
 template <class T>
@@ -81,8 +122,14 @@ void DLList<T>::push (const T &data)
   first = new dllnode<T> (data,first,nullptr);
   if (first->next != nullptr)
   {
-    first->next->prev = first;    
+    first->next->prev = first;
   }
+
+  crrsize++;
+  /*RESTART ITERATION*/
+  lastFoundIndex = -1;
+  lastFound = nullptr;
+
 }
 
 template <class T>
@@ -100,9 +147,20 @@ void DLList<T>::pop ()
   dllnode<T> *next = first->next;
   delete first;
   first = next;
+  crrsize--;
+  /*RESTART ITERATION*/
+  lastFoundIndex = -1;
+  lastFound = nullptr;
+
 }
 template <class T>
 DLList<T>::~DLList ()
 {
   erase();
+}
+
+template <class T>
+size_t DLList<T>::size ()
+{
+  return crrsize;
 }

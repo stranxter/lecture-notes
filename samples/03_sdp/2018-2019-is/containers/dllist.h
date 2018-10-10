@@ -25,10 +25,18 @@ public:
   T& top ();
   void pop ();
 
+  size_t size ();
+
   ~DLList ();
 
 private:
   dllnode<T> *first;
+  size_t crrsize;
+
+  //----- ITERATION OPTIMIZATION -----
+  dllnode <T> *lastFound;
+  size_t lastFoundIndex;
+  //----------------------------------
 
   void copy (const DLList<T> &other);
   void erase ();
