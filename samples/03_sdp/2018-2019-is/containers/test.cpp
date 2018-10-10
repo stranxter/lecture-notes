@@ -3,6 +3,7 @@
 #include <cassert>
 #include <iostream>
 #include <ctime>
+#include <fstream>
 
 
 
@@ -119,9 +120,9 @@ void testTraversal()
 
 }
 
-const size_t testTraials = 2;
+const size_t testTraials = 5;
 
-void timeTestIteration (size_t nelements)
+void timeTestIteration (size_t nelements, ostream &out)
 {
   DLList<int> l;
   size_t i;
@@ -144,28 +145,22 @@ for (size_t trial = 0; trial < testTraials; trial++)
 clock_t end = std::clock();
 
 long ms = (double)(end-start)/(CLOCKS_PER_SEC/1000);
-std::cout << ms << std::endl;
+out << ms << std::endl;
 //time2
 //time2 - time1
 }
 
-void collectTimeData ()
+void collectTimeData (ostream &out)
 {
   for (uint i  = 1000; i < 10000; i += 1000)
   {
-    std::cout << i << ", ";
-    timeTestIteration(i);
+
+    std::cout << "Testing with " << i << " elements.";
+    out << i << ", ";
+    timeTestIteration(i,out);
+    std::cout << std::endl;
   }
 
-}
-
-template <class T>
-void printAll (const T &a)
-{
-  for (size_t c = 0; c < a.size(); c++)
-  {
-    std::cout << "a[" << c << "]=" << a[c] << std::endl;
-  }
 }
 
 int main ()
@@ -173,5 +168,8 @@ int main ()
   testDynArray();
   testDDList();
   testTraversal ();
-  collectTimeData ();
+
+  ofstream csvfile ("times.csv");
+
+  collectTimeData (csvfile);
 }
