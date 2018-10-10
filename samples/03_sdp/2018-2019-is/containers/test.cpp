@@ -122,7 +122,7 @@ void testTraversal()
 
 const size_t testTraials = 5;
 
-void timeTestIteration (size_t nelements, ostream &out)
+void timeTestIteration (size_t nelements, std::ostream &out)
 {
   DLList<int> l;
   size_t i;
@@ -150,7 +150,7 @@ out << ms << std::endl;
 //time2 - time1
 }
 
-void collectTimeData (ostream &out)
+void collectTimeData (std::ostream &out)
 {
   for (uint i  = 1000; i < 10000; i += 1000)
   {
@@ -169,7 +169,7 @@ int main ()
   testDDList();
   testTraversal ();
 
-  ofstream csvfile ("times.csv");
-
+  std::ofstream csvfile ("times.csv");
   collectTimeData (csvfile);
+  std::cout << "Results saved to times.csv." << std::endl;
 }
