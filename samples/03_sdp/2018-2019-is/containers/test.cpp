@@ -163,13 +163,89 @@ void collectTimeData (std::ostream &out)
 
 }
 
+/*template <class IT>
+void printAll (const IT &iterator)
+{
+
+  while (има още)
+    дай следващия;
+}*/
+
+
+template <class Iterator>
+void printAll (Iterator from, Iterator to)
+{
+  while (from != to)
+  {
+    std::cout << *from << std::endl;
+    ++from;
+  }
+}
+
+template <class Iterator>
+void testProgression (Iterator from,
+                      Iterator to,
+                      int startVal,
+                      int step,
+                      size_t nelements)
+{
+  for (size_t c = 0; c < nelements; c++)
+  {
+    assert (from != to);
+    assert (*from == startVal);
+    ++from;
+    startVal += step;
+  }
+
+  assert (!(from != to));
+
+}
+
+
+void testDynArrayIt ()
+{
+  const int nelements = 5;
+
+  DynArray<int> a(5);
+  DLList<int> l;
+
+
+  for (size_t c = 0; c < nelements; c++)
+  {
+    a[c] = c;
+    l.push (c);
+  }
+
+
+  printAll (a.begin(), a.end());
+  printAll (l.begin(), l.end());
+
+  testProgression (a.begin(),a.end(), 0, 1, nelements);
+  testProgression (l.begin(),l.end(), nelements-1, -1, nelements);
+
+  DLListIterator<int> it = l.end();
+
+  do
+  {
+    --it;
+    std::cout << *it << std::endl;
+  } while (it != l.begin());
+
+
+}
+
+
 int main ()
 {
   testDynArray();
   testDDList();
   testTraversal ();
 
+  /*
   std::ofstream csvfile ("times.csv");
   collectTimeData (csvfile);
   std::cout << "Results saved to times.csv." << std::endl;
+  */
+
+  testDynArrayIt ();
 }

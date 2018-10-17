@@ -4,6 +4,9 @@
 #include <cstddef>
 
 template <class T>
+class DynArrayIterator;
+
+template <class T>
 class DynArray
 {
 public:
@@ -16,13 +19,34 @@ public:
 
   size_t getSize () const;
 
+  DynArrayIterator<T> begin();
+  DynArrayIterator<T> end();
+
   ~DynArray ();
+
+  friend class DynArrayIterator<T>;
+
 private:
   T* data;
   size_t size;
 
   void copy (const DynArray<T> &other);
 
+};
+
+template <class T>
+class DynArrayIterator
+{
+public:
+  DynArrayIterator (DynArray<T> &da, bool toEnd = false);
+  T& operator * ();
+  DynArrayIterator<T>& operator ++ ();
+
+  bool operator != (const DynArrayIterator<T>&);
+
+private:
+  unsigned int currentElement;
+  DynArray<T>& arr;
 };
 
 

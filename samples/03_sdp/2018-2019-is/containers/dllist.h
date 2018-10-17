@@ -12,6 +12,9 @@ struct dllnode
 };
 
 template <class T>
+class DLListIterator;
+
+template <class T>
 class DLList
 {
 public:
@@ -27,10 +30,15 @@ public:
 
   size_t size ();
 
+  DLListIterator<T> begin();
+  DLListIterator<T> end();
+
+  friend class DLListIterator<T>;
+
   ~DLList ();
 
 private:
-  dllnode<T> *first;
+  dllnode<T> *first, *last;
   size_t crrsize;
 
   //----- ITERATION OPTIMIZATION -----
@@ -41,5 +49,24 @@ private:
   void copy (const DLList<T> &other);
   void erase ();
 };
+
+
+template <class T>
+class DLListIterator
+{
+public:
+  DLListIterator (DLList<T>&,bool=false);
+  T& operator * ();
+  DLListIterator<T>& operator ++ ();
+  DLListIterator<T>& operator -- ();
+
+  bool operator != (const DLListIterator<T>&);
+
+private:
+  DLList<T> &list;
+  dllnode<T> *currentElement;
+};
+
+
 
 #endif

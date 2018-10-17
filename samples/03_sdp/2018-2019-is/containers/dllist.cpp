@@ -14,6 +14,7 @@ DLList<T>::DLList ()
     crrsize = 0;
     lastFoundIndex = -1;
     lastFound = nullptr;
+    last = nullptr;
 }
 
 template <class T>
@@ -28,6 +29,7 @@ void DLList<T>::copy (const DLList<T> &other)
   if (other.first == nullptr)
   {
     first = nullptr;
+    last = nullptr;
     return;
   }
   first = new dllnode<T> (other.first->data,nullptr,nullptr);
@@ -43,6 +45,7 @@ void DLList<T>::copy (const DLList<T> &other)
   }
 
   crrsize = other.crrsize;
+  last = lastcreated;
 
   /*RESTART ITERATION*/
   lastFoundIndex = -1;
@@ -62,6 +65,7 @@ void DLList<T>::erase ()
   }
 
   crrsize = 0;
+  last = nullptr;
   /*RESTART ITERATION*/
   lastFoundIndex = -1;
   lastFound = nullptr;
@@ -126,6 +130,10 @@ void DLList<T>::push (const T &data)
   }
 
   crrsize++;
+  if (last == nullptr)
+  {
+    last = first;
+  }
   /*RESTART ITERATION*/
   lastFoundIndex = -1;
   lastFound = nullptr;
@@ -148,6 +156,10 @@ void DLList<T>::pop ()
   delete first;
   first = next;
   crrsize--;
+  if (first == nullptr)
+  {
+    last = nullptr;
+  }
   /*RESTART ITERATION*/
   lastFoundIndex = -1;
   lastFound = nullptr;
@@ -163,4 +175,66 @@ template <class T>
 size_t DLList<T>::size ()
 {
   return crrsize;
+}
+
+template <class T>
+DLListIterator<T> DLList<T>::begin()
+{
+  return DLListIterator<T> (*this);
+}
+
+template <class T>
+DLListIterator<T> DLList<T>::end()
+{
+  return DLListIterator<T> (*this,true);
+}
+
+
+
+template <class T>
+DLListIterator<T>::DLListIterator
+    (DLList<T> &l, bool toEnd):list (l)
+{
+  if (!toEnd)
+  {
+    currentElement = list.first;
+  } else {
+    currentElement = nullptr;
+  }
+}
+
+template <class T>
+T& DLListIterator<T>::operator * ()
+{
+  assert (currentElement != nullptr);
+  return currentElement->data;
+}
+
+template <class T>
+DLListIterator<T>& DLListIterator<T>::operator ++ ()
+{
+  assert (currentElement != nullptr);
+  currentElement = currentElement->next;
+  return *this;
+}
+
+template <class T>
+DLListIterator<T>& DLListIterator<T>::operator -- ()
+{
+  if (currentElement != nullptr)
+  {
+    currentElement = currentElement->prev;
+  } else {
+    currentElement = list.last;
+  }
+  assert (currentElement != nullptr);
+
+  return *this;
+}
+
+
+template <class T>
+bool DLListIterator<T>::operator != (const DLListIterator<T> &other)
+{
+  return currentElement != other.currentElement;
 }
