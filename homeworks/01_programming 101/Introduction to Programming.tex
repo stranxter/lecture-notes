@@ -11,11 +11,22 @@
 \usepackage[framemethod=tikz]{mdframed}
 \usepackage{enumitem}
 \usepackage{relsize}
+\usepackage{hyperref}
 
 
 \lstset{breaklines=true}
+
 \setenumerate[1]{label=\thesection.\arabic*.}
 \setenumerate[2]{label*=\arabic*.}
+
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+
 
 
 \author{\textit{email: kalin@fmi.uni-sofia.bg}}
@@ -27,10 +38,13 @@
 \begin{document}
 \maketitle
 
+\tableofcontents
+
+\pagebreak
 
 \small{Някои от задачите по-долу са решени в сборника \cite{sbornik}\textit{Магдалина Тодорова, Петър Армянов, Дафина Петкова, Калин Георгиев, ``Сборник от задачи по програмиране на C++. Първа част. Увод в програмирането''}. За задачите от сборника е посочена номерацията им от сборника.}
 
-\vspace{20px}
+\pagebreak
 
 
 \section {Увод, основи и примери}
