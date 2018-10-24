@@ -1,5 +1,7 @@
 #include "dynarray.cpp"
 #include "dllist.cpp"
+#include "slist.cpp"
+
 #include <cassert>
 #include <iostream>
 #include <ctime>
@@ -216,6 +218,7 @@ void testDynArrayIt ()
     l.push (c);
   }
 
+  assert (a.find(3) == 3);
 
   printAll (a.begin(), a.end());
   printAll (l.begin(), l.end());
@@ -234,6 +237,55 @@ void testDynArrayIt ()
 
 }
 
+void testBinSearch ()
+{
+  DynArray<int> a1(1);
+  a1[0] = 1;
+
+  assert (a1.find(1) == 0);
+  assert (a1.find(0) == -1);
+  assert (a1.find(2) == -1);
+
+  DynArray<int> a2(2);
+  a2[0] = 1;
+  a2[1] = 2;
+
+  assert (a2.find(1) == 0);
+  assert (a2.find(2) == 1);
+  assert (a2.find(0) == -1);
+  assert (a2.find(3) == -1);
+
+  DynArray<int> a3(3);
+  a3[0] = 1;
+  a3[1] = 2;
+  a3[2] = 3;
+
+  assert (a3.find(1) == 0);
+  assert (a3.find(2) == 1);
+  assert (a3.find(3) == 2);
+  assert (a3.find(0) == -1);
+  assert (a3.find(4) == -1);
+
+
+}
+
+void testSlist ()
+{
+  const int nelements = 30;
+
+  SList<int> l;
+  for (size_t c = 0; c < nelements; c++)
+  {
+    l.push (c);
+  }
+
+  std::cout << "--------SLIST--------\n";
+
+  printAll (l.begin(),l.end());
+
+  std::ofstream dotfile ("output.dot");
+  l.printDotty (dotfile);
+}
 
 int main ()
 {
@@ -248,4 +300,7 @@ int main ()
   */
 
   testDynArrayIt ();
+  testBinSearch();
+
+  testSlist ();
 }

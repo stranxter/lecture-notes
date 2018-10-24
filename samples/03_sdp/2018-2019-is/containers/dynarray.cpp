@@ -126,3 +126,32 @@ bool DynArrayIterator<T>::operator != (const DynArrayIterator<T> &other)
   return arr.data != other.arr.data ||
          currentElement != other.currentElement;
 }
+
+template <class T>
+size_t  DynArray<T>::find (const T& x)
+{
+  //приемаме, че елементите на масива са наредени
+  //в нарастващ ред
+
+  size_t left = 0,
+         right = size;
+
+  while (right-left > 1)
+  {
+    if (data[(left+right)/2] > x)
+    {
+      right = (left+right)/2;
+    } else if (data[(left+right)/2] < x)
+    {
+      left = (left+right)/2;
+    } else
+    {
+      return (left+right)/2;
+    }
+  }
+  if (right - left == 1 && data[(left+right)/2] == x)
+  {
+    return (left+right)/2;
+  }
+  return -1;
+}

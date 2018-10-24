@@ -19,6 +19,8 @@ public:
 
   size_t getSize () const;
 
+  size_t find (const T& x);
+
   DynArrayIterator<T> begin();
   DynArrayIterator<T> end();
 
