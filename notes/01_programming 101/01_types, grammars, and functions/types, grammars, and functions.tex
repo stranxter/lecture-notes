@@ -4,12 +4,12 @@
 
 \usepackage{listings}
 \usetheme{CambridgeUS}
-%\usepackage{beamerthemesplit}  % new 
+%\usepackage{beamerthemesplit}  % new
 \usepackage{enumitem}
-\usepackage{amsmath}                    % See geometry.pdf to learn the layout options. 
-\usepackage{amsthm}                   % See geometry.pdf to learn the layout options. There 
-\usepackage{amssymb}                    % See geometry.pdf to learn the layout options. 
-\usepackage[utf8]{inputenc} 
+\usepackage{amsmath}                    % See geometry.pdf to learn the layout options.
+\usepackage{amsthm}                   % See geometry.pdf to learn the layout options. There
+\usepackage{amssymb}                    % See geometry.pdf to learn the layout options.
+\usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage[english,bulgarian]{babel}
 
@@ -36,12 +36,12 @@
 
 
 \begin{document}
-\title[Увод в програмирането]{Типове, функции, граматики} 
-\author{Калин Георгиев} 
-\frame{\titlepage} 
+\title[Увод в програмирането]{Типове, функции, граматики}
+\author{Калин Георгиев}
+\frame{\titlepage}
 
 
-\section{Типове} 
+\section{Типове}
 
 
 \begin{frame}
@@ -72,13 +72,13 @@
 \begin{itemize}
   \item Авто къща
   \item Авто морга
-  \item Завод 
+  \item Завод
 \end{itemize}
 
   \end{column}
   \begin{column}{0.6\textwidth}
 
-\includegraphics[width=6.4cm]{images/parts} 
+\includegraphics[width=6.4cm]{images/parts}
 
   \end{column}
 \end{columns}
@@ -102,9 +102,9 @@ $127_{10}$= & 1 & 1 & 1& 1& 1& $1_{2}$ \\\hline
 \end{tabular}
 
 \begin{tabular}{c c |c | c | c | c | c | c }
-$128_{10}$= & 1 & 0 & 0& 0& 0 & 0 & $0_{2}$ 
+$128_{10}$= & 1 & 0 & 0& 0& 0 & 0 & $0_{2}$
 \end{tabular}
-  
+
 \pause
 
 \begin{itemize}
@@ -194,7 +194,7 @@ int main ()
 \end{frame}
 
 
-\section{Функции} 
+\section{Функции}
 
 \begin{frame}
 \centerline{Функции. Подпрограми}
@@ -206,7 +206,7 @@ int main ()
 
 \begin{itemize}
   \item Дефиниционна област (Domain)
-  \item Множество на стойностите (Range) 
+  \item Множество на стойностите (Range)
   \item $f:\mathbf{Domain} \rightarrow \mathbf{Range}$
 \end{itemize}
 
@@ -215,7 +215,7 @@ int main ()
 $f(x) = x^2$
 
 \begin{center}
-\includegraphics[width=7cm]{images/square}  
+\includegraphics[width=7cm]{images/square}
 \end{center}
 
 
@@ -227,7 +227,7 @@ $f(x) = x^2$
 $f(x,y) = x^2+y^2$
 
 \begin{center}
-\includegraphics[width=7cm]{images/paraboloid}  
+\includegraphics[width=7cm]{images/paraboloid}
 \end{center}
 
 \end{frame}
@@ -239,7 +239,7 @@ $f(x,y) = x^2+y^2$
 \frametitle{Подпрограми}
 
 \begin{center}
-\includegraphics[width=7cm]{images/subprog}  
+\includegraphics[width=7cm]{images/subprog}
 \end{center}
 
 
@@ -278,7 +278,7 @@ $s(a,b,c)=\sqrt{p(p-a)(p-b)(p-c)}$
 
 
 \begin{center}
-\includegraphics[width=6cm]{images/heron}  
+\includegraphics[width=6cm]{images/heron}
 \end{center}
 
 
@@ -317,7 +317,7 @@ double triangleSurface (double a, double b, double c)
 \begin{lstlisting}
 int main ()
 {
-  
+
   double a,b,c,a1,b1,c1;
 
   cout << "Sides of ABC:";
@@ -328,7 +328,7 @@ int main ()
   if (triangleSurface(a,b,c) < triangleSurface (a1,b1,c1))
   {
     cout << "Yes, ABC takes less space!" << endl;
-  } else {    
+  } else {
     cout << "No, ABC does not take less space!" << endl;
   }
 
@@ -356,7 +356,7 @@ int main ()
 \item sin(x), cos(x), tan(x), asin(x), acos(x), atan(x) exp(x), log(x), log10(x)
 \item ceil(x), floor(x)
 \item sqrt(x), pow(x, n)
-  
+
 \end{itemize}
 
 
@@ -364,14 +364,14 @@ int main ()
 
 
 
-\section{Теория} 
+\section{Теория}
 
 \begin{frame}
 \centerline{Съвсем малко теория}
 \end{frame}
 
 
-\subsection{Езици} 
+\subsection{Езици}
 
 
 \begin{frame}[fragile]
@@ -388,7 +388,7 @@ the student lies to the teacher.
 \begin{itemize}
   \item Азбука: $\Sigma=\{a..z\}$
   \item Нетерминални символи: $\{\mathbf{Verb},\mathbf{Object},\mathbf{Subject}, \mathbf{Prep}, \mathbf{Sentence}\}$
-  \item Продукционни правила: 
+  \item Продукционни правила:
 \end{itemize}
 
 \pause
@@ -488,7 +488,7 @@ $\mathbf{Sentence} \rightarrow the \quad cat \quad meows  \quad at \quad the \qu
 
 \begin{center}
 \vspace*{-40pt}
-\includegraphics[width=12.5cm]{images/stree}  
+\includegraphics[width=12.5cm]{images/stree}
 \end{center}
 
 
@@ -502,7 +502,8 @@ $\mathbf{Sentence} \rightarrow the \quad cat \quad meows  \quad at \quad the \qu
 \item $<digit> ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 $
 \item $<unsigned int> ::= <digit>^+$
 \item $<integer> ::= [+|-] <unsigned int>$
-\item $<identifier> ::= \_ (<letter> | <digit> | \_ )^* | <leter> (<letter> | <digit> | \_ )^* $
+\item $<identifier> ::= \_ (<letter> | <digit> | \_ )^* $
+\item $<identifier> ::= <leter> (<letter> | <digit> | \_ )^* $
 \end{itemize}
 
 \end{frame}
@@ -519,5 +520,3 @@ $\mathbf{Sentence} \rightarrow the \quad cat \quad meows  \quad at \quad the \qu
 
   \end{column}
 \end{columns}
-
-
