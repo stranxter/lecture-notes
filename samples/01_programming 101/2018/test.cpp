@@ -190,6 +190,8 @@ int main ()
 
   */
 
+  /*
+
   char a1[50] = "Hello";
   char a2[30] = "Students of FMI";
 
@@ -203,8 +205,7 @@ int main ()
   std::cout << a2 << std::endl;
 
 
-
-
+ */
 
   return 0;
 }
