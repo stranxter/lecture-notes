@@ -4,6 +4,21 @@
 
 using namespace std;
 
+/*
+Функция polygon (n,x,y,radius): Рисуване на многоъгълник
+параметър n: брой върхове на многоъгълника
+параметри x,y: координати на центъра на многоъгълника
+параметър radius: разстояние от центъра до върховете
+*/
+void polygon (int n, double x, double y, double radius)
+{
+  for (int side = 0; side < n; side++)
+  {
+     drawLine (radius*cos(side*2.0*M_PI/n)+x, radius*sin(side*2.0*M_PI/n)+y,
+               radius*cos((side+1)*2.0*M_PI/n)+x,radius*sin((side+1)*2.0*M_PI/n)+y);
+  }
+}
+
 void square (double x, double y, double diag, double ang)
 {
 	setColor (255,255,255);
@@ -34,7 +49,7 @@ void myDrawLine (double x1,double y1,double x2,double y2)
 int main ()
 {//scklndskl
 
-
+/*
 	setColor (0,255,0);
 
 	myDrawLine (200,200,0,150);
@@ -63,19 +78,38 @@ int main ()
 	}
 
 	setColor (255,0,0);
+*/
+	setColor (255,255,255);
 
-	for (int i = 0; i < 300; i++)
+	const double //scaleX: коефициент на скалиране по X
+	             scaleX = 2.0,
+	             //y0: ордината на началната точка
+	             y0 = 100,
+	             //scaleY: коефициент на скалиране по Y
+	             scaleY = 50.0,
+	             //stepX: стъпка за нарастване на аргумента
+	             stepX = 0.05;
+	             //nsegments: брой сегменти от кривата
+	const int nsegments = 300;
+
+	for (int i = 0; i < nsegments; i++)
 	{
-
-		drawPixel (i*2,100+50*sin(i/20.0));
-    myDrawLine (i*2,100+50*sin(i/20.0),(i+1)*2,100+50*sin((i+1)/20.0));
+	    drawLine (scaleX*i,y0+scaleY*sin(stepX*i),
+	              scaleX*(i+1),y0+scaleY*sin(stepX*(i+1)));
 	}
-
+/*
 	for (int i = 0; i < 20; i++)
 	{
-		square (200,200,75,(M_PI/20)*i);		
+		square (200,200,75,(M_PI/20)*i);
 	}
 
+	setColor (255,255,255);
+
+	for (int i = 3; i < 20; i++)
+	{
+			polygon (i,200,200,50+5*i);
+	}
+*/
 
 	//drawLine (0,0,100,100);
 
@@ -85,10 +119,3 @@ int main ()
 	cin.get();
 	return 0;
 }
-
-/*
-double superComplexFunction (double x)
-{
-	return x*x/200+sin(x)*12-cos(x)*cos(x)*18*x/100;
-}
-*/
