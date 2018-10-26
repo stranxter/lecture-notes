@@ -228,13 +228,13 @@
   \textbf{Упътване за решаване на задачите:}
   \vspace{5}
 
-  Примерно решение на задачата за чертане на графика на функцията $y=sin(x)$: Рисуват се отсечки между последователни точки от графиката на функцията, като всяка следваща точка се получава като към абсцисата на предишната се добавя числото \code{stepX}. Тъй като $sin(x)\in[-1,1]$, ако директно визуализираме точките на получените по този начин ординати, те ще са ``сгъстени'' около правата $y=0$ и резултатът няма да е добър. Поради това, координатите на получените  точки от кривата се умножават по \code{scaleX} и \code{scaleY} съответно, за да се ``разпъне'' графиката по двете оси.\\
+  Примерно решение на задачата за чертане на графика на функцията $y=sin(x)$: Рисуват се отсечки между последователни точки от графиката на функцията, като всяка следваща точка се получава като увеличаваме стойността на аргумента $x$ с числото \code{stepX}. Тъй като $sin(x)\in[-1,1]$, ако директно визуализираме точките на получените по този начин координати $(x,sin(x))$, те ще са ``сгъстени'' около правата $y=0$ и резултатът няма да е добър. Поради това, координатите на получените  точки от кривата се умножават по \code{scaleX} и \code{scaleY} съответно, $(x.scaleX,sin(x).scaleY)$, за да се ``разпъне'' графиката по двете оси.\\
 
   \begin{mdframed}[hidealllines=true,backgroundcolor=lightgray!20]
   \relscale{0.8}
   \begin{verbatim}
   const double //scaleX: коефициент на скалиране по X
-               scaleX = 2.0,
+               scaleX = 40.0,
                //y0: ордината на началната точка
                y0 = 100,
                //scaleY: коефициент на скалиране по Y
@@ -246,8 +246,11 @@
 
   for (int i = 0; i < nsegments; i++)
   {
-      drawLine (scaleX*i,y0+scaleY*sin(stepX*i),
-                scaleX*(i+1),y0+scaleY*sin(stepX*(i+1)));
+       double x     = scaleX*i*stepX,
+              xnext = scaleX*(i+1)*stepX,
+              y     = y0+scaleY*sin(stepX*i),
+              ynext = y0+scaleY*sin(stepX*(i+1));
+       drawLine (x,y,xnext,ynext);
   }
   \end{verbatim}
   \end{mdframed}
@@ -258,17 +261,23 @@
    \vspace{10}
    \includegraphics[width=3cm]{images/graph_sine} &
    \vspace{10}
-   \includegraphics[width=3cm]{images/graph_4_polygons} \\
-   (a)Графика на $y=sin(x)$ &
-   (b)Четири многоъгълника, нарисувани един върху друг с нарастващ радиус   \\%\hline
+   \includegraphics[width=3cm]{images/graph_sine_coarse}\\
+   (a)Графика на $y=sin(x)$, нарисувана с 300 отсечки&
+   (b)Графика на $y=sin(x)$ с 10 отсечки. Нарисувани са отсечки между точките от графиката на функцията и абсцисата\\%\hline
    \vspace{10}
-   \includegraphics[width=3cm]{images/graph_16_polygons}  &
+   \includegraphics[width=3cm]{images/graph_4_polygons}  &
    \vspace{10}
-   \includegraphics[width=3cm]{images/graph_twentygon}  \\
-   (c)Шестнадесет многоъгълника, нарисувани един върху друг с нарастващ радиус
+   \includegraphics[width=3cm]{images/graph_16_polygons}  \\
+   (c)Четири многоъгълника, нарисувани един върху друг с нарастващ радиус
    \vspace{10}&
-   (d)Многоъгълник с 20 върха, приближаващ окръжност
-   \vspace{10}  \\\hline
+   (d)Шестнадесет многоъгълника, нарисувани един върху друг с нарастващ радиус
+   \vspace{10}  \\%\hline
+   \vspace{10}
+   \includegraphics[width=3cm]{images/graph_twentygon}   &
+    \\
+    (e)Многоъгълник с 20 върха, приближаващ окръжност
+   \vspace{10} &
+   \\\hline
   \end{tabular}
   \end{center}
 

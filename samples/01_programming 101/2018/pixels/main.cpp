@@ -82,21 +82,30 @@ int main ()
 	setColor (255,255,255);
 
 	const double //scaleX: коефициент на скалиране по X
-	             scaleX = 2.0,
+	             scaleX = 40.0,
 	             //y0: ордината на началната точка
 	             y0 = 100,
 	             //scaleY: коефициент на скалиране по Y
 	             scaleY = 50.0,
 	             //stepX: стъпка за нарастване на аргумента
-	             stepX = 0.05;
+	             stepX = 1;
 	             //nsegments: брой сегменти от кривата
-	const int nsegments = 300;
+	const int nsegments = 15;
 
 	for (int i = 0; i < nsegments; i++)
 	{
-	    drawLine (scaleX*i,y0+scaleY*sin(stepX*i),
-	              scaleX*(i+1),y0+scaleY*sin(stepX*(i+1)));
+      double x     = scaleX*i*stepX,
+             xnext = scaleX*(i+1)*stepX,
+             y     = y0+scaleY*sin(stepX*i),
+             ynext = y0+scaleY*sin(stepX*(i+1));
+
+      setColor (255,255,255);
+      drawLine (x,y,xnext,ynext);
+      setColor (255,0,0);
+      drawLine (x,y0,x,y);
 	}
+  setColor (255,0,0);
+  drawLine (0,y0,800,y0);
 /*
 	for (int i = 0; i < 20; i++)
 	{
