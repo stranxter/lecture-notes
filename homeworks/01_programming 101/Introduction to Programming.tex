@@ -12,6 +12,9 @@
 \usepackage{enumitem}
 \usepackage{relsize}
 \usepackage{hyperref}
+\usepackage[font=small]{caption}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning,calc}
 
 
 \lstset{breaklines=true}
@@ -29,6 +32,12 @@
     urlcolor=black
 }
 
+\tikzset{
+block/.style = {draw, fill=white, rectangle,align = center},
+entry/.style = {draw, fill=black, circle, radius=3em},
+condition/.style = {draw, fill=white, diamond, align = center,node distance=3cm},
+fork/.style = {draw, fill=black, circle,inner sep=1pt},
+}
 
 
 \author{\textit{email: kalin@fmi.uni-sofia.bg}}
@@ -170,20 +179,81 @@
 	2: INC 2
 	3: INC 2
 	4: JUMP 0
-
 	\end{verbatim}
 
 	След приключване на програмата, първите три клетки на машината ще имат стойности 10, 10, 20.
 
 \end{mdframed}
 
-Задачи:
-
 \begin{enumerate}[resume]
 	\item Нека паметта на МНР е инициалирана с редицата $m,n,0,0,...$. Да се напише програма на МНР, след изпълнението на която клетката с адрес 2 съдържа числото $m+n$.
 	\item Нека паметта на МНР е инициалирана с редицата $m,n,0,0,...$. Да се напише програма на МНР, след изпълнението на която клетката с адрес 2 съдържа числото $m \times n$.
 	\item Нека паметта на МНР е инициалирана с редицата $m,n,0,0,...$. Да се напише програма на МНР, след изпълнението на която клетката с адрес 2 съдържа числото 1 тогава и само тогава, когато $m>n$ и числото 0 във всички останали случаи.
 \end{enumerate}
+
+\begin{mdframed}[hidealllines=true,backgroundcolor=gray!20]
+\textbf{Упътване:} На Фигура \ref{fig:mnr}~(a) е показана блок схема на програма, изпозлваща само операторите \code{=}, \code{==}, \code{++} и \code{if}, която намира в променливата \code{result} сумата на променливите $a_0$ и $a_1$. $a_0$ и $a_1$ считаме за дадени. Променливата \code{count} се иницилиаира с 0, а \code{result} - с $a_0$. В цикъл се добавя по една единица към \code {count} и \code{result} дотогава, докато \code{count} достигне стойността на $a_1$. По този начин, към \code{result} се добавят $a_1$ на брой единици, т.е. стойността ѝ се увеличава с $a_1$ спрямо налчалната ѝ стойност $a_0$.
+
+На Фигура \ref{fig:mnr}~(b) е показана същата програма, като операторите от първата са заменени със сътответните им инструцкии на МНР. Резултатът от програмата се получава в клетката $m[2]$, а за брояч се ползва клетката $m[3]$. На блок схемата са дадени поредните номера на инструкциите в окончателната програмата на МНР:
+\begin{verbatim}
+0:MOVE 0 2
+1:ZERO 3
+2:JUMP 1 3 6
+3:INC 2
+4:INC 3
+5:JUMP 3
+\end{verbatim}
+\end{mdframed}
+
+\begin{figure}
+\relscale{0.7}
+  \begin{tabular}{p{7cm} p{7cm}}
+      \begin{tikzpicture}[auto, node distance=1.5cm,>=latex']
+      \node [entry, name=start](start){};
+      \node [block,name=init, below of = start] (init)
+         {\code{result:=$a_0$}\\\code{counter:=0}};
+      \node [fork,name=test1fork,below of = init,node distance = 1cm]{};
+      \node [condition,name=test1, below of = test1fork,node distance = 2cm] (test1) {\code{counter==$a_1$}};
+      \node [block,name=inc,right of = test1, node distance = 3cm] (inc) {\code{$a_0$++}\\\code{counter++}};
+      \node [entry, name=end, below of = test1, node distance = 2.5cm](end){};
+      \draw [->] (start) -- (init);
+      \draw [-] (init) -- (test1fork);
+      \draw [->] (test1fork) -- (test1);
+      \draw [->] (test1) -- node{no} (inc);
+      \draw [->] (inc) |- (test1fork);
+      \draw [->] (test1) -- node []{yes}(end);
+      \end{tikzpicture}
+
+      &
+
+      \begin{tikzpicture}[auto, node distance=1.5cm,>=latex']
+      \node [entry, name=start](start){};
+      \node [block,name=init, below of = start, align = left] (init)
+         {\code{0:MOVE 0 2}\\\code{1:ZERO 3}};
+      \node [fork,name=test1fork,below of = init,node distance = 1cm]{};
+      \node [condition,name=test1, below of = test1fork,node distance = 2cm] (test1) {\code{2:JUMP 1 3 6}};
+      \node [block,name=inc,right of = test1, node distance = 3cm,align = left] (inc) {\code{3:INC 2}\\\code{4:INC 3}\\\code{5:JUMP 3}};
+      \node [entry, name=end, below of = test1, node distance = 2.5cm](end){};
+      \draw [->] (start) -- (init);
+      \draw [-] (init) -- (test1fork);
+      \draw [->] (test1fork) -- (test1);
+      \draw [->] (test1) -- node{} (inc);
+      \draw [->] (inc) |- (test1fork);
+      \draw [->] (test1) -- node []{}(end);
+      \end{tikzpicture}
+
+      \\
+      (a)Програма за сумиране на числата $a_0$ и $a_1$ с изпозлване само на операторите \code{=}, \code{==}, \code{++} и \code{if}.
+      &
+      (b)Програма за сумиране на клетките $m[0]$ и $m[1]$ с инструкции на МНР.
+  \end{tabular}
+
+  \caption{Блок схеми на програма за сумиране на числа}
+  \label{fig:mnr}
+\end{figure}
+
+
+
 
 \pagebreak
 
@@ -222,38 +292,9 @@
     \item \code{drawLine (x1,y1,x2,y2)}: Рисува отсечка, свързваща точките с екранни координати $(x_1,y_1)$ и $(x_2,y_2)$.
     \item \code{updateGraphics()}: Извиква се веднъж в края на програмата, за да се изобрази нарисуваното с горните примитиви.
   \end{itemize}
+\end{mdframed}
 
-  \\
-  \vspace{5}
-  \textbf{Упътване за решаване на задачите:}
-  \vspace{5}
-
-  Примерно решение на задачата за чертане на графика на функцията $y=sin(x)$: Рисуват се отсечки между последователни точки от графиката на функцията, като всяка следваща точка се получава като увеличаваме стойността на аргумента $x$ с числото \code{stepX}. Тъй като $sin(x)\in[-1,1]$, ако директно визуализираме точките на получените по този начин координати $(x,sin(x))$, те ще са ``сгъстени'' около правата $y=0$ и резултатът няма да е добър. Поради това, координатите на получените  точки от кривата се умножават по \code{scaleX} и \code{scaleY} съответно, $(x.scaleX,sin(x).scaleY)$, за да се ``разпъне'' графиката по двете оси.\\
-
-  \begin{mdframed}[hidealllines=true,backgroundcolor=lightgray!20]
-  \relscale{0.8}
-  \begin{verbatim}
-  const double //scaleX: коефициент на скалиране по X
-               scaleX = 40.0,
-               //y0: ордината на началната точка
-               y0 = 100,
-               //scaleY: коефициент на скалиране по Y
-               scaleY = 50.0,
-               //stepX: стъпка за нарастване на аргумента
-               stepX = 0.05;
-               //nsegments: брой сегменти от кривата
-  const int nsegments = 300;
-
-  for (int i = 0; i < nsegments; i++)
-  {
-       double x     = scaleX*i*stepX,
-              xnext = scaleX*(i+1)*stepX,
-              y     = y0+scaleY*sin(stepX*i),
-              ynext = y0+scaleY*sin(stepX*(i+1));
-       drawLine (x,y,xnext,ynext);
-  }
-  \end{verbatim}
-  \end{mdframed}
+\begin{figure}
   \begin{center}
   \relscale{0.7}
   \begin{tabular}{|p{5.2cm}p{5.2cm}|}
@@ -281,34 +322,9 @@
   \end{tabular}
   \end{center}
 
-  \begin{center}
-  \relscale{0.8}
-  Фигура 2. Примерни резултати от решенията на някои задачи
-  \end{center}
-
-  \item Примерно решение на задачата за чертане на многоъгълник: Върховете на мнгоъгълника получаваме, като започнем с точката с координати $(x+radius,y+radius)$ и получаваме всяка следваща точка като ``завъртим'' предишната около $(x,y)$ с $2\pi/n$ радиана, където $n$ е броят на върховете на многоъгълника. Получените по този начин точки се съединияват с отсечки.\\
-
-  \begin{mdframed}[hidealllines=true,backgroundcolor=lightgray!20]
-  \relscale{0.8}
-  \begin{verbatim}
-  /*
-  Функция polygon (n,x,y,radius): Рисуване на многоъгълник
-  параметър n: брой върхове на многоъгълника
-  параметри x,y: координати на центъра на многоъгълника
-  параметър radius: разстояние от центъра до върховете
-  */
-  void polygon (int n, double x, double y, double radius)
-  {
-    for (int side = 0; side < n; side++)
-    {
-       drawLine (radius*cos(side*2.0*M_PI/n)+x, radius*sin(side*2.0*M_PI/n)+y,
-                 radius*cos((side+1)*2.0*M_PI/n)+x,radius*sin((side+1)*2.0*M_PI/n)+y);
-    }
-  }
-  \end{verbatim}
-  \end{mdframed}
-
-  \end{mdframed}
+  \caption{Примерни резултати от решенията на някои задачи}
+  \label{fig:drawings}
+\end{figure}
 
 
 
@@ -332,15 +348,73 @@
 		\item Елипса с център дадени $(x,y)$ и радиуси дадени $r_1$ и $r_2$
 	\end{itemize}
 
+  \begin{mdframed}[hidealllines=true,backgroundcolor=gray!20]
+    \textbf{Упътване за решаване на задачите:}
+    \vspace{5}
 
-	\item Да се нарисува програмно котката Pusheen \cite{pusheen}.
+    \begin{itemize}
 
-	\begin{flushleft}
+    \item Примерно решение на задачата за чертане на графика на функцията $y=sin(x)$: Рисуват се отсечки между последователни точки от графиката на функцията, като всяка следваща точка се получава като увеличаваме стойността на аргумента $x$ с числото \code{stepX}. Тъй като $sin(x)\in[-1,1]$, ако директно визуализираме точките на получените по този начин координати $(x,sin(x))$, те ще са ``сгъстени'' около правата $y=0$ и резултатът няма да е добър. Поради това, координатите на получените  точки от кривата се умножават по \code{scaleX} и \code{scaleY} съответно, $(x.scaleX,sin(x).scaleY)$, за да се ``разпъне'' графиката по двете оси. (Вж. Фигура \ref{fig:drawings})\\
+
+    \begin{mdframed}[hidealllines=true,backgroundcolor=lightgray!20]
+    \relscale{0.8}
+    \begin{verbatim}
+    const double //scaleX: коефициент на скалиране по X
+                 scaleX = 40.0,
+                 //y0: ордината на началната точка
+                 y0 = 100,
+                 //scaleY: коефициент на скалиране по Y
+                 scaleY = 50.0,
+                 //stepX: стъпка за нарастване на аргумента
+                 stepX = 0.05;
+                 //nsegments: брой сегменти от кривата
+    const int nsegments = 300;
+
+    for (int i = 0; i < nsegments; i++)
+    {
+         double x     = scaleX*i*stepX,
+                xnext = scaleX*(i+1)*stepX,
+                y     = y0+scaleY*sin(stepX*i),
+                ynext = y0+scaleY*sin(stepX*(i+1));
+         drawLine (x,y,xnext,ynext);
+    }
+    \end{verbatim}
+    \end{mdframed}
+
+    \item Примерно решение на задачата за чертане на многоъгълник: Върховете на мнгоъгълника получаваме, като започнем с точката с координати $(x+radius,y+radius)$ и получаваме всяка следваща точка като ``завъртим'' предишната около $(x,y)$ с $2\pi/n$ радиана, където $n$ е броят на върховете на многоъгълника. Получените по този начин точки се съединияват с отсечки. (Вж. Фигура \ref{fig:drawings})\\
+
+    \begin{mdframed}[hidealllines=true,backgroundcolor=lightgray!20]
+    \relscale{0.8}
+    \begin{verbatim}
+    /*
+    Функция polygon (n,x,y,radius): Рисуване на многоъгълник
+    параметър n: брой върхове на многоъгълника
+    параметри x,y: координати на центъра на многоъгълника
+    параметър radius: разстояние от центъра до върховете
+    */
+    void polygon (int n, double x, double y, double radius)
+    {
+      for (int side = 0; side < n; side++)
+      {
+         drawLine (radius*cos(side*2.0*M_PI/n)+x, radius*sin(side*2.0*M_PI/n)+y,
+                   radius*cos((side+1)*2.0*M_PI/n)+x,radius*sin((side+1)*2.0*M_PI/n)+y);
+      }
+    }
+    \end{verbatim}
+    \end{itemize}
+    \end{mdframed}
+
+    \end{mdframed}
+
+	\item Да се нарисува програмно котката Pusheen на Фигура~\ref{fig:pusheen} (вж. \cite{pusheen}).
+
+  \begin{figure}
+  \centering
 	\includegraphics[width=10cm]{images/pusheen}
+  \caption {Pusheen the cat. Фигурата е от \cite{pusheen}}
+  \label{fig:pusheen}
+  \end{figure}
 
-	\relscale{0.8}
-	Фигура 1. Pusheen the cat. Фигурата е от \cite{pusheen}
-	\end{flushleft}
 
   \item(*) \textit{Следната задача илюстрира метода на трапеците (Trapezoidal rule) за приближено изчисление на определени интеграли:}
 
