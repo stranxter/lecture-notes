@@ -12,10 +12,11 @@
 \usepackage{enumitem}
 \usepackage{relsize}
 \usepackage{hyperref}
-\usepackage[font=small]{caption}
+\usepackage{caption}
 \usepackage{tikz}
 \usetikzlibrary{shapes,arrows,positioning,calc}
 
+\captionsetup{font=footnotesize}
 
 \lstset{breaklines=true}
 
@@ -349,12 +350,7 @@ fork/.style = {draw, fill=black, circle,inner sep=1pt},
 	\end{itemize}
 
   \begin{mdframed}[hidealllines=true,backgroundcolor=gray!20]
-    \textbf{Упътване за решаване на задачите:}
-    \vspace{5}
-
-    \begin{itemize}
-
-    \item Примерно решение на задачата за чертане на графика на функцията $y=sin(x)$: Рисуват се отсечки между последователни точки от графиката на функцията, като всяка следваща точка се получава като увеличаваме стойността на аргумента $x$ с числото \code{stepX}. Тъй като $sin(x)\in[-1,1]$, ако директно визуализираме точките на получените по този начин координати $(x,sin(x))$, те ще са ``сгъстени'' около правата $y=0$ и резултатът няма да е добър. Поради това, координатите на получените  точки от кривата се умножават по \code{scaleX} и \code{scaleY} съответно, $(x.scaleX,sin(x).scaleY)$, за да се ``разпъне'' графиката по двете оси. (Вж. Фигура \ref{fig:drawings})\\
+    \textbf {Упътване към задачата за чертане на графика на функцията $y=sin(x)$:} Рисуват се отсечки между последователни точки от графиката на функцията, като всяка следваща точка се получава като увеличаваме стойността на аргумента $x$ с числото \code{stepX}. Тъй като $sin(x)\in[-1,1]$, ако директно визуализираме точките на получените по този начин координати $(x,sin(x))$, те ще са ``сгъстени'' около правата $y=0$ и резултатът няма да е добър. Поради това, координатите на получените  точки от кривата се умножават по \code{scaleX} и \code{scaleY} съответно, $(x.scaleX,sin(x).scaleY)$, за да се ``разпъне'' графиката по двете оси. (Вж. Фигура \ref{fig:drawings})\\
 
     \begin{mdframed}[hidealllines=true,backgroundcolor=lightgray!20]
     \relscale{0.8}
@@ -381,7 +377,11 @@ fork/.style = {draw, fill=black, circle,inner sep=1pt},
     \end{verbatim}
     \end{mdframed}
 
-    \item Примерно решение на задачата за чертане на многоъгълник: Върховете на мнгоъгълника получаваме, като започнем с точката с координати $(x+radius,y)$ и получаваме всяка следваща точка като ``завъртим'' предишната около $(x,y)$ с $2\pi/n$ радиана, където $n$ е броят на върховете на многоъгълника. Получените по този начин точки се съединияват с отсечки. (Вж. Фигура \ref{fig:drawings})\\
+    \end{mdframed}
+
+    \begin{mdframed}[hidealllines=true,backgroundcolor=gray!20]
+
+    \textbf {Упътване към задачата за чертане на многоъгълник:} Върховете на мнгоъгълника получаваме, като започнем с точката с координати $(x+radius,y)$ и получаваме всяка следваща точка като ``завъртим'' предишната около $(x,y)$ с $2\pi/n$ радиана, където $n$ е броят на върховете на многоъгълника. Получените по този начин точки се съединияват с отсечки. (Вж. Фигура \ref{fig:drawings} и Фигура \ref{fig:pentagon}.)\\
 
     \begin{mdframed}[hidealllines=true,backgroundcolor=lightgray!20]
     \relscale{0.8}
@@ -396,15 +396,58 @@ fork/.style = {draw, fill=black, circle,inner sep=1pt},
     {
       for (int side = 0; side < n; side++)
       {
-         drawLine (radius*cos(side*2.0*M_PI/n)+x, radius*sin(side*2.0*M_PI/n)+y,
-                   radius*cos((side+1)*2.0*M_PI/n)+x,radius*sin((side+1)*2.0*M_PI/n)+y);
+         drawLine (radius*cos(side*2.0*M_PI/n)+x,
+                   radius*sin(side*2.0*M_PI/n)+y,
+                   radius*cos((side+1)*2.0*M_PI/n)+x,
+                   radius*sin((side+1)*2.0*M_PI/n)+y);
       }
     }
     \end{verbatim}
-    \end{itemize}
     \end{mdframed}
 
     \end{mdframed}
+
+    \begin{figure}
+    \centering
+    \relscale{0.7}
+
+        \begin{tikzpicture}[auto,>=latex']
+        \node [fork, name=center, fill = red] (center) at(4,4){};
+        \node [below of = center,node distance = 0.5cm] {\small{$(x_0,y_0)$}};
+        %(cos 0, sin 0)
+        \node [fork, name=v0] (v0) at(7,4) {};
+        \node [right of = v0, node distance=2.5cm] {\small{$(x_0+r.cos(0),y_0+r.sin(0))$}};
+        %cos 2Pi/5, sin 2pi/5
+        \node [fork, name=v1] (v1) at(4.927,6.853) {};
+        \node [above of = v1,node distance = 0.5cm] {\small{$(x_0+r.cos(\frac{2\pi}{5}),y_0+r.sin(\frac{2\pi}{5}))$}};
+        %cos 2*2Pi/5, sin 2*2pi/5
+        \node [fork, name=v2] (v2) at(1.573,5.763) {};
+        %cos 3*2Pi/5, sin 3*2pi/5
+        \node [fork, name=v3] (v3) at(1.573,2.237) {};
+        %cos 4*2Pi/5, sin 4*2pi/5
+        \node [fork, name=v4] (v4) at(4.927,1.147) {};
+
+
+        %\draw [->] (test1) -- node []{yes}(end);
+        \draw [-] (v0)--(v1);
+        \draw [-] (v1)--(v2);
+        \draw [-] (v2)--(v3);
+        \draw [-] (v3)--(v4);
+        \draw [-] (v4)--(v0);
+        \draw[densely dashed] (center) -- (v0);
+        \draw[densely dashed] (center) -- (v1);
+        \draw (4.5,4) arc (0:72:0.5);
+        \node [] at (4.7,4.5) {\small{$\frac{2\pi}{5}$}};
+        \draw[help lines, densely dotted] (0,0) grid (12,8);
+        \draw [->, dashed,semithick](v1) arc (72:432:3);
+        \end{tikzpicture}
+
+      \caption{Рисуване на петоъгълник чрез намиране на 5 равноотдалечени точки по окръжността с радиус $r$ и център $(x_0,y_0)$}
+      \label{fig:pentagon}
+    \end{figure}
+
+
+
 
 	\item Да се нарисува програмно котката Pusheen на Фигура~\ref{fig:pusheen} (вж. \cite{pusheen}).
 
