@@ -14,7 +14,7 @@
 \usepackage{hyperref}
 \usepackage{caption}
 \usepackage{tikz}
-\usetikzlibrary{shapes,arrows,positioning,calc}
+\usetikzlibrary{shapes,arrows,positioning,calc,chains}
 
 \captionsetup{font=footnotesize}
 
@@ -38,6 +38,7 @@ block/.style = {draw, fill=white, rectangle,align = center},
 entry/.style = {draw, fill=black, circle, radius=3em},
 condition/.style = {draw, fill=white, diamond, align = center,node distance=3cm},
 fork/.style = {draw, fill=black, circle,inner sep=1pt},
+lnode/.style={rectangle split, rectangle split parts=3,draw, rectangle split horizontal}
 }
 
 
@@ -82,7 +83,7 @@ class DLList
 
 Следните задачи да се решат като упражнение за директно боравене с възлите на линеен двусвързан списък. Функциите (методите) да се тестват с подходящи тестове.
 
-\begin{enumerate}
+\begin{enumerate}[resume]
 
 	\item  Да се дефинира функция \code{int count(dllnode<T>* l,int x)}, която преброява колко пъти елементът \code{x} се среща в списъка с първи елемент \code{l}.
 	\item  Фунцкция \code{dllnode<int>* range (int x, int y)} която създава и връща първия елемент на списък с елементи $x, x+1, ..., y$, при положение, че $x \leq y$.
@@ -95,8 +96,8 @@ class DLList
 
 
 \subsection {Итератори за линейни СД}
-
-Следните задачи да се решат като упражнение за работа с итератори. Задачите изискват реализация на клас динамичен масив и линеен двусвързан списък и \code{forward} итератори за тях. Всяка функциия да се тества с подходящи тестове върху двата вида контейнери. Има ли разлика в проиводителността за някои от тях?
+\label{iterators1}
+Следните задачи да се решат като упражнение за работа с итератори. Задачите изискват реализация на клас динамичен масив и линеен двусвързан списък и \code{forward} итератори за тях. Всяка функциия да се тества с подходящи тестове върху двата вида контейнери. Има ли разлика в проиводителността за някои от тях в зависимост от избора на контейнер?
 
 \begin{mdframed}[hidealllines=true,backgroundcolor=gray!20]
 Функцията \code{std::clock()} от \code{<ctime>} връща в абстрактни единици времето, което е изминало от началото на изпълнение на програмата. Обикновено тази единица за време, наречена ``\code{tick}'', е фиксиран интервал ``реално'' време, който зависи от хардуера на системата и конфирграцията ѝ. Константата \code{CLOCKS\_PER\_SEC} дава броя секунди, които се съдържат в един \code{tick}.
@@ -124,6 +125,59 @@ long milliseconds = (double)(end-start)/
 	\item Да се напише фунцкия \code{bool issorted (...)}, която проверява дали елементите на даден контейнер са подредени в нарастващ или в намаляващ ред.
 
 	\item Да се напише фунцкия \code{bool palindrom (...)}, която проверява дали редицата от елементите на даден контейнер обрзува палиндром (т.е. дали се чете еднакво както отляво надясно така и отдяно наляво).
+
+\end{enumerate}
+
+
+\subsection{Skip List}
+
+
+\begin{mdframed}[hidealllines=true,backgroundcolor=gray!20]
+Разглеждаме \emph{опростена} реализация на структурата от данни Skip List (``Списък с прескачене, СП''). Възелът на линейния едносвързан списък разширяваме с още един указател към следващ елемент:
+
+\begin{verbatim}
+template <class T>
+struct lnode
+{
+  T data;
+  lnode<T> *next[2];
+};
+\end{verbatim}
+Както и при стандартния едносвързан списък, всеки от елментите на СП съдържа в указателя \code{next[0]} адреса на непосредствения си съсед. Някои от елементите могат да съдържат в указателя \code{next[1]} дреса на друг елемент, намиращ се по-напред в редицата от елементи (вж. Фигура \ref{fig:skiplist}). Например, нека имаме СП с $n$ елемента в нарастващ ред. Ако списъкът построен така, че всеки $\sqrt{n}$-ти елемент има указател към следващия  $\sqrt{n}$-ти елемен, то търсенете на елемент ще бъде със сложност $O(\sqrt{n})$ на цената на линейно нарастване на необходимата памет. Идеята може да се продължи така, че всеки елемент да може да има и по-голям брой указатели към елементи все по-напред в СП, но за нашите цели ще се ограничим до описания прост СП.
+
+Следващите задачи изискват реализация на клас \code{SkipList} с основните му канонични методи и метод за построяване на ``бързите връзки''. Реализирайте обиновен метод за вмъкване на елементи \code{insert}, който вмъква елементи грижейки се само за непосредствените връзки (\code{next[0]}), и метод \code{optimize}, който построява бързите връзки в списъка след като в него са вмъкнати определен брой елементи.
+\end{mdframed}
+
+\begin{figure}
+  \centering
+
+    \begin{tikzpicture}[auto, node distance=2cm,>=latex']
+    \node[lnode] (n1) {\nodepart{two}1};
+    \node[lnode, right of = n1] (n2) {\nodepart{two}2};
+    \node[lnode, right of = n2] (n3) {\nodepart{two}3};
+    \node[lnode, right of = n3] (n4) {\nodepart{two}4};
+    \node[lnode, right of = n4] (n5) {\nodepart{two}5};
+
+    \node[rectangle,left of = n1](start){};
+
+    \draw[*->]  (start)-- (n1);
+
+    \draw[*->] let \p1 = (n2.three), \p2 = (n1.center) in (\x1,\y2) -- (n3);
+    \draw[*->] let \p1 = (n1.three), \p2 = (n1.center) in (\x1,\y2) -- (n2);
+    \draw[*->] let \p1 = (n3.three), \p2 = (n1.center) in (\x1,\y2) -- (n4);
+    \draw[*->] let \p1 = (n4.three), \p2 = (n1.center) in (\x1,\y2) -- (n5);
+    \draw[*->,dashed] let \p1 = (n1.one), \p2 = (n1.center) in ([shift={(0.1cm,-0.1cm)}]\x1,\y2) |-([shift={(0,0.5cm)}]n1.north east) -- ([shift={(0,0.5cm)}]n3.north) -| (n3);
+    \draw[*->,dashed] let \p1 = (n3.one), \p2 = (n3.center) in ([shift={(0.1cm,0.1cm)}]\x1,\y2) |-([shift={(0,-0.5cm)}]n3.south east) -- ([shift={(0,-0.5cm)}]n5.south) -| (n5);
+    \end{tikzpicture}
+  \caption{Списък с прескачане}
+  \label{fig:skiplist}
+\end{figure}
+
+\begin{enumerate}[resume]
+
+
+  \item  Да се реализира итератор на \code{SkipList} така, че да се възползва от ``бързите връзки'' в списъка. \textit {Упътване: при обхождането извършвайте ``прескачане'' в случаите, в които има бърза връзка и в които няма да отидете твърде далеч напред в списъка. Класът на итератора трябва да се промени, за да позволява конструиране на итератор към конкретен елемент на списъка}.
+	\item  Да се извърши времево измерване на проблема за търсене на елемент в подреден \code{SkipList}, както е обяснено в Секция \ref{iterators1}, и да се изобрази чрез графика. Да се извършат емпирични сравнения на производителността на търсенете със и без оптимизацията.
 
 \end{enumerate}
 
