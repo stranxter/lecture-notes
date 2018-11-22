@@ -1,7 +1,26 @@
 #include <iostream>
 #include <iomanip>
-#include <ctime>
-#include <cstdlib>
+
+
+bool bSearch (int arr[], size_t size, int x)
+{
+  size_t left = 0,
+         right = size;
+
+  while (right-left > 1 &&
+         arr[(left+right)/2] != x)
+  {
+    if (arr[(left+right)/2] < x)
+    {
+        left = (left+right)/2;
+    }else{
+        right = (left+right)/2;
+    }
+  }
+
+  return arr[(left+right)/2] == x;
+
+}
 
 bool find (int a[], size_t size, int x)
 {
@@ -17,7 +36,8 @@ void timedFind ()
 {
 
   const size_t arrsize = 300000;
-  int repetitions = 10;
+  const size_t repetitions = 500;
+  int prefixSize = 1000;
 
   int a[arrsize];
   for (size_t c = 0; c < arrsize; c++)
@@ -25,23 +45,25 @@ void timedFind ()
     a[c] = c;
   }
 
-  int x = arrsize/2;
+  srand (time(NULL));
+  int x;
 
-  for (repetitions = 10; repetitions < 1000001; repetitions *= 10)
+  for (prefixSize = 1000; prefixSize < 300000; prefixSize *= 2)
   {
 
       clock_t start = std::clock();
       for (int r = 0; r < repetitions; r++)
       {
-         find (a, arrsize, x);
+         x = rand();
+         find (a, prefixSize, x);
       }
       clock_t end = std::clock();
       long ms = (double)(end-start)/(CLOCKS_PER_SEC/1000);
       std::cout << "Time passed = "
                 << ms
-                << "ms. for"
-                << repetitions
-                << " iterations."
+                << " ms. for "
+                << prefixSize
+                << " elements."
                 << std::endl;
   }
   //std::cout << "Find " << x << "=" << << std::endl;
@@ -172,9 +194,6 @@ int main ()
   }
 
   std::cout << "========== FIND =========\n";
-
-  //bool find (int a[], size_t size, int x)
-  timedFind();
 
 
 }
