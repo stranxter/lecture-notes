@@ -660,8 +660,10 @@ for (int i = 0; i < 10; i++)
     int main ()
     {
       long max = -1;
-      getmax (5,&max);
+      getmax (&max,5);
       std::cout << max;
+
+      return 0;
     }
     \end{verbatim}
     \emph{Функцията да се реализира по два начина: чрез цикъл и чрез използване на рекурсия без оператори за цикъл.}
