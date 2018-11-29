@@ -4,12 +4,12 @@
 
 \usepackage{listings}
 \usetheme{CambridgeUS}
-%\usepackage{beamerthemesplit} % new 
+%\usepackage{beamerthemesplit} % new
 \usepackage{enumitem}
-\usepackage{amsmath}                    % See geometry.pdf to learn the layout options. 
-\usepackage{amsthm}                   % See geometry.pdf to learn the layout options. There 
-\usepackage{amssymb}                    % See geometry.pdf to learn the layout options. 
-\usepackage[utf8]{inputenc} 
+\usepackage{amsmath}                    % See geometry.pdf to learn the layout options.
+\usepackage{amsthm}                   % See geometry.pdf to learn the layout options. There
+\usepackage{amssymb}                    % See geometry.pdf to learn the layout options.
+\usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage[english,bulgarian]{babel}
 
@@ -36,12 +36,12 @@
 
 
 \begin{document}
-\title[Увод в програмирането]{Функции II} 
-\author{Калин Георгиев} 
-\frame{\titlepage} 
+\title[Увод в програмирането]{Функции II}
+\author{Калин Георгиев}
+\frame{\titlepage}
 
 
-\section{Функции} 
+\section{Функции}
 
 
 \begin{frame}
@@ -60,15 +60,15 @@
 \pause
   \item Могат да учстават в изрази: $S(10,60,0) + S(10,60,20)$
 \pause
-  \item Не ``правят'' нищо 
+  \item Не ``правят'' нищо
 \end{itemize}
 \pause
 
 \begin{flushleft}
 \relscale{0.8}
 \begin{lstlisting}
-double displacement (double speed, 
-                     double time, 
+double displacement (double speed,
+                     double time,
                     double acceleration)
 {
   double S = speed*time + acceleration*time*time/2;
@@ -81,7 +81,7 @@ void main ()
 }
 
 \end{lstlisting}
-  
+
 \end{flushleft}
 \end{frame}
 
@@ -106,7 +106,7 @@ void pritnSequence (long start, long end, long step)
     cout << element;
     if (element < end)
       cout << ",";
-  }  
+  }
   cout << endl;
 }
 
@@ -140,14 +140,14 @@ void main ()
 \begin{lstlisting}
 void pritnSequence (long start, long end, long step)
 {
-  for (long element = start; 
-       element <= end;  
+  for (long element = start;
+       element <= end;
        element += step)
   {
     cout << element;
     if (element < end)
       cout << ",";
-  }  
+  }
   cout << endl;
 }
 
@@ -198,14 +198,14 @@ void main ()
 \begin{lstlisting}
 void pritnSequence (long start, long end, long step)
 {
-  for (long element = start; 
-       element <= end;  
+  for (long element = start;
+       element <= end;
        element += step)
   {
     cout << element;
     if (element < end)
       cout << ",";
-  }  
+  }
   cout << endl;
 }
 
@@ -258,14 +258,14 @@ void main ()
 \begin{lstlisting}
 void pritnSequence (long start, long end, long step)
 {
-  for (long element = start; 
-       element <= end;  
+  for (long element = start;
+       element <= end;
        element += step)
   {
     cout << element;
     if (element < end)
       cout << ",";
-  }  
+  }
   cout << endl;
 }
 
@@ -405,18 +405,18 @@ void main ()
   \begin{column}{0.8\textwidth}
 \relscale{0.72}
 \begin{lstlisting}
-void printSequence (long N)
-{
-  if (N > 0)
-  {
-    printSequence (N-1);
-  }
-  cout << N << " ";
-}
-void main ()
-{
-  printSequence(4);
-}
+1:  void printSequence (long N)
+2:  {
+3:   if (N > 0)
+4:   {
+5:      printSequence (N-1);
+6:   }
+7:    cout << N << " ";
+8:  }
+9:  void main ()
+10: {
+11:    printSequence(4);
+12: }
 \end{lstlisting}
   \end{column}
   \begin{column}{0.2\textwidth}
@@ -486,7 +486,7 @@ void main ()
   cout << enterNumber (0,100) / enterNumber (1,100);
 }
 \end{lstlisting}
-  
+
 \end{flushleft}
 
 \begin{itemize}
@@ -517,5 +517,3 @@ void main ()
 
   \end{column}
 \end{columns}
-
-
