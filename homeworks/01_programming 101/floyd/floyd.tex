@@ -1,0 +1,312 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{url}
+\usepackage[bulgarian]{babel}
+\usepackage{listings}
+\usepackage{enumerate}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{enumitem}
+\usepackage{relsize}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning,calc}
+
+\lstset{breaklines=true}
+
+\setenumerate[1]{label=\thesection.\arabic*.}
+\setenumerate[2]{label*=\arabic*.}
+
+\newcommand{\code}[1]{\texttt{#1}}
+
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+
+
+\tikzset{
+block/.style = {draw, fill=white, rectangle,align = center},
+entry/.style = {draw, fill=black, circle, radius=3em},
+condition/.style = {draw, fill=white, diamond, align = center,node distance=3cm},
+fork/.style = {draw, fill=black, circle,inner sep=1pt},
+cut/.style = {draw, fill=white, circle,inner sep=3pt, font = \tiny}
+}
+
+
+
+\author{\textit{email: kalin@fmi.uni-sofia.bg}}
+\title{\textsc{Задачи за задължителна самоподготовка} \\
+по \\
+Увод в програмирането}
+
+
+\begin{document}
+\maketitle
+
+\section{Инварианта на цикъл}
+
+\emph{Изложението в тази секция е силно опростена версия на метода на Флойд (Floyd) за верификация на блок схеми, описан в монументалната му статия \cite{floyd}. Редица идеи и задачи са взаимствани от книгата \cite{tpsbornik} на А. Скоскова и С. Николова ``Теория на програмите в задачи''. За по-подробно изложение и допълнителни примери и задачи препоръчваме тази книга. Изложението по-долу е нарочно опростено, като на места е жертвана прецизността му.}
+
+\begin{mdframed}[hidealllines=true,backgroundcolor=gray!20]
+
+
+\bigskip
+\textbf{Инварианта на цикъл}
+\bigskip
+
+
+Нека е дадена програма или част от програма, кято се се състои от единствен \code{while} цикъл. Нека имаме някакъв набор от работни променливи $v_1,..,v_n$, които се инициализрат непосредствено преди \code {while} цикъла. Условието на цикъла зависи изцяло от работните променливи, а тялото на цикъла използва или променя само тях. Приемаме, че програмата не проивежда странични ефекти и не зависи от такива.
+
+Тоест, за програмата знаем, че: (1) не извършва входни и изходни операции, (2) поведението ѝ зависи изцяло от началните стойности на работните променливи $v_1,..,v_n$ и (3) не модифицира никакви други променливи, освен работните. Такава програма можем да изобразим чрез блок схемата на Фигура \ref{fig:1while}.
+\end{mdframed}
+
+
+\begin{figure}
+    \begin{tikzpicture}[auto, node distance=1.5cm,>=latex']
+    \node [entry, name=start](start){};
+    \node [block,name=init, below of = start] (init)
+       {Инициализация на\\ $v_0,..,v_n$};
+    \node [fork,name=test1fork,below of = init,node distance = 2cm]{};
+    \node [condition,name=test1, below of = test1fork,node distance = 3cm] (test1) {Условие \\ $C(v_0,..,v_n)$};
+    \node [block,name=inc,right of = test1, node distance = 6.5cm] (inc) {Операции \\$(v_0^i,..,v_n^i) \rightarrow (v_0^{i+1},..,v_n^{i+1})$};
+    \node [fork,name=endfork,below of = test1, node distance = 3cm]{};
+    \node [entry, name=end, below of = endfork, node distance = 1cm](end){};
+
+    \node [cut, name=cut1, left of = test1fork, node distance = 2cm](cut1){1};
+    \node [cut, name=cut2, left of = endfork, node distance = 2cm](cut2){2};
+
+    \draw [->] (start) -- (init);
+    \draw [-] (init) -- (test1fork);
+    \draw [->] (test1fork) -- (test1);
+    \draw [->] (test1) -- node{true} (inc);
+    \draw [->] (inc) |- (test1fork);
+    \draw [-] (test1) -- node []{false}(endfork);
+    \draw [->] (endfork) -- (end);
+
+    \draw [-,dashed] (cut1) -- (test1fork);
+    \draw [-,dashed] (cut2) -- (endfork);
+    \end{tikzpicture}
+
+  \caption{Блок схемa на част от програма с \code{while} цикъл}
+  \label{fig:1while}
+\end{figure}
+
+
+\begin{mdframed}[hidealllines=true,backgroundcolor=gray!20]
+На фигурата, $C(v_1,..,v_n)$ е някакъв логически израз, зависещ само от $v_1,..,v_n$. Да допуснем, че сме ``паузирали'' изпълнението на програмата в точката, обозначена с ``1'', точно преди да започне $i$-тото поред ($i\geq 0$) изпълнение на тялото на цикъла, т.е. непосредствено преди да бъдат изпълнени операторите в него за $i$-ти път. В този момент, $n$-торката работни променливи $(v_1,..,v_n)$ имат някакви конкретни стойности. Да ги обозначим с $(v_0^{i},..,v_n^{i})$. След изпълнение на всички оператори в тялото на цикъла, работните променливи получават някакви нови стойности. Това са точно стойностите $(v_0^{i+1},..,v_n^{i+1})$, които работните променливи ще имат в началото на $i+1$-вата итерация. Това е изобразено на фигурата чрез прехода $(v_0^i,..,v_n^i) \rightarrow (v_0^{i+1},..,v_n^{i+1})$.
+
+Нека приемем, че при някакво конкретно изпълнение на програмата, при конкретни дадени начални стойности на работните променливи  $(v_0^{0},..,v_n^{0})$, тялото на цикъла ще бъде изпълнено точно  $k\geq 0$ пъти, след което условието $C(v_1,..,v_n)$ на цикъла ще се наруши и той ще приключи. Изпълнението на програмата достига точката, обозначена с ``2''. По този начин се получава редицата от $n$-торки $(v_0^{0},..,v_n^{0}),..,(v_0^{k},..,v_n^{k})$, като за всички нейни членове $0\leq i < k$, освен за последния, знаем че е вярно $C(v_0^{i},..,v_n^{i})$, а за последния, $k$-ти член, е вярно обратното -- $\neg C(v_0^{k},..,v_n^{k})$.
+
+Освен свойството $C(v_0^{i},..,v_n^{i})$ (или неговото отрицание), което знаем за всички последователни стойности на работните променливи, можем да въведем още едно свойство $I(v_0^{i},..,v_n^{i})$, наречено ``инварианта на цикъла''. За свойството $I$ искаме да е вярно за всички възможни стойности на работните променливи, дори и за последния член на редицата им. От там идва името ``инварианта'', т.е. факт, което е винаги верен.
+
+Това свойство може да е произволно, например тъждествената истина \code{true} изпълнява условието за инварианта, тъй като е вярна за всички членове на редицата на работните променливи. Инвариантата обаче е най-полезна, когато закодира ``смисъла'' на работните променливи, и ако от верността на $\neg C(v_0^{k},..,v_n^{k}) \&\& I(v_0^{k},..,v_n^{k})$ можем да изведем нещо полезно за ``крайният резултат'' от изпълнението на цикъла, съдържащ се в стойностите $(v_0^{k},..,v_n^{k})$.
+\end{mdframed}
+
+\begin{figure}
+    \begin{tikzpicture}[auto, node distance=1.5cm,>=latex']
+    \node [entry, name=start](start){};
+    \node [block,name=init, below of = start, align=left] (init)
+       {\code{candidate = 0;}\\\code{current = 1;}};
+
+    \node [fork,name=test1fork,below of = init,node distance = 2cm]{};
+
+    \node [block,name=inc2, right of = test1fork, node distance = 5cm,minimum height=1.5cm]{\code{current++;}};
+
+    \node [condition,name=test1, below of = test1fork,node distance = 3cm] (test1) {\code{current < m}};
+
+    \node [condition, name=test2, right of = test1, node distance = 5cm,font=\tiny] (test2) {\code{A[current]}\\\code{<A[candidate]}};
+
+    \node [block,name=inc,right of = test2, node distance = 5cm, minimum height=1.5cm] (inc) {\code{candidate = current};};
+
+    \node [fork,name=endfork,below of = test1, node distance = 3cm]{};
+    \node [entry, name=end, below of = endfork, node distance = 1cm](end){};
+
+    \node [cut, name=cut1, left of = test1fork, node distance = 2cm](cut1){1};
+    \node [cut, name=cut2, left of = endfork, node distance = 2cm](cut2){2};
+
+    \draw [->] (start) -- (init);
+    \draw [-] (init) -- (test1fork);
+    \draw [->] (test1fork) -- (test1);
+
+    \draw [->] (test1) -- node{true} (test2);
+    \draw [->] (test2) -- node{true} (inc);
+
+    \draw [->] (inc) |- (inc2);
+    \draw [->] (inc2) -- (test1fork);
+    \draw [->] (test2) -- node{false} (inc2);
+
+
+    \draw [-] (test1) -- node []{false}(endfork);
+    \draw [->] (endfork) -- (end);
+
+    \draw [-,dashed] (cut1) -- (test1fork);
+    \draw [-,dashed] (cut2) -- (endfork);
+    \end{tikzpicture}
+
+  \caption{Блок схемa на програмата за намиране на най-малък елемент в масив}
+  \label{fig:minel}
+\end{figure}
+
+
+
+\begin{mdframed}[hidealllines=true,backgroundcolor=gray!20]
+
+\bigskip
+\textbf{Верификация на програми}
+\bigskip
+
+Понятието ``Инварианта'' ще илюстрираме чрез едно нейно приложение: ``Верификация на програма''. Верификацията на програма е доказателство, че при необходимите начални условия дадена програма изчислява стойност, удовлетворяваща някакво желано свойство. Като пример да разгледаме следната  програма, за която ще се уверим, че намира най-малък елемент на едномерен масив $A$ с $m>0$ елемента $A[0],..,A[m-1]$.
+
+
+\begin{verbatim}
+size_t candidate = 0, current = 1;
+while (current < m)
+{
+  if (A[candidate] < a[current])
+  {
+    candidate = current;
+  }
+  current++;
+}
+\end{verbatim}
+Можем да приоложим метода на ивариантата, за да докажем строго, че когато цикълът приключи, то елементът $A[candidate]$ е гарантирано по-малък или равен на всички останали елементи на масива.
+Като първа стъпка, за улеснение изобразяваме програмата като блок схемата на Фигура \ref{fig:minel}.
+
+
+Работните променливи на програмата, освен масива $A$, са целочислените променливи \code{candidate} и \code{current}. Какъв е смисълът на тези променливи? Веднага се вижда, че \code{current} е просто брояч - служи за обхождане на елементите на масива последователно от $A[0]$ до $A[m-1]$, като на всяка итерация от цикъла се разглежда стойността на $A[current]$.
+
+Интуитивно се вижда, че \code{candidate} е намерения най-малък елемент на масива до текущия момент от обхождането. Тоест можем да се надяваме, че ако сме разгледали първите $i$ елемента на масива, то правилно сме определили, че най-малкият от тях е $A[current]$.
+
+Тези размишления може да запишем чрез инвариантата:
+
+$I ::= A[candidate]=min(A[0],..,A[current-1])$.
+
+Тази инварианта очевидно е вярна в началото на изпълнението на програмата, когато $current=1$, а $candidate=0$. Как да се уверим, че инвариантата е валидна за всички стойности, през които преминават работните променливи?
+
+Нека допуснем, че инвариантата е вярна за някаква стъпка $i$ от изпълнението на цикъла. Тоест, допускаме $I(candidate^i, current^i)$, или $A[candidate^i]=min(A[0],..,A[current^i-1])$.
+
+На итерация $i+1$ имаме  $candidate^{i+1}=current^{i}$ и $current^{i+1}=current^{i}+1$, и следователно трябва да покажем, че $A[candidate^{i+1}]=min(A[0],..,A[current^{i+1}-1])$.
+
+След навлизане в тялото на цикъла, имаме две възможности:
+\begin{enumerate}[label=\arabic*)]
+  \item $A[current^i]\geq A[candidate^i]$. От допускането следва, че добавянето на $A[current^i]$ към $min(A[0],..,A[current^i-1])$ не променя стойността на минимума, или $min(A[0],..,A[current^i-1])=min(A[0],..,A[current^i-1],A[current^i])$. От тук директно се вижда, че инвариантата е вярна за интерация $i+1$.
+  \item $A[current^i] < A[candidate^i$]. Тъй като по допускане $A[candidate^i] = min(A[0], .., A[current^i-1])$, от тук следва, че $A[current^i] < min(A[0], .., A[current^i-1])$, следователно
+
+   $A[current^i] = min(A[0], .., A[current^i-1], A[current^i])$.
+
+   Но след присвояването имаме $candidate^{i+1} = current^i$, от където $A[candidate^{i+1}] = min(A[0],..,A[current^i])$. Но $current^i = current^{i+1}-1$, от където получаваме верността на $I$ за итерация $i+1$: $A[candidate^{i+1}] = min(A[0], .., A[current^{i+1}-1])$.
+
+\end{enumerate}
+  Доказателството протича по индукция. Уверяваме се, че инвариантата е вярна за цялата редица от стойности на \code{candidate} и \code{current}.
+
+  Какво се случва в края на цикъла, когато имаме $\neg(current<m)$? Тъй като числата са цели, а \code{current} се увеличава само с единица, можем да заключим, че $current=m$. Замествайки това равенствио в инвариантата получаваме твърдението
+
+  $A[candidate] = min(A[0], .., A[m-1])$.
+
+  Тоест, намерили сме минималния елемент на масива.
+\end{mdframed}
+
+\begin{enumerate}
+  \item Да се докаже строго, че за следната функция е вярно $pow(x,y)=x^y$:
+  \begin{enumerate}[label=\alph*)]%[a)] % a), b), c), ...
+
+    \item
+\begin{verbatim}
+unsigned int pow (unsigned int x, usnigned int y)
+{
+  unsigned int p = 1, i = 0;
+  while (i < y)
+  {
+    p *= x;
+    i++;
+  }
+  return p;
+}
+\end{verbatim}
+    \item
+\begin{verbatim}
+unsigned int pow (unsigned int x, usnigned int y)
+{
+  unsigned int p = 1;
+  while (y > 0)
+  {
+    p *= x;
+    y--;
+  }
+  return p;
+}
+\end{verbatim}
+      \item
+\begin{verbatim}
+unsigned int pow (unsigned int x, usnigned int y)
+{
+  unsigned int z = x, t = y, p = 1;
+  while (t > 0)
+  {
+    if (t%2 == 0)
+    {
+      z *= z;
+      t /= 2;
+    }else{
+      t = t - 1;
+      p *= z;
+    }
+  }
+  return p;
+}
+\end{verbatim}
+  \end{enumerate}
+
+  \item Да се докаже строго, че за следната функция е вярно $sqrt(n)=[\sqrt{n}]$.
+
+\begin{verbatim}
+unsigned int sqrt (unsigned int n)
+{
+  unsigned int x = 0, y = 1, s = 1;
+  while (s <= n)
+  {
+    x++;
+    y += 2;
+    s += y;
+  }
+  return x;
+}
+\end{verbatim}
+
+\item Да се напише програма, която проверява дали дадени два масива $A$ и $B$ с еднакъв брой елементи $m$ са еднакви, т.е. съдържат същите елементи в същия ред. Да се докаже строго, че програмата работи правилно.
+
+\item Да се докаже, че следната функция връща истина тогава и само тогава, когато масивът \code{A} с \code{n} елемента съдържа елемента \code{x}.
+
+\begin{verbatim}
+bool member (int A[], size_t n, int x)
+{
+  size_t i = 0;
+  while (i < n && A[i] != x)
+  {
+    i++;
+  }
+  return i < n;
+}
+\end{verbatim}
+
+\item Да се напише програма, която проверява дали даден масив $A$ с $m$ елемента е сортиран, т.е. дали елементите му са наредени в нарастващ ред. Да се докаже строго, че програмата работи правилно.
+
+\end{enumerate}
+
+\pagebreak
+
+\begin{thebibliography}{99}
+
+\bibitem{tpsbornik}	Александра Соскова, Стела Николова, ``Теория на програмите в задачи'', Софтех, 2003
+\bibitem{floyd} R. W. Floyd. ``Assigning meanings to programs.'' Proceedings of the American Mathematical Society, Symposia on Applied Mathematics. Vol. 19, pp. 19–31. 1967.
+
+\end{thebibliography}
+
+\end{document}
