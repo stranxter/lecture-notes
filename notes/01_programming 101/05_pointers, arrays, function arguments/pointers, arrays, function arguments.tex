@@ -4,12 +4,12 @@
 
 \usepackage{listings}
 \usetheme{CambridgeUS}
-%\usepackage{beamerthemesplit} % new 
+%\usepackage{beamerthemesplit} % new
 \usepackage{enumitem}
-\usepackage{amsmath}                    % See geometry.pdf to learn the layout options. 
-\usepackage{amsthm}                   % See geometry.pdf to learn the layout options. There 
-\usepackage{amssymb}                    % See geometry.pdf to learn the layout options. 
-\usepackage[utf8]{inputenc} 
+\usepackage{amsmath}                    % See geometry.pdf to learn the layout options.
+\usepackage{amsthm}                   % See geometry.pdf to learn the layout options. There
+\usepackage{amssymb}                    % See geometry.pdf to learn the layout options.
+\usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage[english,bulgarian]{babel}
 
@@ -36,9 +36,9 @@
 
 
 \begin{document}
-\title[Увод в програмирането]{Указатели. Маисиви, указатели, параметри на функции} 
-\author{Калин Георгиев} 
-\frame{\titlepage} 
+\title[Увод в програмирането]{Указатели. Маисиви, указатели, параметри на функции}
+\author{Калин Георгиев}
+\frame{\titlepage}
 
 
 
@@ -59,13 +59,13 @@ long *pi = &a;
 \end{flushleft}
 
 \begin{center}
-  
+
 
 \begin{tabular}{c | c | c | c | c}
 ... & 100 & 104 & 108 & ...\\\hline
 ... & a   & b   & pi  & ... \\\hline
 ... & 1   & 2   & 100 & ... \\
-  
+
 \end{tabular}
 \end{center}
 \end{frame}
@@ -79,12 +79,12 @@ long *pi = &a;
   \begin{column}{0.5\textwidth}
 
 \begin{center}
-  
+
 \begin{tabular}{c | c | c | c | c}
 ... & 100 & 104 & 108 & ...\\\hline
 ... & a   & b   & pi  & ... \\\hline
 ... & 1   & 2   & 100 & ... \\
-  
+
 \end{tabular}
 \end{center}
 
@@ -99,12 +99,12 @@ long *pi = &a;
 \pause
 
 \begin{center}
-  
+
 \begin{tabular}{c | c | c | c | c}
 ... & 100 & 104 & 108 & ...\\\hline
 ... & a   & b   & pi  & ... \\\hline
 ... & \alert{10}   & 2   & 100 & ... \\
-  
+
 \end{tabular}
 \end{center}
 
@@ -123,14 +123,14 @@ pi = 104; //won't compile
 \end{flushleft}
 
 \begin{center}
-  
+
 \pause
 
 \begin{tabular}{c | c | c | c | c}
 ... & 100 & 104 & 108 & ...\\\hline
 ... & a   & b   & pi  & ... \\\hline
 ... & 10  & 2   & \alert{104} & ... \\
-  
+
 \end{tabular}
 \end{center}
 
@@ -139,19 +139,19 @@ pi = 104; //won't compile
 \begin{flushleft}
 \relscale{0.7}
 \begin{lstlisting}
-*pi = 104; 
+*pi = 104;
 \end{lstlisting}
 \end{flushleft}
 
 \begin{center}
-  
+
 \pause
 
 \begin{tabular}{c | c | c | c | c}
 ... & 100 & 104 & 108 & ...\\\hline
 ... & a   & b   & pi  & ... \\\hline
 ... & 10  & \alert{104}   & 104 & ... \\
-  
+
 \end{tabular}
 \end{center}
   \end{column}
@@ -198,7 +198,7 @@ long main ()
   (1)main:
 
   \begin{tabular}{c|c}
-  x & 0 
+  x & 0
   \end{tabular}
 
 \pause
@@ -207,7 +207,7 @@ long main ()
   (2,2')main:
 
   \begin{tabular}{c|c}
-  x & 0 
+  x & 0
   \end{tabular}
 
   f:
@@ -223,7 +223,7 @@ long main ()
   (3)main:
 
   \begin{tabular}{c|c}
-  x & 0 
+  x & 0
   \end{tabular}
 
 \pause
@@ -232,13 +232,13 @@ long main ()
   (4)main:
 
   \begin{tabular}{c|c}
-  x & 0 
+  x & 0
   \end{tabular}
 
   g:
 
   \begin{tabular}{c|c}
-  px & 100 
+  px & 100
   \end{tabular}
 
 
@@ -251,13 +251,13 @@ long main ()
   (5)main:
 
   \begin{tabular}{c|c}
-  x & \alert{10} 
+  x & \alert{10}
   \end{tabular}
 
   g:
 
   \begin{tabular}{c|c}
-  px & 100 
+  px & 100
   \end{tabular}
 
 \vspace{10px}
@@ -295,7 +295,7 @@ long division (long x, long y, long *remainder)
 long main ()
 {
   long r = 0;
-  cout << "[14/4]=" 
+  cout << "[14/4]="
        << division (14,4,&r)
        << "|14/4|="
        << r
@@ -408,7 +408,7 @@ long arr[3] = {1,2,3};
 arr &... &*arr \\\hline
 80  &... & 100 & 104 & 108 &... \\\hline
 100 &... & 1   & 2   & 3   &... \\\hline
-  
+
 \end{tabular}
 
 \end{frame}
@@ -425,7 +425,7 @@ arr &... &*arr \\\hline
 arr &... &*arr \\\hline
 80  &... & 100 & 104 & 108 &... \\\hline
 100 &... & 1   & 2   & 3   &... \\\hline
-  
+
 \end{tabular}
 
 
@@ -447,7 +447,7 @@ cout << *arr;
 arr &... &*arr \\\hline
 80  &... & 100 & 104 & 108 &... \\\hline
 100 &... & \alert{10}   & 2   & 3   &... \\\hline
-  
+
 \end{tabular}
 
 \end{frame}
@@ -461,12 +461,12 @@ arr &... &*arr \\\hline
 arr &... &*arr \\\hline
 80  &... & 100 & 104 & 108 &... \\\hline
 100 &... & 10   & 2   & 3   &... \\\hline
-  
+
 \end{tabular}
 
 
 \begin{itemize}
-  \item Аритметични операции с указател:   
+  \item Аритметични операции с указател:
 
 \texttt{<указател>+<ест. число>=<указател>}
 \begin{flushleft}
@@ -484,7 +484,7 @@ arr &... &*arr \\\hline
 arr &... &*arr \\\hline
 80  &... & 100 & 104 & 108 &... \\\hline
 100 &... & 10   & 2   & \alert{10}   &... \\\hline
-  
+
 \end{tabular}
 
 \end{frame}
@@ -500,7 +500,7 @@ arr &... &*arr \\\hline
 arr &... &*arr \\\hline
 80  &... & 100 & 104 & 108 &... \\\hline
 100 &... & 10   & 2   & 10   &... \\\hline
-  
+
 \end{tabular}
 
 \vspace{15px}
@@ -510,7 +510,7 @@ arr &... &*arr \\\hline
 \pause
 \item \texttt{*(arr+i) <==> arr[i]}
 \pause
-\item \texttt{(long)(arr+1)==104 // != 101}
+\item \texttt{(long)(arr+1)==108 // != 101}
 \end{itemize}
 
 \pause
@@ -524,7 +524,7 @@ char charArr[6] = "Hello";
 
 \begin{itemize}
   \item \texttt{(long)(charArr+1) - (long)(charArr+2) == 1 == sizeof(char)}
-  \item \texttt{(long)(arr+1) - (long)(arr+2) == 4 == sizeof(long)}
+  \item \texttt{(long)(arr+1) - (long)(arr+2) == 8 == sizeof(long)}
   \item Слеводателно \texttt{arr[i] <==> *(arr+i)}, независимо от размера на елементите
 \end{itemize}
 
@@ -542,7 +542,7 @@ char charArr[6] = "Hello";
 \begin{lstlisting}
 long sum (long arr[])
 {
-  
+
   long sum = 0;
   for (int i = 0; i < 3; i++)
   {
@@ -573,7 +573,7 @@ int main ()
 \begin{lstlisting}
 long sum (long arr[], int n)
 {
-  
+
   long sum = 0;
   for (int i = 0; i < n; i++)
   {
@@ -603,7 +603,7 @@ int main ()
 
     &  c   &    & c+2 \\\hline
 ... &1     & 2  & \alert{3}  & \alert{4} & \alert{5} &  \alert{6} & 7 & 8 & 9 &...  \\\hline
-  
+
 \end{tabular}
 
 \begin{flushleft}
@@ -633,8 +633,8 @@ int main ()
 void test (long arr[], long x)
 //void test (long *arr, long x)
 {
-  
-  x++;       
+
+  x++;
   arr[0]++; // <==> *arr=*arr+1
   arr[1]++; // <==> *(arr+1)=*(arr+1)+1
 
@@ -642,7 +642,7 @@ void test (long arr[], long x)
 
 int main ()
 {
- 
+
   long arr[2]={0,1};
   long x = 0;
   test (arr,x);
@@ -666,7 +666,7 @@ int main ()
 
 %\vspace*{-120pt}
 %\hspace*{-30pt}
-\includegraphics[width=14cm]{images/binsearch} 
+\includegraphics[width=14cm]{images/binsearch}
 
 \end{frame}
 
@@ -686,7 +686,7 @@ bool find (int x, int a[], int size)
 {
   int left=0, right = size-1;
 
-  while (left < right && 
+  while (left < right &&
          a[(left+right)/2] != x)
   {
     if (a[(left+right)/2] < x)
@@ -704,7 +704,7 @@ bool find (int x, int a[], int size)
   \begin{column}{0.5\textwidth}
 \vspace*{-1pt}
 \hspace*{-50pt}
-\includegraphics[width=10cm]{images/binsearch_smaller} 
+\includegraphics[width=10cm]{images/binsearch_smaller}
 
   \end{column}
 \end{columns}
@@ -755,7 +755,7 @@ bool findrec (int x, int a[], int size)
   \begin{column}{0.5\textwidth}
 \vspace*{-1pt}
 \hspace*{-50pt}
-\includegraphics[width=10cm]{images/binsearch_smaller} 
+\includegraphics[width=10cm]{images/binsearch_smaller}
 
   \end{column}
 \end{columns}
@@ -777,26 +777,26 @@ bool findrec (int x, int a[], int size)
 \begin{lstlisting}
 bool findreclogic (int x, int a[], int size)
 {
-  return 
-  
-  (size == 1 && 
+  return
+
+  (size == 1 &&
    a[0] == x) ||
 
 
-  (size > 1 && 
-   a[size/2] > x && 
+  (size > 1 &&
+   a[size/2] > x &&
    findreclogic (x,a,size/2)) ||
 
 
 
-  (size > 1 && 
-   a[size/2] < x && 
+  (size > 1 &&
+   a[size/2] < x &&
    findreclogic (x,
                  a+(int)ceil(size/2.0),
                  ceil(size/2.0)-1))  ||
-  
 
-  (size > 1 && 
+
+  (size > 1 &&
    a[size/2] == x);
 }
 \end{lstlisting}
@@ -806,7 +806,7 @@ bool findreclogic (int x, int a[], int size)
   \begin{column}{0.5\textwidth}
 \vspace*{-1pt}
 \hspace*{-50pt}
-\includegraphics[width=10cm]{images/binsearch_smaller} 
+\includegraphics[width=10cm]{images/binsearch_smaller}
 
   \end{column}
 \end{columns}
@@ -823,4 +823,3 @@ bool findreclogic (int x, int a[], int size)
 
 
 \end{document}
-
