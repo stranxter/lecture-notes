@@ -5,12 +5,12 @@
 
 \usepackage{listings}
 \usetheme{CambridgeUS}
-%\usepackage{beamerthemesplit} % new 
+%\usepackage{beamerthemesplit} % new
 \usepackage{enumitem}
-\usepackage{amsmath}                    % See geometry.pdf to learn the layout options. 
-\usepackage{amsthm}                   % See geometry.pdf to learn the layout options. There 
-\usepackage{amssymb}                    % See geometry.pdf to learn the layout options. 
-\usepackage[utf8]{inputenc} 
+\usepackage{amsmath}                    % See geometry.pdf to learn the layout options.
+\usepackage{amsthm}                   % See geometry.pdf to learn the layout options. There
+\usepackage{amssymb}                    % See geometry.pdf to learn the layout options.
+\usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage[english,bulgarian]{babel}
 
@@ -37,8 +37,8 @@
 
 
 \begin{document}
-\title[Увод в програмирането]{Рекурсивни програми} 
-\frame{\titlepage} 
+\title[Увод в програмирането]{Рекурсивни програми}
+\frame{\titlepage}
 
 
 \section{Рекурентни дефиниции}
@@ -52,14 +52,14 @@
 \frametitle{Какво е редица от числа?}
 
 \begin{itemize}
-  \item Серия от измервания 
+  \item Серия от измервания
 \end{itemize}
 
 
 
 \begin{figure}[]
   \centering
-  \includegraphics[width=8cm]{images/danube}   
+  \includegraphics[width=8cm]{images/danube}
   \caption{Нивото на река Дунав в см.}
 \end{figure}
 
@@ -69,7 +69,7 @@
 \begin{tabular}{|c|c|c|c|c}
 $a_0=280cm$ & $a_1=275cm$ & $a_2=271cm$ & $a_3=272cm$ & ...
 \end{tabular}
-  
+
 \end{flushleft}
 
 
@@ -83,7 +83,7 @@ $a_0=280cm$ & $a_1=275cm$ & $a_2=271cm$ & $a_3=272cm$ & ...
   \begin{column}{0.6\textwidth}
 %\vspace*{-25pt}
     \includegraphics[width=6cm]{images/fib_rabbits}
-  
+
 $a_0=1$
 
 
@@ -96,10 +96,10 @@ $a_{i+2} = a_{i+1} + a_i $
 \vspace*{-150px}
 
    \begin{center}
-   \includegraphics[width=2.4cm]{images/Fibonacci}    
+   \includegraphics[width=2.4cm]{images/Fibonacci}
     \relscale{0.6}
-     
-     Leonardo Fibonacci 
+
+     Leonardo Fibonacci
 
      (c. 1170 – c. 1250)
    \end{center}
@@ -126,14 +126,14 @@ $a_{i+2} = a_{i+1} + a_i $
   \begin{column}{0.5\textwidth}
   \vspace*{250pt}
     \begin{turn}{90}
-    \scalebox{1}[1]{\includegraphics[width=7cm]{images/fib_spiral}}      
+    \scalebox{1}[1]{\includegraphics[width=7cm]{images/fib_spiral}}
     \end{turn}
   \end{column}
 \end{columns}
 
 
 \vspace*{-300pt}
-  
+
 $a_0=1$
 
 
@@ -152,7 +152,7 @@ $a_{i+2} = a_{i+1} + a_i $
 \frametitle{Явна vs. индуктивна дефиниция на елементите на редица}
 
 \begin{center}
-$0,2,6,12,20,30,...$ 
+$0,2,6,12,20,30,...$
 \end{center}
 
 \pause
@@ -207,13 +207,13 @@ void print_first_n (int n)
 {
   for (int i = 0; i <= n; i++)
   {
-    int sum = 0;  
+    int sum = 0;
     for (int k = 1; k <= i; k++)
     //calculate 2+4+..+2*k
     {
       sum = sum + 2*k;
     }
-    cout << "a[" << i << "]=" 
+    cout << "a[" << i << "]="
          << sum << endl;
   }
 }
@@ -240,7 +240,7 @@ void print_first_n (int n)
 
   $a_2 = 0 + 2 + 4$
 
-  $a_3 = 0 + 2 + 4 + 6$ 
+  $a_3 = 0 + 2 + 4 + 6$
 
   ...
 
@@ -374,11 +374,11 @@ $a_i = a_{i-1} + 2i$
 \vspace{10px}
 
 
-\textbf{Доказателство.} 
+\textbf{Доказателство.}
 
 \begin{itemize}
   \item За $i=0$ свойството е изпълнено по дефиниция, тъй като $a_0=0=0(0+1)$.
-  \item Нека свойството $a_i=i(i+1)$ е изпълнено за някое $i \in \mathcal{N}$. Искаме да покажем, че $a_{i+1}=(i+1)(i+1+1)$ (заместваме $i$ с $i+1$). По дефиниция имаме $a_{i+1} = a_i + 2(i+1)$. Като заместим $a_i$ с $i(i+1)$ (което сме допуснали), получваме  
+  \item Нека свойството $a_i=i(i+1)$ е изпълнено за някое $i \in \mathcal{N}$. Искаме да покажем, че $a_{i+1}=(i+1)(i+1+1)$ (заместваме $i$ с $i+1$). По дефиниция имаме $a_{i+1} = a_i + 2(i+1)$. Като заместим $a_i$ с $i(i+1)$ (което сме допуснали), получваме
 
   $a_{i+1} = i(i+1) + 2(i+1) = (i+1)(i+2) $,
 
@@ -425,11 +425,11 @@ $a_i = a_{i-1} + 2i$
 \vspace{10px}
 
 
-\textbf{Доказателство.} 
+\textbf{Доказателство.}
 
 \begin{itemize}
   \item За $i=0$ свойството е изпълнено по дефиниция, тъй като $a_0=0=0(0+1)$.
-  \item Нека свойството е изпълнено за $a_{i-1}=(i-1)i$ при $i > 0$. Искаме да покажем, че $a_i=i(i+1)$ (заместваме $i-1$ с $i$). По дефиниция имаме $a_{i} = a_{i-1} + 2i$. Като заместим $a_{i-1}$ с $(i-1)i$ (което сме допуснали), получваме  
+  \item Нека свойството е изпълнено за $a_{i-1}=(i-1)i$ при $i > 0$. Искаме да покажем, че $a_i=i(i+1)$ (заместваме $i-1$ с $i$). По дефиниция имаме $a_{i} = a_{i-1} + 2i$. Като заместим $a_{i-1}$ с $(i-1)i$ (което сме допуснали), получваме
 
   $a_{i} = (i-1)i + 2i = i(i-1+2)=i(i+1)$,
 
@@ -505,7 +505,7 @@ int fib_n (int n)
     return 1;
   return fib_n(n-2) + fin_n(n-1);
 }
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
 
 
@@ -555,7 +555,7 @@ long fact_iter (long n)
   \begin{column}{0.45\textwidth}
 \begin{flushleft}
   \relscale{0.8}
-  $n! = \left\{ 
+  $n! = \left\{
         \begin{array}{l l}
           1 & \quad \text{if $n \leq 1$ }\\
     n \times (n-1)! & \quad \text{otherwise}
@@ -567,7 +567,7 @@ long fact_iter (long n)
 
   $n! = n \times (n-1) \times (n-2) \times ... \times 1$
 
-  
+
 \end{flushleft}
   \end{column}
 \end{columns}
@@ -616,7 +616,7 @@ void fib_n (int n)
     return 1;
   return fib_n(n-2) + fin_n(n-1);
 }
-\end{lstlisting}  
+\end{lstlisting}
 \end{flushleft}
 
 
@@ -661,9 +661,9 @@ long fact_rec (long n)
 \begin{center}
 \relscale{1.5}
 $252=?$
-\end{center}   
+\end{center}
 
-\vspace{15px}   
+\vspace{15px}
 
    \includegraphics[width=6cm]{images/rec_wirt}
 \end{center}
@@ -678,7 +678,7 @@ $252=?$
 \relscale{1.5}
 
 $252=2.$$\stackrel{126}{\includegraphics[width=1.5cm]{images/rec_wirt}}$
-\end{center}   
+\end{center}
 
 
 \end{frame}
@@ -736,12 +736,12 @@ $899=29.$$\stackrel{31}{\includegraphics[width=1.2cm]{images/rec_wirt}}$
 \end{frame}
 
 
-\begin{frame}
-\begin{center}
-   \includegraphics[width=8cm]{images/spaghetti}
-\end{center}
-
-\end{frame}
+%\begin{frame}
+%\begin{center}
+%   \includegraphics[width=8cm]{images/spaghetti}
+%\end{center}
+%
+%\end{frame}
 
 
 \section{Рекурсия и масиви}
@@ -752,7 +752,7 @@ $899=29.$$\stackrel{31}{\includegraphics[width=1.2cm]{images/rec_wirt}}$
 
 \begin{center}
    \includegraphics[width=12cm]{images/array_unsorted}
-   
+
    \vspace{-210px}
    \includegraphics[width=6cm]{images/rec_wirt}
 \end{center}
@@ -787,7 +787,7 @@ void ssort (int arr[], int n)
   if (n <= 1)
     return;
 
-  //find the INDEX OF the minimal 
+  //find the INDEX OF the minimal
   //element of the array
   int minelIx = 0;
   for (int i = 1; i < n; i++)
@@ -800,7 +800,7 @@ void ssort (int arr[], int n)
   a[0] = arr[minelIx];
   arr[minelIx] = tmp;
 
-  //sort the "tail" of the array  
+  //sort the "tail" of the array
   ssort (arr+1,n-1);
 }
 \end{lstlisting}
@@ -810,7 +810,7 @@ void ssort (int arr[], int n)
   \begin{column}{0.5\textwidth}
 \vspace*{-1pt}
 \hspace*{-70pt}
-\includegraphics[width=10cm]{images/ssort_rec} 
+\includegraphics[width=10cm]{images/ssort_rec}
 
   \end{column}
 \end{columns}
@@ -856,7 +856,7 @@ bool findrec (int x, int a[], int size)
   \begin{column}{0.5\textwidth}
 \vspace*{-1pt}
 \hspace*{-50pt}
-\includegraphics[width=10cm]{images/binsearch_smaller} 
+\includegraphics[width=10cm]{images/binsearch_smaller}
 
   \end{column}
 \end{columns}
@@ -893,11 +893,11 @@ bool qsort (int a[], int size)
 {
   if (size <= 1)
     return;
-  
+
   //1
-  int nsmaller 
+  int nsmaller
     = split (a+1,size-1,a[0]);
-  
+
   //2
   swap (a[0],a[nsmaller]);
 
@@ -912,7 +912,7 @@ bool qsort (int a[], int size)
   \begin{column}{0.5\textwidth}
 \vspace*{-1pt}
 \hspace*{-50pt}
-\includegraphics[width=9cm]{images/qsort} 
+\includegraphics[width=9cm]{images/qsort}
 
   \end{column}
 \end{columns}

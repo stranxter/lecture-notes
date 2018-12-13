@@ -17,12 +17,12 @@ struct TableElement
      key(k), value(v), next(n){}
 
 };
-/*
+
 template <class KeyType, class ValType>
 class HashMapIterator
 {
 public:
-  HashMapIterator (TableElement<KeyType,ValType> **, size_t);
+  HashMapIterator (TableElement<KeyType,ValType> **, size_t, bool end=false);
 
   KeyType operator * ();
   //++it;
@@ -33,15 +33,27 @@ public:
 
 private:
 
+  /*
+    findNextKeyValuePair:
+    Ако (elementIndex,element) е същински елемент,
+    функцията не прави нищо.
+    В противен случай намира следващата стойност на
+    (elementIndex,element), която указва същински елемент,
+    или достига края на таблицата.
+  */
+  void findNextKeyValuePair ();
+
+  /* Референция към Хеш-таблицата */
   TableElement<KeyType,ValType> ** table;
   size_t tsize;
 
+  /* Позиция */
   size_t elementIndex;
   TableElement<KeyType,ValType> *element;
 
 };
 
-*/
+
 template <class KeyType, class ValType>
 class HashMap
 {
@@ -52,6 +64,9 @@ public:
   bool hasKey (const KeyType&) const;
   ValType get (const KeyType&) const;
   void remove (const KeyType&);
+
+  HashMapIterator<KeyType,ValType> begin ();
+  HashMapIterator<KeyType,ValType> end ();
 
 private:
   size_t tsize;

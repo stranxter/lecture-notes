@@ -3,6 +3,7 @@
 
 #include "hmap.h"
 #include <cassert>
+#include <iostream>
 
 template <class KeyType, class ValType>
 HashMap<KeyType,ValType>::HashMap (size_t ts, hashFn<KeyType> hf)
@@ -78,5 +79,89 @@ void HashMap<KeyType,ValType>::remove (const KeyType &key)
   delete save;
 
 }
+
+template <class KeyType, class ValType>
+HashMapIterator<KeyType,ValType> HashMap<KeyType,ValType>::begin ()
+{
+  return HashMapIterator<KeyType,ValType> (table,tsize);
+}
+
+template <class KeyType, class ValType>
+HashMapIterator<KeyType,ValType> HashMap<KeyType,ValType>::end ()
+{
+  return HashMapIterator<KeyType,ValType> (table,tsize,true);
+}
+
+template <class KeyType, class ValType>
+HashMapIterator<KeyType, ValType>::HashMapIterator
+   (TableElement<KeyType,ValType> **_table, size_t _tsize, bool end)
+{
+  tsize = _tsize;
+  table = _table;
+  if (end)
+  {
+    elementIndex = _tsize;
+    element = nullptr;
+  } else {
+    elementIndex = 0;
+    element = table[0];
+    findNextKeyValuePair ();
+  }
+}
+
+template <class KeyType, class ValType>
+void HashMapIterator<KeyType, ValType>::findNextKeyValuePair ()
+{
+  if (element != nullptr)
+  {
+    return;
+  }
+
+  while (element == nullptr && elementIndex < tsize)
+  {
+    elementIndex++;
+    if (elementIndex < tsize)
+    {
+        element = table[elementIndex];
+    }
+  }
+}
+
+template <class KeyType, class ValType>
+KeyType HashMapIterator<KeyType, ValType>::operator * ()
+{
+    assert (elementIndex < tsize);
+
+    return element->key;
+}
+
+template <class KeyType, class ValType>
+HashMapIterator<KeyType,ValType>&
+    HashMapIterator<KeyType, ValType>::operator ++ ()
+{
+  element = element->next;
+  findNextKeyValuePair();
+  return *this;
+}
+
+template <class KeyType, class ValType>
+bool HashMapIterator<KeyType, ValType>::operator ==
+    (const HashMapIterator<KeyType,ValType> &other) const
+{
+    return table == other.table &&
+           elementIndex == other.elementIndex &&
+           element == other.element;
+}
+
+template <class KeyType, class ValType>
+bool HashMapIterator<KeyType, ValType>::operator !=
+    (const HashMapIterator<KeyType,ValType> &other) const
+{
+
+  return table != other.table ||
+         elementIndex != other.elementIndex ||
+         element != other.element;
+}
+
 
 #endif

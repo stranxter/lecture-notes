@@ -56,9 +56,35 @@ void testIndexOperator ()
 */
 }
 
+void testHashMapIterator ()
+{
+  HashMap<std::string,std::string> dict(10,stringHash);
+
+  dict.update ("piglet","A small pink animal.");
+  dict.update ("cat","A small cute animal.");
+  dict.update ("tac","Forcing a collison.");
+  dict.update ("dog","A bigger cute animal.");
+
+
+  HashMapIterator<std::string,std::string> it = dict.begin();
+
+  for (;it != dict.end(); ++it)
+  {
+      std::cout << *it
+                << ":"
+                << dict.get (*it)
+                << std::endl;
+
+  }
+
+}
+
+
+
 int main ()
 {
   testHashMap();
+  testHashMapIterator();
 
 
   return 0;
