@@ -68,6 +68,11 @@ private:
 
     void printAllKeysHelper (TrieNode<ValType>*, std::string);
 
+    /* Проверява дали е настъпило условието, при
+       което обхождането трябва да "пропусне" изпълнението на
+       програмата да продължи.
+    */
+    bool yieldCondition ();
 
     TrieNode<ValType> *root;
 

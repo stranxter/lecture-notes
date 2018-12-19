@@ -114,6 +114,13 @@ TrieNode<ValType>* TrieMap<ValType>::
   {
     return root;
   }
+  //такъв път няма в дървото! Без тази проверка,
+  //изразът в следващия return създава key-value
+  //с произволна стойност за указателя!
+  if (root->children.count(key[0]) == 0)
+  {
+    return nullptr;
+  }
   return locate (key+1,root->children[key[0]]);
 }
 
@@ -144,26 +151,46 @@ std::string TrieMap<ValType>::getCurrent ()
 
   if (currentSubTree->value != nullptr)
   {
-    return *(currentSubTree->value);
+    return itStack.top().partialKey;
   }
 
   moveToNext ();
   assert (!end());
-  return *(itStack.top().currentSubtree->value);
+  return itStack.top().partialKey;
 
 
 }
 template <class ValType>
+bool TrieMap<ValType>::yieldCondition ()
+{
+  /* Обхождането на дървото достига до момент,
+     в който може да "пропусне" изпънението на
+     програмата, когато:
+     - (a)Дървото е изчерпано (обходени са всички възли)
+     - Достигнат е значещ елемент. Това е вярно, ако
+        - (b)На върха на стека има възел със стойност != nullptr
+          И
+        - (c)Обхождането на децата на този възел все още не е
+          започнало (т.е. той "току що" е попаднал в стека)
+  */
+
+  return itStack.empty () || /* (a) */
+         (itStack.top().currentSubtree->value != nullptr && /* (b) */
+          itStack.top().currentChild ==
+             (itStack.top().currentSubtree->children.cbegin())); /* (c) */
+
+}
+
+template <class ValType>
 void TrieMap<ValType>::moveToNext ()
 {
-  assert (itStack.size() != 0);
+  assert (!itStack.empty());
 
   do
   {
       StackNode<ValType> &topNode = itStack.top();
-
       if (topNode.currentChild
-            != topNode.currentSubtree->children.end())
+            != topNode.currentSubtree->children.cend())
       {
           itStack.push (StackNode<ValType>(topNode.partialKey+topNode.currentChild->first,
                                            topNode.currentChild->second,
@@ -172,10 +199,10 @@ void TrieMap<ValType>::moveToNext ()
       } else {
         itStack.pop();
       }
-  } while (!itStack.empty() &&
-         itStack.top().currentSubtree->value == nullptr);
+  } while (!yieldCondition());
 
 }
+
 template <class ValType>
 bool TrieMap<ValType>::end()
 {

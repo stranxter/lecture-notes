@@ -82,16 +82,13 @@ void testTrieMap ()
   dict.update ("cat","A small furry animal.");
   assert (dict.get("cat")=="A small furry animal.");
 
-  //dict.remove ("cat");
-  //assert (!dict.hasKey ("cat"));
-
   //dict.printDotty (std::cerr);
   //dict.printAllKeys();
 
   dict.start ();
   while (!dict.end())
   {
-    std::cout << dict.getCurrent () << std::endl;
+    std::cout << "k=" << dict.getCurrent () << std::endl;
     dict.moveToNext();
   }
 }
@@ -102,7 +99,6 @@ int main ()
   testHashMap();
   testHashMapIterator();
   testTrieMap();
-
 
   return 0;
 }
