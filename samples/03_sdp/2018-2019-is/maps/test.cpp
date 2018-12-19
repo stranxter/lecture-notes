@@ -1,4 +1,5 @@
 #include "hmap.cpp"
+#include "triemap.cpp"
 #include <iostream>
 #include <cassert>
 
@@ -36,25 +37,6 @@ void testHashMap ()
   assert (!dict.hasKey ("cat"));
 }
 
-void testIndexOperator ()
-{
-  /*
-  HashMap<std::string,std::string> dict;
-
-  dict["cat"] = "A small cute animal.";
-  dict["dog"] = "A bigger cute animal.";
-
-  assert (dict.hasKey ("cat"));
-  assert (dict.hasKey ("dog"));
-  assert (!dict.hasKey ("tac"));
-
-  assert (dict["cat"]=="A small cute animal.");
-
-  dict["cat"] = "A small furry animal.";
-  assert (dict["cat"]=="A small furry animal.");
-
-*/
-}
 
 void testHashMapIterator ()
 {
@@ -80,11 +62,46 @@ void testHashMapIterator ()
 }
 
 
+void testTrieMap ()
+{
+  TrieMap<std::string> dict;
+
+  dict.update ("cat","A small cute animal.");
+  dict.update ("dog","A bigger cute animal.");
+  dict.update ("pig","A pink animal.");
+  dict.update ("piglet","A small pink animal.");
+  dict.update ("piggy","A cute pig.");
+
+  assert (dict.hasKey ("cat"));
+  assert (dict.hasKey ("dog"));
+  assert (dict.hasKey ("piglet"));
+  assert (!dict.hasKey ("tac"));
+
+  assert (dict.get("cat")=="A small cute animal.");
+
+  dict.update ("cat","A small furry animal.");
+  assert (dict.get("cat")=="A small furry animal.");
+
+  //dict.remove ("cat");
+  //assert (!dict.hasKey ("cat"));
+
+  //dict.printDotty (std::cerr);
+  //dict.printAllKeys();
+
+  dict.start ();
+  while (!dict.end())
+  {
+    std::cout << dict.getCurrent () << std::endl;
+    dict.moveToNext();
+  }
+}
+
 
 int main ()
 {
   testHashMap();
   testHashMapIterator();
+  testTrieMap();
 
 
   return 0;
