@@ -139,25 +139,21 @@ void TrieMap<ValType>::start()
     return;
   }
   itStack.push (StackNode<ValType>("",root,root->children.cbegin()));
+  //осигуряваме, че още в началото стекът е подготвен за
+  //getCurrent()
+  if (!yieldCondition())
+  {
+    moveToNext();
+  }
 }
 
 
 template <class ValType>
 std::string TrieMap<ValType>::getCurrent ()
 {
-  assert (itStack.size() != 0);
 
-  TrieNode<ValType> *currentSubTree = itStack.top().currentSubtree;
-
-  if (currentSubTree->value != nullptr)
-  {
-    return itStack.top().partialKey;
-  }
-
-  moveToNext ();
   assert (!end());
   return itStack.top().partialKey;
-
 
 }
 template <class ValType>
