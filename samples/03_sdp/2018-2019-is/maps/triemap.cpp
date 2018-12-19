@@ -103,7 +103,6 @@ void TrieMap<ValType>::printDottyHelper (std::ostream &out,TrieNode<ValType> *ro
       printDottyHelper (out,it->second);
       ++it;
     }
-
 }
 
 template <class ValType>
@@ -147,15 +146,13 @@ void TrieMap<ValType>::start()
   }
 }
 
-
 template <class ValType>
 std::string TrieMap<ValType>::getCurrent ()
 {
-
   assert (!end());
   return itStack.top().partialKey;
-
 }
+
 template <class ValType>
 bool TrieMap<ValType>::yieldCondition ()
 {
@@ -169,7 +166,6 @@ bool TrieMap<ValType>::yieldCondition ()
         - (c)Обхождането на децата на този възел все още не е
           започнало (т.е. той "току що" е попаднал в стека)
   */
-
   return itStack.empty () || /* (a) */
          (itStack.top().currentSubtree->value != nullptr && /* (b) */
           itStack.top().currentChild ==
@@ -196,7 +192,6 @@ void TrieMap<ValType>::moveToNext ()
         itStack.pop();
       }
   } while (!yieldCondition());
-
 }
 
 template <class ValType>
@@ -204,7 +199,6 @@ bool TrieMap<ValType>::end()
 {
   return itStack.empty();
 }
-
 
 template <class ValType>
 void TrieMap<ValType>::

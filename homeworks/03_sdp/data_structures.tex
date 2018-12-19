@@ -14,6 +14,7 @@
 \usepackage{hyperref}
 \usepackage{caption}
 \usepackage{tikz}
+\usepackage{forest}
 \usetikzlibrary{shapes,arrows,positioning,calc,chains}
 
 \captionsetup{font=footnotesize}
@@ -697,6 +698,78 @@ struct TableElement
 %begin с предикат
 
 \end{enumerate}
+
+\subsection{TrieMap}
+
+\begin{figure}
+\centering
+\begin{forest}
+for tree={align=center, inner sep=0pt, text centered, circle, font=\sffamily\bfseries, draw=black, fill=white, text width=1.5em }
+[\_,
+  [\_, edge label={node[midway,left] {\small{t}}}
+    [7, edge label={node[midway,left] {\small{o}}}]
+    [\_, edge label={node[midway,left] {\small{e}}}
+      [3, edge label={node[midway,left] {\small{a}}}]
+      [4, edge label={node[midway,left] {\small{d}}}]
+      [12, edge label={node[midway,left] {\small{n}}}]
+    ]
+  ]
+  [15, edge label={node[midway,right] {\small{A}}}]
+  [11, edge label={node[midway,right] {\small{i}}}
+    [5, edge label={node[midway,left] {\small{n}}}
+      [9, edge label={node[midway,left] {\small{n}}}]
+    ]
+  ]
+]
+%edge label={node[midway,left] {\small{Help!}}}
+\end{forest}
+\caption{TrieMap, съдържащ двойките \code{to:7}, \code{tea:3}, \code{ted:4}, \code{ten:12}, \code{A:15}, \code{i:11}, \code{in:5} и \code{inn:9}.}
+\label{fig:trie1}
+\end{figure}
+
+
+\begin{mdframed}[hidealllines=true,backgroundcolor=gray!20]
+Следнитте задачи са базирани на проста реализация на речник (map) с ключове - символни низове и произволен тип на стойностите чрез префиксно дърво (Trie). Вж. Фигура \ref{fig:trie1}. Възлите в дървото съдържат указател към стойността на key-value двойката, а по дъгите на дървото са записани поредните букви от ключовете. Стойността е \code{nullptr} за междинните възли, които не съответстват на записан ключ. Наследниците на всеки възел са представени чрез \code{std::map<char,TrieNode*>} или някаква друга структура, която позволява наследникът да се ``анотира'' с буква:
+\begin{verbatim}
+template <class ValType>
+struct TrieNode
+{
+  ValType *value;
+  std::map<char,TrieNode<ValType>*> children;
+};
+
+template <class ValType>
+class TrieMap
+{
+public:
+  //...
+private:
+    TrieNode<ValType> *root;
+};
+\end{verbatim}
+\end{mdframed}
+
+\begin{enumerate}[resume]
+
+	\item За клас \texttt{Trie} да се разработи приятелски клас \texttt{TrieUtilities}, който да реализира методи за:
+
+	\begin{itemize}
+		\item Намиране на височината на дървото.
+		\item Намиране на дължината на най-дългия ключ, записан в дървото.
+		\item Намиране на броя на записаните стойности в дървото.
+		\item Намиране на броя на буквите на латинската азбука, които \emph{не учстват} в никой ключ на дървото.
+	\end{itemize}
+
+  \item Да се разработи оператор за индексиране (\texttt{[]}) на \texttt{Trie}, който да работи за четене и писане на ключове.
+
+%	\item Да се дефинира итератор за \texttt{Trie}, позволяващ обхождането на ключовете му в нарастващ ред относно лексикографската наредба.
+
+
+%	\item Да се реализира отпечатване на \texttt{Trie} в \texttt{dotty} формат.
+
+\end{enumerate}
+
+
 
 \pagebreak
 
