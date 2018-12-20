@@ -414,19 +414,20 @@ fork/.style = {draw, fill=black, circle,inner sep=1pt},
 
         \begin{tikzpicture}[auto,>=latex']
         \node [fork, name=center, fill = red] (center) at(4,4){};
-        \node [below of = center,node distance = 0.5cm] {\small{$(x_0,y_0)$}};
+        \node [left of = center,node distance = 0.7cm] {\small{$(x_0,y_0)$}};
         %(cos 0, sin 0)
         \node [fork, name=v0] (v0) at(7,4) {};
-        \node [right of = v0, node distance=2.5cm] {\small{$(x_0+r.cos(0),y_0+r.sin(0))$}};
+        \node [right of = v0, node distance=2cm] {\Small{$(x_0+r.cos(0),y_0+r.sin(0))$}};
         %cos 2Pi/5, sin 2pi/5
         \node [fork, name=v1] (v1) at(4.927,6.853) {};
-        \node [above of = v1,node distance = 0.5cm] {\small{$(x_0+r.cos(\frac{2\pi}{5}),y_0+r.sin(\frac{2\pi}{5}))$}};
+        \node [right of = v1,node distance = 2.8cm] {\Small{$(x_0+r.cos(4\times\frac{2\pi}{5}),y_0+r.sin(4\times\frac{2\pi}{5}))$}};
         %cos 2*2Pi/5, sin 2*2pi/5
         \node [fork, name=v2] (v2) at(1.573,5.763) {};
         %cos 3*2Pi/5, sin 3*2pi/5
         \node [fork, name=v3] (v3) at(1.573,2.237) {};
         %cos 4*2Pi/5, sin 4*2pi/5
         \node [fork, name=v4] (v4) at(4.927,1.147) {};
+        \node [right of = v4,node distance = 2.5cm] {\Small{$(x_0+r.cos(\frac{2\pi}{5}),y_0+r.sin(\frac{2\pi}{5}))$}};
 
 
         %\draw [->] (test1) -- node []{yes}(end);
@@ -437,6 +438,9 @@ fork/.style = {draw, fill=black, circle,inner sep=1pt},
         \draw [-] (v4)--(v0);
         \draw[densely dashed] (center) -- (v0);
         \draw[densely dashed] (center) -- (v1);
+        \draw[densely dashed] (center) -- (v2);
+        \draw[densely dashed] (center) -- (v3);
+        \draw[densely dashed] (center) -- (v4);
         \draw (4.5,4) arc (0:72:0.5);
         \node [] at (4.7,4.5) {\small{$\frac{2\pi}{5}$}};
         \draw[help lines, densely dotted] (0,0) grid (12,8);
