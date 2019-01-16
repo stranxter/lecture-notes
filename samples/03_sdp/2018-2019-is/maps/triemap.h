@@ -28,6 +28,31 @@ struct StackNode
              TrieNode<ValType> *crr,
              typename std::map<char,TrieNode<ValType>*>::const_iterator it)
                 :partialKey (key), currentSubtree(crr), currentChild (it){}
+  bool operator == (const StackNode<ValType> &other);
+
+};
+
+template <class ValType>
+class TrieMapIterator
+{
+public:
+  TrieMapIterator (TrieNode<ValType> *trieRoot, bool isEnd);
+
+  std::string operator * ();
+  TrieMapIterator<ValType>& operator ++ ();
+
+  bool operator == (const TrieMapIterator&);
+  bool operator != (const TrieMapIterator&);
+
+private:
+
+  std::stack<StackNode<ValType>> itStack;
+  /* Проверява дали е настъпило условието, при
+     което обхождането трябва да "пропусне" изпълнението на
+     програмата да продължи.
+  */
+  bool yieldCondition ();
+  bool end ();
 
 };
 
@@ -47,16 +72,10 @@ public:
 
   void printAllKeys ();
 
-  void start();
-  std::string getCurrent ();
-  void moveToNext ();
-  bool end();
-
-
+  TrieMapIterator<ValType> begin ();
+  TrieMapIterator<ValType> end();
 
 private:
-
-    std::stack<StackNode<ValType>> itStack;
 
     TrieNode<ValType>* traceOrCreatePath (const char* key,
                                           TrieNode<ValType> *current,
@@ -68,11 +87,6 @@ private:
 
     void printAllKeysHelper (TrieNode<ValType>*, std::string);
 
-    /* Проверява дали е настъпило условието, при
-       което обхождането трябва да "пропусне" изпълнението на
-       програмата да продължи.
-    */
-    bool yieldCondition ();
 
     TrieNode<ValType> *root;
 

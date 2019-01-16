@@ -131,30 +131,30 @@ void TrieMap<ValType>::
 }
 
 template <class ValType>
-void TrieMap<ValType>::start()
+TrieMapIterator<ValType>::TrieMapIterator(TrieNode<ValType> *trieRoot, bool isEnd)
 {
-  if (root == nullptr)
+  if (trieRoot == nullptr || isEnd)
   {
     return;
   }
-  itStack.push (StackNode<ValType>("",root,root->children.cbegin()));
+  itStack.push (StackNode<ValType>("",trieRoot,trieRoot->children.cbegin()));
   //осигуряваме, че още в началото стекът е подготвен за
   //getCurrent()
   if (!yieldCondition())
   {
-    moveToNext();
+    ++(*this);
   }
 }
 
 template <class ValType>
-std::string TrieMap<ValType>::getCurrent ()
+std::string TrieMapIterator<ValType>::operator * ()
 {
   assert (!end());
   return itStack.top().partialKey;
 }
 
 template <class ValType>
-bool TrieMap<ValType>::yieldCondition ()
+bool TrieMapIterator<ValType>::yieldCondition ()
 {
   /* Обхождането на дървото достига до момент,
      в който може да "пропусне" изпънението на
@@ -174,7 +174,7 @@ bool TrieMap<ValType>::yieldCondition ()
 }
 
 template <class ValType>
-void TrieMap<ValType>::moveToNext ()
+TrieMapIterator<ValType>& TrieMapIterator<ValType>::operator ++()
 {
   assert (!itStack.empty());
 
@@ -192,10 +192,12 @@ void TrieMap<ValType>::moveToNext ()
         itStack.pop();
       }
   } while (!yieldCondition());
+
+  return *this;
 }
 
 template <class ValType>
-bool TrieMap<ValType>::end()
+bool TrieMapIterator<ValType>::end()
 {
   return itStack.empty();
 }
@@ -222,4 +224,37 @@ void TrieMap<ValType>::
     ++it;
   }
 
+}
+
+template <class ValType>
+TrieMapIterator<ValType> TrieMap<ValType>::begin ()
+{
+  return TrieMapIterator<ValType> (root,false);
+}
+
+template <class ValType>
+TrieMapIterator<ValType> TrieMap<ValType>::end()
+{
+  return TrieMapIterator<ValType> (root,true);
+}
+
+template <class ValType>
+bool TrieMapIterator<ValType>::operator == (const TrieMapIterator &other)
+{
+  return (itStack.empty() && other.itStack.empty()) ||
+         (!itStack.empty() && !other.itStack.empty() &&
+            itStack.top() == other.itStack.top());
+}
+template <class ValType>
+bool TrieMapIterator<ValType>::operator != (const TrieMapIterator &other)
+{
+  return !(this->operator == (other));
+}
+
+template <class ValType>
+bool StackNode<ValType>::operator == (const StackNode<ValType> &other)
+{
+  return partialKey == other.partialKey &&
+         currentSubtree == other.currentSubtree &&
+         currentChild == other.currentChild;
 }

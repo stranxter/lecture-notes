@@ -85,12 +85,21 @@ void testTrieMap ()
   //dict.printDotty (std::cerr);
   //dict.printAllKeys();
 
-  dict.start ();
+  /*dict.start ();
   while (!dict.end())
   {
     std::cout << "k=" << dict.getCurrent () << std::endl;
     dict.moveToNext();
+  }*/
+
+  for (TrieMapIterator<std::string> it= dict.begin();
+      it != dict.end();
+      ++it)
+  {
+    std::cout << "k=" << *it << std::endl;
   }
+
+
 }
 
 
