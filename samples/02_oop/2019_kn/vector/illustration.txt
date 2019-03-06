@@ -1,0 +1,14 @@
+               |
+v1:            |
+- elements  ---|--------      | XXXXXXXXXXXXX |
+- nCapacity:4  |        |
+---------------|        |
+                        |
+                        |
+                        ------->  | 10  | 20  | 30  | 40 |
+                       |
+stack frame F  |       |
+v:             |       |
+- elements  ---|--------
+- nCapacity:4  |        
+---------------|        
