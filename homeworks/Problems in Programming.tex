@@ -1642,8 +1642,50 @@ private:
 
 \end{enumerate}
 
+\pagebreak
+
+\section{Клас символен низ}
+
+\begin{mdframed}[hidealllines=true,backgroundcolor=gray!20]
+Следващите задачи са върху примерния клас, реализиращ символен низ, разработен на лекции. Шаблонът реализира символен низ в динамичната памет:
+\begin{verbatim}
+class String
+{
+public:
+  String ();
+  String (const String<T>&);
+  String (const char*);
+  String& operator = (const String&);
+  ~String();
+
+  char operator [] (size_t) const;
+  bool operator != (const String&) const;
+
+  friend std::ostream &operator<<(std::ostream &, const String &);
+  ~String ();
+private:
+  char *str;
+};
+
+\end{verbatim}
+\end{mdframed}
+
+\begin{enumerate}
+  \item Да се резлизира метод \code{substring (startIndex, endIndex)} на клас \code{String}, намиращ подниз с дадено начло и край.
+  \item Да се резлизира метод \code{substring (s)} на клас \code{String}, който намира индекса на първото срещане на подниза \code{s} в дадения низ, или \code{-1}, ако \code{s} не е подниз на дадения низ.
+  \item Да се релизира метод \code{split(char separator)} на клас \code{String}. Методът да връща \code{std::vector} от символни низове (обекти от клас \code{String}), които се получават като се раздели на части дадения низ според дадения разделител. Например, низът ``\emph{Hello wold, have a nice day!}'' с разделител символа ',' ще генерира масива \{``Hello world'', `` have a nice day!''\}.
+  \item Да се добавят оператори \code{+=} към класа \code{String}, позволяващи добавяне към края на низа на: символ (\code{char}), цяло число (\code{int}), булева стойност (\code{bool}).
+  \item Да се добави оператор \code{=} към класа \code{String}, позволяващ на низ да се присвои произволен вектор с елементи от проиволен тип \code{T}. Резултатният низ $s$ от присвояването $s=v$ да има формата ``$\{v_1,..,v_k\}$'', където $v_1,..v_k$ са представянията на елементите на $v$ като низове. Приемаме, че типа \code{T} е някой от типовете, поддържани от оператора \code{+=} на клас \code{String}.
+  \item (*)Да се реализира оператор за вход от поток. \emph{Внимание: Да се съобрази, че броят на въведените символи от оператора  \code{>{}>} за \code{char[]} не е предварително известен!}
+
+\end{enumerate}
+
+
 
 \pagebreak
+
+
+
 
 \begin{thebibliography}{99}
 
