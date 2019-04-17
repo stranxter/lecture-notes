@@ -1,21 +1,22 @@
 #include <iostream>
 #include <vector>
 #include <cstring>
+#include <fstream>
 
 class Figure 
 {
 public:
 
-
-    virtual Figure* clone () = 0;
-
     Figure (const char *s)
     {
+#ifdef debug
         std::cout << "Figure(const char*)\n";
+#endif        
         strcpy (label,s);
     }
 
-    void operator = (Figure*);
+    virtual void saveToStream (std::ostream&) = 0;
+    virtual void loadFromStream(std::istream &) = 0;
 
     void whoami ()
     {
@@ -28,22 +29,33 @@ public:
 
     virtual ~Figure()
     {
+#ifdef debug
         std::cout << "~Figure\n";
+#endif
     }
+
+    static Figure* figureFactory (const std::string &figureType);
 };
 
 class Rectangle : public Figure
 {
 public:
 
-    Figure* clone ()
-    {
-        return new Rectangle (*this);
-    }
-
     Rectangle(double _a, double _b) : Figure("rectangle"),a(_a), b(_b) 
     {
+#ifdef debug
         std::cout << "Rectangle(double _a, double _b)\n";
+#endif
+    }
+
+    void saveToStream (std::ostream &out)
+    {
+        out << "rect " << a << " " << b << " ";
+    }
+
+    void loadFromStream(std::istream &in)
+    {
+        in >> a >> b;
     }
 
     double a, b;
@@ -59,24 +71,34 @@ public:
     }
     ~Rectangle()
     {
+#ifdef debug
         std::cout << "~Rectangle\n";
+#endif
     }
 };
 
 class Square : public Figure
 {
   public:
-    Figure *clone()
-    {
-        return new Square(*this);
-    }
 
     Square(double _a) : Figure ("square"), a(_a) 
     {
+#ifdef debug
         std::cout << "Square(double _a)\n";
+#endif
     }
 
-    double a;
+    void saveToStream (std::ostream &out)
+    {
+        out << "sq " << a << " ";
+    }
+
+    void loadFromStream(std::istream &in)
+    {
+        in >> a;
+    }
+
+        double a;
 
     double surface()
     {
@@ -89,21 +111,31 @@ class Square : public Figure
     }
     ~Square()
     {
+#ifdef debug
         std::cout << "~Sqaure\n";
+#endif
     }
 };
 
 class Circle : public Figure
 {
   public:
-    Figure *clone()
+
+
+    void saveToStream (std::ostream &out)
     {
-        return new Circle(*this);
+        out << "cir " << r << " ";
+    }
+    void loadFromStream(std::istream &in)
+    {
+        in >> r;
     }
 
     Circle(double _r) : Figure("Circle"), r(_r)
     {
+#ifdef debug
         std::cout << "Circle(double _r)\n";
+#endif
     }
 
     double r;
@@ -119,9 +151,29 @@ class Circle : public Figure
     }
     ~Circle()
     {
+#ifdef debug        
         std::cout << "~Circle\n";
+#endif        
     }
 };
+
+Figure* Figure::figureFactory(const std::string &figureType)
+{
+    if (figureType == "cir")
+    {
+        return new Circle(0);
+    }
+    if (figureType == "sq")
+    {
+        return new Square(0);
+    }
+    if (figureType == "rect")
+    {
+        return new Rectangle(0, 0);
+    };
+
+    return nullptr;
+}
 
 double sumSurfaces (Figure *figures[], size_t n)
 {
@@ -160,7 +212,7 @@ int Test1 ()
     return 0;
 }
 
-int main ()
+void testInteractiveCreation ()
 {
     char c = -1;
     std::vector<Figure*> figures;
@@ -193,3 +245,68 @@ int main ()
 
 }
 
+std::ostream &operator<<(std::ostream &out, const std::vector<Figure *> &v)
+{
+    out << v.size() << " ";
+    for (Figure *v : v)
+    {
+        v->saveToStream(out);
+    }
+    return out;
+}
+
+std::istream& operator >> (std::istream &in, std::vector<Figure*>& v)
+{
+    v.clear();
+
+    size_t n;
+    in >> n;
+
+    for (size_t i = 0; i < n; ++i)
+    {
+        std::string figureType;
+        in >> figureType;
+
+        Figure *newFigure = Figure::figureFactory (figureType);        
+        assert (newFigure != nullptr);
+
+        newFigure->loadFromStream (in);
+        v.push_back (newFigure);
+    }
+   
+
+    return in;
+}
+
+void testCreateFile()
+{
+    std::vector<Figure *> v;
+    v.push_back(new Circle(3));
+    v.push_back(new Rectangle(3, 4));
+    v.push_back(new Circle(4));
+    v.push_back(new Square(4));
+
+    std::ofstream outdata("figures.dat");
+
+    outdata << v;
+}
+
+void testLoadFile ()
+{
+    std::vector<Figure *> v;
+    
+    std::ifstream indata ("figures.dat");
+
+    std::cerr << "Reading data from file...\n";
+    indata >> v;
+    std::cerr << "Sucess!!! Array values:\n";
+    std::cout << v;
+}
+
+int main ()
+{
+    testCreateFile();
+    testLoadFile ();
+
+    return 0;
+}
