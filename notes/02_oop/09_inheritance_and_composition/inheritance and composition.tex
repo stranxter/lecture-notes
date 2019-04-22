@@ -1,0 +1,111 @@
+\documentclass{beamer}
+\usepackage{relsize}
+\usepackage{color}
+
+\usepackage{listings}
+\usetheme{CambridgeUS}
+%\usepackage{beamerthemesplit} % new
+\usepackage{enumitem}
+\usepackage{amsmath}                    % See geometry.pdf to learn the layout options.
+\usepackage{amsthm}                   % See geometry.pdf to learn the layout options. There
+\usepackage{amssymb}                    % See geometry.pdf to learn the layout options.
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage[english,bulgarian]{babel}
+\usepackage{tikz}
+\usepackage{forest}
+\usetikzlibrary{positioning,fit,calc}
+
+
+\lstset{language=C++,
+                basicstyle=\ttfamily,
+                keywordstyle=\color{blue}\ttfamily,
+                stringstyle=\color{black}\ttfamily,
+                commentstyle=\color{blue}\ttfamily,
+                morecomment=[l][\color{magenta}]{\#}
+}
+
+\newtheorem{mydef}{Дефиниция}[section]
+\newtheorem{lem}{Лема}[section]
+\newtheorem{thm}{Твърдение}[section]
+
+\DeclareMathOperator{\restrict}{\upharpoonright}
+
+\setitemize{label=\usebeamerfont*{itemize item}%
+  \usebeamercolor[fg]{itemize item}
+  \usebeamertemplate{itemize item}}
+
+\setbeamercovered{transparent}
+
+\tikzset{
+block/.style = {draw, fill=white, rectangle,align = center},
+entry/.style = {draw, fill=black, circle, radius=3em},
+condition/.style = {draw, fill=white, diamond, align = center,node distance=3cm},
+fork/.style = {draw, fill=black, circle,inner sep=1pt},
+lnode/.style={rectangle split, rectangle split parts=3,draw, rectangle split horizontal},
+treenode/.style = {align=center, inner sep=0pt, text centered, circle, font=\sffamily\bfseries, draw=white, fill=white, text width=1.5em}
+}
+
+
+
+\begin{document}
+\title[Обектно ориентирано програмиране]{Наследяване и композиция}
+\author{Калин Георгиев}
+\frame{\titlepage}
+
+\section{Наследяване и композиция}
+
+\begin{frame}[fragile]
+\frametitle{Примерен казус}
+%\vspace{-60px}
+\begin{center}
+\includegraphics[width=10.0cm]{images/tree1}
+\end{center}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Структура на обекта}
+
+\begin{tikzpicture}[auto, node distance=1cm,>=latex]
+  
+  \node  [] (ttl){Drawing};
+  \node  [below of=ttl, rectangle split, rectangle split parts=3,draw, rectangle split horizontal] (arr1) 
+      {\nodepart[text width=1.5cm]{one}Rectangle
+       \nodepart[text width=1.5cm]{two}Circle
+       \nodepart[text width=1.5cm]{three}Group};
+
+       \node[fit=(arr1)(ttl), draw] (obj1) {};
+
+  \node  [below right of = obj1, node distance = 3.5cm] (ttl2){Drawing};
+  \node  [below of=ttl2, rectangle split, rectangle split parts=2,draw, rectangle split horizontal] (arr2) 
+      {\nodepart[text width=1.5cm]{one}Rectangle
+      \nodepart[text width=1.5cm]{two}Group};
+
+      \node[fit=(arr2)(ttl2), draw] (obj2) {};
+  \draw[->]  (arr1.three)-- (obj2);   
+\end{tikzpicture}
+
+
+\end{frame}
+    
+
+
+
+
+\begin{frame}
+\centerline{Благодаря ви за вниманието!}
+\end{frame}
+
+\end{document}
+
+
+
+\begin{columns}[t]
+  \begin{column}{0.55\textwidth}
+
+  \end{column}
+  \begin{column}{0.45\textwidth}
+
+  \end{column}
+\end{columns}
