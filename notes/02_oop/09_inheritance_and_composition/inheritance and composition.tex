@@ -49,7 +49,7 @@ treenode/.style = {align=center, inner sep=0pt, text centered, circle, font=\sff
 
 
 \begin{document}
-\title[Обектно ориентирано програмиране]{Наследяване и композиция}
+\title[Обектно ориентирано програмиране]{Наследяване и композиция. Visitor Pattern.}
 \author{Калин Георгиев}
 \frame{\titlepage}
 
@@ -90,6 +90,53 @@ treenode/.style = {align=center, inner sep=0pt, text centered, circle, font=\sff
 \end{frame}
     
 
+\begin{frame}
+  \centerline{Visitor Pattern!}
+\end{frame}
+  
+
+
+\begin{frame}[fragile]
+  \frametitle{Visitor Pattern}
+  
+  \begin{tikzpicture}[auto, node distance=1.2cm,>=latex]
+    
+    \node  [] (title1){Rectangle};
+    \node  [block,align=left,below of=title1,draw] (proc1) 
+      {virtual Process\_ME(visitor)\\-Process\_Rectangle(this)};
+    \node[fit=(title1)(proc1), draw] (rect) {};
+  
+    \node  [below of = proc1] (title2){Cicrcle};
+    \node  [block,align=left,below of=title2,draw] (proc2) 
+      {virtual Process\_ME(visitor)\\-Process\_Circle(this)};
+    \node  [fit=(title2)(proc2), draw] (circ) {};
+
+    \node  [below of = proc2] (title3){Group};
+    \node  [block,align=left,below of=title3,draw] (proc3) 
+    {virtual Process\_ME(visitor)\\-Process\_Group(this)};
+    \node  [fit=(title3)(proc3), draw] (group) {};
+
+    \node  [right of = proc1, node distance = 6cm] (title4){Serializer};
+    \node  [below of=title4,draw] (proc4) {Process\_Rectangle};
+    \node  [below of=proc4,draw] (proc5) {Process\_Circle};
+    \node  [below of=proc5,draw] (proc6) {Process\_Group};
+    \node  [fit=(title4)(proc4)(proc5)(proc6), draw] (ser1) {};
+
+    \draw[->]  (proc1)-- (proc4);   
+    \draw[->]  (proc2)-- (proc5);   
+    \draw[->]  (proc3)-- (proc6);   
+
+    %\draw[->]  (proc6.east) -| node[right of = proc6, distance=5cm]{a} (proc4.east);   
+    \draw[->] (proc6.east) -| ([xshift=1.5cm,yshift=0cm]proc5.east) |- (proc4.east);    
+    \draw[->] (proc6.east) -| ([xshift=1.5cm,yshift=0cm]proc5.east) |- (proc5.east);    
+    %\draw[->]  (proc6)-- (proc5);   
+
+
+  \end{tikzpicture}
+  
+  
+  \end{frame}
+  
 
 
 

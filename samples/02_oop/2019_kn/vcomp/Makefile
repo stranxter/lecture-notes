@@ -12,7 +12,7 @@ SDL =  -L/usr/local/lib -lSDL2 -lSDL2_image
 # If your compiler is a bit older you may need to change -std=c++11 to -std=c++0x
 CXXFLAGS = -Wall -c -std=c++11
 LDFLAGS = $(SDL)
-DEPS = mygraphics.h
+DEPS = $(wildcard *.h)
 OBJS = $(patsubst %.cpp,%.o,$(wildcard *.cpp)) 
 
 all: draw
