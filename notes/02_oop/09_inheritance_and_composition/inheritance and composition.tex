@@ -95,10 +95,27 @@ treenode/.style = {align=center, inner sep=0pt, text centered, circle, font=\sff
 \end{frame}
   
 
+\begin{frame}[fragile]
+  \frametitle{Конкретни елементи $\times$ конкретни операции. Double Dispatch.}
+
+\begin{tabular}{c | c | c}
+             & Serialize & Draw \\\hline
+  Rectangle  & Rectangle::serialize & rectangle::draw \\\hline
+  Circle  & Circle::serialize & Circle::draw \\\hline
+  Triangle  & Triangle::serialize & Triangle::draw \\\hline
+  Group  & Group::serialize & Group::draw 
+\end{tabular}
+
+\end{frame}
+  
+
+
 
 \begin{frame}[fragile]
   \frametitle{Visitor Pattern}
   
+  \begin{centering}
+  \relscale{0.6}
   \begin{tikzpicture}[auto, node distance=1.2cm,>=latex]
     
     \node  [] (title1){Rectangle};
@@ -116,7 +133,7 @@ treenode/.style = {align=center, inner sep=0pt, text centered, circle, font=\sff
     {virtual Process\_ME(visitor)\\-Process\_Group(this)};
     \node  [fit=(title3)(proc3), draw] (group) {};
 
-    \node  [right of = proc1, node distance = 6cm] (title4){Serializer};
+    \node  [right of = proc1, node distance = 4cm] (title4){Serializer};
     \node  [below of=title4,draw] (proc4) {Process\_Rectangle};
     \node  [below of=proc4,draw] (proc5) {Process\_Circle};
     \node  [below of=proc5,draw] (proc6) {Process\_Group};
@@ -131,12 +148,23 @@ treenode/.style = {align=center, inner sep=0pt, text centered, circle, font=\sff
     \draw[->] (proc6.east) -| ([xshift=1.5cm,yshift=0cm]proc5.east) |- (proc5.east);    
     %\draw[->]  (proc6)-- (proc5);   
 
+    \node  [block,align=left,left of=proc2,draw, node distance = 4cm] (call) 
+    {figure->process\_me(serializer)};
+
+    \draw[->]  (call)-- (rect);   
+    \draw[->]  (call)-- (circ);   
+    \draw[->]  (call)-- (group);   
+
 
   \end{tikzpicture}
+\end{centering}
   
   
   \end{frame}
   
+
+
+
 
 
 
