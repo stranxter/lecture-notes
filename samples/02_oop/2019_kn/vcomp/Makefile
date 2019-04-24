@@ -18,7 +18,7 @@ OBJS = $(patsubst %.cpp,%.o,$(wildcard *.cpp))
 all: draw
 
 draw: $(OBJS)
-	$(CXX) $(LDFLAGS) $< -o $@
+	$(CXX) $(LDFLAGS) $(OBJS) -o $@
 
 %.o: %.cpp $(DEPS)
 	$(CXX) -c -o $@ $< $(CXXFLAGS)

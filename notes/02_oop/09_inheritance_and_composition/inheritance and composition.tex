@@ -100,7 +100,7 @@ treenode/.style = {align=center, inner sep=0pt, text centered, circle, font=\sff
 
 \begin{tabular}{c | c | c}
              & Serialize & Draw \\\hline
-  Rectangle  & Rectangle::serialize & rectangle::draw \\\hline
+  Rectangle  & Rectangle::serialize & Rectangle::draw \\\hline
   Circle  & Circle::serialize & Circle::draw \\\hline
   Triangle  & Triangle::serialize & Triangle::draw \\\hline
   Group  & Group::serialize & Group::draw 
@@ -120,17 +120,17 @@ treenode/.style = {align=center, inner sep=0pt, text centered, circle, font=\sff
     
     \node  [] (title1){Rectangle};
     \node  [block,align=left,below of=title1,draw] (proc1) 
-      {virtual Process\_ME(visitor)\\-Process\_Rectangle(this)};
+      {virtual Process\_ME(visitor):\\visitor->Process\_Rectangle(this)};
     \node[fit=(title1)(proc1), draw] (rect) {};
   
     \node  [below of = proc1] (title2){Cicrcle};
     \node  [block,align=left,below of=title2,draw] (proc2) 
-      {virtual Process\_ME(visitor)\\-Process\_Circle(this)};
+      {virtual Process\_ME(visitor)\\visitor->Process\_Circle(this)};
     \node  [fit=(title2)(proc2), draw] (circ) {};
 
     \node  [below of = proc2] (title3){Group};
     \node  [block,align=left,below of=title3,draw] (proc3) 
-    {virtual Process\_ME(visitor)\\-Process\_Group(this)};
+    {virtual Process\_ME(visitor)\\visitor->Process\_Group(this)};
     \node  [fit=(title3)(proc3), draw] (group) {};
 
     \node  [right of = proc1, node distance = 4cm] (title4){Serializer};

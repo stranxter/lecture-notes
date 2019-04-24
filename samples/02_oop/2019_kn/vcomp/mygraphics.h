@@ -8,7 +8,7 @@ http://www.willusher.io/sdl2%20tutorials/2013/08/15/lesson-0-visual-studio/
 За Linux & Mac ползвайте приложения Makefile.
 
 И в двата случая е необходимо първо да
-инсталирате SDL2.
+инсталирате SDL2 и SLD2_Images.
 
 */
 
