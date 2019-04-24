@@ -9,7 +9,7 @@ class Group: public Shape
     public:
     Group (int _x, int _y, const char *s);
     Group (const Group&);
-    void draw(SDL_Renderer *);
+    void draw();
     Shape *clone();
     void serialize(std::ostream &);
 

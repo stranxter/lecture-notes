@@ -8,7 +8,7 @@
 #И в двата случая е необходимо първо да
 #инсталирате SDL2.
 CXX = clang++
-SDL =  -L/usr/local/lib -lSDL2 -lSDL2_image
+SDL =  -L/usr/local/lib -lSDL2 -lSDL2_image -lSDL2_ttf
 # If your compiler is a bit older you may need to change -std=c++11 to -std=c++0x
 CXXFLAGS = -Wall -c -std=c++11
 LDFLAGS = $(SDL)

@@ -1,5 +1,5 @@
 #include <iostream>
-#include "mygraphics.h"
+#include "sdlwrapper.h"
 using namespace std;
 
 #include "rectangle.h"
@@ -12,7 +12,7 @@ using namespace std;
 int main ()
 {//scklndskl
 
-	Rect r1 (10,10,30,100,"Test Rectangle");
+	/*Rect r1 (10,10,30,100,"Test Rectangle");
 	Rect r2(50, 50, 30, 50, "Test Rectangle 2");
 	Circle c1(20, 20, 30, "Test Circle");
 
@@ -28,13 +28,14 @@ int main ()
 	g2.addShape (&g1);
 	g2.addShape (&r2);
 
-	g2.draw(SDLRen);
+	g2.draw();
 
 
 	std::ofstream file ("drawing.drw");
 
 	g2.serialize (file);
-
+*/
+	drawText();
 
 
 	//-------------------------------------

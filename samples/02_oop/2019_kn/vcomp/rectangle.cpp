@@ -1,5 +1,4 @@
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
+#include "sdlwrapper.h"
 #include "rectangle.h"
 
 Rect::Rect(int _x, int _y, int _w, int _h, const char *_s):Shape(_x,_y,_s),w(_w),h(_h)
@@ -7,11 +6,10 @@ Rect::Rect(int _x, int _y, int _w, int _h, const char *_s):Shape(_x,_y,_s),w(_w)
 
 }
 
-void Rect::draw(SDL_Renderer *rend)
+void Rect::draw()
 {
-    SDL_SetRenderDrawColor(rend, r, g, b, SDL_ALPHA_OPAQUE);
-    SDL_Rect r = {x, y, w, h};
-    SDL_RenderFillRect(rend, &r);
+    setColor (r,g,b);
+    drawFillRect (x,y,w,h);
 }
 
 void Rect::set_w(int _w)

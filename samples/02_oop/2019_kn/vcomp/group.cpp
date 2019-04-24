@@ -2,13 +2,13 @@
 
 Group::Group(int _x, int _y, const char *s):Shape (_x,_y,s){}
 
-void Group::draw(SDL_Renderer *rend)
+void Group::draw()
 {
     for (Shape *shape : children)
     {
         shape->set_x (shape->get_x() + x);
         shape->set_y (shape->get_y() + y);
-        shape->draw (rend);
+        shape->draw ();
         shape->set_x(shape->get_x() - x);
         shape->set_y(shape->get_y() - y);
     }

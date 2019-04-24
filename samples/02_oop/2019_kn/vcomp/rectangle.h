@@ -7,7 +7,7 @@ class Rect : public Shape
 {
     public:
     Rect (int _x,int _y,int _w,int _h,const char *_s);
-    void draw(SDL_Renderer *);
+    void draw();
     Shape* clone ();
     void serialize(std::ostream &);
 

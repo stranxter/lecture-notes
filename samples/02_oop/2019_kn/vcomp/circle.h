@@ -7,7 +7,7 @@ class Circle : public Shape
 {
     public:
     Circle (int _x,int _y,int _r,const char *_s);
-    void draw(SDL_Renderer *);
+    void draw();
     Shape* clone ();
     void serialize(std::ostream &);
 
