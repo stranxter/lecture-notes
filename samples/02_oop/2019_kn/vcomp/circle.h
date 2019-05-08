@@ -7,13 +7,13 @@ class Circle : public Shape
 {
     public:
     Circle (int _x,int _y,int _r,const char *_s);
-    void draw();
     Shape* clone ();
-    void serialize(std::ostream &);
+
+    void accept(Visitor *);
 
     void set_r (int _r);
 
-    int get_r ();
+    int get_r () const;
 
     private:
     int r;

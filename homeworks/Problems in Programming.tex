@@ -14,7 +14,7 @@
 \usepackage{hyperref}
 \usepackage{caption}
 \usepackage{tikz}
-\usetikzlibrary{shapes,arrows,positioning,calc}
+\usetikzlibrary{shapes,arrows,positioning,calc,positioning,fit}
 
 \captionsetup{font=footnotesize}
 
@@ -417,17 +417,17 @@ fork/.style = {draw, fill=black, circle,inner sep=1pt},
         \node [left of = center,node distance = 0.7cm] {\small{$(x_0,y_0)$}};
         %(cos 0, sin 0)
         \node [fork, name=v0] (v0) at(7,4) {};
-        \node [right of = v0, node distance=2cm] {\Small{$(x_0+r.cos(0),y_0+r.sin(0))$}};
+        \node [right of = v0, node distance=2cm] {\small{$(x_0+r.cos(0),y_0+r.sin(0))$}};
         %cos 2Pi/5, sin 2pi/5
         \node [fork, name=v1] (v1) at(4.927,6.853) {};
-        \node [right of = v1,node distance = 2.8cm] {\Small{$(x_0+r.cos(4\times\frac{2\pi}{5}),y_0+r.sin(4\times\frac{2\pi}{5}))$}};
+        \node [right of = v1,node distance = 2.8cm] {\small{$(x_0+r.cos(4\times\frac{2\pi}{5}),y_0+r.sin(4\times\frac{2\pi}{5}))$}};
         %cos 2*2Pi/5, sin 2*2pi/5
         \node [fork, name=v2] (v2) at(1.573,5.763) {};
         %cos 3*2Pi/5, sin 3*2pi/5
         \node [fork, name=v3] (v3) at(1.573,2.237) {};
         %cos 4*2Pi/5, sin 4*2pi/5
         \node [fork, name=v4] (v4) at(4.927,1.147) {};
-        \node [right of = v4,node distance = 2.5cm] {\Small{$(x_0+r.cos(\frac{2\pi}{5}),y_0+r.sin(\frac{2\pi}{5}))$}};
+        \node [right of = v4,node distance = 2.5cm] {\small{$(x_0+r.cos(\frac{2\pi}{5}),y_0+r.sin(\frac{2\pi}{5}))$}};
 
 
         %\draw [->] (test1) -- node []{yes}(end);
@@ -665,8 +665,8 @@ for (int i = 0; i < 10; i++)
     \node [fork,name=endfork,below of = test1, node distance = 3cm]{};
     \node [entry, name=end, below of = endfork, node distance = 1cm](end){};
 
-    \node [cut, name=cut1, left of = test1fork, node distance = 2cm](cut1){1};
-    \node [cut, name=cut2, left of = endfork, node distance = 2cm](cut2){2};
+    \node [name=cut1, left of = test1fork, node distance = 2cm](cut1){1};
+    \node [name=cut2, left of = endfork, node distance = 2cm](cut2){2};
 
     \draw [->] (start) -- (init);
     \draw [-] (init) -- (test1fork);
@@ -714,8 +714,8 @@ for (int i = 0; i < 10; i++)
     \node [fork,name=endfork,below of = test1, node distance = 3cm]{};
     \node [entry, name=end, below of = endfork, node distance = 1cm](end){};
 
-    \node [cut, name=cut1, left of = test1fork, node distance = 2cm](cut1){1};
-    \node [cut, name=cut2, left of = endfork, node distance = 2cm](cut2){2};
+    \node [name=cut1, left of = test1fork, node distance = 2cm](cut1){1};
+    \node [name=cut2, left of = endfork, node distance = 2cm](cut2){2};
 
     \draw [->] (start) -- (init);
     \draw [-] (init) -- (test1fork);
@@ -1052,7 +1052,6 @@ bool member (int A[], size_t n, int x)
 
 	Допустимо е инструкциите да бъдат отпечатани в обратен ред.
 
-	\Bigskip
 
 	\begin{mdframed}[hidealllines=true,backgroundcolor=gray!20]
 
@@ -1622,7 +1621,7 @@ private:
 
   \item Да се реализира метод \code{LList<T>::get\_ith(int n)} за намиране на \code{n}-тия поред елемент на списъка.
 
-  \item Да се реализира метод \code метод \code{LList<T>::push\_back} за дабавяне на елемент от тип \code{T} към \textit{края} на списъка.
+  \item Да се реализира метод \code{LList<T>::push\_back} за дабавяне на елемент от тип \code{T} към \textit{края} на списъка.
 
   \item Да се реализира метод \code{LList::removeAll (x)}, който изтрива всички срещания на елемента \code{x} от списъка.
 
@@ -1792,9 +1791,9 @@ private:
 
 \pagebreak
 
-\subsection{Сериализация и десериализация на контейнери}
+\subsection{Сериализация и десериализация на контейнери. Шаблон ``Фабрика''}
 
-\begin{enumerate}
+\begin{enumerate}[resume]
 
 	\item Да се сериализира и десериализира масив от масиви от числа:
 
@@ -1857,6 +1856,143 @@ private:
 \end{enumerate}
 
 
+\pagebreak
+
+\subsection {Наследяване и агрегация. Йерархичи дървета от обекти, съдържащи други обекти. Шаблон за дизайн ``Посетител.''}
+
+\begin{mdframed}[hidealllines=true,backgroundcolor=gray!20]
+  Проблемите около агрегацията на обекти от същата йерархия и получаващите се йерархичи дървета от обекти, съдържащи други обекти, са демострирани чрез йерархия от геометрични фигури, наследници на абстрактен базов клас \code{Shape}.
+  \begin{verbatim}
+    class Shape
+    {
+    public:
+        Shape ();
+        Shape (int x,int y,const char *title);
+        Shape (const Shape&);
+        virtual Shape* clone () = 0;    
+        void set_x (int);
+        void set_y (int);
+        void set_text (const char*);
+        void operator = (const Shape& s);
+        int get_x();
+        int get_y();
+        char* get_text();
+        virtual ~Shape();
+      protected:
+        int x;
+        int y;
+        char *text;
+    };
+    \end{verbatim}
+    
+    Към йерархията е добавен клас \code{Group}, който освен че е наследник на \code{Shape}, съдържа и контейнер от наследници на \code{Shape}:
+
+    \begin{verbatim}
+      class Group: public Shape
+      {
+        public:
+          //...
+          void addShape (Shape*);
+          size_t get_nChildren () const;
+          Shape* getChild (size_t i) const;
+          //...
+          private:
+          std::vector<Shape*> children;
+      };
+    \end{verbatim}
+
+    За изобразяване на фигурите и сериализацията им във файл се ползва шаблонът посетител (Visitor Pattern). Всеки конкретен посетител е наследник на клас:
+    \begin{verbatim}
+      class Visitor
+      {
+      public:
+          virtual void visitReactangle (Rect*) = 0;
+          virtual void visitCircle (Circle*) = 0;
+          virtual void visitGroup (Group*) = 0;
+      };  
+    \end{verbatim}
+
+    Йерархията от фигури реализира виртуалния метод 
+    
+    \code{void accept (Visitor*)}, 
+    
+    като всяка конкретна фигура изпълнява съответния на нея метод на посетителя. По този начин се реализира т.нар. ``double dispatch''. Т.е. в следната ситуация:
+
+    \code {figure->accept(visitor)},
+    
+    кой точно метод ще се изпълни се определя динамично не само според типа на обекта, сочен от \code{figure}, но и според типа на конктретния посетител, сочен от \code{visitor}. Това е изобразено на фигура \ref{fig:visitor}.
+  \end{mdframed}
+
+  \begin{figure}
+    \relscale{0.5}
+    \begin{tikzpicture}[auto, node distance=1.2cm,>=latex]
+  
+      \node  [] (title1){Rectangle};
+      \node  [block,align=left,below of=title1,node distance = 0.6cm,draw] (proc1) 
+        {virtual accept(Visitor*):\\visitor->process\_Rectangle(this)};
+      \node[fit=(title1)(proc1), draw] (rect) {};
+    
+      \node  [below of = proc1] (title2){Cicrcle};
+      \node  [block,align=left,below of=title2,draw,node distance = 0.6cm] (proc2) 
+        {virtual accept(Visitor*):\\visitor->process\_Circle(this)};
+      \node  [fit=(title2)(proc2), draw] (circ) {};
+  
+      \node  [below of = proc2] (title3){Group};
+      \node  [block,align=left,below of=title3,draw,node distance = 0.6cm] (proc3) 
+      {virtual accept(Visitor*):\\visitor->process\_Group(this)};
+      \node  [fit=(title3)(proc3), draw] (group) {};
+  
+  
+      \node  [right of = title1, node distance = 5cm] (title5){Painter};
+      \node  [below of=title5,draw,node distance = 0.6cm] (proc7) {process\_Rectangle(Rectangle*)};
+      \node  [below of=proc7,draw,node distance = 0.6cm] (proc8) {process\_Circle(Circle*)};
+      \node  [below of=proc8,draw,node distance = 0.6cm] (proc9) {process\_Group(Group*)};
+      \node  [fit=(title5)(proc7)(proc8)(proc9), draw, dashed] (paint1) {};
+  
+  
+      \node  [below of = paint1, node distance = 2cm] (title4){Serializer};
+      \node  [below of=title4,draw,node distance = 0.6cm] (proc4) {process\_Rectangle(Rectangle*)};
+      \node  [below of=proc4,draw,node distance = 0.6cm] (proc5) {process\_Circle(Circle*)};
+      \node  [below of=proc5,draw,node distance = 0.6cm] (proc6) {process\_Group(Group*)};
+      \node  [fit=(title4)(proc4)(proc5)(proc6), draw] (ser1) {};
+  
+      \draw[->]  (proc1)-- (proc4);   
+      \draw[->]  (proc2)-- (proc5);   
+      \draw[->]  (proc3)-- (proc6);   
+  
+      \draw[->,dashed]  (proc1)-- (proc7);   
+      \draw[->,dashed]  (proc2)-- (proc8);   
+      \draw[->,dashed]  (proc3)-- (proc9);   
+  
+  
+      %\draw[->]  (proc6.east) -| node[right of = proc6, distance=5cm]{a} (proc4.east);   
+      %\draw[->] (proc6.east) -| ([xshift=1.5cm,yshift=0cm]proc5.east) |- (proc4.east);    
+      %\draw[->] (proc6.east) -| ([xshift=1.5cm,yshift=0cm]proc5.east) |- (proc5.east);    
+      %\draw[->]  (proc6)-- (proc5);   
+  
+      \node  [block,align=left,left of=proc2,draw, node distance = 4cm] (call) 
+      {figure->accept(serializer)};
+  
+      \draw[->] (proc6.south) -| ([xshift=0cm,yshift=-1cm]proc6.south) -| (call.south); 
+  
+  
+      \draw[->]  (call)-- (rect);   
+      \draw[->]  (call)-- (circ);   
+      \draw[->]  (call)-- (group);   
+  
+  
+    \end{tikzpicture}
+  
+  \caption{Double Dispatch при йерархии от фигури и посетители}
+  \label{fig:visitor}
+  \end{figure}  
+
+
+\begin{enumerate}[resume]
+  \item Да се реализира десериализация на фигури чрез шаблона ``Фабрика''.
+  \item Да се дефинира посетител \code{SurfaceCalculator}, който обхожда йерархия от фигури и изчисля сумата на лицата на всички фигури в нея. Приемеме, че лицето на група от фигури е равно на сумата на лицата на фигурите в групата.
+  
+\end{enumerate}
 
 
 \pagebreak

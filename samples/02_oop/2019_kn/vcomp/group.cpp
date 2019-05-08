@@ -1,18 +1,7 @@
 #include "group.h"
+#include "visitor.h"
 
 Group::Group(int _x, int _y, const char *s):Shape (_x,_y,s){}
-
-void Group::draw()
-{
-    for (Shape *shape : children)
-    {
-        shape->set_x (shape->get_x() + x);
-        shape->set_y (shape->get_y() + y);
-        shape->draw ();
-        shape->set_x(shape->get_x() - x);
-        shape->set_y(shape->get_y() - y);
-    }
-}
 
 void Group::addShape(Shape *shape)
 {
@@ -66,14 +55,17 @@ Group::Group(const Group &g):Shape(g)
     }
 }
 
-void Group::serialize(std::ostream &out)
+size_t Group::get_nChildren() const
 {
-    out << "Group "
-        << children.size()
-        << "\n";
-    
-    for (Shape *s : children)
-    {
-        s->serialize (out);
-    }
+    return children.size();
+}
+
+Shape *Group::getChild(size_t i) const
+{
+    return children[i];
+}
+
+void Group::accept(Visitor *v)
+{
+    v->visitGroup (this);
 }

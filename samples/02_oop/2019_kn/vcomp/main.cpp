@@ -9,10 +9,13 @@ using namespace std;
 #include <fstream>
 
 
-int main ()
-{//scklndskl
+#include "drawvisitor.h"
+#include "serializevisitor.h"
 
-	/*Rect r1 (10,10,30,100,"Test Rectangle");
+int main ()
+{
+
+	Rect r1 (10,10,30,100,"Test Rectangle");
 	Rect r2(50, 50, 30, 50, "Test Rectangle 2");
 	Circle c1(20, 20, 30, "Test Circle");
 
@@ -28,15 +31,19 @@ int main ()
 	g2.addShape (&g1);
 	g2.addShape (&r2);
 
-	g2.draw();
+
+	DrawingVisitor painter;
+
+	//g2.draw();
+	Shape *s = &g2;
+
+	s->accept (&painter);
 
 
 	std::ofstream file ("drawing.drw");
+	SerializeVisitor serializer (file);
 
-	g2.serialize (file);
-*/
-	drawText();
-
+	s->accept (&serializer);
 
 	//-------------------------------------
 	updateGraphics();

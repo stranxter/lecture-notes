@@ -9,14 +9,16 @@ class Group: public Shape
     public:
     Group (int _x, int _y, const char *s);
     Group (const Group&);
-    void draw();
     Shape *clone();
-    void serialize(std::ostream &);
+
+    void accept (Visitor*);
 
     void addShape (Shape*);
 
     Group& operator =(const Group &g);
 
+    size_t get_nChildren () const;
+    Shape* getChild (size_t i) const;
 
     ~Group ();
 
