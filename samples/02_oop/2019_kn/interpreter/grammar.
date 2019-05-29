@@ -1,0 +1,11 @@
+
+<expression> ::= <assign-var> | <arith-expr> | <var-name> | <literal>
+
+<arith-expr> ::= (<expression> <op> <expression>) | <expression>
+<op> ::= + | *
+
+<literal> ::= (0..9)+ | (0..9)+.(0..9)+ | "<character>*"
+
+<assign-var> ::= set <var-name> <expression>
+
+<var-name> ::= (a..z)+
