@@ -1,10 +1,10 @@
 #include "tokenizer.h"
 
-KnownToken Tokenizer::knownTokens[] = {"set", Token::TokenTypes::kwset,
-                                        "+", Token::TokenTypes::ao_plus,
-                                        "*", Token::TokenTypes::ao_mult,
-                                        "(", Token::TokenTypes::par_open,
-                                        ")", Token::TokenTypes::par_close};
+KnownToken Tokenizer::knownTokens[] = {"set", Token::kwset,
+                                        "+", Token::ao_plus,
+                                        "*", Token::ao_mult,
+                                        "(", Token::par_open,
+                                        ")", Token::par_close};
 
 Tokenizer::Tokenizer(std::istream &_input):input(_input),tokenWasPeeked(false)
 {}
@@ -41,11 +41,11 @@ Token Tokenizer::readToken()
     }
     else if (isletter(t.str[0]))
     {
-        t.type = Token::TokenTypes::var_name;
+        t.type = Token::var_name;
     }
     else
     {
-        t.type = Token::TokenTypes::unknown;
+        t.type = Token::unknown;
     }
 
     return t;
