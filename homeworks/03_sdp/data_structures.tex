@@ -85,6 +85,34 @@ class DLList
 Преди да пристъпите към задачите, реализирайте подходящи контруктори, деструктор и оператор за присвояване на класа.
 \end{mdframed}
 
+\begin{figure}
+  \centering
+
+    \begin{tikzpicture}[auto, node distance=2cm,>=latex']
+    \node[lnode] (n1) {\nodepart{two}1};
+    \node[lnode, right of = n1] (n2) {\nodepart{two}2};
+    \node[lnode, right of = n2] (n3) {\nodepart{two}3};
+    \node[lnode, right of = n3] (n4) {\nodepart{two}4};
+    \node[lnode, right of = n4] (n5) {\nodepart{two}5};
+
+    \node[rectangle,left of = n1](start){};
+
+    \draw[*->]  (start)-- (n1);
+
+    \draw[*->] let \p1 = (n2.three), \p2 = (n1.center) in (\x1,\y2) -- (n3);
+    \draw[*->] let \p1 = (n1.three), \p2 = (n1.center) in (\x1,\y2) -- (n2);
+    \draw[*->] let \p1 = (n3.three), \p2 = (n1.center) in (\x1,\y2) -- (n4);
+    \draw[*->] let \p1 = (n4.three), \p2 = (n1.center) in (\x1,\y2) -- (n5);
+    \draw[*->,dashed] let \p1 = (n2.one), \p2 = (n1.center) in ([shift={(0.1cm,-0.1cm)}]\x1,\y2) |-([shift={(0,0.5cm)}]n2.north west) -- ([shift={(0,0.5cm)}]n1.north) -| ([shift={(-1cm,0cm)}]n1);
+    \draw[*->,dashed] let \p1 = (n3.one), \p2 = (n2.center) in ([shift={(0.1cm,0.1cm)}]\x1,\y2) |-([shift={(0,-1cm)}]n3.north west) -- ([shift={(0,-1cm)}]n2.north) -| ([shift={(-1cm,0cm)}]n2);
+    \draw[*->,dashed] let \p1 = (n4.one), \p2 = (n3.center) in ([shift={(0.1cm,-0.1cm)}]\x1,\y2) |-([shift={(0,0.5cm)}]n4.north west) -- ([shift={(0,0.5cm)}]n3.north) -| ([shift={(-1cm,0cm)}]n3);
+    \draw[*->,dashed] let \p1 = (n5.one), \p2 = (n4.center) in ([shift={(0.1cm,0.1cm)}]\x1,\y2) |-([shift={(0,-1cm)}]n5.north west) -- ([shift={(0,-1cm)}]n4.north) -| ([shift={(-1cm,0cm)}]n4);
+    \end{tikzpicture}
+  \caption{Двусвързан списък}
+  \label{fig:skiplist}
+\end{figure}
+
+
 Следните задачи да се решат като упражнение за директно боравене с възлите на линеен двусвързан списък. Функциите (методите) да се тестват с подходящи тестове.
 
 \begin{enumerate}[resume]
