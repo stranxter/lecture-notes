@@ -1,0 +1,201 @@
+\documentclass{beamer}
+\usepackage{relsize}
+\usepackage{color}
+
+\usepackage{listings}
+\usetheme{CambridgeUS}
+%\usepackage{beamerthemesplit} % new 
+\usepackage{enumitem}
+\usepackage{amsmath}                    % See geometry.pdf to learn the layout options. 
+\usepackage{amsthm}                   % See geometry.pdf to learn the layout options. There 
+\usepackage{amssymb}                    % See geometry.pdf to learn the layout options. 
+\usepackage[utf8]{inputenc} 
+\usepackage{graphicx}
+\usepackage[english,bulgarian]{babel}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{caption}
+\usepackage{tikz}
+\usepackage{forest}
+\usetikzlibrary{shapes,arrows,positioning,calc,chains}
+
+\lstset{language=C++,
+                basicstyle=\ttfamily,
+                keywordstyle=\color{blue}\ttfamily,
+                stringstyle=\color{red}\ttfamily,
+                commentstyle=\color{green}\ttfamily,
+                morecomment=[l][\color{magenta}]{\#}
+}
+
+\newcommand{\code}[1]{\texttt{#1}}
+
+\newtheorem{mydef}{Дефиниция}[section]
+\newtheorem{lem}{Лема}[section]
+\newtheorem{thm}{Твърдение}[section]
+
+\DeclareMathOperator{\restrict}{\upharpoonright}
+
+\setitemize{label=\usebeamerfont*{itemize item}%
+  \usebeamercolor[fg]{itemize item}
+  \usebeamertemplate{itemize item}}
+
+\setbeamercovered{transparent}
+
+\captionsetup{font=footnotesize}
+
+\lstset{breaklines=true}
+\tikzset{
+block/.style = {draw, fill=white, rectangle,align = center},
+entry/.style = {draw, fill=black, circle, radius=3em},
+condition/.style = {draw, fill=white, diamond, align = center,node distance=3cm},
+fork/.style = {draw, fill=black, circle,inner sep=1pt},
+lnode/.style={rectangle split, rectangle split parts=3,draw, rectangle split horizontal},
+treenode/.style = {align=center, inner sep=0pt, text centered, circle, font=\sffamily\bfseries, draw=black, fill=white, text width=1.5em}
+}
+
+
+\begin{document}
+\title[Увод в програмирането]{Машини с неограничени регистри} 
+\author{Калин Георгиев} 
+\frame{\titlepage} 
+
+\section{Машини с неограничени регистри} 
+
+
+\begin{frame}
+\centerline{Машини с неограничени регистри}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Машини с неограничени регистри}
+\begin{figure}
+  \centering
+    \begin{tikzpicture}
+        \foreach \x in {0,0.5,...,5} {
+            \pgfmathtruncatemacro{\label}{2*\x}
+            \node (l\x) [left] at (\x,1) {\tiny \label};
+            \node (n\x)[draw, minimum width=0.5cm] at (\x, 0.5) {0};
+        }
+        \node [minimum width=0.5cm](next) at (6,0.5) {... ... ...};
+    \end{tikzpicture}
+  \caption{Памет}
+  \label{fig:mnr}
+\end{figure}
+
+\relscale{0.75}
+Инструкции:
+\begin{itemize}
+    \item \texttt{ZERO n}: Записва стойността 0 в клетката с адрес $n$
+    \item \texttt{INC n}: Увеличава с единица стойността, записана в клетката с адрес $n$
+    \item \texttt{MOVE x y}: Присвоява на клетката с адрес $y$ стойността на клетката с адрес $x$
+    \item \texttt{JUMP x}: Изпълнението на програмата ``прескача'' и продължава от инструкцията с пореден номер $x$. Ако програмата има по-малко от $x+1$ инструкции, изпълнението ѝ се прекратява
+    \item \texttt{JUMP x y z}: Ако съдържанията на клетките  $x$ и $y$ съвпадат, изпълнението на програмата ``прескача'' и продължава от инструкцията с пореден номер $z$. В противен случай, програмата продължава със следващата инструкция. Ако програмата има по-малко от $z+1$ инструкции, изпълнението ѝ се прекратява
+\end{itemize}
+
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Програма}
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \foreach \x in {1,1.5,...,5} {
+            \pgfmathtruncatemacro{\label}{2*\x}
+            \node (l\x) [left] at (\x,1) {\tiny \label};
+            \node (n\x)[draw, minimum width=0.5cm] at (\x, 0.5) {0};
+        }
+        \node [minimum width=0.5cm](next) at (6,0.5) {... ... ...};
+        \node (l0) [left] at (0,1) {\tiny 0};
+        \node (n0)[draw, red, minimum width=0.5cm] at (0, 0.5) {1};
+        \node (l0.5) [left] at (0.5,1) {\tiny 1};
+        \node (n0.5)[draw, red, minimum width=0.5cm] at (0.5, 0.5) {2};
+
+    \end{tikzpicture}
+    \caption{Памет}
+\end{figure}
+
+Програма:
+\begin{verbatim}
+0: INC 0
+1: INC 1
+2: INC 1
+\end{verbatim}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+    \frametitle{Умножение по 2}
+    \relscale{0.7}
+
+\begin{columns}[t]
+    \begin{column}{0.75\textwidth}
+        \begin{figure}
+            \centering
+            \begin{tikzpicture}
+                \foreach \x in {0,0.5,...,5} {
+                    \pgfmathtruncatemacro{\label}{2*\x}
+                    \node (l\x) [left] at (\x,5.5 ) {\tiny \label};
+                }    
+                \foreach \iter in {1,...,6}{
+                    \pgfmathsetmacro{\y}{.55*(10-\iter)} 
+                    \foreach \x in {1.5,2,...,5} {
+                        \node (n\x)[draw, minimum width=0.5cm] at (\x, \y) {0};
+                    }   
+                    \node (n0) [draw, minimum width=0.5cm] at (0, \y) {5};
+                    \pgfmathtruncatemacro{\itm}{\iter-1}
+                    \node (n1) [draw, minimum width=0.5cm] at (0.5, \y) {\itm};
+                    \pgfmathtruncatemacro{\mtwo}{2*\itm}
+                    \node (n2) [draw, minimum width=0.5cm] at (1.0, \y) {\mtwo};
+                }
+                    
+            \end{tikzpicture}
+            \caption{Памет}
+        \end{figure}
+        
+    \end{column}
+    \begin{column}{0.25\textwidth}
+        \relscale{0.5}
+        \begin{tikzpicture}[auto, node distance=1.5cm,>=latex']
+            \node [entry, name=start](start){};
+            \node [fork,name=test1fork,below of = start,node distance = 0.75cm]{};
+            \node [condition,name=test1, below of = test1fork,node distance = 1.5cm] (test1) {\code{0:JUMP 0 1 5}};
+            \node [block,name=inc,right of = test1, node distance = 2cm,align = left] (inc) {\code{1:INC 1}\\\code{2:INC 2}\\\code{3:JUMP 2}\\\code{4:JUMP 0}};
+            \node [entry, name=end, below of = test1, node distance = 1.5cm](end){};
+            \draw [->] (start) -- (test1fork);
+            \draw [->] (test1fork) -- (test1);
+            \draw [->] (test1) -- node{} (inc);
+            \draw [->] (inc) |- (test1fork);
+            \draw [->] (test1) -- node []{}(end);
+            \end{tikzpicture}
+
+
+    \end{column}
+    \end{columns}
+      
+
+    
+    Програма:
+    \begin{verbatim}
+        0: JUMP 0 1 5
+        1: INC 1
+        2: INC 2
+        3: INC 2
+        4: JUMP 0    
+    \end{verbatim}
+    
+    \end{frame}
+    
+
+
+\begin{frame}
+    \centerline{Благодаря за вниманието!}
+\end{frame}
+
+
+\end{document}
+
+
+
