@@ -1,4 +1,4 @@
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#define DOCTEST_CONFIG_IMPLEMENT
 #include "doctest.h"
 #include "dllist.h"
 #include "dllist.cpp"
@@ -182,7 +182,6 @@ void runSListTest (SList<T> &list, size_t nChunks, size_t nIterations)
     }
 }
 
-
 TEST_CASE("Spped-up test")
 {
     SList<int> test(lt);
@@ -191,10 +190,10 @@ TEST_CASE("Spped-up test")
 
     for (size_t count = size; count > 0; --count)
     {
-        test.insertSorted(count-1);
+        test.insertSorted(count - 1);
     }
 
-    runSListTest (test,10, 150);
+    runSListTest(test, 10, 150);
 
     test.speedup();
 
