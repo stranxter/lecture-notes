@@ -172,24 +172,80 @@ struct lnode
 \subsection {Функции от високо ниво и оператори над итератори}
 
 \begin{mdframed}[hidealllines=true,backgroundcolor=gray!20]
-  На лекции разглеждаме деструктивен вариант на функцията от високо ниво \code{map}, извършваща еднотипна трансформация на елементите на контейнер без достъп до контейнера, а само до негов итератор.
+  Нека ``поредица'' да наричаме последователни елементи на някакъв контейнер, зададени чрез итератори към началото и края на последователността. С помощта на следния шаблон:
+  \begin{verbatim}
+template <class Iterator>
+class Sequence{
+    public:
+        Sequence (const Iterator &b, 
+                  const Iterator &e):_begin(b), _end (e){}
+        Iterator begin()
+        {return _begin;}
+        Iterator end()
+        {return _end;}
+    private:
+        Iterator _begin;
+        Iterator _end;
+};
+  \end{verbatim}
+
+  става възможно не само да оформим двойката начало-край в общ обект, но и да итерираме съответната поредица с цикъл \code{for}. Ако \code{begin} и \code{end} са съответните итератори към елементи от тип \code{E} и имаме обекта \code{Sequence<SomeIterator>(begin,end)}, то можем да направим обхождането:
+ \begin{verbatim}
+for (E& x : seq){...}   
+ \end{verbatim}
+ 
+ На лекции разглеждаме деструктивен вариант на функцията от високо ниво \code{map}, извършваща еднотипна трансформация на елементите на поредица, като се абстрахира напълно от контейнера:
   
 \begin{verbatim}
-template <class Iterator, class ElType>
-void map(const Iterator &start,
-          const Iterator &end,
-          ElType (*f)(const ElType &));
+template <class Iterator, class Element>
+void map(Sequence<Iterator> seq,
+          Element (*f)(const Element &))
+{
+    for (Element& e: seq)
+    {e = f (e);}    
+}
 \end{verbatim}
 
-  Разглеждаме и фунцкията за агрегации \code{reduce}, позната от функционалното програмиране: 
+  Може да разгледаме и фунцкията за агрегации \code{reduce}, позната от функционалното програмиране: 
 \begin{verbatim}
-template <class Iterator, class ElType>
-ElType reduce(const Iterator &start,
-              const Iterator &end,
-              ElType (*op)(const ElType &, const ElType &),
-              ElType null_val)
+template <class Iterator, class Element>
+Element reduce(Sequence<Iterator> seq,
+                Element (*op)(const Element &, const Element &),
+                Element null_val)
+{
+    Element accum = null_val;
+    for (Element e : seq)
+    { accum = op(accum, e); }
+    return accum;
+}
+\end{verbatim}
+Възможно е също да реализираме операция с поредица, която изменя броя или реда на елементите ѝ, отново без знание за подлежащия контейнер. Такава е например операцията \code{filter}. Това налага да се конструира нова поредица, като по някакъв начин се измени поведението на итераторите на оригиналната поредица. Например, реализирания на лекции \code{FilterIterator} ``изменя'' даден друг итератор като ``прескача'' елементите, които не удовлетворяват даден предикат. По този начин можем да дефинираме:
+\begin{verbatim}
+template <class Iterator, class Element>
+Sequence<FilterIterator<Iterator,Element>> 
+    filter(Sequence<Iterator> &seq,
+           bool (*pred)(const Element &))
+{
+  FilterIterator<Iterator,Element> begin (seq.begin(),seq.end(),pred);
+  FilterIterator<Iterator,Element> end (seq.end(),seq.end(),pred);
+
+  return Sequence<FilterIterator<Iterator, Element>> (begin, end);
+}    
+  \end{verbatim}
+  Използването на \code{Sequence} както за параметър, така и за резултат на тези функции, ни позволява да ги използваме за обхождане на новополучените подредици. Също така, можем да композираме функциите:
+  \begin{verbatim}
+for (E x : filter (seq, even)) {...обработка само на четните елементи на seq...}
+reduce(filter(seq,even),plus,0);//сума на четните елементи на seq 
+  \end{verbatim}
+Ако по подобие на \code{FilterIterator} реализираме \code{MapIterator}, можем да напраивм функционален вариант на \code{map}, \code{mapf}. Това ще ни позволи на намерим сумата на четните елементи на поредица, след като ги увеличим с единица, по следния начин:
+\begin{verbatim}
+reduce(mapf(filter(seq,even), inc), plus, 0)  
 \end{verbatim}
 \end{mdframed}
 
-
-
+\begin{enumerate}[resume]
+  \item По аналогия на дадените примери да се дефинира функция \code{append(a,b)}, която създава нова поредица чрез слепване на поредиците \code{a} и \code{b}.
+  \item По аналогия на дадените примери да се дефинира функция \code{combine(a,b,f)}, която създава нова поредица от стойностите на двуместната функция \code{f}, приложена върху съответните еленти на \code{a} и \code{b}. Функцията да се демомстрира като се съберат съответните елементи на две редици.
+  \item По аналогия на дадените примери да се дефинира функция \code{merge(a,b)}. Ако $a=a_1,...,a_k$, $b=b_1,...,b_l$, то $merge(a,b)=a_1,b_1,a_2,b_2,...$. 
+  \item По аналогия на дадените примери да се дефинира функция \code{zip(a,b)}, която създава нова поредица от двойките (\code{std::pair}) от стойностите на съответните еленти на \code{a} и \code{b}. 
+\end{enumerate}
