@@ -147,3 +147,49 @@ struct lnode
 
 
 \pagebreak
+
+\subsection {Итератори за линейни СД}
+\label{iterators1}
+Следните задачи да се решат като упражнение за работа с итератори. Задачите изискват реализация на клас линеен двусвързан списък и \code{forward} итератор за bego. Всяка функциия да се тества с подходящи тестове
+
+
+\begin{enumerate}[resume]
+
+	\item Да се разшири интераторът на двусвързан списък така, че да поддържа оператора за стъпка назад \texttt{-{}-}.
+
+	\item Да се напише функция \code{bool duplicates (...)}, която проверява дали в контейнер има дублиращи се елементи.
+
+	\item Да се напише фунцкия \code{bool issorted (...)}, която проверява дали елементите на даден контейнер са подредени в нарастващ или в намаляващ ред.
+
+	\item Да се напише фунцкия \code{bool palindrom (...)}, която проверява дали редицата от елементите на даден контейнер обрзува палиндром (т.е. дали се чете еднакво както отляво надясно така и отдяно наляво).
+
+	\item Да се реализира константен итератор за двусвързани списъци и горните функции да се преработят така, че да могат да работят с константни итератори.
+
+    
+
+\end{enumerate}
+
+\subsection {Функции от високо ниво и оператори над итератори}
+
+\begin{mdframed}[hidealllines=true,backgroundcolor=gray!20]
+  На лекции разглеждаме деструктивен вариант на функцията от високо ниво \code{map}, извършваща еднотипна трансформация на елементите на контейнер без достъп до контейнера, а само до негов итератор.
+  
+\begin{verbatim}
+template <class Iterator, class ElType>
+void map(const Iterator &start,
+          const Iterator &end,
+          ElType (*f)(const ElType &));
+\end{verbatim}
+
+  Разглеждаме и фунцкията за агрегации \code{reduce}, позната от функционалното програмиране: 
+\begin{verbatim}
+template <class Iterator, class ElType>
+ElType reduce(const Iterator &start,
+              const Iterator &end,
+              ElType (*op)(const ElType &, const ElType &),
+              ElType null_val)
+\end{verbatim}
+\end{mdframed}
+
+
+

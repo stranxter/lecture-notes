@@ -33,17 +33,14 @@ TEST_CASE("Test Map Inc")
     test.insertAt(0, 3);
     test.insertAt(1, 4);
 
-    CHECK(reduce(test.begin(), 
-                 test.end(),
-                 plus,
-                 0) == 10);
+    Sequence<DListIterator<int>> seq(test.begin(),
+                                     test.end());
 
-    map (test.begin(),test.end(),inc);
+    CHECK(reduce(seq, plus, 0) == 10);
 
-    CHECK(reduce(test.begin(),
-                 test.end(),
-                 plus,
-                 0) == 14);
+    map (seq,inc);
+
+    CHECK(reduce(seq, plus, 0) == 14);
 }
 
 template <class T>
@@ -58,22 +55,36 @@ TEST_CASE("Test Filter")
     test.insertAt(0, 3);
     test.insertAt(1, 4);
 
-    couple<FilteredDListIterator<int>> 
-         filtered = filter(test.begin(),
-                    test.end(),
-                    even);
+    Sequence<DListIterator<int>> seq (test.begin(), test.end());
 
-    CHECK(reduce(filtered.first,
-                 filtered.second,
-                 plus,
-                 0) == 6);
+    CHECK(reduce(filter(seq,even),plus,0)==6);
+    CHECK(reduce(filter(seq, noteven),plus,0) == 4);
+}
 
-    filtered = filter(test.begin(),
-                      test.end(),
-                      noteven);
+TEST_CASE("Test MapF")
+{
 
-    CHECK(reduce(filtered.first,
-                 filtered.second,
-                 plus,
-                 0) == 4);
+    DLList<int> test;
+    test.insertAt(0, 1);
+    test.insertAt(1, 2);
+    test.insertAt(0, 3);
+    test.insertAt(1, 4);
+
+    Sequence<DListIterator<int>> seq(test.begin(), test.end());
+
+    CHECK(reduce(mapf(seq,inc),plus,0) == 14);
+}
+
+TEST_CASE("Test Map + Filter")
+{
+
+    DLList<int> test;
+    test.insertAt(0, 1);
+    test.insertAt(1, 2);
+    test.insertAt(0, 3);
+    test.insertAt(1, 4);
+
+    Sequence<DListIterator<int>> seq(test.begin(), test.end());
+
+    CHECK(reduce(mapf(filter(seq,even), inc), plus, 0) == 8);
 }

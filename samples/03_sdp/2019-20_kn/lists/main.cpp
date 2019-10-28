@@ -4,62 +4,58 @@
 #include "dllist.h"
 #include "dllist.cpp"
 #include "slist.cpp"
-#include "filter_iterator.cpp"
 
 #include "tests.h"
+
 /*
     Функции от високо ниво над итератори
 */
+#include "sequence.hpp"
+#include "filter_iterator.cpp"
+#include "map_iterator.hpp"
 
-template <class Iterator, class ElType>
-void map(const Iterator &start,
-         const Iterator &end,
-         ElType (*f)(const ElType &))
+template <class Iterator, class Element>
+void map(Sequence<Iterator> seq,
+         Element (*f)(const Element &))
 {
-    Iterator i = start;
-
-    while (i != end)
+    for (Element& e: seq)
     {
-        *i = f(*i);
-        ++i;
-    }
+        e = f (e);
+    }    
 }
 
-template <class Iterator, class ElType>
-ElType reduce(const Iterator &start,
-              const Iterator &end,
-              ElType (*op)(const ElType &, const ElType &),
-              ElType null_val)
+template <class Iterator, class Element>
+Element reduce(Sequence<Iterator> seq,
+               Element (*op)(const Element &, const Element &),
+               Element null_val)
 {
-    Iterator i = start;
-
-    ElType accum = null_val;
-
-    while (i != end)
+    Element accum = null_val;
+    for (Element e : seq)
     {
-        accum = op(accum, *i);
-        ++i;
+        accum = op(accum, e);
     }
-
     return accum;
 }
 
-//двойка от еднотипни полета
-template <class T>
-using couple = std::pair<T,T>;
-
-template <class Iterator, class ElType>
-couple<FilterIterator<Iterator, ElType>> filter(const Iterator &start,
-                                                const Iterator &end,
-                                                bool (*pred)(const ElType &))
+template <class Iterator, class Element>
+Sequence<FilterIterator<Iterator,Element>> filter(Sequence<Iterator> &seq,
+                          bool (*pred)(const Element &))
 {
-    couple <FilterIterator<Iterator, ElType>> result =
-        //итератор към начлото на филтрирания интервал
-        {FilterIterator<Iterator, ElType>(start, end, pred),
-         //итератор към края на филтрирания интервал
-         FilterIterator<Iterator, ElType>(end, end, pred)};
 
-    return result;
+    return Sequence<FilterIterator<Iterator, Element>>
+         (FilterIterator<Iterator, Element>(seq.begin(), seq.end(), pred),
+          FilterIterator<Iterator, Element>(seq.end(), seq.end(), pred));
+}
+
+template <class Iterator, class Element>
+Sequence<MapIterator<Iterator,Element>> mapf(Sequence<Iterator> seq,
+                                             Element (*f)(const Element &))
+{
+    MapIterator<Iterator,Element> mappedIterBegin (seq.begin(), seq.end(), f);
+    MapIterator<Iterator, Element> mappedIterEnd (seq.end(), seq.end(), f);
+
+    return Sequence<MapIterator<Iterator, Element>> (mappedIterBegin, mappedIterEnd);
+    
 }
 
 /*
@@ -86,7 +82,6 @@ bool noteven(const int &x)
 int main ()
 {
     // пускане на тестовете
-
     doctest::Context().run();
 }
 
