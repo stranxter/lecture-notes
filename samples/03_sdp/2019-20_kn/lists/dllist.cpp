@@ -166,3 +166,47 @@ T& DLList<T>::fromBack(size_t index)
     assert (current != nullptr);
     return current->data;
 }
+
+template <class T>
+DListIterator<T> DLList<T>::begin()
+{
+    return DListIterator<T> (first);
+}
+
+template <class T>
+DListIterator<T> DLList<T>::end()
+{
+    return DListIterator<T>(nullptr);
+}
+
+template <class T>
+bool DListIterator<T>::operator==(const DListIterator &it) const
+{
+    return current == it.current;
+}
+
+template <class T>
+bool DListIterator<T>::operator!=(const DListIterator &it) const
+{
+    return current != it.current;
+}
+
+template <class T>
+DListIterator<T>& DListIterator<T>::operator++()
+{
+    assert (current != nullptr);
+    current = current->next;
+    return *this;
+}
+
+template <class T>
+T& DListIterator<T>::operator*()
+{
+    return current->data;
+}
+
+template <class T>
+DListIterator<T>::DListIterator(typename DLList<T>::Node *start)
+{
+    current = start;
+}

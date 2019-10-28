@@ -3,6 +3,9 @@
 #include <cstdlib>
 
 template <class T>
+class DListIterator;
+
+template <class T>
 class DLList
 {
     public:
@@ -16,6 +19,10 @@ class DLList
     bool member (const T&) const;
     size_t size () const;
     DLList<T>& operator= (const DLList<T>&);
+
+    friend class DListIterator<T>;
+    DListIterator<T> begin ();
+    DListIterator<T> end ();
 
     private:
     struct Node
@@ -31,6 +38,21 @@ class DLList
     Node* locate (size_t index);
 
     Node *first, *last;
+};
+
+template <class T>
+class DListIterator
+{
+    public:
+        T &operator*();
+        bool operator == (const DListIterator&) const;
+        bool operator != (const DListIterator &) const;
+        DListIterator<T> &operator++();
+
+        friend class DLList<T>;
+    private:
+        DListIterator(typename DLList<T>::Node *start);
+        typename DLList<T>::Node *current;
 };
 
 
