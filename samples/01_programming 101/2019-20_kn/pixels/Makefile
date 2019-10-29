@@ -7,20 +7,24 @@
 #
 #И в двата случая е необходимо първо да
 #инсталирате SDL2.
-CXX = clang++
-SDL =  -L/usr/local/lib -lSDL2
+CXX = c++
+
+#macOS uncomment below:
+#SDL_CFLAGS =
+#SDL_LDFLAGS =  -L/usr/local/lib -lSDL2
+
+SDL_CFLAGS := $(shell pkg-config --cflags sdl2)
+SDL_LDFLAGS := $(shell pkg-config --libs sdl2)
+
 # If your compiler is a bit older you may need to change -std=c++11 to -std=c++0x
-CXXFLAGS = -Wall -c -std=c++11
-LDFLAGS = $(SDL)
+CXXFLAGS = $(SDL_CFLAGS) -Wall -c -std=c++11
+
 EXE = SampleProgram
 
 all: $(EXE)
 
-$(EXE): main.o
-	$(CXX) $(LDFLAGS) $< -o $@
-
-main.o: main.cpp
-	$(CXX) $(CXXFLAGS) $< -o $@
+$(EXE): main.cpp
+	$(CXX) $< -o $@ $(SDL_LDFLAGS)
 
 clean:
 	rm *.o && rm $(EXE)
