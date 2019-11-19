@@ -16,6 +16,13 @@ TEST_CASE("Create Non-Empty Tree")
     test.addElement ("R",5);
     test.addElement ("RL",50);
 
+    /**************************************
+    **    КОМАНДЕН РЕД ЗА GRAPHVIZ       **
+    **                                   **
+    ** >dot tree.dot -Tpdf -o tree.pdf   **
+    **                                   **
+    **************************************/
+   
     std::ofstream file ("tree.dot");
     test.dottyPrint(file);
 }
