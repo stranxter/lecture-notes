@@ -79,6 +79,9 @@ bool noteven(const int &x)
 */
 #include "iter_tests.h"
 
+#include "tree_functions.hpp"
+
+
 int main ()
 {
     // пускане на тестовете

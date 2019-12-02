@@ -64,7 +64,7 @@ TEST_CASE("Test Sum")
     test.addElement ("R",5);
     test.addElement ("RL",50);
 
-    CHECK (test.sum() == 194);
+    CHECK (sumElements(test.rootPos()) == 194);
 
 }
 
@@ -84,7 +84,61 @@ TEST_CASE("Test Reduce")
     test.addElement ("R",5);
     test.addElement ("RL",50);
 
-    CHECK (test.reduce(plus,0) == test.sum());
+    CHECK (test.reduce(plus,0) == sumElements(test.rootPos()));
 
 }
 
+TEST_CASE("Test Copy and Delete")
+{
+    BinTree<int> *test = new BinTree<int>;
+
+    test->addElement ("",7);
+    test->addElement ("L",30);
+    test->addElement ("LR",12);
+    test->addElement ("LRL",90);
+    test->addElement ("R",5);
+    test->addElement ("RL",50);
+
+    BinTree<int> *copy  = new BinTree<int> (*test);
+
+    CHECK (sumElements(test->rootPos()) == 
+           sumElements (copy->rootPos()));
+    CHECK (sumElements(test->rootPos().left()) == 
+           sumElements (copy->rootPos().left()));
+
+    test->addElement ("LL",100);
+    CHECK (sumElements(test->rootPos()) == 
+           sumElements (copy->rootPos())+100);
+
+    delete test;
+    CHECK (sumElements (copy->rootPos())==194);
+    delete copy;
+
+}
+
+TEST_CASE("Test Assignment")
+{
+    BinTree<int> test;
+
+    test.addElement ("",7);
+    test.addElement ("L",30);
+    test.addElement ("LR",12);
+    test.addElement ("LRL",90);
+    test.addElement ("R",5);
+    test.addElement ("RL",50);
+
+    BinTree<int> copy;
+    
+    copy = test;
+
+    CHECK (sumElements(test.rootPos()) == 
+           sumElements (copy.rootPos()));
+    CHECK (sumElements(test.rootPos().left()) == 
+           sumElements (copy.rootPos().left()));
+
+    test.addElement ("LL",100);
+    CHECK (sumElements(test.rootPos()) == 
+           sumElements (copy.rootPos())+100);
+
+
+}

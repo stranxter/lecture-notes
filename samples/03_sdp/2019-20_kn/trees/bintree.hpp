@@ -24,13 +24,21 @@ BinTree<T>::BinTree (const T &x)
 {
     root = new BinTreeNode<T> (x,nullptr,nullptr);
 }
-        
-/*template <class T>
-BinTree<T>::BinTree (const T &x, const BinTree<T> &l, const BinTree<T> &r)
-{
-    root = new BinTreeNode<T> (x,l.root, r.root);   
-}*/
 
+template <class T>
+BinTree<T>::BinTree (const BinTree<T> &t)
+{
+    root = copyHelper (t.root);
+}
+
+template <class T>
+BinTree<T>::BinTree (BinTree<T> &&t)
+{
+    root = t.root;
+    t.root = nullptr;
+}
+
+        
 template <class T>
 void BinTree<T>::addElement (const char* trace, const T& x)
 {
@@ -163,25 +171,6 @@ bool BinTree<T>::memberHelp (const T& x, BinTreeNode<T> *current)
 }
 
 template <class T>
-T BinTree<T>::sum ()
-{
-    return sumHelp (root);
-}
-
-template <class T>
-T BinTree<T>::sumHelp (BinTreeNode<T> *current)
-{
-    if (current == nullptr)
-    {
-        return 0;
-    }
-
-    return current->data +
-           sumHelp (current->left) +
-           sumHelp (current->right);
-}
-
-template <class T>
 T BinTree<T>::reduce (T (*op)(const T&, const T&), const T& null_val)
 {
     return reduceHelp (op,null_val, root);
@@ -200,8 +189,119 @@ T BinTree<T>::reduceHelp (T (*op)(const T&, const T&), const T& null_val, BinTre
                    reduceHelp (op,null_val,current->right)));
 }
 
+template <class T>
+BinTreeNode<T>* BinTree<T>::copyHelper (BinTreeNode<T> *current)
+{
+    if (current == nullptr)
+    {
+        return nullptr;
+    }
+
+    return new BinTreeNode<T> (current->data, 
+                               copyHelper (current->left),
+                               copyHelper (current->right));
+}
+
+template <class T>
+Position<T> BinTree<T>::rootPos () const
+{
+    return Position<T> (root);
+}
+
+template <class T>
+Position<T>::Position (BinTreeNode<T> *_root):root(_root)
+{
+
+}
+
+template <class T>
+Position<T> Position<T>::left () const
+{
+    assert (root != nullptr);
+    return Position<T> (root->left);
+}
+
+template <class T>
+Position<T> Position<T>::right () const
+{
+    assert (root != nullptr);
+    return Position<T> (root->right);    
+}
+
+template <class T>
+T Position<T>::operator * () const
+{
+    assert (root != nullptr);
+    return root->data;    
+}
+
+template <class T>
+bool Position<T>::empty () const
+{
+    return root == nullptr;
+}
+
+template <class T>
+void BinTree<T>::deleteHelper (BinTreeNode<T> *current)
+{
+    if (current == nullptr)
+    {
+        return;
+    }
+
+    deleteHelper (current->left);
+    deleteHelper (current->right);
+    delete current;
+}
+
+template <class T>
+BinTree<T>::~BinTree<T> ()
+{
+    deleteHelper (root);
+}
+
+template <class T>
+BinTree<T>& BinTree<T>::operator = (const BinTree<T> &t)
+{
+    if (this != &t)
+    {
+        deleteHelper (root);
+        root = copyHelper (t.root);
+    }   
+    return *this;
+}
+
+template <class T>
+BinTree<T>& BinTree<T>::operator = (BinTree<T> &&t)
+{
+    deleteHelper (root);
+    root = t.root;
+    t.root = nullptr;
+    return *this;
+}
 
 
+template <class T>
+BinTree<T>::BinTree (const T &rt, const BinTree<T> &left, const BinTree<T> &right)
+{
+    root = new BinTreeNode<T> (rt,
+                               copyHelper(left.root),
+                               copyHelper(right.root));
+}
+
+
+template <class T>
+BinTree<T>::BinTree (const T &rt, 
+                     BinTree<T> &&left, 
+                     BinTree<T> &&right)
+{
+    root = new BinTreeNode<T> (rt,
+                               left.root,
+                               right.root);
+
+    left.root = nullptr;
+    right.root = nullptr;
+}
 
 
 #endif
