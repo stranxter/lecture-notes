@@ -20,8 +20,9 @@ BinTree<int> createIdealTree (int n)
     {
         return BinTree<int>();
     }
-     return BinTree<int> (n,
-                         createIdealTree (n-1),
-                         createIdealTree (n-1));
+
+   return BinTree<int> (n,
+                        createIdealTree (n-1),
+                        createIdealTree (n-1));
 
 }
