@@ -88,3 +88,4 @@ TEST_CASE("Test Map + Filter")
 
     CHECK(reduce(mapf(filter(seq,even), inc), plus, 0) == 8);
 }
+

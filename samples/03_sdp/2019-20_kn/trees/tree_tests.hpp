@@ -142,3 +142,34 @@ TEST_CASE("Test Assignment")
 
 
 }
+
+TEST_CASE("Test Tree Iter")
+{
+    BOTree<int> bot;
+
+    bot.insert (100)
+       .insert (50)
+       .insert (200)
+       .insert (150)
+       .insert (22332)
+       .insert (24)
+       .insert (75)
+       .insert (8821)
+       .insert (175);
+
+    /*
+    for (Interator it = bot.begin(); it != bot.end(); )
+    {
+        std::cout << *it;
+        ++it;
+    }
+    */
+
+   for (int x : bot)
+    {
+        std::cout << x << " ";
+    }
+
+
+}
+

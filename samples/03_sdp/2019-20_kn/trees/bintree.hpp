@@ -4,6 +4,7 @@
 #include "bintree.h"
 #include <cstring>
 #include <cassert>
+#include <stack>
 
 template <class T>
 BinTreeNode<T>::BinTreeNode (const T& _data, BinTreeNode<T>* _left, BinTreeNode<T>* _right):data(_data),left(_left),right(_right){}
@@ -95,6 +96,47 @@ void BinTree<T>::printTreeHelp (std::ostream& out, BinTreeNode<T> *current)
     printTreeHelp (out,current->right);
 
 }
+
+/*
+template <class T>
+struct WaitingOperation
+{
+    int type;
+    static const int TYPE_PRINT = 0;
+    static const int TYPE_TRAVERSE = 1;
+
+    BinTreeNode<T> *node;    
+};
+
+template <class T>
+void BinTree<T>::printTreeHelp (std::ostream& out, BinTreeNode<T> *current)
+{
+    std::stack<WaitingOperation<T>> s;
+
+    s.push ({WaitingOperation<T>::TYPE_TRAVERSE,current});
+
+    while (!s.empty())
+    {
+        WaitingOperation<T> operation = s.top(); s.pop();
+
+        if (operation.type == WaitingOperation<T>::TYPE_PRINT)
+        {
+            std::cout << operation.node->data << " ";
+        } else { //operation.type == WaitingOperation::TYPE_TRAVERSE
+            if (operation.node->right != nullptr)
+            {
+                s.push ({WaitingOperation<T>::TYPE_TRAVERSE,operation.node->right});
+            }   
+            s.push ({WaitingOperation<T>::TYPE_PRINT,operation.node});
+            if (operation.node->left != nullptr)
+            {
+                s.push ({WaitingOperation<T>::TYPE_TRAVERSE,operation.node->left});
+            }   
+        }
+
+    }
+}
+*/
 
 template <class T>
 void BinTree<T>::prettyPrint (std::ostream& out)
