@@ -15,7 +15,6 @@ struct TrieNode
             children[i] = nullptr;
         }
     }
-
 };
 
 void trieInsert (TrieNode *&root, const char *s)

@@ -764,6 +764,83 @@ public:
 
   \emph{Упътване: предварително намерете вектора $(s_0,s_1,...,s_{h-1})$ и го използвайте за балансирането.}
 \end{enumerate}
+
+\pagebreak
+
+\section{Префиксно дърво (Trie)}
+
+
+
+\begin{mdframed}[hidealllines=true,backgroundcolor=gray!20]
+Префиксното дърво (Trie) може да се използва за представяне на множество от думи (вж. Фигура \ref{fig:trie1}). Възлите в дървото може да имат произволен брой наследници, като всяка дъга е анотирана със символ. Всеки възел е анотиран с флаг, който разделя възлите на финални и нефинални (на схемата финалните възли са отбелязани с ``X''). Символите по дъгите на всеки път от корена на дървото до финален възел задават една дума от множеството. Дадена дума е елемент на множеството т.с.т.к. съществува такъв път. Обърнете внимание, че даден възел може да е както финален, така и част от по-дълга дума. Това се случва, когато в можеството се съдържа някоя дума заедно с някой нейн префикс.
+Използваме просто представяне на възел в дървото, като сме ограничили множеството на допустимите символи до малки латински букви:
+
+\begin{verbatim}
+struct TrieNode
+{
+    bool eow;
+    TrieNode *children[26];
+    TrieNode ();
+};
+\end{verbatim}
+На лекции дефинираме функция за добавяне на дума към множеството, представено с дадено дъро и за извеждане на дърво в \code{dot} формат:
+\begin{verbatim}
+void trieInsert (TrieNode *&root, const char *s);
+void dottyPrint (std::ostream& out, TrieNode *root)
+
+\end{verbatim}
+\end{mdframed}
+
+\begin{enumerate}
+
+  \item Да се напише функция за намиране на височина на Trie.
+  \item Да се напише функция за намиране на дължината на най-дългата дума, записана в Trie.
+  \item Да се напише функция за намиране на броя на записаните думи в Ttie.
+  \item Да се напише функция за намиране на броя на буквите на латинската азбука, които \emph{не учстват} в никоя дума в дадено Trie.
+
+  \item Да се обвие реализацията на Trie в клас \code{StringSet}. За класа да се реализират:
+  \begin{itemize}
+      \item Канонични методи
+      \item Оператор \code{==} за сравнение на две множества
+      \item Оператори \code{+} и \code {+=} за добавяне на дума към множеството
+      \item Булев оператор \code{[]}, прверяващ дали дадена дума се съдържа в множеството
+      \item Оператори \code{-} и \code {-=} за премахване на дума от множеството
+      \item Оператори \code{<} и \code{<=}, реализиращи проверка за подмножество
+  \end{itemize}
+
   
+  
+  \item За клас \code{StringSet} да се реализира итератор, повлоляващ обхождане на думите в множеството в реда на лексикографската наредба.
+
+\end{enumerate}
+
+\begin{figure}
+  \centering
+  \begin{forest}
+  for tree={align=center, inner sep=0pt, text centered, circle, font=\sffamily\bfseries, draw=black, fill=white, text width=1.5em }
+  [\_,
+    [\_, edge label={node[midway,left] {\small{t}}}
+      [X, edge label={node[midway,left] {\small{o}}}]
+      [\_, edge label={node[midway,left] {\small{e}}}
+        [X, edge label={node[midway,left] {\small{a}}}]
+        [X, edge label={node[midway,left] {\small{d}}}]
+        [X, edge label={node[midway,left] {\small{n}}}]
+      ]
+    ]
+    [X, edge label={node[midway,right] {\small{A}}}]
+    [X, edge label={node[midway,right] {\small{i}}}
+      [X, edge label={node[midway,left] {\small{n}}}
+        [X, edge label={node[midway,left] {\small{n}}}]
+      ]
+    ]
+  ]
+  %edge label={node[midway,left] {\small{Help!}}}
+  \end{forest}
+  \caption{Trie, съдържащо думите ``to'', ``tea'', ``ted'', ``ten'', ``A'', ``i'', ``in'' и ``inn''.}
+  \label{fig:trie1}
+  \end{figure}
+
+  
+
 
 
