@@ -764,6 +764,78 @@ public:
 
   \emph{Упътване: предварително намерете вектора $(s_0,s_1,...,s_{h-1})$ и го използвайте за балансирането.}
 \end{enumerate}
-  
+
+
+\pagebreak
+
+\section {Изображения (Maps)}
+\subsection {HashMap}
+
+\begin{mdframed}[hidealllines=true,backgroundcolor=gray!20]
+Следнитте задачи са базирани на проста реализация на хеш таблица с отворено адресиране:
+\begin{verbatim}
+template <class KeyType, class ValueType>
+class HashMap;
+\end{verbatim}
+Редовете в хеш таблицата са елементи от структурата:
+\begin{verbatim}
+template <class KeyType, class ValueType>
+struct TableElement
+{
+  KeyType key;
+  ValueType value;
+  TableElement<KeyType,ValueType> *next;
+  //...
+}
+\end{verbatim}
+Самата хеш таблица е предтавена с член данната на класа \code{HashMap} \code{TableElement<KeyType, ValueType> **table}.
+Реализиран е и итератор, позволяващ обхобдане на ключовете, записани в хеш таблицата.
+\end{mdframed}
+
+\begin{enumerate}
+
+  \item Да се дефинира метод \texttt{HashMap::efficiency()}, който изчислява ефективността на хеш таблицата като отношението  $\frac{all-coliding}{all}$, където $coliding$ е броят на ключовете, записани при колизия, а $all$ е броят на всички записани ключове.
+
+
+  \item Да се дефинира оператор \texttt{<}\texttt{<} за клас \texttt{HashMap}, който отпечатва в поток всички двойки ключ-стойност в Хеш таблицата.
+
+  \item Да се напише програма, която въвежда от клавиатурата две текста с произволна големина $t_1$ и $t_2$. Програмата да извежда броя на всички срещания на думи в $t_2$, които се срещат и в $t_1$.
+
+  Пример: за следните текстове
+
+  \textit{In computing, a hash table (hash map) is a data structure used to implement an associative array, a structure that can map keys to values. A hash table uses a hash function to compute an index into an array of buckets or slots, from which the correct value can be found.}
+
+  и
+
+  \textit{Ideally, the hash function will assign each key to a unique bucket, but this situation is rarely achievable in practice (usually some keys will hash to the same bucket)}
+
+  Този брой е 10, съставен от думите \textit {the} (2 срещания във втория текст), \textit{a} (1 срещане), \textit{hash} (2), \textit {function} (1), \textit{to} (2), \textit{is} (1), \textit{keys} (1).
+
+
+  \item Да се напише програма, която въвежда от клавиатурата две текста с произволна големина $t_1$ и $t_2$. Програмата да извежда броя на уникалните думи в $t_2$, които се срещат и в $t_1$.
+
+  Пример: за двата текста от предишната задача, този брой е 7, съставен от думите \textit {the}, \textit{a}, \textit{hash}, \textit {function}, \textit{to}, \textit{is}, \textit{keys}.
+
+
+  \item Да се напише програма, която прочита от входа даден текст с произволна големина и намира такава дума с дължина повече от 3 букви, която се среща най-често в текста. Пример: за текста
+
+  \textit{In computing, a hash table (hash map) is a data structure used to implement an associative array, a structure that can map keys to values. A hash table uses a hash function to compute an index into an array of buckets or slots, from which the correct value can be found.}
+
+  Най-често срещаната дума е \textit{hash}.
+
+  \item От клавиатурата да се въведе цялото положително число $n$, следвано от $2 \times n$ цели положителни числа $a_1, b_1, a_2, b_2, ..., a_n, b_n$. Програмата да печата на екрана \texttt{``Yes''}, ако изображението, дефинирано като $h(a_i)=b_i,i=1,...,n$ е добре дефинирана функция. Т.е. програмата да проверява дали има два различни индекса $i$ и $j$, за които е изпълнено $a_i=a_j$, но $b_i \neq b_j$.
+
+  \item Да се дефинира метод
+
+  \texttt{void map ([подходящ тип] f)}
+
+  на хеш-таблицата, който прилага функцията \texttt{f} над всички стойности в хеш-таблицата.
+
+  \item Да се добави възмоност за итериране само на тези ключове от хеш таблицата, чиито стойности удовлетворяват някакъв предикат, зададен чрез (шаблон на) указател към функция. \emph{Упътване: разширете итератора така, че да може да се инициализира с предикат. Предикатът може да се задава, например, чрез метода begin. Последният трябва да има стойност по подразниране на параметъра си, за да може да се ползва цикъл \code{for (<key> : <hash table>)}}.
+
+
+
+\end{enumerate}
+
 
 
