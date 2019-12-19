@@ -1,0 +1,226 @@
+\documentclass{beamer}
+\usepackage{relsize}
+\usepackage{color}
+
+\usepackage{listings}
+\usetheme{CambridgeUS}
+%\usepackage{beamerthemesplit} % new
+\usepackage{enumitem}
+\usepackage{amsmath}                    % See geometry.pdf to learn the layout options.
+\usepackage{amsthm}                   % See geometry.pdf to learn the layout options. There
+\usepackage{amssymb}                    % See geometry.pdf to learn the layout options.
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage[english,bulgarian]{babel}
+
+\lstset{language=C++,
+                basicstyle=\ttfamily,
+                keywordstyle=\color{blue}\ttfamily,
+                stringstyle=\color{red}\ttfamily,
+                commentstyle=\color{green}\ttfamily,
+                morecomment=[l][\color{magenta}]{\#}
+}
+
+\newtheorem{mydef}{Дефиниция}[section]
+\newtheorem{lem}{Лема}[section]
+\newtheorem{thm}{Твърдение}[section]
+
+\DeclareMathOperator{\restrict}{\upharpoonright}
+
+\setitemize{label=\usebeamerfont*{itemize item}%
+  \usebeamercolor[fg]{itemize item}
+  \usebeamertemplate{itemize item}}
+
+\setbeamercovered{transparent}
+
+
+
+\begin{document}
+\title[Обектно ориентирано програмиране]{$\lambda$ функции и std::function}
+\author{Калин Георгиев}
+\frame{\titlepage}
+
+\section{$\lambda$}
+
+
+\begin{frame}
+    \centerline{$\lambda$ функции}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Недостатъци на \texttt{(*)}}
+    
+\begin{lstlisting}[basicstyle=\tiny]
+template <class T>
+void map (T a[], size_t n, T(*f)(T))
+{ 
+    for (size_t i = 0; i < n; i++)
+    {
+        a[i] = f(a[i]);
+    }
+}
+
+int plus1 (int x)
+{return x+1};
+int plus2 (int x)
+{return x+2};
+int mult2 (int x)
+{return x*2};
+
+int main ()
+{
+    int a[] = {1,2,3};
+    map (a,3,plus1);
+    map (a,3,plus2);
+    map (a,3,mult2);
+}
+\end{lstlisting}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+    \frametitle{Недостатъци на \texttt{(*)}}
+    
+    \begin{itemize}
+        \item необходимо е да имаме компилиран код, чиито адрес да вземем
+        \item не можем да създаваме функции ``в движение'', които да зависят от контекста
+    \end{itemize}
+    
+\begin{lstlisting}[basicstyle=\tiny]
+using doublefn = double (*) (double);
+
+doublefn derive (doublefn f, double delta)
+{ 
+    return ?double (*) (double x) {(f(x+delta)-f(x))/delta}?
+}
+
+int main ()
+{
+    std::cout << derive (?double (x) {return x*x;}?,0.001);
+}
+\end{lstlisting}
+\end{frame}
+    
+
+
+\begin{frame}[fragile]
+    \frametitle{Прости ламбда функции}
+    
+\begin{lstlisting}[]
+
+    map (a,3,[](int x)->int{return x+1;});
+    map (a,3,[](int x)->int{return x+2;});
+    map (a,3,[](int x)->int{return x*2;});
+
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Извикваем (callable) обект}
+
+Всичко, над което може да се приложи оператор \texttt{()}.
+
+\begin{itemize}
+    \item функции
+    \item $\lambda$ функции
+    \item структури/класове с оператор ()
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Извикваем (callable) обект}
+
+\begin{lstlisting}[basicstyle=\small]
+struct increase
+{
+    increase (int _inc):inc (_inc){}
+    int operator () (int x)
+    {
+        return x+inc;
+    }
+    int inc;
+};
+int main ()
+{
+    increase inc(5);
+    std::cout << inc(1);
+}    
+\end{lstlisting}    
+\end{frame}
+    
+
+\begin{frame}[fragile]
+    \frametitle{\texttt{std::function}}
+
+Обвива всякакви callable обекти.
+\bigskip
+
+\begin{lstlisting}[basicstyle=\small]
+std::function<int(int)> f;
+f = plus1; 
+std::cout << f(1);
+
+f = increase(1); 
+std::cout << f(1);
+
+f = [](int x)->{return x+1;}; 
+std::cout << f(1);
+\end{lstlisting}    
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+    \frametitle{Capture list}
+    
+\begin{lstlisting}[basicstyle=\small]
+using doublefn = std::function<double(double)>;
+
+doublefn derive (doublefn f, double delta)
+{ 
+    return [f,delta](double x)
+                ->double{return (f(x+delta)-f(x))/delta;};
+}
+
+int main ()
+{
+    std::cout << derive ([](double x)
+                ->double{return x*x;},0.001) (10);
+}
+\end{lstlisting}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+    \frametitle{Примери}
+    
+\begin{itemize} 
+    \item $f(g(x))$
+    \item $f_1(f_2(...f_k(x)...))$
+    \item $f^k(x)$
+    \item Функция по списък от двойки
+\end{itemize}
+
+\end{frame}
+
+
+
+
+\begin{frame}
+\centerline{Въпроси?}
+\end{frame}
+
+
+\end{document}
+
+\begin{columns}[t]
+  \begin{column}{0.55\textwidth}
+
+  \end{column}
+  \begin{column}{0.45\textwidth}
+
+  \end{column}
+\end{columns}
