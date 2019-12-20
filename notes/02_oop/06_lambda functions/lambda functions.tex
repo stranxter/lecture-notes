@@ -116,6 +116,11 @@ int main ()
 \end{lstlisting}
 \end{frame}
 
+\begin{frame}
+    \centerline{\texttt{std::function}}
+\end{frame}
+
+
 \begin{frame}[fragile]
 \frametitle{Извикваем (callable) обект}
 
@@ -125,6 +130,7 @@ int main ()
     \item функции
     \item $\lambda$ функции
     \item структури/класове с оператор ()
+    \item \texttt{std::bind} изрази
 \end{itemize}
 
 \end{frame}
@@ -206,6 +212,85 @@ int main ()
 
 \end{frame}
 
+\begin{frame}
+    \centerline{\texttt{std::bind} изрази}
+\end{frame}
+
+
+\begin{frame}[fragile]
+    \frametitle{Фиксиране на аргументи на фукция}
+    
+\begin{lstlisting}[basicstyle=\small]
+double quadratic (double a, double b, double c, double x)
+{return a*x*x + b*x + c;}
+
+int main ()
+{
+   using namespace std::placeholders; 
+   std::function<double(double)> 
+        qf = std::bind(quadratic,4,2,1,_1);
+
+   std::cout << qf (0);
+}
+
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]
+    \frametitle{Метод като функция}
+    
+\begin{lstlisting}[basicstyle=\small]
+struct power
+{
+    double operator () (double x)
+    {return pow (x,exp);}
+    double exp;
+};
+    
+int main ()
+{
+   using namespace std::placeholders; 
+   power pw2 = power{2};
+   std::function<double(double)> 
+       squared = std::bind (&power::operator(),&pw2,4);
+
+   std::cout << squared(4);
+}
+
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]
+    \frametitle{Алтернативен подход с $\lambda$}
+    
+\begin{lstlisting}[basicstyle=\tiny]
+double quadratic (double a, double b, double c, double x)
+{return a*x*x + b*x + c;}
+
+struct power
+{
+    double operator () (double x)
+    {return pow (x,exp);}
+    double exp;
+};
+
+int main ()
+{
+   std::function<double(double)> 
+      qf2 = [](double x)->double{return quadratic(4,2,1,x);};
+
+   power pw2 = power{2};
+
+   std::function<double(double)> 
+      squared2 = [&pw2](double x)->double{return pw2(x);};
+
+   std::cout << qf2 (0) << std::endl;
+   std::cout << squared (4) << std::endl;
+}
+\end{lstlisting}
+\end{frame}
 
 
 
