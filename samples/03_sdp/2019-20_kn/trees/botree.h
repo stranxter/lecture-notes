@@ -14,14 +14,26 @@ class BOTree : protected BinTree<T>
 
     public:
 
-    class Iterator
+    struct TreeTraverseStack
     {
         struct WaitingOperation
         {
             int type;
             BinTreeNode<T> *node;    
-            bool operator == (const typename BOTree<T>::Iterator::WaitingOperation&) const;
-        };    
+            bool operator == (const WaitingOperation&) const;
+        };
+        
+        BinTreeNode<T> *getTop () const;
+        void next ();
+        void init (BinTreeNode<T> *);
+        bool operator == (const TreeTraverseStack&) const;
+        
+        std::stack<WaitingOperation> s;   
+        void windstack ();          
+    };
+
+    class Iterator
+    {
         public:
         Iterator (BinTreeNode<T>*);
         T& operator * ();
@@ -30,8 +42,20 @@ class BOTree : protected BinTree<T>
         bool operator == (const Iterator&) const;
 
         private:
-            std::stack<WaitingOperation> s;   
-            void windstack ();         
+            TreeTraverseStack stack;
+    };
+
+    class ConstIterator
+    {
+        public:
+        ConstIterator (BinTreeNode<T>*);
+        T operator * () const;
+        ConstIterator& operator ++();
+        bool operator != (const ConstIterator&) const;
+        bool operator == (const ConstIterator&) const;
+
+        private:
+            TreeTraverseStack stack;
     };
 
 
@@ -42,15 +66,22 @@ class BOTree : protected BinTree<T>
     BOTree& insert (const T&);
     BOTree& remove (const T&);
 
+    bool member (const T&) const;
+    T& findormake (const T&);
+
     void dottyPrint (std::ostream&);
     void printTree (std::ostream&);
 
     BOTree<T>::Iterator begin ();
     BOTree<T>::Iterator end ();
+    BOTree<T>::ConstIterator begin () const;
+    BOTree<T>::ConstIterator end () const;
 
     private:
     void insertHelper (const T&, BinTreeNode<T>*&);
     void removeHelper (const T&, BinTreeNode<T>*&);
+    bool memberHelper (const T&, BinTreeNode<T>*) const;
+    T& findormakeHelper (const T&, BinTreeNode<T>*&);
 
     BinTreeNode<T>*& minNode (BinTreeNode<T>*&);
 

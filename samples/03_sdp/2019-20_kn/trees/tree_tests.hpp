@@ -173,3 +173,28 @@ TEST_CASE("Test Tree Iter")
 
 }
 
+TEST_CASE("Test Tree Iter Const")
+{
+    BOTree<int> bot;
+
+    bot.insert (100)
+       .insert (50)
+       .insert (200)
+       .insert (150)
+       .insert (22332)
+       .insert (24)
+       .insert (75)
+       .insert (8821)
+       .insert (175);
+
+    
+    const BOTree<int> cbot = bot;
+
+   for (int x : cbot)
+    {
+        std::cout << x << " ";
+    }
+
+
+}
+

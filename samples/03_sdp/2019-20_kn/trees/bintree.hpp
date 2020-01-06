@@ -194,13 +194,13 @@ void BinTree<T>::dottyPrintHelp (std::ostream& out, BinTreeNode<T> *current)
 }
 
 template <class T>
-bool BinTree<T>::member (const T& x)
+bool BinTree<T>::member (const T& x) const
 {
     return memberHelp (x,root);
 }
 
 template <class T>
-bool BinTree<T>::memberHelp (const T& x, BinTreeNode<T> *current)
+bool BinTree<T>::memberHelp (const T& x, BinTreeNode<T> *current) const
 {
     if (current == nullptr)
     {

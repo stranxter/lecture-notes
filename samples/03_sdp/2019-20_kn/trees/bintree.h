@@ -52,7 +52,7 @@ class BinTree
         void prettyPrint (std::ostream&);
         void dottyPrint (std::ostream&);
 
-        bool member (const T& x);
+        bool member (const T& x) const;
         T reduce (T (*op)(const T&, const T&), const T& null_val);
 
         ~BinTree();
@@ -64,7 +64,7 @@ class BinTree
         void prettyPrintHelp (std::ostream&, BinTreeNode<T> *current, int level);
         void dottyPrintHelp (std::ostream&, BinTreeNode<T> *current);
 
-        bool memberHelp (const T& x, BinTreeNode<T> *current);
+        bool memberHelp (const T& x, BinTreeNode<T> *current) const;
         T sumHelp (BinTreeNode<T> *current);
     
         T reduceHelp (T (*op)(const T&, const T&), const T& null_val, BinTreeNode<T> *current);
