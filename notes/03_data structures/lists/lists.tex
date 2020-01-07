@@ -52,7 +52,7 @@ treenode/.style = {align=center, inner sep=0pt, text centered, circle, font=\sff
 
 
 \begin{document}
-\title[Структури от данни и програмиране]{Линейни двусвързани списъци и Skip List. Итератори} 
+\title[Структури от данни и програмиране]{Линейни двусвързани списъци и Skip List} 
 \author{Калин Георгиев} 
 \frame{\titlepage} 
 
@@ -132,9 +132,6 @@ treenode/.style = {align=center, inner sep=0pt, text centered, circle, font=\sff
 
 \end{frame}
 
-\section{Итератори} 
-
-
 \begin{frame}[fragile]
   \frametitle{Skip List (с повече нива)}
   \begin{figure}
@@ -146,71 +143,6 @@ treenode/.style = {align=center, inner sep=0pt, text centered, circle, font=\sff
     \end{figure}  
 \end{frame}
   
-
-
-\begin{frame}
-\centerline{Итератори}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Приложение}
-
-  Как достъпваме последователно (итерираме) елементите на контейнер?
-  \begin{itemize}
-    \item чрез индекс \\
-          \verb#for (size_t i = 0; i < v.size(); ++i){...v[i]...}#
-    \item \verb#for (T& x : container){...}#
-  \end{itemize}
-  Проблеми на простото индексиране:
-  \begin{itemize}
-    \item производителност
-    \item не можем да се абстрахираме от контейнера\\
-    \verb#void map (T (*f) (const T&), [....] WHAT)#
-    \item separation of cooncerns
-    \item понякога поредният номер е заблуждаващ
-  \end{itemize}
-  
-  
-  \end{frame}
-
-  
-  \begin{frame}[fragile]
-    \frametitle{``Речник'' на линейното обхождане}
-  
-    \verb#for (size_t i = 0; i < v.size(); ++i){...v[i]...}#
-
-    \begin{itemize}
-      \item Започни!
-      \item Дай следващия (предишния)!
-      \item Има ли още?
-    \end{itemize}
-    \verb#>for (size_t j = 0; j < v.size(); ++j){if (i==j)...}#   
-    \begin{itemize}
-      \item Тези позиции еднакви ли са?
-    \end{itemize}
-  \end{frame}
-  
-
-
-\begin{frame}[fragile]
-\frametitle{Итератори}
-
-Създаване на итератор в контейнерния клас:
-\begin{itemize}
-  \item \texttt{begin}
-  \item \texttt{end}
-\end{itemize}
-Операции с итератора
-\begin{itemize}
-  \item \texttt{*}
-  \item ++, -{}-
-  \item == (\emph{Итератор към ``края''})
-  \item копиране
-  \item \texttt{for}
-\end{itemize}
-
-
-\end{frame}
 
 
 \begin{frame}
