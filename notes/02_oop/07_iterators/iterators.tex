@@ -1,0 +1,141 @@
+\documentclass{beamer}
+\usepackage{relsize}
+\usepackage{color}
+
+\usepackage{listings}
+\usetheme{CambridgeUS}
+%\usepackage{beamerthemesplit} % new 
+\usepackage{enumitem}
+\usepackage{amsmath}                    % See geometry.pdf to learn the layout options. 
+\usepackage{amsthm}                   % See geometry.pdf to learn the layout options. There 
+\usepackage{amssymb}                    % See geometry.pdf to learn the layout options. 
+\usepackage[utf8]{inputenc} 
+\usepackage{graphicx}
+\usepackage[english,bulgarian]{babel}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{caption}
+\usepackage{tikz}
+\usepackage{forest}
+\usetikzlibrary{shapes,arrows,positioning,calc,chains}
+
+\lstset{language=C++,
+                basicstyle=\ttfamily,
+                keywordstyle=\color{blue}\ttfamily,
+                stringstyle=\color{red}\ttfamily,
+                commentstyle=\color{green}\ttfamily,
+                morecomment=[l][\color{magenta}]{\#}
+}
+
+\newtheorem{mydef}{Дефиниция}[section]
+\newtheorem{lem}{Лема}[section]
+\newtheorem{thm}{Твърдение}[section]
+
+\DeclareMathOperator{\restrict}{\upharpoonright}
+
+\setitemize{label=\usebeamerfont*{itemize item}%
+  \usebeamercolor[fg]{itemize item}
+  \usebeamertemplate{itemize item}}
+
+\setbeamercovered{transparent}
+
+\captionsetup{font=footnotesize}
+
+\lstset{breaklines=true}
+\tikzset{
+block/.style = {draw, fill=white, rectangle,align = center},
+entry/.style = {draw, fill=black, circle, radius=3em},
+condition/.style = {draw, fill=white, diamond, align = center,node distance=3cm},
+fork/.style = {draw, fill=black, circle,inner sep=1pt},
+lnode/.style={rectangle split, rectangle split parts=3,draw, rectangle split horizontal},
+treenode/.style = {align=center, inner sep=0pt, text centered, circle, font=\sffamily\bfseries, draw=black, fill=white, text width=1.5em}
+}
+
+
+\begin{document}
+\title[Обектно-ориентирано програмиране]{Итератори} 
+\author{Калин Георгиев} 
+\frame{\titlepage} 
+
+
+\section{Итератори} 
+
+
+\begin{frame}[fragile]
+  \frametitle{Приложение}
+
+  Как достъпваме последователно (итерираме) елементите на контейнер?
+  \begin{itemize}
+    \item чрез индекс \\
+          \verb#for (size_t i = 0; i < v.size(); ++i){...v[i]...}#
+  \end{itemize}
+  Проблеми на простото индексиране:
+  \begin{itemize}
+    \item производителност
+    \item не можем да се абстрахираме от контейнера\\
+    \verb#void map (T (*f) (const T&), [....] WHAT)#
+    \item separation of cooncerns
+    \item понякога поредният номер е заблуждаващ
+  \end{itemize}
+  
+  
+  \end{frame}
+
+  
+  \begin{frame}[fragile]
+    \frametitle{``Речник'' на линейното обхождане}
+  
+    \verb#for (size_t i = 0; i < v.size(); ++i){...v[i]...}#
+
+    \begin{itemize}
+      \item Започни!
+      \item Дай текущия елемент!
+      \item Промени текущия елемент!
+      \item Дай следващия (предишния)!
+      \item Има ли още елементи?
+    \end{itemize}
+    \verb#>for (size_t j = 0; j < v.size(); ++j){if (i==j)...}#   
+    \begin{itemize}
+      \item Тези позиции еднакви ли са?
+    \end{itemize}
+  \end{frame}
+  
+
+
+\begin{frame}[fragile]
+\frametitle{Итератори}
+
+Създаване на итератор в контейнерния клас:
+\begin{itemize}
+  \item \texttt{begin}
+  \item \texttt{end}
+\end{itemize}
+Операции с итератора
+\begin{itemize}
+  \item \texttt{*}
+  \item ++, -{}-
+  \item == (\emph{Итератор към ``края''})
+  \item копиране
+  \item \texttt{for}
+\end{itemize}
+
+
+\end{frame}
+
+
+\begin{frame}
+\centerline{Благодаря за вниманието!}
+\end{frame}
+
+
+\end{document}
+
+\begin{columns}[t]
+  \begin{column}{0.55\textwidth}
+
+  \end{column}
+  \begin{column}{0.45\textwidth}
+
+  \end{column}
+\end{columns}
+
+
