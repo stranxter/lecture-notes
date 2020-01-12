@@ -232,6 +232,23 @@ public:
 
 \clearpage\section{Ламбда функции}
 
+\begin{mdframed}[hidealllines=true,backgroundcolor=gray!20]
+  Някои от следните задачи са взаимствани от библиотеката на \code{JavaScript} за функцоонално програмиране ``lodash''. За примери и повече информация: \href{https://lodash.com/docs/4.17.15#after}{документация на библиотеката}.
+\end{mdframed}
+
+\begin{enumerate}
+
+  \item Да се дефинира функция \code{negate(p)}, където $p:A \rightarrow bool$ е едноместен предикат. \code{negate} да връща предиката $\neg p$.
+
+
+  \item Да се дефинира функция \code{repeated(k,f)}, където $k \geq 0$ е естествено число, а $f:A \rightarrow A$ е едноместна функция. Ако $h=repeated(k,f)$, то $h:A \rightarrow A$ е такава, че $h=f^k(x)=\underbrace{f(f...}_{k}(x))$.
+
+  \item Да се дефинира функция \code{switch(n,f,g)}, където $n \geq 1$ е естествено число, а $f,g:A \rightarrow B$ са едноместни функции. \code{switch} да връща функция $h:A \rightarrow B$, която при първите си \code{n} извиквания да дава същите стойности като \code{f}, а след това - като \code{g}.
+
+
+  \item Да се дефинира функция \code{before(n,f)}, където $n \geq 1$ е естествено число, а $f:A \rightarrow B$ е едноместна функция от проиволен тип. \code{before} да връща функция $h:A \rightarrow B$, която при първите си \code{n} извиквания да дава същите стойности като \code{f}, а след това - последната върната от \code{f} стойност.
+  
+\end{enumerate}
 
 \pagebreak
 
