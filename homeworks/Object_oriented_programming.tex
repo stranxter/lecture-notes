@@ -243,11 +243,13 @@ public:
 
   \item Да се дефинира функция \code{repeated(k,f)}, където $k \geq 0$ е естествено число, а $f:A \rightarrow A$ е едноместна функция. Ако $h=repeated(k,f)$, то $h:A \rightarrow A$ е такава, че $h=f^k(x)=\underbrace{f(f...}_{k}(x))$.
 
+  \item Да се дефинира фунцкия \code{createfn(args,values)}, където \code{args} е вектор с елементи от тип \code{U}, а values е вектор с елементи от тип \code{V}. Двата вектора са с еднакъв брой елементи. Ако $h=createfn(args,values)$, то $h:U \rightarrow V$. По дефиниция $h(u)=v$ т.с.т.к. \code{u} е елемент на \code{args} с индекс \code{i}, a $v=values[i]$ (при повече от едно срещания на \code{u} приемаме най-малкия индекс). Ако \code{u} не е елемент на \code{values}, функцията $h$ е недефинирана.
+
   \item Да се дефинира функция \code{switch(n,f,g)}, където $n \geq 1$ е естествено число, а $f,g:A \rightarrow B$ са едноместни функции. \code{switch} да връща функция $h:A \rightarrow B$, която при първите си \code{n} извиквания да дава същите стойности като \code{f}, а след това - като \code{g}.
 
 
   \item Да се дефинира функция \code{before(n,f)}, където $n \geq 1$ е естествено число, а $f:A \rightarrow B$ е едноместна функция от проиволен тип. \code{before} да връща функция $h:A \rightarrow B$, която при първите си \code{n} извиквания да дава същите стойности като \code{f}, а след това - последната върната от \code{f} стойност.
-  
+    
 \end{enumerate}
 
 \pagebreak
