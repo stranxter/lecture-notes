@@ -230,13 +230,35 @@ public:
 
 \pagebreak
 
-\clearpage\section{Ламбда функции}
+\clearpage
+
+\section{$\lambda$ функции}
+
+\subsection {Map и Reduce}
+
+\begin{enumerate}[]  
+  \item Да се изведат всички елементи на масив чрез функцията \code{map}.
+  
+  \item Нека е дадена следната структура \texttt{struct S \{int a; int b; int c;\}}. Да се дефинира и попълни примерен масив \texttt{A} с елементи от  \texttt{S}. 
+  
+  \begin{enumerate}[label=\alph*)]
+    \item Чрез подходяща помощна функция и използване на \texttt{map}, да се отпечата сумата на полетата \texttt{a}, \texttt{b} и \texttt{c} на всеки от елементите на \texttt{A}.
+    \item Чрез подходяща помощна функция и използване на \texttt{map}, да се въведат елементите на \texttt{A}.
+    \item Чрез подходяща помощна функция и използване на \texttt{map}, да се увеличи с единица всяко поле \texttt{a} на елементите на \texttt{A}.
+    \item Чрез подходяща помощна функция и използване на \texttt{map}, да се разменят стойностите на полетата \texttt{a} и \texttt{b} на елементите на \texttt{A}.
+    \item Да се тестват решенията на горните задачи.
+    
+  \end{enumerate}
+  
+\end{enumerate}
+
+\subsection{$\lambda$ функции и \code{std::function}}
 
 \begin{mdframed}[hidealllines=true,backgroundcolor=gray!20]
   Някои от следните задачи са взаимствани от библиотеката на \code{JavaScript} за функцоонално програмиране ``lodash''. За примери и повече информация: \href{https://lodash.com/docs/4.17.15#after}{документация на библиотеката}.
 \end{mdframed}
 
-\begin{enumerate}
+\begin{enumerate}[resume]
 
   \item Да се дефинира функция \code{negate(p)}, където $p:A \rightarrow bool$ е едноместен предикат. \code{negate} да връща предиката $\neg p$.
 
