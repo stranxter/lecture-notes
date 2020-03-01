@@ -83,7 +83,7 @@ int main ()
     \frametitle{Недостатъци на \texttt{(*)}}
     
     \begin{itemize}
-        \item необходимо е да имаме компилиран код, чиито адрес да вземем
+        \item необходимо е да имаме компилиран код, чийто адрес да вземем
         \item не можем да създаваме функции ``в движение'', които да зависят от контекста
     \end{itemize}
     
@@ -150,7 +150,7 @@ struct increase
 };
 int main ()
 {
-    increase inc(5);
+    increase inc{5};
     std::cout << inc(1);
 }    
 \end{lstlisting}    
@@ -168,7 +168,7 @@ std::function<int(int)> f;
 f = plus1; 
 std::cout << f(1);
 
-f = increase(1); 
+f = increase{1}; 
 std::cout << f(1);
 
 f = [](int x)->{return x+1;}; 
