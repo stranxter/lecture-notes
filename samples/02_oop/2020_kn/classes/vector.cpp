@@ -1,64 +1,150 @@
 #include <cstdlib>
+#include <iostream>
 
-class IntVector
+template <class T>
+class Vector
 {
     public:
-    //1 2 3
-    //10 1 2 3 4 5
-    //
-    //4
-    int *data;
+    T *data;
     size_t size;
 
-    IntVector ()
+    Vector ()
     {
         data = nullptr;
         size = 0;
     }
 
-    void to_end (int x)
+    Vector (const Vector<T>& other)
+    {
+       this->data = new T [other.size];
+       for (size_t i = 0; i < other.size; ++i)
+       {
+           this->data[i] = other.data[i];
+       }
+       this->size = other.size; 
+    }
+
+    void to_end (T x)
     {
         
-        //[1,2] + 3
-        
-//-----> data = [1 2]
-        int *bigger_buffer = new int [size+1];
-//-----> bigger_buffer ------->  [X X X]
+        T *bigger_buffer = new T [size+1];
         for (size_t i = 0; i < size; i++)
         {
             bigger_buffer[i] = data[i];
         }
-//-----> bigger_buffer ------->  [1 2 X]
         bigger_buffer[size] = x;
-//-----> bigger_buffer ------->  [1 2 3]
         ++size;
 
-//-----> data = *1 2*
-
-        int *save = new int[size];
-
-        delete data;
+        delete []data;
         data = bigger_buffer;
 
     }
 
-    void push (int x);
+    void push (T x)
+    {
+        T *bigger_buffer = new T [size+1];
 
-    IntVector operator + (IntVector);
+        for (size_t i = 0; i < size; i++)
+        {
+            bigger_buffer[i+1] = data[i];
+        }
+        bigger_buffer[0] = x;
+        ++size;
 
-    void print();
+        delete []data;
+        data = bigger_buffer;      
+    }
+
+    //IntVector operator + (IntVector);
+
+    void operator += (T x)
+    {
+        to_end (x);
+    }
+
+    T& operator [] (size_t i)
+    {
+        return data[i];
+    }
+
+    Vector<T>& operator= (const Vector<T>& other)
+    {
+       if (this != &other)
+       {
+            delete []this->data; 
+
+            this->data = new T [other.size];
+            for (size_t i = 0; i < other.size; ++i)
+            {
+                this->data[i] = other.data[i];
+            }
+            this->size = other.size; 
+       }
+       return *this;
+    }
+
+    ~Vector ()
+    {
+        delete data;
+    }
 
 };
 
+template <class T>
+std::ostream& operator << (std::ostream& stream, Vector<T> v)
+{
+    for (size_t i = 0; i < v.size; i++)
+    {
+        stream << v.data[i] << " ";
+    }
+    return stream;
+}
+
 int main ()
 {
-    IntVector v;
 
-    v.to_end (1);
-    v.to_end (2);
-    v.to_end (3);
-    v.push (4);
+    Vector<int> v;
 
-    v.print (); //4 1 2 3
-    (v+v).print();
+    v += 1;
+    v.to_end(2);
+    v.to_end(3);
+    v.push(4);
+
+    std::cout << "[" << v << "]" << std::endl;
+    std::cout << v[2] << std::endl;
+
+    v[2] = 7;
+
+    std::cout << "[" << v << "]" << std::endl;
+
+    Vector<int> v2 (v); //v2.data = v.data
+
+    std::cout << "v = " << v << std::endl;
+    std::cout << "v2 = " << v2 << std::endl;
+
+    v[0] = 100;
+
+    std::cout << "v = " << v << std::endl;
+    std::cout << "v2 = " << v2 << std::endl;
+
+    v.push (7);
+
+    std::cout << "v = " << v << std::endl;
+    std::cout << "v2 = " << v2 << std::endl;
+
+    Vector<int> v3;
+    v3.push (0);
+
+    //v3.operator= (v);
+    v3 = v;
+    std::cout << v3 << std::endl;
+    v[0] = 777;
+    std::cout << v3 << std::endl;
+
+    //v3.operator=(v.operator=(v2));
+    (v3 = v)[0] = 555;
+    std::cout << v3 << std::endl;
+
+
+
 }
