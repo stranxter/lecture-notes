@@ -1,13 +1,35 @@
 #include <iostream>
 #include <cstring>
+#include <fstream>
 
 class String 
 {
     public:
     char *str;
 
-    //s1.init();
-    //s2.init()/
+    String ()
+    {
+        init ("");
+    }
+    
+    String (const char *s)
+    {
+        init (s);
+    }
+
+    String (char c)
+    {
+        str = new char[2];
+        str[0] = c;
+        str[1] = 0;
+    }
+
+    String (const String &other)
+    {
+        str = new char [other.length() + 1];
+        strcpy (str, other.str);
+    }
+    
     void init (const char *s)
     {
         str = new char[strlen(s)+1];
@@ -36,7 +58,6 @@ class String
 
         return result;
 
-
     }
 
     String operator+ (String other)
@@ -58,7 +79,7 @@ class String
     {
         return strcmp (str,other.str) < 0;
     }
-    size_t length ()
+    size_t length () const
     {
         return strlen (str);
     }
@@ -78,23 +99,36 @@ class String
     }
 };
 
+String operator+ (char c, String s)
+{
+    String result;
+
+    result = c;
+    result = result + s;
+    return result;
+
+}
+
 String toString (unsigned int x)
 {
     String result;
-    result.init ("");
     
     if (x < 10)
     {
         //result.operator= ('0'+x);
-        result = result + ('0' + x);
+        result = '0' + x;
         return result;
     }
     while (x > 0)
     {
-        //A @ B
-        //A.operator&(B)
+        //A @ b
+        //A.operator@(b)
         //result.operator+ ('0' + x%10);
-        result = result +  ('0' + x%10);
+        //b @ A
+        //b.operator@(A)
+        //A @ b
+        //operator@ (A,b)
+        result = ('0' + x%10) + result;
         x /= 10;
 
     }
@@ -104,8 +138,7 @@ String toString (unsigned int x)
 
 String toUpper (String s)
 {
-    String result;
-    result.init (s.str);
+    String result = s.str;
 
     for (size_t i = 0; i < result.length(); i++)
     {
@@ -117,12 +150,31 @@ String toUpper (String s)
     return result;
 }
 
+std::ostream& operator<< (std::ostream& out, String s)
+{
+    out << s.str;
+    return out;
+}
+
+std::istream& operator>> (std::istream& in, String& s)
+{
+    char c;
+    do 
+    {
+        c = in.get();
+        if (c != '\n')
+        {
+            s = s + c;
+        }
+    } while (c != '\n');
+
+    return in;    
+}
+
+
 int main ()
 {
-    String s1, s2;
-
-    s1.init ("Hello");
-    s2.init (" world!");
+    String s1 = "Hello", s2 = " world!";
 
     s1.print (); 
 
@@ -159,16 +211,17 @@ int main ()
     s3 = s1 = s2;
     (s1 = s2).print ();
 
+    //operator<< (operator<< (std::cout,s1),std::endl);
+    std::cout << s1 << std::endl;
 
-    toUpper(s1).print();
+    std::cout << toUpper(s1) << std::endl;
 
-    toString(12345).print();
+    std::cout << toString(12345) << std::endl;
 
+    std::cout << "Please input a string:";
+    std::cin >> s1;
+    std::cout << "You hust entered: " << s1 << std::endl;
 
-/*
-    std::cout << 1235;
-    std::cout << 1235.988;
-    std::cout << "Hello";
-    std::cout << s1;
-*/
+    String s4 = 'c';
+
 }
