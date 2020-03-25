@@ -6,6 +6,8 @@ class String
 {
     public:
     char str[255];
+    //char *str;
+
 
     String (char *s)
     {
