@@ -2,6 +2,7 @@
 #include "doctest.h"
 #include <iostream>
 #include "vector.cpp"
+#include <string> //std::string
 
 
 TEST_CASE("Insertion Test")
@@ -130,9 +131,62 @@ TEST_CASE("Adition test")
 
 }
 
-int main ()
+TEST_CASE ("Initializtion with size")
+{
+    Vector<int> v(100);
+
+    v[50] = 50;
+    CHECK(v[50]==50);
+
+    v[112] = 0;
+}
+
+TEST_CASE ("Test Veector of Strings")
 {
 
+    Vector<std::string> vs (10,"Hello world!");
+
+    CHECK(vs[5]=="Hello world!");
+
+}
+
+TEST_CASE ("Test Matrix")
+{
+    Vector<Vector<int>> m(20,10);
+    
+    m[15][6] = 7;
+    CHECK(m[15][6]==7);
+    CHECK(m.length() == 20);
+    CHECK(m[0].length() == 10);
+
+}
+
+TEST_CASE ("Test our of bounds indexing")
+{
+    Vector<int> v(5);
+    v[1] = 1;
+    v[2] = 2;
+    v[3] = 3;
+    v[4] = 4;
+    v[5] = 5;
+
+    v[200] = 200;
+    CHECK(v[200]==200);
+    CHECK(v[3]==3);
+
+    Vector<Vector<int>> m;
+
+    m[100][100] = 101;
+    CHECK(m[100][100]==101);
+
+//    Vector<Vector<Vector<int>>> m;
+
+}
+
+
+
+int main ()
+{
     // пускане на тестовете
     doctest::Context().run();    
 

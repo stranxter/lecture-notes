@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "vector.h"
+#include <cassert>
 
 template<class T>
 Vector<T>::Vector ()
@@ -10,6 +11,7 @@ Vector<T>::Vector ()
     data = nullptr;
     size = 0;
 }
+
 
 template<class T>
 Vector<T>::Vector (const Vector<T>& other)
@@ -21,6 +23,27 @@ Vector<T>::Vector (const Vector<T>& other)
     }
     this->size = other.size; 
 }
+
+
+template <class T>
+Vector<T>::Vector (size_t initial_size)
+{
+    data = new T[initial_size];
+    size = initial_size;
+}
+
+template<class T>
+template<class InitType>
+Vector<T>::Vector (size_t initial_size, const InitType& init)
+{
+    data = nullptr;
+    size = 0;
+    for (size_t i = 0; i < initial_size; ++i)
+    {
+        to_end (T(init));
+    }
+}
+
 
 template<class T>
 void Vector<T>::to_end (const T& x)
@@ -90,7 +113,30 @@ Vector<T>& Vector<T>::operator += (const T& x)
 template<class T>
 T& Vector<T>::operator [] (size_t i)
 {
+    //assert(i >= 0 && i <= size);
+    if (i > size)
+    {
+        resize (i+1);
+    }
     return data[i];
+}
+
+template<class T>
+void Vector<T>::resize (size_t new_size)
+{
+
+    assert (new_size > size);
+
+    T* new_buffer = new T[new_size];
+    for (size_t i = 0; i < size; ++i)
+    {
+        new_buffer[i] = data[i];
+    }
+
+    delete data;
+    size = new_size;
+    data = new_buffer;
+
 }
 
 template<class T>
@@ -120,7 +166,7 @@ Vector<T>& Vector<T>::operator= (const Vector<T>& other)
 template<class T>
 Vector<T>::~Vector () 
 {
-    delete data;
+    delete []data;
 }
 
 template<class T>
@@ -163,5 +209,6 @@ std::ostream& operator << (std::ostream& stream, const Vector<T>& v)
     }
     return stream;
 }
+
 
 #endif

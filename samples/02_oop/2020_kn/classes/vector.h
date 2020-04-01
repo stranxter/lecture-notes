@@ -14,6 +14,9 @@ class Vector
     public:
     Vector ();
     Vector (const Vector<T>& other);
+    template<class InitType>
+    Vector (size_t initial_size, const InitType& init);
+    Vector (size_t initial_size);
     void to_end (const T& x);
     void push (const T& x);
     Vector<T> operator + (const Vector<T> other) const;
@@ -26,6 +29,9 @@ class Vector
     size_t length () const;
     bool operator!= (const Vector<T>& other) const;
     bool operator== (const Vector<T>& other) const;
+
+    private:
+    void resize (size_t new_size);
 };
 
 template <class T>
