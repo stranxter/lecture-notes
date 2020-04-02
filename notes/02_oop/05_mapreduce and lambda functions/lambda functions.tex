@@ -90,14 +90,14 @@ int main ()
 \begin{lstlisting}[basicstyle=\tiny]
 using doublefn = double (*) (double);
 
-doublefn derive (doublefn f, double delta)
+doublefn squared (doublefn f)
 { 
-    return ?double (*) (double x) {(f(x+delta)-f(x))/delta}?
+    return ???x->f(f(x))???
 }
 
 int main ()
 {
-    std::cout << derive (?double (x) {return x*x;}?,0.001);
+    std::cout << squared(f)(3);
 }
 \end{lstlisting}
 \end{frame}
@@ -139,19 +139,22 @@ int main ()
     \frametitle{Извикваем (callable) обект}
 
 \begin{lstlisting}[basicstyle=\small]
-struct increase
+class increase
 {
+    public:
     increase (int _inc):inc (_inc){}
     int operator () (int x)
     {
         return x+inc;
     }
+    private:
     int inc;
 };
 int main ()
 {
-    increase inc(5);
-    std::cout << inc(1);
+    increase inc1(5), inc2(10);
+    std::cout << inc1(1) << std::endl;
+    std::cout << inc2(1) << std::endl;
 }    
 \end{lstlisting}    
 \end{frame}
@@ -171,7 +174,7 @@ std::cout << f(1);
 f = increase(1); 
 std::cout << f(1);
 
-f = [](int x)->{return x+1;}; 
+f = [](int x)->int{return x+1;}; 
 std::cout << f(1);
 \end{lstlisting}    
 \end{frame}
@@ -184,16 +187,16 @@ std::cout << f(1);
 \begin{lstlisting}[basicstyle=\small]
 using doublefn = std::function<double(double)>;
 
-doublefn derive (doublefn f, double delta)
+doublefn squared (doublefn f)
 { 
-    return [f,delta](double x)
-                ->double{return (f(x+delta)-f(x))/delta;};
+    return [f](double x)
+                ->double{return f(f(x));};
 }
 
 int main ()
 {
-    std::cout << derive ([](double x)
-                ->double{return x*x;},0.001) (10);
+    std::cout << squared ([](double x)
+                ->double{return x*x;}) (10);
 }
 \end{lstlisting}
 \end{frame}

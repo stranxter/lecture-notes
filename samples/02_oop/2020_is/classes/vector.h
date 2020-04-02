@@ -10,6 +10,9 @@ class Vector
     public:
     Vector ();
     Vector (const Vector<T>& v);
+    Vector (size_t initial_size);
+    template <class InitType>
+    Vector (size_t initial_size, const InitType& initValue);
     void push_back (const T& x);
     void push (const T& x);
     Vector<T>& operator+= (const T& x);

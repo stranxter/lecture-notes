@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include "vector.h"
+#include <cassert>
 
 template <class T>
 Vector<T>::Vector ()
@@ -18,6 +19,25 @@ Vector<T>::Vector (const Vector<T>& v)
     for (size_t i = 0; i < size; ++i)
     {
         this->data[i] = v.data[i];
+    }
+}
+
+template <class T>
+Vector<T>::Vector (size_t initial_size) //T=Vector<double>
+{
+    size = initial_size;
+    data = new T [size];
+}
+
+template <class T>
+template <class InitType>
+Vector<T>::Vector (size_t initial_size, const InitType& initValue)
+{
+    data = nullptr;
+    size = 0;
+    for (size_t i = 0; i < initial_size; ++i)
+    {
+        push_back (T(initValue));
     }
 }
 
@@ -108,12 +128,16 @@ Vector<T> Vector<T>::operator+ (const Vector<T>& other) const
 template <class T>
 T& Vector<T>::operator[] (size_t i)
 {
+    assert (i >= 0);
+    assert (i < size);
     return data[i];
 }
 
 template <class T>
 T Vector<T>::operator[] (size_t i) const
 {
+    assert (i >= 0);
+    assert (i < size);
     return data[i];
 }
 

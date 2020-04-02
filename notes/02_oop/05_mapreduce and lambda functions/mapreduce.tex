@@ -80,7 +80,7 @@ void increaseEvens (int arr[], int arrsize)
 \frametitle{Map}
 
 \begin{center}
-$map: T \rightarrow T$
+$operation: T \rightarrow T$
 \end{center}
 
 \begin{itemize}
@@ -91,13 +91,13 @@ $map: T \rightarrow T$
 \relscale{0.7}
 \begin{lstlisting}
 template <typename T>
-using mapFn = T (*) (T);
+using opFn = T (*) (T);
 
 template <typename T>
-void map (T arr[], int arrsize, mapFn<T> f)
+void map (T arr[], int arrsize, opFn<T> op)
 {
   for (int i = 0; i < arrsize; i++)
-    arr[i] = f(arr[i]);
+    arr[i] = op(arr[i]);
 }
 \end{lstlisting}  
 \end{flushleft}
@@ -140,13 +140,13 @@ int main ()
 \relscale{0.5}
 \begin{lstlisting}
 template <typename T>
-using mapFn = T (*) (T);
+using opFn = T (*) (T);
 
 template <typename T>
-void map (T arr[], int arrsize, mapFn<T> f)
+void map (T arr[], int arrsize, opFn<T> op)
 {
   for (int i = 0; i < arrsize; i++)
-    arr[i] = f(arr[i]);
+    arr[i] = op(arr[i]);
 }
 \end{lstlisting}  
 \end{flushleft}
@@ -190,13 +190,13 @@ int main ()
 \relscale{0.5}
 \begin{lstlisting}
 template <typename T>
-using mapFn = T (*) (T);
+using opFn = T (*) (T);
 
 template <typename T>
-void map (T arr[], int arrsize, mapFn<T> f)
+void map (T arr[], int arrsize, opFn<T> op)
 {
   for (int i = 0; i < arrsize; i++)
-    arr[i] = f(arr[i]);
+    arr[i] = op(arr[i]);
 }
 \end{lstlisting}  
 \end{flushleft}
@@ -217,22 +217,22 @@ void map (T arr[], int arrsize, mapFn<T> f)
 \begin{lstlisting}
 int sum (int arr[], int arrsize)
 {
-  int result = arr[0];
-  for (int i = 1; i < arrsize; i++)
+  int result = 0;
+  for (int i = 0; i < arrsize; i++)
     result = result + arr[i];
   return result;
 }
 int prod (int arr[], int arrsize)
 {
-  int result = arr[0];
-  for (int i = 1; i < arrsize; i++)
+  int result = 1;
+  for (int i = 0; i < arrsize; i++)
     result = result * arr[i];
   return result;
 }
 int countEvens (int arr[], int arrsize)
 {
   int result = 0;
-  for (int i = 1; i < arrsize; i++)
+  for (int i = 0; i < arrsize; i++)
     if (arr[i] % 2 == 0)
       result = result + 1;
   return result;
@@ -249,7 +249,7 @@ int countEvens (int arr[], int arrsize)
 \frametitle{Reduce}
 
 \begin{center}
-$OP: R \times E \rightarrow R$
+$combinator: R \times E \rightarrow R$
 \end{center}
 
 \begin{itemize}
@@ -260,15 +260,15 @@ $OP: R \times E \rightarrow R$
 \relscale{0.7}
 \begin{lstlisting}
 template <typename ResT, typename ElemT>
-using reduceFn = ResT (*) (ResT, ElemT);
+using combineFn = ResT (*) (ResT, ElemT);
 
 template <typename ResT,typename ElemT>
 ResT reduce (ElemT arr[], 
              int arrsize, 
-             reduceFn<ResT,ElemT> f, 
-             ResT init)
+             combineFn<ResT,ElemT> f, 
+             ResT null_val)
 {
-  ResT result = init;
+  ResT result = null_val;
 
   for (int i = 0; i < arrsize; i++)
     result = f (result,arr[i]);
@@ -315,15 +315,15 @@ int main ()
 \relscale{0.45}
 \begin{lstlisting}
 template <typename ResT, typename ElemT>
-using reduceFn = ResT (*) (ResT, ElemT);
+using combineFn = ResT (*) (ResT, ElemT);
 
 template <typename ResT,typename ElemT>
 ResT reduce (ElemT arr[], 
              int arrsize, 
-             reduceFn<ResT,ElemT> f, 
-             ResT init)
+             combineFn<ResT,ElemT> f, 
+             ResT null_val)
 {
-  ResT result = init;
+  ResT result = null_val;
 
   for (int i = 1; i < arrsize; i++)
     result = f (result,arr[i]);
@@ -373,15 +373,15 @@ int main ()
 \relscale{0.5}
 \begin{lstlisting}
 template <typename ResT, typename ElemT>
-using reduceFn = ResT (*) (ResT, ElemT);
+using combineFn = ResT (*) (ResT, ElemT);
 
 template <typename ResT,typename ElemT>
 ResT reduce (ElemT arr[], 
              int arrsize, 
-             reduceFn<ResT,ElemT> f, 
-             ResT init)
+             combineFn<ResT,ElemT> f, 
+             ResT null_val)
 {
-  ResT result = init;
+  ResT result = null_val;
 
   for (int i = 1; i < arrsize; i++)
     result = f (result,arr[i]);
@@ -429,15 +429,15 @@ int main ()
 \relscale{0.5}
 \begin{lstlisting}
 template <typename ResT, typename ElemT>
-using reduceFn = ResT (*) (ResT, ElemT);
+using combineFn = ResT (*) (ResT, ElemT);
 
 template <typename ResT,typename ElemT>
 ResT reduce (ElemT arr[], 
              int arrsize, 
-             reduceFn<ResT,ElemT> f, 
-             ResT init)
+             combineFn<ResT,ElemT> f, 
+             ResT null_val)
 {
-  ResT result = init;
+  ResT result = null_val;
 
   for (int i = 1; i < arrsize; i++)
     result = f (result,arr[i]);
@@ -488,15 +488,15 @@ int main ()
 \relscale{0.5}
 \begin{lstlisting}
 template <typename ResT, typename ElemT>
-using reduceFn = ResT (*) (ResT, ElemT);
+using combineFn = ResT (*) (ResT, ElemT);
 
 template <typename ResT,typename ElemT>
 ResT reduce (ElemT arr[], 
              int arrsize, 
-             reduceFn<ResT,ElemT> f, 
-             ResT init)
+             combineFn<ResT,ElemT> f, 
+             ResT null_val)
 {
-  ResT result = init;
+  ResT result = null_val;
 
   for (int i = 1; i < arrsize; i++)
     result = f (result,arr[i]);

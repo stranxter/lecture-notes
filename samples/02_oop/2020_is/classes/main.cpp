@@ -3,6 +3,7 @@
 #include "vector.cpp"
 #define DOCTEST_CONFIG_IMPLEMENT
 #include "doctest.h"
+#include <string>
 
 TEST_CASE("Insertion Test")
 {
@@ -97,6 +98,33 @@ TEST_CASE("Test vector of vectors")
     CHECK(vvd[1][0]==1.5);
     CHECK(vvd[0].length()==3);
     CHECK(vvd[1].length()==2);
+
+}
+
+TEST_CASE("Test matrices")
+{
+
+    Vector<double> v(10);
+
+    v[9] = 9;
+    CHECK(v[9]==9);
+
+    Vector<Vector<double>> m(20,10);
+
+    m[19][9] = 100;
+    CHECK(m[19][9] == 100);
+    CHECK(m.length() == 20);
+    CHECK(m[5].length() == 10);
+
+    Vector<std::string> strings (10,"Hello world!");
+    CHECK(strings[5]=="Hello world!");
+
+    Vector<Vector<Vector<double>>> cube (20,Vector<Vector<double>>(10,5));
+    cube[12][7][4] = 100;
+    CHECK(cube[12][7][4] == 100);
+
+    //Vector<int> v20;
+    //v20[99] = 99;
 
 }
 
