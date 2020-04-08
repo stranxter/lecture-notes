@@ -190,7 +190,7 @@ using doublefn = std::function<double(double)>;
 doublefn squared (doublefn f)
 { 
     return [f](double x)
-                ->double{return f(f(x));};
+                ->double{return f(x)*f(x);};
 }
 
 int main ()
@@ -290,7 +290,7 @@ int main ()
       squared2 = [&pw2](double x)->double{return pw2(x);};
 
    std::cout << qf2 (0) << std::endl;
-   std::cout << squared (4) << std::endl;
+   std::cout << squared2 (4) << std::endl;
 }
 \end{lstlisting}
 \end{frame}
