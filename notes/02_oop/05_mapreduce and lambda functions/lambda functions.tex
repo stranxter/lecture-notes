@@ -256,7 +256,7 @@ int main ()
    using namespace std::placeholders; 
    power pw2 = power{2};
    std::function<double(double)> 
-       squared = std::bind (&power::operator(),&pw2,4);
+       squared = std::bind (&power::operator(),&pw2,_1);
 
    std::cout << squared(4);
 }
