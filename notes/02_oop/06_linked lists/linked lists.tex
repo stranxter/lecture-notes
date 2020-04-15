@@ -97,7 +97,7 @@ struct Employee
   {
     strcpy (name,n);
     salary = s;
-    boss = NULL;
+    boss = nullptr;
   }
   char name[100];
   double salary;
@@ -174,11 +174,11 @@ int main ()
   Employee 
     stoyan ("Stoyan Petrov Ivanov", 700),
     ivan ("Ivan Petrov Ivanov", 800),
-    ramzes2 ("Razmzes II", 900);
+    bigboss ("Big Boss", 900);
 
   stoyan.boss = &ivan;
-  ivan.boss = &ramzes2;
-  //stoyan.boss->boss = &ramzes2;
+  ivan.boss = &bigboss;
+  //stoyan.boss->boss = &bigboss;
   
   cout << stoyan.boss->name;
   cout << stoyan.boss->boss->name;
@@ -211,13 +211,13 @@ int main ()
 
 Employee *findSuperBoss (Employee *e)
 {
-  while (e->boss != NULL)
+  while (e->boss != nullptr)
     e = e->boss;
   return e;
 }
 Employee *findSuperBossRec (Employee *e)
 {
-  if (e->boss == NULL)
+  if (e->boss == nullptr)
     return e;
   return findSuperBossRec (e->boss);
 }
@@ -269,7 +269,7 @@ struct box
 \begin{flushleft}
 \relscale{0.75}
 \begin{lstlisting}
-box *first = new box (1,NULL);
+box *first = new box (1,nullptr);
 \end{lstlisting}  
 \end{flushleft}
 
@@ -284,7 +284,7 @@ box *first = new box (1,NULL);
 \begin{flushleft}
 \relscale{0.75}
 \begin{lstlisting}
-box *first = new box (1,new box (2, NULL));
+box *first = new box (1,new box (2, nullptr));
 \end{lstlisting}  
 \end{flushleft}
 
@@ -304,7 +304,7 @@ box *first = new box (1,
                new box (2, 
                 new box (3, 
                   new box (4, 
-                    new box (5)))));
+                    new box (5,nullptr)))));
 \end{lstlisting}  
 \end{flushleft}
 
@@ -325,7 +325,7 @@ box *first = new box (1,
                new box (2, 
                 new box (3, 
                   new box (4, 
-                    new box (5)))));
+                    new box (5,nullptr)))));
 \end{lstlisting}  
 \end{flushleft}
 
@@ -364,7 +364,7 @@ first = ...
 \begin{flushleft}
 \relscale{0.75}
 \begin{lstlisting}
-box *newbox = new box (7,NULL);
+box *newbox = new box (7,nullptr);
 \end{lstlisting}  
 \end{flushleft}
 
@@ -379,7 +379,7 @@ box *newbox = new box (7,NULL);
 \begin{flushleft}
 \relscale{0.75}
 \begin{lstlisting}
-box *newbox = new box (7,NULL);
+box *newbox = new box (7,nullptr);
 newbox->next = first;
 \end{lstlisting}  
 \end{flushleft}
@@ -397,7 +397,7 @@ newbox->next = first;
 \begin{flushleft}
 \relscale{0.75}
 \begin{lstlisting}
-box *newbox = new box (7,NULL);
+box *newbox = new box (7,nullptr);
 newbox->next = first;
 first = newbox;
 \end{lstlisting}  
@@ -494,7 +494,7 @@ cout << crr->data;
 \relscale{0.75}
 \begin{lstlisting}
 box *crr = first;
-while (crr != NULL)
+while (crr != nullptr)
 {
   cout << crr->data;
   crr = crr->next;
@@ -520,7 +520,7 @@ while (crr != NULL)
 \begin{flushleft}
 \relscale{0.75}
 \begin{lstlisting}
-box *newbox = new box (7,NULL);
+box *newbox = new box (7,nullptr);
 \end{lstlisting}  
 \end{flushleft}
 
@@ -535,7 +535,7 @@ box *newbox = new box (7,NULL);
 \begin{flushleft}
 \relscale{0.75}
 \begin{lstlisting}
-box *newbox = new box (7,NULL);
+box *newbox = new box (7,nullptr);
 newbox->next = crr->next;
 \end{lstlisting}  
 \end{flushleft}
@@ -552,7 +552,7 @@ newbox->next = crr->next;
 \begin{flushleft}
 \relscale{0.75}
 \begin{lstlisting}
-box *newbox = new box (7,NULL);
+box *newbox = new box (7,nullptr);
 newbox->next = crr->next;
 crr->next = newbox;
 \end{lstlisting}  
@@ -575,7 +575,7 @@ box *crr = first;
 while (3 != crr->data)
   crr = crr->next;
 
-box *newbox = new box (7,NULL);
+box *newbox = new box (7,nullptr);
 newbox->next = crr->next;
 crr->next = newbox;
 \end{lstlisting}  
