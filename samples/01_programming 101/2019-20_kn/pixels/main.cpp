@@ -128,18 +128,12 @@ int main()
 	std::cout << "Press any key to continue...";
 	bool keep_window_open = true;
 	double timer = 0;
-	while (keep_window_open)
+
+
+//	while (keep_window_open)
 	{
 		SDL_Event e;
-		while (SDL_PollEvent(&e) > 0)
-		{
-			switch (e.type)
-			{
-			case SDL_QUIT:
-				keep_window_open = false;
-				break;
-			}
-		}
+		SDL_PollEvent(&e);
 
 		setColor(0, 0, 0);
 		SDL_RenderClear(SDLRen);
@@ -154,5 +148,6 @@ int main()
 
 		SDL_Delay(16);
 	}
+	std::cin.get();
 	return 0;
 }

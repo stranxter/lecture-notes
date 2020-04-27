@@ -4,6 +4,8 @@
 #include <string>
 #include <fstream>
 
+#include "sdlwrapper.h"
+
 class Figure
 {
     public:
