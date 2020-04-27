@@ -49,14 +49,14 @@ treenode/.style = {align=center, inner sep=0pt, text centered, circle, font=\sff
 
 
 \begin{document}
-\title[Обектно ориентирано програмиране]{Наследяване и композиция. Visitor Pattern.}
+\title[Обектно ориентирано програмиране]{Наследяване и композиция. Виртуални деструктори и конструктори за копиране. Visitor Pattern.}
 \author{Калин Георгиев}
 \frame{\titlepage}
 
 \section{Наследяване и композиция}
 
 \begin{frame}[fragile]
-\frametitle{Примерен казус}
+\frametitle{Примерен казус: Група от обекти като част от същата йерархия}
 %\vspace{-60px}
 \begin{center}
 \includegraphics[width=10.0cm]{images/tree1}
@@ -69,7 +69,7 @@ treenode/.style = {align=center, inner sep=0pt, text centered, circle, font=\sff
 
 \begin{tikzpicture}[auto, node distance=1cm,>=latex]
   
-  \node  [] (ttl){Drawing};
+  \node  [] (ttl){Group};
   \node  [below of=ttl, rectangle split, rectangle split parts=3,draw, rectangle split horizontal] (arr1) 
       {\nodepart[text width=1.5cm]{one}Rectangle
        \nodepart[text width=1.5cm]{two}Circle
@@ -77,7 +77,7 @@ treenode/.style = {align=center, inner sep=0pt, text centered, circle, font=\sff
 
        \node[fit=(arr1)(ttl), draw] (obj1) {};
 
-  \node  [below right of = obj1, node distance = 3.5cm] (ttl2){Drawing};
+  \node  [below right of = obj1, node distance = 3.5cm] (ttl2){Group};
   \node  [below of=ttl2, rectangle split, rectangle split parts=2,draw, rectangle split horizontal] (arr2) 
       {\nodepart[text width=1.5cm]{one}Rectangle
       \nodepart[text width=1.5cm]{two}Group};
@@ -86,9 +86,18 @@ treenode/.style = {align=center, inner sep=0pt, text centered, circle, font=\sff
   \draw[->]  (arr1.three)-- (obj2);   
 \end{tikzpicture}
 
-
 \end{frame}
-    
+
+
+\begin{frame}
+  \centerline{Вуртуални деструктори}
+\end{frame}
+
+
+\begin{frame}
+  \centerline{Клониране. Виртуални конструктори за копиране.}
+\end{frame}
+
 
 \begin{frame}
   \centerline{Visitor Pattern!}
