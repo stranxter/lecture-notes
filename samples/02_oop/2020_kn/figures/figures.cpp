@@ -4,111 +4,47 @@
 #include <string>
 #include <fstream>
 
-#include "sdlwrapper.h"
-
-class Figure
-{
-    public:
-    virtual double surface() = 0;
-    virtual double perim() = 0;
-    virtual void save(std::ostream &out) = 0;
-
-    protected:
-    char label[15];
-};
-
-class Circle : public Figure
-{
-    public:
-    Circle (double _x, double _y, double _r):x(_x),y(_y),r(_r){}
-
-    double perim()
-    {
-        return 2*3.14*r;
-    }
-
-    double surface()
-    {
-        return 3.14*r*r;
-    }
-
-    void save(std::ostream &out)
-    {
-        out << "circ " << x << " " << y << " " << r << " ";
-    }
-
-    private:
-    double x,y;
-    double r;
-};
-
-class Square : public Figure
-{
-    public:
-    Square (double _a):a(_a){}
-
-    double perim()
-    {
-        return 4*a;
-    }
-
-    double surface()
-    {
-        return a*a;
-    }
-
-    int nsides()
-    {
-        return 4;
-    }
-
-    void save(std::ostream &out)
-    {
-        out << "sq " << a << " ";
-    }
-
-    private:
-    double a;
-};
-
-double sumSurface(std::vector<Figure*> figures)
-{
-    double sum = 0;
-    for (size_t i = 0; i < figures.size(); i++)
-    {
-        sum += figures[i]->surface();
-    }
-
-    return sum;
-}
-
-std::ostream& operator << (std::ostream &out, std::vector<Figure*> figures)
-{
-    
-    out << figures.size() << " ";
-
-    for (Figure *f : figures)
-    {
-        f->save(out);
-    }
-    return out;
-}
+#include "figure.h"
+#include "circle.h"
+#include "square.h"
+#include "group.h"
+#include "ffactory.h"
 
 
 int main()
 {
 
-    std::vector<Figure*> f = {new Circle(0,0,1), new Square(1), new Circle(3,0,2), new Square(2)};
+    Group * g = new Group;
+    g->addFigure (new Circle(1,1,1));
+    g->addFigure (new Square(5));
 
-    std::cout << sumSurface(f) << std::endl;
+    Group * g2 = new Group;
+    g2->addFigure (new Circle(2,2,2));
+
+    g->addFigure(g2);
+
+    Group *mainGroup = new Group;
+    mainGroup->addFigure(new Circle(0,0,1));
+    mainGroup->addFigure(new Square(1));
+    mainGroup->addFigure(new Circle(3,0,2));
+    mainGroup->addFigure(g);
+    mainGroup->addFigure(new Square(2));
 
     std::ofstream out ("figures.fig");
-    out << f;
+    mainGroup->save(out);
+    out.close();
 
-    //in >> f;
+    std::cout << mainGroup->surface() << std::endl;
 
-    std::ifstream in ("figures.fug");
-    //in >> f;
+    std::ifstream in ("figures.fig");
+    Figure *loadedGroup = new Group;
+
+    loadedGroup = Figure::readFigure(in);
+    std::cout << loadedGroup->surface() << std::endl;
+
+    Group *copiedGroup = new Group (*mainGroup);
+
+    delete mainGroup;
 
     return 0;
 
