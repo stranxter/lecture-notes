@@ -2,10 +2,10 @@
 
 #include "figure.h"
 
-class Square : public Figure
+class Rect : public Figure
 {
     public:
-    Square (double _a);
+    Rect (double _x, double _y, double _a,double _b);
 
     double perim();
     double surface();
@@ -14,6 +14,7 @@ class Square : public Figure
     void load(std::istream &in);
 
     private:
-    double a;
+    double x,y;
+    double a,b;
 };
 

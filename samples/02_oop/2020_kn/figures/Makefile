@@ -21,8 +21,9 @@ all: draw
 draw: $(OBJS)
 	$(CXX) $(LDFLAGS) $(OBJS) -o $(builddir)$@
 
-%.o: %.cpp $(DEPS)
-	$(CXX) -c -o $(builddir)$@ $< $(CXXFLAGS)
+$(builddir)%.o: %.cpp $(DEPS)
+	@mkdir -p $(@D)
+	@$(CXX) -c -o $@ $< $(CXXFLAGS)
 
 clean:
 	rm -r build
