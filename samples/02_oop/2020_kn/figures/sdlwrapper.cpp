@@ -20,7 +20,7 @@ namespace sdlw
                 assert(SDL_Init(SDL_INIT_VIDEO) == 0);
                 TTF_Init();
 
-                SDLWin = SDL_CreateWindow("Hello World!", 100, 100, 640, 480, SDL_WINDOW_SHOWN);
+                SDLWin = SDL_CreateWindow("Hello World!", 100, 100, 800, 500, SDL_WINDOW_SHOWN);
                 assert(SDLWin != nullptr);
 
                 SDLRen = SDL_CreateRenderer(SDLWin, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);

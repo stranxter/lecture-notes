@@ -13,6 +13,12 @@ class Circle : public Figure
     void load(std::istream &in);
     Figure* copy();
 
+    void accept(Visitor*);    
+    
+    double get_x();
+    double get_y();
+    double get_r();
+
     private:
     double x,y;
     double r;

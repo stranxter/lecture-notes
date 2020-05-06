@@ -1,12 +1,18 @@
 #include "group.h"
+#include "visitor.h"
 
 
 Group::Group (const Group &other)
 {
     for (Figure *f:other.contents)
     {
-        //contents.push_back(f->copy());
+        contents.push_back(f->copy());
     }
+}
+
+Figure* Group::copy ()
+{
+    return new Group(*this);
 }
 
 void Group::addFigure(Figure *f)
@@ -49,4 +55,30 @@ Group::~Group()
     }
 }
 
-Group::Group(){}
+Group::Group(double _x, double _y):x(_x),y(_y){}
+
+void Group::accept(Visitor *v)
+{
+    v->process_group(this);
+}
+
+size_t Group::nElements()
+{
+    return contents.size();
+}
+
+Figure* Group::getElement(size_t i)
+{
+    assert (i < contents.size());
+    return contents[i];
+}
+
+double Group::get_x()
+{
+    return x;
+}
+double Group::get_y()
+{
+    return y;
+}
+

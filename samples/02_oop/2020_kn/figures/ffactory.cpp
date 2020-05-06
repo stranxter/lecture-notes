@@ -10,9 +10,9 @@ Figure* FigureFactory::make(std::string type)
     if (type == "circ")
         newFigure = new Circle(0,0,0);
     else if (type == "rect")
-        newFigure = new Rect (0,0,0,0);
+        newFigure = new Rect(0,0,0,0);
     else if (type == "group")
-        newFigure = new Group;
+        newFigure = new Group(0,0);
     else
         assert(false);
 

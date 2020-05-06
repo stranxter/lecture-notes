@@ -11,27 +11,34 @@
 #include "ffactory.h"
 
 #include "sdlwrapper.h"
+#include "painter.h"
 
 
 int main()
 {
 
-    Group * g = new Group;
-    g->addFigure (new Circle(1,1,1));
-    g->addFigure (new Rect(10,11,12,13));
+    Group * g = new Group(250,50);
+    g->addFigure (new Circle(20,20,50));
+    g->addFigure (new Rect(10,10,100,120));
 
-    Group * g2 = new Group;
-    g2->addFigure (new Circle(2,2,2));
+    Group * g2 = new Group(30,300);
+    g2->addFigure (new Circle(70,80,70));
 
     g->addFigure(g2);
 
-    Group *mainGroup = new Group;
-    mainGroup->addFigure(new Circle(0,0,1));
-    mainGroup->addFigure(new Rect(1,2,3,4));
-    mainGroup->addFigure(new Circle(3,0,2));
+    Group *mainGroup = new Group(0,0);
+    mainGroup->addFigure(new Circle(300,300,100));
+    mainGroup->addFigure(new Rect(200,250,30,40));
+    mainGroup->addFigure(new Circle(30,0,40));
     mainGroup->addFigure(g);
-    mainGroup->addFigure(new Rect(5,6,7,8));
+    mainGroup->addFigure(new Rect(400,400,70,100));
 
+
+    Painter p; //... //... //.... //...
+    mainGroup->accept(&p);
+
+
+    /*
     std::ofstream out ("figures.fig");
     mainGroup->save(out);
     out.close();
@@ -39,23 +46,22 @@ int main()
     std::cout << mainGroup->surface() << std::endl;
 
     std::ifstream in ("figures.fig");
-    Figure *loadedGroup = new Group;
+    Figure *loadedGroup = new Group(0,0);
 
     loadedGroup = Figure::readFigure(in);
     std::cout << loadedGroup->surface() << std::endl;
 
     Group *copiedGroup = new Group (*mainGroup);
-    std::cout << copiedGroup->surface() << std::endl;
-
     delete mainGroup;
 
-    sdlw::drawFile(100,100,20,20,"images/circle.png");
-    sdlw::setColor(255,255,255);
-    sdlw::drawFillRect(200,200, 100,50);    
+    std::cout << copiedGroup->surface() << std::endl;
+
+    copiedGroup->draw();
+    */
+
+
     sdlw::updateGraphics();
     std::cin.get();
-
-
 
 
     return 0;
