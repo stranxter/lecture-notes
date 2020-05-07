@@ -3,6 +3,8 @@
 #include <vector>
 #include <iostream>
 
+class Visitor;
+
 class Figure
 {
     public:
@@ -10,6 +12,8 @@ class Figure
     virtual double perim() = 0;
     virtual void save(std::ostream&) = 0;
     virtual void load(std::istream&) = 0;
+
+    virtual void accept(Visitor*)=0;
 
     static Figure *loadFigure(std::istream&in);
     static double sumSurfaces(std::vector<Figure*> figures);

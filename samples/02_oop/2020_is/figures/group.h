@@ -8,7 +8,7 @@ class Group : public Figure
 
     public:
 
-    Group();
+    Group(double _x, double _y);
     Group(const Group& other);
 
     double surface();
@@ -18,10 +18,18 @@ class Group : public Figure
 
     void addFigure(Figure *f);
 
+    void accept(Visitor*);
+
     Figure *copy();
 
     ~Group();
+    size_t nElements();
+    Figure* getElement(size_t i);
+
+    double get_x();
+    double get_y();
 
     private:
+    double x,y;
     std::vector<Figure*> contents;
 };

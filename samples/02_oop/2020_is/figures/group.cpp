@@ -1,14 +1,25 @@
 #include "group.h"
-
+#include "visitor.h"
 
 Group::Group(const Group& other)
 {
+    //****************************************
+    //ТОВА БЕШЕ ПРОБЛЕМА ПО ВРЕМЕ НА ЛЕКЦИИ
+    //копираната група оставаше с неинициализирани x и y
+    //****************************************
+    x = other.x;
+    y = other.y;
+    //****************************************
     for (Figure *f : other.contents)
     {
         contents.push_back(f->copy());
     }
 }
 
+Figure *Group::copy()
+{
+    return new Group(*this);
+}
 
 double Group::surface()
 {
@@ -30,12 +41,12 @@ double Group::perim()
 }
 void Group::save(std::ostream& out)
 {
-    out << "group: ";
+    out << "group: " << x << " " << y << " ";
     out << contents; 
 }
 void Group::load(std::istream& in)
 {
-    in >> contents;  
+    in >> x >> y >> contents;  
 }
 
 void Group::addFigure(Figure *f)
@@ -51,10 +62,31 @@ Group::~Group()
     }
 }
 
-Figure *Group::copy()
+Group::Group(double _x, double _y):x(_x),y(_y)
 {
-    return new Group(*this);
+
 }
 
+size_t Group::nElements()
+{
+    return contents.size();
+}
 
-Group::Group(){}
+Figure* Group::getElement(size_t i)
+{
+    assert(i < contents.size());
+    return contents[i];
+}
+void Group::accept(Visitor *v)
+{
+    v->processGroup(this);
+}
+
+double Group::get_x()
+{
+    return x;
+}
+double Group::get_y()
+{
+    return y;
+}

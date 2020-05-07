@@ -1,7 +1,9 @@
 
 #include "rect.h"
+#include "visitor.h"
 
-Rectangle::Rectangle (double _a, double _b):a(_a),b(_b){}
+
+Rectangle::Rectangle (double _x, double _y, double _a, double _b):x(_x),y(_y),a(_a),b(_b){}
 
 double Rectangle::perim()
 {
@@ -20,15 +22,37 @@ int Rectangle::nsides()
 
 void Rectangle::save(std::ostream &out)
 {
-    out << "rect: " << a << " " << b << " "; 
+    out << "rect: " << x << " " << y << " " << a << " " << b << " "; 
 }
 
 void Rectangle::load(std::istream& in)
 {
-    in >> a >> b;
+    in >> x >> y >> a >> b;
 }
 
 Figure *Rectangle::copy()
 {
     return new Rectangle(*this);
+}
+
+double Rectangle::get_x()
+{
+    return x;
+}
+double Rectangle::get_y()
+{
+    return y;
+}
+double Rectangle::get_a()
+{
+    return a;
+}
+double Rectangle::get_b()
+{
+    return b;
+}
+
+void Rectangle::accept(Visitor *v)
+{
+    v->processRectangle(this);
 }
