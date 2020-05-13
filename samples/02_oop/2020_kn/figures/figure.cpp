@@ -29,7 +29,18 @@ Figure* Figure::readFigure(std::istream &in)
 {
     std::string type;
     in >> type; 
-    Figure *newFigure = FigureFactory::make(type);
+    Figure *newFigure;
+
+    try
+    {
+         newFigure = FigureFactory::make(type);
+    }
+    catch(UnknownFigureExcpection ex)
+    {
+        std::cerr << "Error reading figures:" << ex.what() << std::endl;
+        return nullptr;
+    }
+    
     newFigure->load(in);
     return newFigure;
 
@@ -41,9 +52,14 @@ std::istream& operator >> (std::istream &in, std::vector<Figure*>& figures)
     figures.clear();
     for (size_t i = 0; i < nFigures; ++i)
     {
-        figures.push_back(Figure::readFigure(in));
+        Figure *newfig = Figure::readFigure(in);
+        if (newfig != nullptr)
+        {
+            figures.push_back(newfig);
+        } else {
+            return in;
+        }   
     }
-
     return in;
 }
 

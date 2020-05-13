@@ -4,6 +4,7 @@
 #include <iostream>
 #include "vector.h"
 #include <cassert>
+#include <stdexcept>
 
 template<class T>
 Vector<T>::Vector ()
@@ -122,6 +123,17 @@ T& Vector<T>::operator [] (size_t i)
 }
 
 template<class T>
+T Vector<T>::operator [] (size_t i) const
+{
+    if (i >= size)
+    {
+        throw std::out_of_range("Index too large!");
+    }
+
+    return data[i];
+}
+
+template<class T>
 void Vector<T>::resize (size_t new_size)
 {
 
@@ -138,13 +150,6 @@ void Vector<T>::resize (size_t new_size)
     data = new_buffer;
 
 }
-
-template<class T>
-T Vector<T>::operator [] (size_t i) const
-{
-    return data[i];
-}
-
 
 template<class T>
 Vector<T>& Vector<T>::operator= (const Vector<T>& other)

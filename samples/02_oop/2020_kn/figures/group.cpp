@@ -4,6 +4,8 @@
 
 Group::Group (const Group &other)
 {
+    x = other.x;
+    y = other.y;
     for (Figure *f:other.contents)
     {
         contents.push_back(f->copy());

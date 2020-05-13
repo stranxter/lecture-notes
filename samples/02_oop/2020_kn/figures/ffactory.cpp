@@ -14,7 +14,18 @@ Figure* FigureFactory::make(std::string type)
     else if (type == "group")
         newFigure = new Group(0,0);
     else
-        assert(false);
+        throw UnknownFigureExcpection(type);
 
     return newFigure;
+}
+
+UnknownFigureExcpection::UnknownFigureExcpection(const std::string &type):std::exception()
+{
+    message = "Unknown figure type:";
+    message += type;
+}
+
+const char* UnknownFigureExcpection::what() const noexcept
+{
+    return message.c_str();
 }

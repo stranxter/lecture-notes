@@ -38,28 +38,29 @@ int main()
     mainGroup->accept(&p);
 
 
-    /*
+
+/*
+
     std::ofstream out ("figures.fig");
     mainGroup->save(out);
     out.close();
 
     std::cout << mainGroup->surface() << std::endl;
+    std::cout << mainGroup->nElements() << std::endl;
 
     std::ifstream in ("figures.fig");
-    Figure *loadedGroup = new Group(0,0);
+    Group *loadedGroup = new Group(0,0);
 
-    loadedGroup = Figure::readFigure(in);
+    loadedGroup = (Group*)Figure::readFigure(in);
     std::cout << loadedGroup->surface() << std::endl;
+    std::cout << loadedGroup->nElements() << std::endl;
 
     Group *copiedGroup = new Group (*mainGroup);
     delete mainGroup;
 
     std::cout << copiedGroup->surface() << std::endl;
 
-    copiedGroup->draw();
-    */
-
-
+*/
     sdlw::updateGraphics();
     std::cin.get();
 
