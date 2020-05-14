@@ -3,6 +3,7 @@
 #include <iostream>
 #include "vector.h"
 #include <cassert>
+#include <stdexcept>
 
 template <class T>
 Vector<T>::Vector ()
@@ -128,16 +129,20 @@ Vector<T> Vector<T>::operator+ (const Vector<T>& other) const
 template <class T>
 T& Vector<T>::operator[] (size_t i)
 {
-    assert (i >= 0);
-    assert (i < size);
+    if (i >= size)
+    {
+        throw std::out_of_range("Index out of bounds while writing!");
+    }
     return data[i];
 }
 
 template <class T>
 T Vector<T>::operator[] (size_t i) const
 {
-    assert (i >= 0);
-    assert (i < size);
+    if (i >= size)
+    {
+        throw std::out_of_range("Index out of bounds while reading!");
+    }
     return data[i];
 }
 

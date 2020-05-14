@@ -145,10 +145,33 @@ TEST_CASE("Modification test")
 
 }
 
-
 int main ()
 {
     // пускане на тестовете
-    doctest::Context().run();
+    //doctest::Context().run();
+
+    Vector<int> iv;
+    iv.push_back(0);
+    iv.push_back(1);
+    iv.push_back(2);
+
+    try
+    {
+        //...
+        std::cout << iv[5] << std::endl;
+        //...
+    } catch (const std::out_of_range &ex)
+    {
+        std::cerr << ex.what() << std::endl;
+    }
+    catch (...)
+    {
+        std::cerr << "Something else went wrong...\n";   
+    }
+
+    std::cout << "Life goes on\n";
+    
+
+
     return 0;
 }

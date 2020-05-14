@@ -6,8 +6,17 @@ Figure *Figure::loadFigure(std::istream&in)
 {
     std::string type;
     in >> type;
-    Figure *newFigure = FigureFactory::make(type);
-    newFigure->load(in);
+    Figure *newFigure = nullptr;
+    try
+    {
+        newFigure = FigureFactory::make(type);
+        newFigure->load(in);
+    } 
+    catch (const UnknownFigureException &ex)
+    {
+        std::cerr << ex.what() << std::endl;
+    }
+      
     return newFigure;
 }
 
@@ -21,7 +30,15 @@ std::istream& operator >> (std::istream& in, std::vector<Figure*>& figures)
 
     for (size_t i = 0; i < nFigures; ++i)
     {
-        figures.push_back(Figure::loadFigure(in));
+        Figure *newFigure = Figure::loadFigure(in);
+        if (newFigure != nullptr)
+        {
+            figures.push_back(newFigure);
+        } else 
+        {
+            return in;
+        }
+
     }
     return in;
 }
