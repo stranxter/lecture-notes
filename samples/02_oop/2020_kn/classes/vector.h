@@ -3,6 +3,7 @@
 
 #include <iostream>
 
+
 template <class T>
 class Vector
 {
@@ -29,6 +30,24 @@ class Vector
     size_t length () const;
     bool operator!= (const Vector<T>& other) const;
     bool operator== (const Vector<T>& other) const;
+
+    class Iterator
+    {
+        public:
+        Iterator (int startPos, Vector &_v);
+        bool operator != (const Iterator& it);
+        Iterator& operator ++();
+        T& operator *();
+
+        private:
+        size_t index;
+        Vector &vector;
+    };
+
+    Iterator begin();
+    Iterator end();
+
+    using value_type = T;
 
     private:
     void resize (size_t new_size);

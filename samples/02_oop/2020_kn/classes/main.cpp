@@ -183,6 +183,39 @@ TEST_CASE ("Test our of bounds indexing")
 
 }
 
+TEST_CASE ("Test for")
+{
+    Vector<int> v(2);
+    v[0] = 0;
+    v[1] = 1;
+    v[2] = 2;
+    v[3] = 3;
+    v[4] = 4;
+    v[5] = 5;
+
+    for (int x : v)// (VectorIterator current = v.begin(); current != v.end(); ++current)
+    {
+        //x = *current;
+        std::cout << x << std::endl;
+    }
+
+    Vector<int>::Iterator it = v.begin();
+
+    try
+    {
+        while(true)
+        {
+            std::cout << *it << std::endl;
+            ++it;
+        }
+    }
+    catch(const std::out_of_range& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+    
+
+}
 
 
 int main ()

@@ -7,6 +7,8 @@ class LList
 {
     public:
 
+    using element_type = T;
+
     LList ();
 
     void push(const T& x);
@@ -21,6 +23,7 @@ class LList
 
     void push_back(const T& x);
 
+
   private:
 
     struct box
@@ -34,4 +37,25 @@ class LList
 
     box *first, *last;  
     //size_t s;
+
+  public:
+
+    using value_type = T;
+
+    class Iterator
+    {
+        public:
+        Iterator (box *element);
+        bool operator != (const Iterator& it);
+        Iterator& operator ++();
+        T& operator *();
+
+        private:
+        box *current;
+    };
+
+    Iterator begin();
+    Iterator end();
+
+
 };

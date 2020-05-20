@@ -2,6 +2,7 @@
 
 #include "llist.h"
 #include <cassert>
+#include <stdexcept>
 
 template<class T>
 LList<T>::LList ()
@@ -119,4 +120,49 @@ void LList<T>::push_back(const T& x)
         return;
     }
     last = last->next = new box (x,nullptr);
+}
+
+template <class T>
+typename LList<T>::Iterator LList<T>::begin()
+{
+    return typename LList<T>::Iterator(first);
+}
+
+template <class T>
+typename LList<T>::Iterator LList<T>::end()
+{
+    return typename LList<T>::Iterator(nullptr);
+}
+
+template <class T>
+LList<T>::Iterator::Iterator (box *element):current(element)
+{
+
+}
+
+template <class T>    
+bool LList<T>::Iterator::operator != (const typename LList<T>::Iterator& it)
+{
+    return current != it.current;
+}
+
+template <class T>
+typename LList<T>::Iterator& LList<T>::Iterator::operator++()
+{
+    if(current == nullptr)
+    {
+        throw std::out_of_range("Going past end of list.");
+    }
+    current = current->next;
+    return *this;
+}
+
+template <class T>
+T& LList<T>::Iterator::operator *()
+{
+    if(current == nullptr)
+    {
+        throw std::out_of_range("Reading past end of list.");
+    }
+    return current->data;
 }
