@@ -35,6 +35,14 @@ size_t LList<T>::size() const
 
     return count;
 }
+
+template <class T>
+size_t LList<T>::length() const
+{
+    return size();
+}
+
+
 template <class T>
 T& LList<T>::operator[](size_t i)
 {
@@ -57,6 +65,7 @@ typename LList<T>::box* LList<T>::at (size_t pos) const
         --pos;
     }
     assert (crr != nullptr);
+
     return crr;   
 }
 
@@ -139,3 +148,48 @@ bool LList<T>::operator==(const std::vector<T> &v) const
     return (crr==nullptr && vi == v.size());
 }
 
+template <class T>
+typename LList<T>::Iterator LList<T>::begin()
+{
+    return typename LList<T>::Iterator(first);
+}
+
+template <class T>
+typename LList<T>::Iterator LList<T>::end()
+{
+    return typename LList<T>::Iterator(nullptr);
+}
+
+template <class T>
+bool LList<T>::Iterator::operator!=(const typename LList<T>::Iterator&it)
+{
+    return current != it.current;
+}
+
+template <class T>
+typename LList<T>::Iterator& LList<T>::Iterator::operator++()
+{
+    if (current == nullptr)
+    {
+        throw std::out_of_range("Going past end of list.");
+    }
+    current = current->next;
+    return *this;
+}
+
+template <class T>
+T& LList<T>::Iterator::operator*()
+{
+   
+    if (current == nullptr)
+    {
+        throw std::out_of_range("Reading past end of list.");
+    }
+   return current->data;
+}
+
+template <class T>
+LList<T>::Iterator::Iterator(LList<T>::box *_start):current(_start)
+{
+
+}

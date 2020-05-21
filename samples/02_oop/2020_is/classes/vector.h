@@ -8,6 +8,9 @@ class Vector
     size_t size;
 
     public:
+
+    using value_type = T;
+
     Vector ();
     Vector (const Vector<T>& v);
     Vector (size_t initial_size);
@@ -26,6 +29,23 @@ class Vector
     //operator ==
     //operator !=
     ~Vector();
+
+    class Iterator
+    {
+        public:
+        Iterator(size_t pos, Vector &_vector);
+        bool operator!=(const Iterator&it);
+        Iterator& operator++();
+        T& operator *();
+
+        private:
+        size_t index;
+        Vector &vector;
+
+    };
+
+    Iterator begin();
+    Iterator end();
 };
 
 template <class T>

@@ -169,6 +169,7 @@ size_t Vector<T>::length () const
     return size;
 }
 
+
 template <class T>
 Vector<T>::~Vector()
 {
@@ -189,3 +190,49 @@ std::ostream& operator << (std::ostream& stream, const Vector<T>& v)
     return stream; 
 }
 
+template <class T>
+typename Vector<T>::Iterator Vector<T>::begin()
+{
+    return typename Vector<T>::Iterator(0,*this);
+}
+
+template <class T>
+typename Vector<T>::Iterator Vector<T>::end()
+{
+    return typename Vector<T>::Iterator(size,*this);
+}
+
+template <class T>
+bool Vector<T>::Iterator::operator!=(const typename Vector<T>::Iterator&it)
+{
+    //data?
+    return index != it.index;
+}
+
+template <class T>
+typename Vector<T>::Iterator& Vector<T>::Iterator::operator++()
+{
+   if (index >= vector.length())
+   {
+       throw std::out_of_range("Going past end of vector.");
+   }
+   ++index;
+   return *this;
+}
+
+template <class T>
+T& Vector<T>::Iterator::operator*()
+{
+   if (index >= vector.length())
+   {
+       throw std::out_of_range("Reading past end of vector");
+   }
+   return vector[index];
+}
+
+template <class T>
+Vector<T>::Iterator::Iterator(size_t pos, Vector<T> &_vector)
+               :index(pos),vector(_vector)
+{
+
+}
