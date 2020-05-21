@@ -152,7 +152,7 @@ class increase
 };
 int main ()
 {
-    increase inc1(5), inc2(10);
+    increase inc1{5}, inc2{10};
     std::cout << inc1(1) << std::endl;
     std::cout << inc2(1) << std::endl;
 }    
@@ -171,7 +171,7 @@ std::function<int(int)> f;
 f = plus1; 
 std::cout << f(1);
 
-f = increase(1); 
+f = increase{1}; 
 std::cout << f(1);
 
 f = [](int x)->int{return x+1;}; 
