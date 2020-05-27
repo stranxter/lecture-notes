@@ -184,96 +184,115 @@ for (char c : s) {...}
 
 \begin{mdframed}[hidealllines=true,backgroundcolor=gray!20]
   Нека ``интервал'' да наричаме последователни елементи на някакъв контейнер, зададени чрез итератори към началото и края на последователността. С помощта на следния шаблон:
-  \begin{verbatim}
+\begin{verbatim}
 template <class Iterator>
-class FromTo{
+class Range{
     public:
-       using value_type = typename Iterator::value_type;
-       FromTo (const Iterator &b, 
-               const Iterator &e):_begin(b), _end (e){}
-        Iterator begin()
-        {return _begin;}
-        Iterator end()
-        {return _end;}
-    private:
-        Iterator _begin;
-        Iterator _end;
+        
+    Iterator begin()
+    {return _begin;}
+    Iterator end()
+    {return _end;}
+    
+    Iterator _begin;
+    Iterator _end;
 };
-  \end{verbatim}
+\end{verbatim}
 
-  става възможно не само да групираме двойката начало-край в общ обект, но и да итерираме съответната поредица с цикъл \code{for}, както бихме итерирали елементите на контейнер: Ако \code{begin} и \code{end} са съответните итератори към елементи от тип \code{E} на някакъв контейнер (или друг интервал) и имаме обекта \code{FromTo<SomeIterator> range(begin,end)}, то можем да направим обхождането:
+  става възможно не само да групираме двойката начало-край в общ обект, но и да итерираме съответната поредица с цикъл \code{for}, както бихме итерирали елементите на контейнер: Ако \code{begin} и \code{end} са съответните итератори към елементи от тип \code{E} на някакъв контейнер (или друг интервал) и имаме обекта \code{Range<SomeIterator> range(begin,end)}, то можем да направим обхождането:
  \begin{verbatim}
 for (E& x : range){...}   
  \end{verbatim}
  
- На лекции разглеждаме деструктивен вариант на функцията от високо ниво \code{map}, извършваща еднотипна трансформация на елементите на интервал, като се абстрахира напълно от контейнера. За улеснение въвеждаме типа \code{binop}, задаващ двуместна функция от типа на елементите да даден интервал (или итератор).
+ Разглеждаме трансформаци на интервали, които подменят техните итератори с варианти, променящи начина, по който се достъпват елементите на интервала. Можем да посторим шаблон \code{MappedIterator<Iterator> (it)}, който обвива обект \code{it} от даден тип \code{Iterator} и делегира операциите \code{++} и \code{!=} към \code{it}, но подменя операцията \code{*} с такава, която връща резултат от приложение на някаква функция \code{f} над резултата от \code{*it}, т.е. връща \code{f(*it)}. Можем да построим и \code{FilteredIterator<Iterator>}, който пък изменя реда, в който се достъпват елементите чрез някакъв итератор така, че \code{*} да връща само елементите, удовлетворяващи даден предикат. 
   
 \begin{verbatim}
-template <class Range>
-using binop = std::function<typename Range::value_type
-                            (const typename Range::value_type&,
-                             const typename Range::value_type&)>;
-
-template <class Range>
-void map(Range range, binop<Range> f)
+template <class Iterator>
+class MappedIterator
 {
-    for (typename Range::value_type& element: range)
-    {element = f (element);}    
+    public:
+    using value_type = typename I::value_type;      
+    std::function<value_type(value_type)> op;
+    I original;
+
+    MappedIterator<I>& operator++()
+    { ++original; return *this; }
+    value_type operator* ()
+    { return op(*original); }  
+    bool operator != (const MappedIterator& it)
+    { return original != it.original;}
+};
+\end{verbatim}
+
+И накрая, дефинираме шаблон на ``адаптор'', който представлява обект, съдържащ необходимата информация за транформирането на интервал от някакъв тип чрез подмяна на подлежащите му итератори. За прилагането на \code{map}, това е едноместната функция, която се прилага над всеки елемент от инетрвала, но най-вече, типовете на оригиналния и на резултатния интервал. Т.е. смисъла на следния шаблон е да ``атоматизира'' получаването от интервали от даден тип на интервали от адаптирания тип:
+\begin{verbatim}
+template <class Val>
+class MapAdaptor
+{
+    public:
+    template <class OriginalIt>
+    using adapted_it = MappedIterator<OriginalIt>;
+    std::function<Val(Val)> op;
+    
+    template <class I>
+    Range<MappedIterator<I>> adapt (Range<I> r)
+    { return Range<MappedIterator<I>> ({{op,r._begin},
+                                        {op,r._end}});}
+};
+\end{verbatim}
+
+Аналогично постъпваме и с \code{filter}.
+\begin{verbatim}
+template <class Val>
+class FilterAdaptor
+{
+    public:
+    template <class OriginalIt>
+    using adapted_it = FilterIterator<OriginalIt>;
+    std::function<bool(Val)> pred;
+
+    template <class I>
+    Range<FilterIterator<I>> adapt (Range<I> r)
+    { return Range<FilterIterator<I>> ({{r._begin,r._end,pred},
+                                        {r._end,r._end,pred}});}
+};
+\end{verbatim}
+  
+Групата шаблони позволява да дефинираме следния оператор:
+
+\begin{verbatim}
+template <class I, class Adaptor>
+Range<typename Adaptor::template adapted_it<I>> 
+                           operator | (Range<I> r, Adaptor a)
+{
+    return a.adapt(r);
 }
 \end{verbatim}
 
-  Може да разгледаме и функцията за агрегации \code{reduce}, позната от функционалното програмиране: 
-\begin{verbatim}
-template <class Range>
-typename Range::value_type 
-            reduce (Range range,
-                    binop<Range> op,
-                    typename Range::value_type null_val)
-{
-    typename Range::value_type accum = null_val;
-    for (typename Range::value_type& element : range)
-    { accum = op(accum, element); }
-    return accum;
-}
-\end{verbatim}
-Възможно е също да реализираме операция с интервал, която изменя броя или реда на елементите му, отново без знание за подлежащия контейнер. Такава е, например, операцията \code{filter}. Това налага да се конструира нов интервал, като по някакъв начин се измени поведението на оригиналните итератори. Например, реализирания на лекции \code{FilterRange} (наречен ``адаптер'') ``изменя'' даден итератор като ``прескача'' елементите, които не удовлетворяват даден предикат. Можем да дефинираме:
-\begin{verbatim}
+С негова помощ е възможно да получим вторите степени, увеличени с единица, на четните числа от интервала \code{range} по следния начин:
 
-template <class Range>
-using pred 
-   = std::function<bool (const typename Range::value_type&)>;
-
-template <class Range>
-FilterRange<Range> filter(const Range& range,
-                          pred<Range> p)
-{
-  return FilterRange<Range>(range.begin(), range.end());
-}    
+\begin{verbatim}
+for (int x : range | filtereven | square | inc){...}
 \end{verbatim}
 
-Използването на интервал както за параметър, така и за резултат на тези функции, ни позволява да ги използваме за обхождане на новополучените подредици. Също така, можем да композираме функциите.
-
+където \code{filtereven}, \code{square} и \code{inc} са съответните адаптори:
 \begin{verbatim}
-for (E x : filter (range, even)) 
-{...обработка само на четните елементи на range...}
-
-//сума на четните елементи на range
-reduce(filter(range,even),plus,0);
-
-\end{verbatim}
-
-Ако по подобие на \code{FilterRange} реализираме \code{MapRange}, можем да направим функционален вариант на \code{map}, \code{mapf}. Това ще ни позволи на намерим сумата на четните елементи на поредица, след като ги увеличим с единица, по следния начин:
-\begin{verbatim}
-reduce(mapf(filter(seq,even), inc), plus, 0)  
+FilterAdaptor<int> filtereven([](int x)->bool{return x%2==0;});
+MapAdaptor<int> square ([](int x)->int{return x*x;});
+MapAdaptor<int> inc ([](int x)->int{return x+1;});  
 \end{verbatim}
 \end{mdframed}
 
 \begin{enumerate}[resume]
-  \item По аналогия на дадените примери да се дефинира функция \code{append(a,b)}, която създава нов интервал чрез слепване на интервалите \code{a} и \code{b}.
-  \item По аналогия на дадените примери да се дефинира функция \code{combine(a,b,f)}, която създава нов интервал от стойностите на двуместната функция \code{f}, приложена върху съответните елементи на \code{a} и \code{b}. Функцията да се демонстрира като се съберат съответните елементи на два интервала.
-  \item По аналогия на дадените примери да се дефинира функция \code{merge(a,b)}. Ако $a=a_1,...,a_k$, $b=b_1,...,b_l$, то $merge(a,b)=a_1,b_1,a_2,b_2,...$. 
-  \item По аналогия на дадените примери да се дефинира функция \code{zip(a,b)}, която създава нов интервал от двойките (\code{std::pair}) от стойностите на съответните елементи на \code{a} и \code{b}. 
-  \item Да се реализира безкраен интервал със стойности от потребителския вход.
+  \item Да се дефинира адаптор \code{take} с параметър \code{k}, който трансформира интервал като оставя в него само първите му \code{k} елемента.
+  \item Да се дифинира адаптор duplicate, който ``удвоява'' интервала $a_1,a_2,...,a_k$ до интервала $a_1,a_1,a_2,a_2,...,a_k,a_k$ (т.е. всеки от елементите се получава по два пъти последователно).
+  \item Да се дефинира адаптор repeat с параметър \code{k}, който генерира интервал чрез прилагане чрез k-кратно долепяне на оригиналния интервал до себе си, т.е. интервалът $a_1,...a_n$ се превръща в интервала $\underbrace{a_1,...,a_n,...a_1,...,a_n}_{k}$
+  \item Да се дефинира адаптор loop, който генерира безкраен интервал чрез прилагане на безкрайно долепяне на оригиналния интервал до себе си.
+  \item Да се дефинира адаптор \code{reverse}, който генерира интервал чрез нареждане на елементите на даден интервал в обратен ред (приемаме, че оригиналния итератор притежава операция \code{---}).
+  \item Да се динифира оператор \code{a+b} над интервали, който създава нов интервал чрез конкатенацията на интервалите \code{a} и \code{b}.
+  \item Да се динифира оператор \code{a*b} над интервали, който създава нов интервал, състоящ се от тези елементи на \code{a}, които са елементи и на \code{b}.
+  \item Да се динифира оператор \code{a\&b} над интервали, където елементите на \code{a} и \code{b} са подредени в нарастващ ред. Операторът да създава нов интервал чрез сортирано сливане на елементите на \code{a} и \code{b}.
+  
 \end{enumerate}
 
 \pagebreak
