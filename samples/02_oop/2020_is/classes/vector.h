@@ -33,6 +33,9 @@ class Vector
     class Iterator
     {
         public:
+
+        using value_type = T;
+
         Iterator(size_t pos, Vector &_vector);
         bool operator!=(const Iterator&it);
         Iterator& operator++();

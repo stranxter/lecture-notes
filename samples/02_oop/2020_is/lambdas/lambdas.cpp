@@ -4,6 +4,15 @@
 #include <vector>
 #include <cmath>
 
+template <class ElemT>
+void map (const std::vector<ElemT> &v, std::function<ElemT(ElemT)> op)
+{
+    for (ElemT &x : v)
+    {
+        x = op(x);
+    }
+}
+
 template <typename ResT,typename ElemT>
 ResT reduce (ElemT arr[], 
              int arrsize, 
