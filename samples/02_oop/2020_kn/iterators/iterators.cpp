@@ -15,6 +15,11 @@ typename Container::value_type sum(Container &container)
     return sum;
 }
 
+class BigClass
+{
+    public:
+    int x;
+};
 
 int main()
 {
@@ -33,6 +38,8 @@ int main()
     std::cout << sum(l) << std::endl;
 
     int a[] = {1,2,3,4,5};
+
+    LList<BigClass> l;
 
 
     return 0;

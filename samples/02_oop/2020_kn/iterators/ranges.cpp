@@ -2,11 +2,15 @@
 #include <iostream>
 #include <functional>
 #include <stdexcept>
+#include <sstream>
+#include <iterator>
 
 template <class I>
 class Range
 {
     public: 
+
+    Range(const I &_b, const I &_e):_begin(_b),_end(_e){}
 
     I begin()
     {
@@ -118,8 +122,8 @@ class MapAdaptor
     Range<MappedIterator<It>> adapt (Range<It> range)
     {
         
-        Range<adapted_it<It>> newrange = {adapted_it<It>({range.begin(),op}),
-                                      adapted_it<It>({range.end(),op})}; 
+        Range<adapted_it<It>> newrange{adapted_it<It>({range.begin(),op}),
+                                       adapted_it<It>({range.end(),op})}; 
         return newrange;
     }
 };
@@ -136,7 +140,7 @@ class FilterAdaptor
     template<class It>
     Range<FilteredIterator<It>> adapt (Range<It> range)
     {
-        Range<adapted_it<It>> newrange = {adapted_it<It>({range.begin(),range.end(),pred}),
+        Range<adapted_it<It>> newrange {adapted_it<It>({range.begin(),range.end(),pred}),
                                         adapted_it<It>({range.end(),range.end(),pred})}; 
         return newrange;
     }
@@ -154,7 +158,7 @@ int main()
 
     std::vector<int> v = {1,1,1,2,3,5,7,9,11,4,5,6,7,8,9,10,11,11,11,11,11,11,11};
 
-    Range<std::vector<int>::iterator> range = {v.begin(),v.end()};
+    Range<std::vector<int>::iterator> range {v.begin(),v.end()};
 
     std::function<int(int)> sq = [](int x)->int{return x*x;};
     std::function<int(int)> plusone = [](int x)->int{return x+1;};
@@ -173,5 +177,19 @@ int main()
     {
         std::cout << x << std::endl;
     }
+
+    std::stringstream s ("55 5487866 77  55 5487866 77  55 5487866 77  55 5487866 77 ");
+
+    std::istream_iterator<int> sbegin (s);
+    Range<std::istream_iterator<int>> srange {sbegin,std::istream_iterator<int>()};
+
+    for (int x : srange | inc)
+    {
+        std::cout << x << std::endl;
+    }
+
+
+
+
 
 }
