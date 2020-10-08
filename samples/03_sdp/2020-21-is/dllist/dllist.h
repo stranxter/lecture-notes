@@ -2,6 +2,7 @@
 #define __DLLLIST_H
 
 #include <iostream>
+#include <exception>
 
 template <class T>
 class DLList
@@ -12,12 +13,12 @@ class DLList
     DLList(const DLList<T>&);
     ~DLList();
     DLList<T>& operator = (const DLList<T>&);
-
-
     DLList<T> operator + (const T&) const;
     DLList<T>& operator += (const T&);
 
-    void print();
+    void reverse();
+
+    bool empty();
 
     private:
 
@@ -28,15 +29,42 @@ class DLList
         Box *prev;
     };
 
+    public:
+
+    class Iterator
+    {
+        public:
+        Iterator(Box*,DLList*);
+        Iterator& operator++();
+        Iterator& operator--();
+        T& operator*();
+        bool operator != (const Iterator& other);
+
+        friend class DLList;
+
+        private:
+        Box *current;
+        DLList *list;
+    };
+
+    private:
+
     void copy(const DLList<T>&);
     void clear();
 
-    Box *first;
+    Box *first, *last;
 
     //временно
-    template<class E> //Липсата на този ред създаваше проблема при свързването
-                      //по време на лекции
+    template<class E> 
     friend std::ostream& operator << (std::ostream&, const DLList<E>&);
+
+    public:
+
+    Iterator begin();
+    Iterator end();
+    
+    bool deleteAt(const Iterator&);
+
 
 };
 

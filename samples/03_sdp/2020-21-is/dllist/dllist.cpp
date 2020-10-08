@@ -4,7 +4,7 @@
 #include "dllist.h"
 
 template<class T>
-DLList<T>::DLList():first(nullptr)
+DLList<T>::DLList():first(nullptr),last(nullptr)
 {
 
 }
@@ -30,10 +30,12 @@ void DLList<T>::clear()
         delete crr;
         crr = save;
     }
+    first=nullptr; 
+    last=nullptr;
 }
 
 template<class T>
-DLList<T>& DLList<T>::operator = (const DLList<T> &list)
+DLList<T>& DLList<T>::operator=(const DLList<T> &list)
 {
     if (this != &list)
     {
@@ -60,22 +62,14 @@ DLList<T>& DLList<T>::operator += (const T&x)
     if (first != nullptr)
     {
         first->prev = newFirst;
+    } else 
+    {
+        last = newFirst;
     }
     
     first = newFirst;
 
     return *this;
-}
-
-template<class T>
-void DLList<T>::print ()
-{
-    DLList<T>::Box *crr = first;
-    while (crr != nullptr)
-    {
-        std::cout << crr->data << " ";
-        crr = crr->next;
-    }
 }
 
 template<class T>
@@ -96,6 +90,130 @@ void DLList<T>::copy(const DLList<T>&)
     //HOMEWORK!!!!!
     first = nullptr;
 }
+
+template<class T>
+bool DLList<T>::empty()
+{
+    return first == nullptr;
+}
+
+template<class T>
+void DLList<T>::reverse()
+{
+    typename DLList<T>::Box *crr = first,
+                            *savenext;
+    
+    while (crr != nullptr)
+    {
+
+        savenext = crr->next;
+        crr->next = crr->prev;
+        crr->prev = savenext;
+
+        crr = savenext;
+    }
+
+    savenext = first;
+    first = last;
+    last = savenext;
+
+}
+
+template<class T>
+DLList<T>::Iterator::Iterator(Box *_current,DLList<T> *_list):current(_current),list(_list)
+{}
+
+template<class T>
+typename DLList<T>::Iterator& DLList<T>::Iterator::operator++()
+{
+    
+    if (current == nullptr)
+    {
+        throw std::out_of_range("No more elements in list.");
+    }
+    current=current->next;
+    
+    return *this;
+}
+
+template<class T>
+typename DLList<T>::Iterator& DLList<T>::Iterator::operator--()
+{
+    if (current == nullptr)
+    {
+        if (list->first == nullptr)
+        {
+            throw std::out_of_range("List is empty");
+        } else 
+        {
+            current = list->last;
+        }
+    } else
+    {
+        current=current->prev;    
+    }
+    
+    return *this;
+}
+
+
+template<class T>
+T& DLList<T>::Iterator::operator*()
+{
+    return current->data;
+}
+
+template<class T>
+bool DLList<T>::Iterator::operator!= (const Iterator& other)
+{
+    return current != other.current;
+}
+
+template<class T>
+typename DLList<T>::Iterator DLList<T>::begin()
+{
+    return typename DLList<T>::Iterator(first,this);
+}
+
+template<class T>
+typename DLList<T>::Iterator DLList<T>::end()
+{
+    return typename DLList<T>::Iterator(nullptr,this);
+}
+
+template<class T>
+bool DLList<T>::deleteAt(const Iterator &it)
+{
+    typename DLList<T>::Box *crr = it.current,
+                            *save;
+
+    if (crr == nullptr)
+    {
+        return false;
+    }
+
+    if (crr->prev == nullptr)
+    //изтривамне първи елемент
+    {
+        save = first;
+        first = first->next;
+        delete save;
+
+        if (first == nullptr)
+        {
+            last = nullptr;
+        }
+
+    }
+
+    save = crr;
+    crr->prev->next = crr->next;
+    crr->next->prev = crr->prev;
+
+    delete save;
+
+    return true;
+};
 
 
 #endif
