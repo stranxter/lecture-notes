@@ -192,7 +192,7 @@ bool DLList<T>::deleteAt(const Iterator &it)
         return false;
     }
 
-    if (crr->prev == nullptr)
+    if (crr == first)
     //изтривамне първи елемент
     {
         save = first;
@@ -203,12 +203,19 @@ bool DLList<T>::deleteAt(const Iterator &it)
         {
             last = nullptr;
         }
-
+        return true;
     }
 
     save = crr;
     crr->prev->next = crr->next;
-    crr->next->prev = crr->prev;
+
+    if (crr->next != nullptr)
+    {
+        crr->next->prev = crr->prev;
+    } else 
+    {
+        last = crr->prev;
+    }
 
     delete save;
 

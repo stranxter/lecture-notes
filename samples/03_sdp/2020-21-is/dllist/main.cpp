@@ -126,8 +126,40 @@ TEST_CASE("Test Reverse")
          ++count;
     }
 
-
 }
+
+TEST_CASE("Test Delete")
+{
+    DLList<int> list;
+
+    list += 1;
+    list += 2;
+    list += 3;
+    list += 4; //4 3 [2] 1
+
+    DLList<int>::Iterator it = list.begin();
+    ++(++it);
+    list.deleteAt(it);
+
+    it = list.begin();
+    ++it;
+    CHECK (*it==3);
+    ++it;
+    CHECK (*it==1);
+
+    it = list.begin();
+    list.deleteAt(it); //[4] 3 [2] 1
+
+    it = list.begin();
+    CHECK(*it == 3);
+
+    ++it;
+    list.deleteAt(it); //[4] 3 [2] [1]
+
+    it = list.begin();
+    CHECK(*it == 3);
+}
+
 
 int main()
 {
@@ -142,6 +174,7 @@ int main()
     std::cout << list << std::endl;
 
     DLList<int>::Iterator it = list.begin();
+    (++(++it));
     list.deleteAt(it);
 
     std::cout << list << std::endl;
