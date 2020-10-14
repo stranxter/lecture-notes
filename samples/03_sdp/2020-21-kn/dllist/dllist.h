@@ -16,14 +16,41 @@ class DLList
     DLList<T> operator+ (const T&) const;
     DLList<T>& operator+= (const T&);
 
+    bool empty();
+
     private:
+    
     struct box
     {
         T data;
         box *next, *prev;
     };
 
-    box *first;
+    public:
+
+    class Iterator 
+    {
+        public:
+
+        Iterator(box *_current, box *_first);
+
+        T& operator *();
+        Iterator& operator ++();
+        Iterator& operator --();
+        bool operator!= (const Iterator&);
+        
+        private:
+        box *current;
+        box *first;
+    };   
+
+    Iterator begin();
+    Iterator last();
+    Iterator end();
+
+    private:
+
+    box first;
 
     template<class E>
     friend std::ostream& operator<< (std::ostream&,const DLList<E>&);
