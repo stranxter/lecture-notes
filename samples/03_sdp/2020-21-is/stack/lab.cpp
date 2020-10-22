@@ -18,6 +18,10 @@ struct position
     {
         return x == p.x && y == p.y;
     }
+    bool operator !=(const position &p)
+    {
+        return x != p.x || y != p.y;
+    }
     position down()
     {
         return position{x,y+1};
@@ -80,14 +84,10 @@ bool wayiter(position start, position goal)
 
     s.push(start);
 
-    while (!s.empty())
+    while (!s.empty() && s.top() != goal)
     {
         position current = s.top(); s.pop();
 
-        if (current==goal)
-        {
-            return true;
-        }
         if (viablePosition(current))
         {
             lab[current.x][current.y] = 9;
@@ -98,7 +98,8 @@ bool wayiter(position start, position goal)
             s.push(current.down());
         }
     }
-    return false;
+
+    return !s.empty();
 }
 
 
