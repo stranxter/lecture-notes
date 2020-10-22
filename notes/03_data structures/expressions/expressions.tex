@@ -53,7 +53,7 @@ token/.style={rectangle split, rectangle split parts=2,draw, rectangle split hor
 
 
 \begin{document}
-\title[Структури от данни и програмиране]{Аритметични изрази} 
+\title[Структури от данни и програмиране]{Оценяване на аритметични изрази} 
 \author{Калин Георгиев} 
 \frame{\titlepage} 
 
@@ -68,7 +68,7 @@ token/.style={rectangle split, rectangle split parts=2,draw, rectangle split hor
 \frametitle{Лексически анализ}
 
 \begin{center}
-  $(1+2)*3$
+  $(11+20)*123$
 \end{center}
 
 
@@ -77,12 +77,12 @@ token/.style={rectangle split, rectangle split parts=2,draw, rectangle split hor
 
     \begin{tikzpicture}[auto, scale=0.6, every node/.style={scale=0.6}, node distance=3cm,>=latex']
     \node[token] (n1) {\nodepart{two}(\nodepart{one}OPEN\_PAR};
-    \node[token, right of = n1] (n2) {\nodepart{two}1\nodepart{one}NUMBER};
+    \node[token, right of = n1] (n2) {\nodepart{two}11\nodepart{one}NUMBER};
     \node[token, right of = n2] (n3) {\nodepart{two}+\nodepart{one}OPERATOR};
-    \node[token, right of = n3] (n4) {\nodepart{two}2\nodepart{one}NUMBER};
+    \node[token, right of = n3] (n4) {\nodepart{two}20\nodepart{one}NUMBER};
     \node[token, right of = n4] (n5) {\nodepart{two})\nodepart{one}CLOSE\_PAR};
     \node[token, right of = n5] (n6) {\nodepart{two}*\nodepart{one}OPERATOR};
-    \node[token, right of = n6] (n7) {\nodepart{two}3\nodepart{one}NUMBER};
+    \node[token, right of = n6] (n7) {\nodepart{two}123\nodepart{one}NUMBER};
     \end{tikzpicture}
   \caption{Списък с лексеми}
   \label{fig:tokenlist}
