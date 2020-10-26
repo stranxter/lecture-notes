@@ -1,0 +1,338 @@
+\documentclass{beamer}
+\usepackage{relsize}
+\usepackage{color}
+
+\usepackage{listings}
+\usetheme{CambridgeUS}
+%\usepackage{beamerthemesplit} % new 
+\usepackage{enumitem}
+\usepackage{amsmath}                    % See geometry.pdf to learn the layout options. 
+\usepackage{amsthm}                   % See geometry.pdf to learn the layout options. There 
+\usepackage{amssymb}                    % See geometry.pdf to learn the layout options. 
+\usepackage[utf8]{inputenc} 
+\usepackage{graphicx}
+\usepackage[english,bulgarian]{babel}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{caption}
+\usepackage{tikz}
+\usepackage{forest}
+\usetikzlibrary{shapes,arrows,positioning,calc,chains}
+
+\lstset{language=C++,
+                basicstyle=\ttfamily,
+                keywordstyle=\color{blue}\ttfamily,
+                stringstyle=\color{red}\ttfamily,
+                commentstyle=\color{green}\ttfamily,
+                morecomment=[l][\color{magenta}]{\#}
+}
+
+\newtheorem{mydef}{Дефиниция}[section]
+\newtheorem{lem}{Лема}[section]
+\newtheorem{thm}{Твърдение}[section]
+
+\DeclareMathOperator{\restrict}{\upharpoonright}
+
+\setitemize{label=\usebeamerfont*{itemize item}%
+  \usebeamercolor[fg]{itemize item}
+  \usebeamertemplate{itemize item}}
+
+\setbeamercovered{transparent}
+
+\captionsetup{font=footnotesize}
+
+\lstset{breaklines=true}
+\tikzset{
+block/.style = {draw, rectangle,align = center},
+entry/.style = {draw, fill=black, circle, radius=3em},
+condition/.style = {draw, fill=white, diamond, align = center,node distance=3cm},
+fork/.style = {draw, fill=black, circle,inner sep=1pt},
+lnode/.style={rectangle split, rectangle split parts=2,draw, rectangle split horizontal},
+treenode/.style = {align=center, inner sep=0pt, text centered, circle, font=\sffamily\bfseries, draw=black, fill=white, text width=1.5em},
+token/.style={rectangle split, rectangle split parts=2,draw, rectangle split horizontal=false}
+}
+
+
+\begin{document}
+\title[Структури от данни и програмиране]{Персистентни СД. Умни указатели} 
+\author{Калин Георгиев} 
+\frame{\titlepage} 
+
+\section{Персистентни СД} 
+
+
+\begin{frame}
+\centerline{Персистентни СД}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Персистентни СД}
+  
+\begin{verbatim}
+  let list = [3,2,1]
+      list1 = 4:list
+      list2 = 6:5:list
+\end{verbatim}
+
+\begin{figure}
+  \centering
+
+    \begin{tikzpicture}[auto, node distance=1.5cm,>=latex']
+    \node[lnode] (l1) {\nodepart{one}3};
+    \node[lnode, right of = l1] (l2) {\nodepart{one}2};
+    \node[lnode, right of = l2] (l3) {\nodepart{one}1};
+
+    \draw[*->] let \p1 = (l2.two), \p2 = (l2.center) in (\x1,\y2) -- (l3);
+    \draw[*->] let \p1 = (l1.two), \p2 = (l1.center) in (\x1,\y2) -- (l2);
+
+    \node[lnode, above left = of l1] (l11) {\nodepart{one}4};
+    \node[lnode, below left = of l1] (l21) {\nodepart{one}5};
+    \node[lnode, left of = l21] (l22) {\nodepart{one}6};
+
+    \draw[*->] let \p1 = (l11.two), \p2 = (l11.center) in (\x1,\y2) -- (l1);
+    \draw[*->] let \p1 = (l21.two), \p2 = (l21.center) in (\x1,\y2) -- (l1);
+    \draw[*->] let \p1 = (l22.two), \p2 = (l22.center) in (\x1,\y2) -- (l21);
+
+
+    \end{tikzpicture}
+\end{figure}
+  
+\end{frame}
+  
+\begin{frame}[fragile]
+  \frametitle{Модификация на данните}
+  
+\begin{verbatim}
+  list<int> list ({1,2,3,4,5});
+  //list.set(2,10); -невъзможно
+  list<int> result = list.set(2,10);
+\end{verbatim}
+
+\begin{figure}
+  \centering
+
+    \begin{tikzpicture}[auto, node distance=1.5cm,>=latex']
+    \node[lnode] (l1) {\nodepart{one}1};
+    \node[lnode, right of = l1] (l2) {\nodepart{one}2};
+    \node[lnode, right of = l2] (l3) {\nodepart{one}3};
+    \node[lnode, right of = l3] (l4) {\nodepart{one}4};
+    \node[lnode, right of = l4] (l5) {\nodepart{one}5};
+
+    \draw[*->] let \p1 = (l4.two), \p2 = (l4.center) in (\x1,\y2) -- (l5);
+    \draw[*->] let \p1 = (l3.two), \p2 = (l3.center) in (\x1,\y2) -- (l4);
+    \draw[*->] let \p1 = (l2.two), \p2 = (l2.center) in (\x1,\y2) -- (l3);
+    \draw[*->] let \p1 = (l1.two), \p2 = (l1.center) in (\x1,\y2) -- (l2);
+
+    \node[lnode, below left = of l4, color = red] (l23) {\nodepart{one}10};
+    \node[lnode, left of = l23, color = red] (l22) {\nodepart{one}2};
+    \node[lnode, left of = l22, color = red] (l21) {\nodepart{one}1};
+
+    \draw[*->,color = red] let \p1 = (l21.two), \p2 = (l21.center) in (\x1,\y2) -- (l22);
+    \draw[*->,color = red] let \p1 = (l22.two), \p2 = (l22.center) in (\x1,\y2) -- (l23);
+    \draw[*->,color = red] let \p1 = (l23.two), \p2 = (l23.center) in (\x1,\y2) -- (l4);
+
+
+    \end{tikzpicture}
+\end{figure}
+  
+\end{frame}
+
+\section{Жизнен цикъл на паметта}
+
+\begin{frame}
+  \centerline{Потребител / собственик на памет}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Създател, потребител, собственик}
+
+  \begin{columns}[t]
+    \begin{column}{0.50\textwidth}
+      \begin{flushleft}
+        \relscale{0.7}
+        \begin{verbatim}
+        struct node
+        {int data; node* next};
+
+        node* cons (int head, node* tail)
+        {return new node{head,tail};}
+
+        node* makelist ()
+        {return cons (3, cons (2, cons (1, nullptr));}
+
+        void uselists ()
+        {
+          node* list = makelist();
+          node* list1 = cons (4, list);
+          node* list2 = cons (6, cons (5, list));
+        
+          anotheruser1(list1);
+          anotheruser2(list2);
+        
+          //delete list, list1, list2?
+        }
+        \end{verbatim} 
+      \end{flushleft}       
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \relscale{0.6}
+      \begin{figure}
+        \centering
+          \begin{tikzpicture}[auto, node distance=1.4cm,>=latex']
+          \node[lnode] (l1) {\nodepart{one}3};
+          \node[lnode, right of = l1] (l2) {\nodepart{one}2};
+          \node[lnode, right of = l2] (l3) {\nodepart{one}1};
+      
+          \draw[*->] let \p1 = (l2.two), \p2 = (l2.center) in (\x1,\y2) -- (l3);
+          \draw[*->] let \p1 = (l1.two), \p2 = (l1.center) in (\x1,\y2) -- (l2);
+      
+          \node[lnode, above left = of l1] (l11) {\nodepart{one}4};
+          \node[lnode, below left = of l1] (l21) {\nodepart{one}5};
+          \node[lnode, left of = l21] (l22) {\nodepart{one}6};
+      
+          \draw[*->] let \p1 = (l11.two), \p2 = (l11.center) in (\x1,\y2) -- (l1);
+          \draw[*->] let \p1 = (l21.two), \p2 = (l21.center) in (\x1,\y2) -- (l1);
+          \draw[*->] let \p1 = (l22.two), \p2 = (l22.center) in (\x1,\y2) -- (l21);
+          \end{tikzpicture}
+      \end{figure}
+        
+    \end{column}
+  \end{columns}
+  
+\end{frame}
+
+\begin{frame}
+  \centerline{Умни указатели}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Reference counting. std::shared\_ptr<T>}
+  
+  \texttt{node*} $\rightarrow$ \texttt{std::shared\_ptr<node<T>{}>}
+  
+  \texttt{new} $\rightarrow$ \texttt{std::make\_shared}
+
+\begin{figure}
+  \centering
+
+    \begin{tikzpicture}[auto, node distance=1.5cm,>=latex']
+     \node[block] (data) {data};
+     \node[token, left of = data] (control) {\nodepart{two}3};
+  
+      \node[block, above left = of control] (r1) {\nodepart{one}reference 1};
+      \node[block, below of = r1] (r2) {\nodepart{one}reference 2};
+      \node[block, below left = of control] (r3) {\nodepart{one}reference 3};
+
+      \draw[->] (r1) -- (control);
+      \draw[->] (r2) -- (control);
+      \draw[->] (r3) -- (control);
+ 
+      \draw[*->] let \p1 = (control.one), \p2 = (control.one) in (\x1,\y2) -- (data);
+
+  
+    \end{tikzpicture}
+\end{figure}
+  
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Reference counting}
+
+  \relscale{0.6}
+  \begin{figure}
+    \centering
+      \begin{tikzpicture}[auto, node distance=0.9cm,>=latex']
+        \node[lnode] (l1) {\nodepart{one}3};
+        \node[lnode, right of = l1] (l2) {\nodepart{one}2};
+        \node[lnode, right of = l2] (l3) {\nodepart{one}1};
+    
+        \draw[*->] let \p1 = (l2.two), \p2 = (l2.center) in (\x1,\y2) -- (l3);
+        \draw[*->] let \p1 = (l1.two), \p2 = (l1.center) in (\x1,\y2) -- (l2);
+    
+        \node[lnode, above left = of l1] (l11) {\nodepart{one}4};
+        \node[lnode, below left = of l1] (l21) {\nodepart{one}5};
+        \node[lnode, left of = l21] (l22) {\nodepart{one}6};
+    
+        \draw[*->] let \p1 = (l11.two), \p2 = (l11.center) in (\x1,\y2) -- (l1);
+        \draw[*->] let \p1 = (l21.two), \p2 = (l21.center) in (\x1,\y2) -- (l1);
+        \draw[*->] let \p1 = (l22.two), \p2 = (l22.center) in (\x1,\y2) -- (l21);
+
+        \node[block,left of = l1,color = red] (rl) {list};
+        \node[block,left of = l11, color = red] (rl1) {list1};
+        \node[block,left of = l22, color = red] (rl2) {list2};
+
+        \draw[->,color=red] (rl) -- (l1);
+        \draw[->,color=red] (rl1) -- (l11);
+        \draw[->,color=red] (rl2) -- (l22);
+
+
+      \end{tikzpicture}
+    \end{figure}
+
+  \begin{flushleft}
+    \relscale{1}
+    \begin{verbatim}
+    struct node
+    {int data; shared_ptr<node> next};
+
+    shared_prt<node> cons (int head, shared_ptr<node> tail)
+    {return make_shared(head,tail);}
+
+    shared_prt<node> makelist ()
+    {return cons (3, cons (2, cons (1, nullptr));}
+
+    void uselists ()
+    {
+      shared_prt<node> list = makelist();
+      shared_prt<node> list1 = cons (4, list);
+      shared_prt<node> list2 = cons (6, cons (5, list));
+    
+      anotheruser1(list1);
+      anotheruser2(list2);
+    }//~list, ~list1, ~list2
+    \end{verbatim} 
+  \end{flushleft}       
+  
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Някои проблеми}
+  
+\begin{figure}
+  \centering
+
+    \begin{tikzpicture}[auto, node distance=1.5cm,>=latex']
+    \node[lnode] (l1) {\nodepart{one}1};
+    \node[lnode, above right = of l1] (l2) {\nodepart{one}2};
+    \node[lnode, above left = of l1] (l3) {\nodepart{one}3};
+
+    \draw[*->] let \p1 = (l2.two), \p2 = (l2.center) in (\x1,\y2) -- (l1);
+    \draw[*->] let \p1 = (l3.two), \p2 = (l3.center) in (\x1,\y2) -- (l2);
+    \draw[*->] let \p1 = (l1.two), \p2 = (l1.center) in (\x1,\y2) -- (l3);
+
+
+    \end{tikzpicture}
+\end{figure}
+  
+\end{frame}
+
+
+\begin{frame}
+\centerline{Благодаря за вниманието!}
+\end{frame}
+
+
+\end{document}
+
+\begin{columns}[t]
+  \begin{column}{0.55\textwidth}
+
+  \end{column}
+  \begin{column}{0.45\textwidth}
+
+  \end{column}
+\end{columns}
+
+
