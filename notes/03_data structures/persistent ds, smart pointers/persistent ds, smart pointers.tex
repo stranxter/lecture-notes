@@ -209,7 +209,7 @@ token/.style={rectangle split, rectangle split parts=2,draw, rectangle split hor
 \begin{frame}[fragile]
   \frametitle{Reference counting. std::shared\_ptr<T>}
   
-  \texttt{node*} $\rightarrow$ \texttt{std::shared\_ptr<node<T>{}>}
+  \texttt{node*} $\rightarrow$ \texttt{std::shared\_ptr<node>}
   
   \texttt{new} $\rightarrow$ \texttt{std::make\_shared}
 
@@ -217,7 +217,7 @@ token/.style={rectangle split, rectangle split parts=2,draw, rectangle split hor
   \centering
 
     \begin{tikzpicture}[auto, node distance=1.5cm,>=latex']
-     \node[block] (data) {data};
+     \node[block] (data) {node};
      \node[token, left of = data] (control) {\nodepart{two}3};
   
       \node[block, above left = of control] (r1) {\nodepart{one}reference 1};

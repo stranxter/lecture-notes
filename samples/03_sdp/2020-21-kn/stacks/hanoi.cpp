@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stack>
+#include "hanoiplayer.h"
 
 struct GameGoal
 {
@@ -39,12 +40,25 @@ void hanoiIter (int k, char source, char dest, char temp)
            s.push({current.k-1,current.source,current.temp,current.dest});
        }
     }
+
+    //
 }
 
 
 int main ()
 {
     playHanoi(3,'A','C','B');
-    std::cout << std::endl;
+    std::cout << "=====================\n";
     hanoiIter(3,'A','C','B');
+
+    std::cout << "=====================\n";
+    HanoiPlayer player(3);
+
+    while (player.moreMoves())
+    {
+        typename HanoiPlayer::gameMove move = player.nextMove();
+        std::cout << "Please move one ddisk from " << move.from << " to " << move.to << std::endl;
+    }
+
+
 }
