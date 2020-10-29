@@ -248,16 +248,16 @@ token/.style={rectangle split, rectangle split parts=2,draw, rectangle split hor
         \node[lnode, right of = l1] (l2) {\nodepart{one}2};
         \node[lnode, right of = l2] (l3) {\nodepart{one}1};
     
-        \draw[*->] let \p1 = (l2.two), \p2 = (l2.center) in (\x1,\y2) -- (l3);
-        \draw[*->] let \p1 = (l1.two), \p2 = (l1.center) in (\x1,\y2) -- (l2);
+        \draw[*->,color = red] let \p1 = (l2.two), \p2 = (l2.center) in (\x1,\y2) -- (l3);
+        \draw[*->,color = red] let \p1 = (l1.two), \p2 = (l1.center) in (\x1,\y2) -- (l2);
     
         \node[lnode, above left = of l1] (l11) {\nodepart{one}4};
         \node[lnode, below left = of l1] (l21) {\nodepart{one}5};
         \node[lnode, left of = l21] (l22) {\nodepart{one}6};
     
-        \draw[*->] let \p1 = (l11.two), \p2 = (l11.center) in (\x1,\y2) -- (l1);
-        \draw[*->] let \p1 = (l21.two), \p2 = (l21.center) in (\x1,\y2) -- (l1);
-        \draw[*->] let \p1 = (l22.two), \p2 = (l22.center) in (\x1,\y2) -- (l21);
+        \draw[*->,color = red] let \p1 = (l11.two), \p2 = (l11.center) in (\x1,\y2) -- (l1);
+        \draw[*->,color = red] let \p1 = (l21.two), \p2 = (l21.center) in (\x1,\y2) -- (l1);
+        \draw[*->,color = red] let \p1 = (l22.two), \p2 = (l22.center) in (\x1,\y2) -- (l21);
 
         \node[block,left of = l1,color = red] (rl) {list};
         \node[block,left of = l11, color = red] (rl1) {list1};

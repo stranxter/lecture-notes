@@ -2,7 +2,7 @@
 #include <cassert>
 
 #include "tokenizer.h"
-
+#include "expressions.h"
 
 int evaluateExpression (Tokenizer &input)
 {
@@ -27,16 +27,9 @@ int evaluateExpression (Tokenizer &input)
     token = input.getNextToken();
     assert (token.type == Tokenizer::Token::close_par);
 
-    switch (op.symbol)
-    {
-        case '+': return left + right;
-        case '-': return left - right; 
-        case '*': return left * right; 
-        case '/': return left / right; 
-        default: assert (false);
-    }
+    return apply (op.symbol,left,right);
 
-    return -1;
+    
 }
 
 

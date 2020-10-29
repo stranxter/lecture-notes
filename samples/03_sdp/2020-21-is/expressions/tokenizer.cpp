@@ -32,10 +32,7 @@ typename Tokenizer::Token Tokenizer::getNextToken()
         in.get();
         result.type = Tokenizer::Token::oper;
 
-    } else
-    {
-        assert (false);
-    }
+    } 
 
 
     return result;
