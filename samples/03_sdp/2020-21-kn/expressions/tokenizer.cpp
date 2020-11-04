@@ -29,7 +29,7 @@ Tokenizer::Token Tokenizer::nextToken()
         in >> result.c;
     } else 
     {
-        assert(false);
+        in >> result.c;
     }
 
     return result;

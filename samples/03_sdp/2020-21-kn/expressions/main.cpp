@@ -1,20 +1,7 @@
 #include "tokenizer.h"
 #include <iostream>
+#include "expressions.h"
 
-
-int apply (char oper, int left, int right)
-{
-    switch (oper)
-    {
-        case '+': return left + right;
-        case '-': return left - right;
-        case '*': return left * right;
-        case '/': return left / right;
-        default:
-            assert(false);return -1;
-    }
-    
-}
 
 int evaluate (Tokenizer& tokenizer)
 {
