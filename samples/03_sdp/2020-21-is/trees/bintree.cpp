@@ -176,5 +176,143 @@ T BinTree<T>::sumHelper (node* current)
            sum(current->right);
 }
 
+template<class T>
+bool BinTree<T>::operator == (const BinTree<T> &other)
+{
+    return equaltrees (root, other.root);
+}
+
+
+template<class T>
+bool BinTree<T>::equaltrees (node *root1, node *root2)
+{
+    if (root1 == nullptr || root2 == nullptr)
+    {
+        return root2 == nullptr && root1 == nullptr;
+    }
+
+    return root1->data == root2->data &&
+           equaltrees (root1->left, root2->left) &&
+           equaltrees (root1->right, root2->right);
+
+}
+
+
+template<class T>
+void BinTree<T>::toScheme(std::ostream &out)
+{
+    toScheme (out, root);
+}
+
+template<class T>
+void BinTree<T>::toScheme (std::ostream &out, BinTree<T>::node *current)
+{
+    if (current == nullptr)
+    {
+        out << "()";
+        return;
+    }
+
+    out << '('
+        << current->data
+        << " ";
+
+    toScheme (out, current->left);
+
+    out << " ";
+
+    toScheme (out, current->right);
+
+    out << ")";
+}
+
+
+template<class T>
+void BinTree<T>::fromScheme(std::istream &in)
+{
+    clear (root);
+
+    root = readSchemeRec (in);
+
+}
+
+template<class T>
+typename BinTree<T>::node* BinTree<T>::readSchemeRec (std::istream &in)
+{
+  
+    char c;
+    in >> c; 
+    assert (c == '(');
+
+    if (in.peek() == ')')
+    {//празно дърво
+        in.get();
+        return nullptr;
+    }
+
+    T value;
+    in >> value;
+
+    //(<value>  <Tree> <Tree>)
+    //        /|\.
+    //         |
+
+    BinTree<T>::node *left=readSchemeRec (in);
+
+    //(<value>  <Tree> <Tree>)
+    //               /|\.
+    //                |
+
+
+    BinTree<T>::node *right=readSchemeRec (in);
+
+    //(<value>  <Tree> <Tree> )
+    //                      /|\.
+    //                       |
+
+    in >> c;
+    assert (c == ')');
+
+    return new node {value,left,right};
+}
+
+template<class T>
+void BinTree<T>::clear(BinTree<T>::node *current)
+{
+    if (current == nullptr)
+    {
+        return;
+    }   
+
+   clear (current->left);
+   clear (current->right);
+   delete current; 
+
+}
+
+template<class T>
+void BinTree<T>::insertOrdered (const T &x)
+{
+    insertOrdered (x,root);
+}
+
+
+template<class T>
+void BinTree<T>::insertOrdered (const T& x, node*& current)
+{
+    if (current == nullptr)
+    {
+        current = new BinTree<T>::node {x, nullptr, nullptr};
+        return;
+    }
+
+    if (x <= current->data)
+    {
+        insertOrdered (x, current->left);
+    } else
+    {
+        insertOrdered (x, current->right);
+    }
+}
 
 #endif

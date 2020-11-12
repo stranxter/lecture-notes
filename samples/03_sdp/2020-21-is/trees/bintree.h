@@ -17,8 +17,15 @@ class BinTree
     T& operator [](const char*);
     void toDotty(std::ostream& out);
 
+    bool operator == (const BinTree<T>&);
+    
+    void toScheme (std::ostream&);
+    void fromScheme (std::istream&);
+
     bool member (const T& x);
     T sum ();
+
+    void insertOrdered (const T&);
 
     private:
     struct node
@@ -31,6 +38,14 @@ class BinTree
     node* locate (const char*) const;
     bool memberHelp (const T&, node*);
     T sumHelper (node*);
+    void toScheme (std::ostream&, node*);
+    node* readSchemeRec (std::istream&);
+
+    bool equaltrees (node*, node*);
+
+    void insertOrdered (const T&, node*&);
+
+    void clear(node*);
 
     node *root;
 };

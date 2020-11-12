@@ -461,20 +461,6 @@ class BinTree
 \subsection {Отпечатване и сериализация}
 
 \begin{mdframed}[hidealllines=true,backgroundcolor=gray!20]
-  В следващите задачи се очаква дефинирането на външни за класа на дървото функции, вместо методи на класа, както в уводните задачи. За целта се използва клас \code{Position}, заместващ указател към възел в дадено дърво, по подобие на итератор, и с чиято помощ може да се извърши рекурсивно обхождане на дървото.
-  \begin{verbatim}
-template <class T>
-class Position 
-{
-public:
-    Position<T> left () const;
-    Position<T> right () const;
-    T operator * () const;
-    bool empty () const;
-    //...
-};
-  \end{verbatim}
-
   В условията по-долу с \code{[подходящ тип]} е указано, че част от задачата е да се изберат правилните типове на параметрите на функциите така, че рекурсия да може да се осъществи.
 \end{mdframed}
   
@@ -513,6 +499,33 @@ public:
 \end{verbatim}
 
 \end{mdframed}
+
+
+\begin{enumerate}[resume]
+\item Да се дефинират функции \code{std::string serializeTree ([подходящ тип]t)} и \code{BinTree<int> parseTree (std::string)} за сериализация и де-сериализация на двоично дърво, съдържащо числа, като се използва ``\texttt{Haskell} формат''.
+  
+Може ли да се сериализира дърво, съдържащо други дървета?
+\end{enumerate}
+
+\begin{mdframed}[hidealllines=true,backgroundcolor=gray!20]
+Представяне на двоично дърво в ``Haskell формат'' наричаме еднозначно текстово представяне на структурата от данни, образувано по следните правила:
+\begin{itemize}
+\item Празното дърво се представя с низа ``Empty''
+\item Нека е дадено дървото $t$ с корен $x$, ляво поддърво $t_l$ и дясно поддърво $t_r$. Ако $s_l$ е представянето в ``Scheme формат'' формат на $t_l$, а $s_r$ е представянето в ``Haskell формат'' на $t_r$, то низът ``Node $x$ $s_l$ $s_r$)'' е представянето на дървото $t$, където ``$x$'', ``$s_l$'' и ``$s_r$'' са съответните низове.
+
+\end{itemize}
+Например, дървото от Фигура \ref{fig:tree1} се представя по следния начин:
+
+\begin{verbatim}
+Node 10 
+     Node 20
+          Node 25 Empty Empty
+          Node 15 Empty Empty
+     Node 5 Empty Empty
+\end{verbatim}
+
+\end{mdframed}
+
 
 \subsection {Обхождания}
 \begin{enumerate}[resume]
