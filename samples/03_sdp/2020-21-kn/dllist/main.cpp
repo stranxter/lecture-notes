@@ -3,6 +3,7 @@
 
 
 #include <iostream>
+#include <vector>
 #include "dllist.h"
 
 TEST_CASE("Test Iterator")
