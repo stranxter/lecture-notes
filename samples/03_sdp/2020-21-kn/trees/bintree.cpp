@@ -146,65 +146,6 @@ typename BinTree<T>::node* BinTree<T>::locate (const char *trace) const
     return current;
 }
 
-template <class T>
-bool BinTree<T>::member (const T &x) const
-{
-    return memberhelp (x, root);
-}
-
-template <class T>
-bool BinTree<T>::memberhelp (const T &x, node *current) const
-{
-
-    return current != nullptr &&
-           (x == current->data ||
-            memberhelp (x, current->left) ||
-            memberhelp (x, current->right));
-
-    /*
-    if (current == nullptr)
-    {
-        return false;
-    }
-
-    if (current->data == x)
-    {
-        return true;
-    }
-
-    if (memberhelp (x, current->left))
-    {
-        return true;
-    }
-
-    if (memberhelp (x, current->right))
-    {
-        return true;
-    }
-
-    return false;
-    */
-}
-
-template <class T>
-T BinTree<T>::sum () const
-{
-    return sum(root);
-}
-
-template <class T>
-T BinTree<T>::sum (BinTree<T>::node *current) const
-{
-    if (current == nullptr)
-    {
-        return 0;
-    }
-
-    return current->data +
-           sum(current->left) +
-           sum(current->right);
-}
-
 
 template <class T>
 void BinTree<T>::toScheme (std::ostream &out)
@@ -332,32 +273,119 @@ typename BinTree<T>::node* BinTree<T>::readScheme (std::istream &in)
     return new BinTree<int>::node {data, left, right};
 }
 
+
 template <class T>
-void BinTree<T>::insertOrdered (const T &x)
+BinTree<T>::Position::Position (node *&_current):current(_current)
 {
-    insertOrdered (x,root);
+
 }
 
 template <class T>
-void BinTree<T>::insertOrdered (const T &x, node *&current)
+typename BinTree<T>::Position BinTree<T>::Position::left() const
 {
-    if (current == nullptr)
-    {
-        current = new node {x, nullptr, nullptr};
-        return;
-    }
+    assert (current != nullptr);
+    return Position(current->left);
+}
 
-    //-------------------------
+template <class T>
+typename BinTree<T>::Position BinTree<T>::Position::right() const
+{
+    assert (current != nullptr);
+    return Position(current->right);
+}
+template <class T>
+bool BinTree<T>::Position::empty() const
+{
+    return current == nullptr;
+}
 
-    if (x <= current->data)
+
+template <class T>
+void BinTree<T>::Position::set(const T &x)
+{
+    if (current != nullptr)
     {
-      insertOrdered (x, current->left);        
+        current->data = x;
     } else 
     {
-      insertOrdered (x, current->right);
+        current = new typename BinTree<T>::node {x,nullptr,nullptr};
     }
-
 }
+template <class T>
+T BinTree<T>::Position::get() const
+{
+    assert (current != nullptr);
+    return current->data;
+}
+
+template <class T>
+typename BinTree<T>::Position BinTree<T>::rootPosition()
+{
+    return BinTree<T>::Position(root);
+}
+
+
+template <class T>
+BinTree<T>::Iterator::Iterator(typename BinTree<T>::Position start, bool isEnd)
+{
+    if (!isEnd && !start.empty())
+    {
+        s.push (start);
+        while (!s.top().left().empty())
+        {
+            s.push (s.top().left());
+        }
+    }
+}
+
+template <class T>
+T BinTree<T>::Iterator::operator *()
+{
+    assert (!s.empty());
+    return s.top().get();
+}
+
+template <class T>
+typename BinTree<T>::Iterator& BinTree<T>::Iterator::operator ++()
+{
+
+    assert (!s.empty());
+
+    typename BinTree<T>::Position current = s.top();
+    s.pop();
+
+    if (!current.right().empty())
+    {
+        s.push(current.right());
+        while (!s.top().left().empty())
+        {
+            s.push(s.top().left());
+        }
+    } 
+
+    return *this;
+}
+
+template <class T>
+bool BinTree<T>::Iterator::operator != (const typename BinTree<T>::Iterator &other)
+{
+    if (s.empty()) return !other.s.empty();
+
+    return other.s.empty();
+}
+
+template <class T>
+typename BinTree<T>::Iterator BinTree<T>::begin()
+{
+    return BinTree<T>::Iterator(BinTree<T>::Position(root),false);
+}
+
+template <class T>
+typename BinTree<T>::Iterator BinTree<T>::end()
+{
+    return BinTree<T>::Iterator(BinTree<T>::Position(root),true);
+}
+
 
 
 #endif

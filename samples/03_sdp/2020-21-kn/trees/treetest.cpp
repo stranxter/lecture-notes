@@ -2,6 +2,7 @@
 #include "doctest.h"
 
 #include "bintree.cpp"
+#include "treefunctions.cpp"
 
 #include <fstream>
 #include <iostream>
@@ -10,20 +11,21 @@ TEST_CASE("Test Insertion")
 {
 
     BinTree<int> t;
+    
+    t.rootPosition().set(10);
+    t.rootPosition().left().set(20);
+    t.rootPosition().right().set(30);
+    t.rootPosition().left().left().set(40);
+    t.rootPosition().left().left().left().set(50);
+    t.rootPosition().left().left().right().set(60);
 
-    t.add(10,"");
-    t.add(20,"L");
-    t.add(30,"R");
-    t.add(40,"LL");
-    t.add(50,"LLL");
-    t.add(60,"LLR");
+    CHECK(t.rootPosition().get()==10);
+    CHECK(t.rootPosition().left().get()==20);
+    CHECK(t.rootPosition().right().get()==30);
+    CHECK(t.rootPosition().left().left().get()==40);
+    CHECK(t.rootPosition().left().left().left().get()==50);
+    CHECK(t.rootPosition().left().left().right().get()==60);
 
-    CHECK(t[""] == 10);    
-    CHECK(t["L"] == 20);    
-    CHECK(t["R"] == 30);    
-    CHECK(t["LL"] == 40);    
-    CHECK(t["LLL"] == 50);    
-    CHECK(t["LLR"] == 60);   
 
 }
 
@@ -32,59 +34,74 @@ TEST_CASE("Test Modification")
 
     BinTree<int> t;
 
-    t.add(10,"");
-    t.add(20,"L");
-    t.add(30,"R");
+    t.rootPosition().set(10);
+    t.rootPosition().left().set(20);
+    t.rootPosition().right().set(30);
 
-    CHECK(t[""] == 10);    
-    CHECK(t["L"] == 20);    
-    CHECK(t["R"] == 30);    
+    CHECK(t.rootPosition().get() == 10);
+    CHECK(t.rootPosition().left().get() == 20);
+    CHECK(t.rootPosition().right().get() == 30);
 
-    t.set(100,"");     
-    CHECK(t[""] == 100);    
-    CHECK(t["L"] == 20);    
-    CHECK(t["R"] == 30);    
 
-    t.set(200,"L");     
-    CHECK(t[""] == 100);    
-    CHECK(t["L"] == 200);    
-    CHECK(t["R"] == 30);    
+    t.rootPosition().set(100);
+    CHECK(t.rootPosition().get() == 100);
+    CHECK(t.rootPosition().left().get() == 20);
+    CHECK(t.rootPosition().right().get() == 30);
 
-    t.set(300,"R");     
-    CHECK(t[""] == 100);    
-    CHECK(t["L"] == 200);    
-    CHECK(t["R"] == 300);    
 
+    t.rootPosition().left().set(200);
+    CHECK(t.rootPosition().get() == 100);
+    CHECK(t.rootPosition().left().get() == 200);
+    CHECK(t.rootPosition().right().get() == 30);
+
+    t.rootPosition().right().set(300);
+    CHECK(t.rootPosition().get() == 100);
+    CHECK(t.rootPosition().left().get() == 200);
+    CHECK(t.rootPosition().right().get() == 300);
+
+    
 }
 
 TEST_CASE("Test Member")
-{
+{    
     BinTree<int> t;
+    
+    t.rootPosition().set(10);
+    t.rootPosition().left().set(20);
+    t.rootPosition().right().set(30);
+    t.rootPosition().left().left().set(40);
+    t.rootPosition().left().left().left().set(50);
+    t.rootPosition().left().left().right().set(60);
 
-    t.add(10,"");
-    t.add(20,"L");
-    t.add(30,"R");
-    t.add(40,"LL");
-    t.add(50,"LLL");
-    t.add(60,"LLR");
+    CHECK (member(10,t.rootPosition()));
+    CHECK (member(30,t.rootPosition()));
+    CHECK (member(50,t.rootPosition()));
+    CHECK (member(60,t.rootPosition()));
 
-    CHECK (t.member(10));
-    CHECK (t.member(30));
-    CHECK (t.member(50));
-    CHECK (t.member(60));
+    CHECK (!member(11,t.rootPosition()));
+    CHECK (!member(21,t.rootPosition()));
 
-    CHECK (!t.member(11));
-    CHECK (!t.member(21));
+    t.rootPosition().right().set (31);
+    CHECK (!member(30,t.rootPosition()));
+    CHECK (member(31,t.rootPosition()));
 
-    t.set (31, "R");
-    CHECK (!t.member(30));
-    CHECK (t.member(31));
+}
+
+TEST_CASE("Test Sum")
+{    
+    BinTree<int> t;
+    
+    t.rootPosition().set(10);
+    t.rootPosition().left().set(20);
+    t.rootPosition().right().set(30);
+
+    CHECK (sum<int>(t.rootPosition()) == 60);
 
 }
 
 TEST_CASE("Test Serialization/Deserialization")
 {
-    BinTree<int> t;
+   /* BinTree<int> t;
 
     t.add(10,"");
     t.add(20,"L");
@@ -111,42 +128,45 @@ TEST_CASE("Test Serialization/Deserialization")
 
     equal = t == t2;
     CHECK (!equal);
+*/
 
+}
+
+TEST_CASE("Test Ordered Insertion")
+{
+ 
+    BinTree<int> to;
+
+    insertOrdered (50,to.rootPosition());
+    insertOrdered (30,to.rootPosition());
+    insertOrdered (90,to.rootPosition());
+    insertOrdered (45,to.rootPosition());
+    insertOrdered (20,to.rootPosition());
+    insertOrdered (70,to.rootPosition());
+    insertOrdered (99,to.rootPosition());
+
+    std::ofstream bot ("bot.dot");
+
+    to.printdot (bot);
+ 
+    int lastElement = 0,
+        sum = 0;
+        
+    for (int x : to)
+    {
+        CHECK (lastElement <= x);
+        lastElement = x;
+        sum += x;
+    }
+
+    CHECK (sum == 404);
 
 }
 
 int main()
 {
 
-    BinTree<int> t;
-
-    t.add(10,"");
-    t.add(20,"L");
-    t.add(30,"R");
-    t.add(40,"LL");
-    t.add(50,"LLL");
-    t.add(60,"LLR");
-
-    t.printall(std::cout);
-
-    std::ofstream dot ("mytree.dot");
-    t.printdot (dot);
-
-
-    BinTree<int> to;
-
-    to.insertOrdered (50);
-    to.insertOrdered (30);
-    to.insertOrdered (90);
-    to.insertOrdered (45);
-    to.insertOrdered (20);
-    to.insertOrdered (70);
-    to.insertOrdered (99);
-
-    std::ofstream bot ("bot.dot");
-
-    to.printdot (bot);
-    
+ 
     // пускане на тестовете
     doctest::Context().run();
 

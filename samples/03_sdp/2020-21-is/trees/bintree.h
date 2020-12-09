@@ -14,7 +14,7 @@ class BinTree
     //Конструктор за копиране
     //Оператор за присвояване
     //Деструктор
-    
+
 
     private:
     struct node
@@ -82,7 +82,7 @@ class BinTree
     node* readSchemeRec (std::istream&);
 
     bool equaltrees (node*, node*);
-        void clear(node*);
+    void clear(node*);
 
     node *root;
 };

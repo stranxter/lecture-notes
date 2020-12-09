@@ -2,6 +2,7 @@
 #define __BINTREE_H
 
 #include <iostream>
+#include <stack>
 
 template<class T>
 class BinTree
@@ -20,16 +21,10 @@ class BinTree
     void printall (std::ostream&);
     void printdot (std::ostream&);
 
-    void insertOrdered (const T&);
-
     T operator[](const char*) const;
     void set (const T &x, const char *trace);
 
-    bool member (const T&) const;
-
     bool operator == (const BinTree<T>&) const;
-    
-    T sum () const;
 
     void toScheme (std::ostream&);
     void fromScheme (std::istream&);
@@ -43,6 +38,43 @@ class BinTree
         node *left, *right;
     };
 
+    public:
+
+    class Position
+    {
+        public:
+        Position (node*&);
+        Position left() const;
+        Position right() const;
+        bool empty() const;
+        void set(const T&);
+        T get() const;
+    
+        private:
+        node *&current;
+
+    };
+
+    Position rootPosition();
+
+
+    class Iterator
+    {
+        public:
+        Iterator(Position, bool);
+        T operator *();
+        Iterator& operator ++();
+        bool operator != (const Iterator&);
+        private:
+        std::stack<Position> s;
+    };
+
+    Iterator begin();
+    Iterator end();
+
+
+    private:
+
     node *root;
 
     void printhelp (std::ostream&, node*);
@@ -51,17 +83,12 @@ class BinTree
 
     node* locate (const char*) const;
 
-    bool memberhelp (const T&, node*) const;
-
-    T sum (node *) const;
-
     void deleteTree (node*);
 
     bool equalTrees (node*, node*) const;
 
     node* readScheme (std::istream&);
 
-    void insertOrdered (const T&, node*&);
 };
 
 
