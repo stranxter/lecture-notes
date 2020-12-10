@@ -1,8 +1,11 @@
 #include <iostream>
 #include <cassert>
+#include <fstream>
 
 #include "tokenizer.h"
 #include "expressions.h"
+#include "exptree.h"
+#include "visitorbase.h"
 
 int evaluateExpression (Tokenizer &input)
 {
@@ -38,5 +41,21 @@ int main()
 {
     Tokenizer tokenizer(std::cin);
 
-    std::cout << evaluateExpression (tokenizer) << std::endl;
+    //std::cout << evaluateExpression (tokenizer) << std::endl;
+
+    Expression *expr = createExpressionTree(tokenizer);
+
+    std::ofstream dot ("expr.dot");
+    ExprDotExport exporter (dot);
+
+    dot << "digraph G{\n";
+    expr->accept(&exporter);
+    dot << "}\n";
+
+    EpxrEvaluator evaluator;
+    expr->accept(&evaluator);
+
+    std::cout << "Val=" << evaluator.getResult() << std::endl;
+    
+
 }
