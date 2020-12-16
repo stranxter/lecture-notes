@@ -1,7 +1,9 @@
 \documentclass{beamer}
 \usepackage{relsize}
 \usepackage{color}
-
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning,calc,positioning,fit,chains}
+\usepackage{forest}
 \usepackage{listings}
 \usetheme{CambridgeUS}
 %\usepackage{beamerthemesplit} % new 
@@ -12,6 +14,7 @@
 \usepackage[utf8]{inputenc} 
 \usepackage{graphicx}
 \usepackage[english,bulgarian]{babel}
+\usepackage[framemethod=tikz]{mdframed}
 
 \lstset{language=C++,
                 basicstyle=\ttfamily,
@@ -20,6 +23,23 @@
                 commentstyle=\color{green}\ttfamily,
                 morecomment=[l][\color{magenta}]{\#}
 }
+
+
+\tikzset{
+block/.style = {draw, fill=white, rectangle,align = center},
+entry/.style = {draw, fill=black, circle, radius=3em},
+condition/.style = {draw, fill=white, diamond, align = center,node distance=3cm},
+fork/.style = {draw, fill=black, circle,inner sep=1pt},
+}
+\tikzset{
+block/.style = {draw, fill=white, rectangle,align = center},
+entry/.style = {draw, fill=black, circle, radius=3em},
+condition/.style = {draw, fill=white, diamond, align = center,node distance=3cm},
+fork/.style = {draw, fill=black, circle,inner sep=1pt},
+lnode/.style={rectangle split, rectangle split parts=3,draw, rectangle split horizontal},
+treenode/.style = {align=center, inner sep=0pt, text centered, circle, font=\sffamily\bfseries, draw=black, fill=white, text width=1.5em}
+}
+
 
 \newtheorem{mydef}{Дефиниция}[section]
 \newtheorem{lem}{Лема}[section]
@@ -210,6 +230,9 @@
 \centerline{Trie}
 \end{frame}
 
+\begin{frame}[fragile]
+  \frametitle{Трие}
+  
 
 \begin{columns}[t]
   \begin{column}{0.20\textwidth}
@@ -229,14 +252,32 @@
 
   \end{column}
   \begin{column}{0.80\textwidth}
-	\begin{center}
-	\includegraphics[width=5cm]{images/trie}  
-	\end{center}
-	\begin{center}
-	\relscale{0.3}
-	Източник: Wikipedia
-	\end{center}
-
+    \relscale{0.8}
+    \begin{figure}
+      \centering
+      \begin{forest}
+      for tree={align=center, inner sep=0pt, text centered, circle, font=\sffamily\bfseries, draw=black, fill=white, text width=1.5em }
+      [\_,
+        [\_, edge label={node[midway,left] {\small{t}}}
+          [7, edge label={node[midway,left] {\small{o}}}]
+          [\_, edge label={node[midway,left] {\small{e}}}
+            [3, edge label={node[midway,left] {\small{a}}}]
+            [4, edge label={node[midway,left] {\small{d}}}]
+            [12, edge label={node[midway,left] {\small{n}}}]
+          ]
+        ]
+        [15, edge label={node[midway,right] {\small{A}}}]
+        [11, edge label={node[midway,right] {\small{i}}}
+          [5, edge label={node[midway,left] {\small{n}}}
+            [9, edge label={node[midway,left] {\small{n}}}]
+          ]
+        ]
+      ]
+      %edge label={node[midway,left] {\small{Help!}}}
+      \end{forest}
+      \label{fig:trie1}
+      \end{figure}
+    
   \end{column}
 \end{columns}
 
@@ -246,6 +287,7 @@
 	\item Ползволява итериране по наредба на ключовете
 \end{itemize}	
 
+\end{frame}
 
 
 \begin{frame}
