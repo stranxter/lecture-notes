@@ -15,7 +15,7 @@ function respond(command:string):string
 function connectionListener(socket:net.Socket):void
 {
 	socket.write('Echo server. Welcome!\r\n');
-	socket.on ('data',function (data){socket.write(respond(data.toString()));});
+	socket.on ('data',function (data:Buffer){socket.write(respond(data.toString()));});
 
 }
 
