@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "outDir": "out",
+        "sourceMap": true,
+        "target": "es5",
+        "lib": [
+            "dom",
+            "es2015",
+            "es2016",
+            "es2017"
+        ]
+    }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "simple-server",
+  "version": "1.0.0",
+  "description": "Sample server for the WebTech course",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kalin Georgiev",
+  "license": "ISC",
+  "dependencies": {
+    "net": "^1.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.19"
+  }
+}
