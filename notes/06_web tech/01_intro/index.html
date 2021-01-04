@@ -14,13 +14,69 @@
 		<link rel="stylesheet" href="../reveal.js/plugin/highlight/monokai.css" id="highlight-theme">
 	</head>
 	<body>
+
+		<script src="//unpkg.com/graphre/dist/graphre.js"></script>
+		<script src="//unpkg.com/nomnoml/dist/nomnoml.js"></script>		
+
 		<div class="reveal">
 			<div class="slides">
 				<section>
-Основни елементи на Web приложенията. 
-Трислойна архитектура
+					Основни елементи на Web приложенията. 
+					Трислойна архитектура
 				</section>
-				<section>Slide 2</section>
+				<section>
+					<p>
+						Локално приложение</br>
+						(standalone, offline, native, etc.)
+					</p>
+					<canvas id="target-canvas-1"></canvas></br>						
+					<script>
+						var canvas = document.getElementById('target-canvas-1');
+						var source = '[<actor>Потребител] <-> [Приложение]';
+						nomnoml.draw(canvas, source);
+					</script>
+				</section>
+				<section>
+					<p>
+						Клиент/сървър архитектура</br>
+					</p>
+					<canvas id="target-canvas-2"></canvas></br>						
+					<script>
+						canvas = document.getElementById('target-canvas-2');
+						source = '[<actor>Потребител] <-> [Клиентско приложение];'+
+							     '[Клиентско приложение]<-> [Сървърно приложение;(услуга)]';
+						nomnoml.draw(canvas, source);
+					</script>
+				</section>
+				<section>
+					<p>
+						Трислойна архитектура</br>
+					</p>
+					<canvas id="target-canvas-3"></canvas></br>						
+					<script>
+						canvas = document.getElementById('target-canvas-3');
+						source = '#direction: right\n' +
+								 '[<actor>Потребител] <-> [Presentation Layer]\n'+
+	 							 '[Application Layer]<-> [Presentation Layer]\n' +
+							     '[Application Layer]<-> [Database Layer]';
+						nomnoml.draw(canvas, source);
+					</script>
+				</section>
+				<section>
+					<p>
+						Трислойна архитектура</br>
+						Web терминология
+					</p>
+					<canvas id="target-canvas-4"></canvas></br>						
+					<script>
+						canvas = document.getElementById('target-canvas-4');
+						source = '#direction: right\n' +
+								 '[<actor>Потребител] <-> [Web Browser]\n'+
+	 							 '[Application Server]<-> [Web Browser]\n' +
+							     '[Application Server]<-> [Database Server]';
+						nomnoml.draw(canvas, source);
+					</script>
+				</section>
 			</div>
 		</div>
 
