@@ -1,5 +1,4 @@
-import * as net from "net";
-
+import * as Net from "net";
 
 function respond(command:string):string
 {
@@ -12,13 +11,19 @@ function respond(command:string):string
 	}
 }
 
-function connectionListener(socket:net.Socket):void
+function connectionListener(socket:Net.Socket):void
 {
 	socket.write('Echo server. Welcome!\r\n');
-	socket.on ('data',function (data:Buffer){socket.write(respond(data.toString()));});
+
+	function incomingDataListener (data:Buffer):void
+	{
+		socket.write(respond(data.toString()));
+	}
+
+	socket.on ('data',incomingDataListener);
 
 }
 
-let server:net.Server = net.createServer(connectionListener);
+let server:Net.Server = Net.createServer(connectionListener);
 
 server.listen(1337, '127.0.0.1');
