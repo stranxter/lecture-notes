@@ -1,23 +1,29 @@
+import { SlowBuffer } from "buffer";
 import * as Net from "net";
 
 function respond(command:string):string
 {
-	if (command=='sayhello\r\n')
+	if (command=='sayhello\n')
 	{
-		return 'Hello!\r\n';
+		return 'Hello!\n';
 	} else
 	{
 		return 'Sorry. Don\'t know this command: ' + command;
 	}
 }
 
+let clientsCounter:number = 0;
+
 function connectionListener(socket:Net.Socket):void
 {
-	socket.write('Echo server. Welcome!\r\n');
+	socket.write('Echo server. Welcome!\n');
+	let clientNumber:number = clientsCounter;
+	clientsCounter++;
 
 	function incomingDataListener (data:Buffer):void
 	{
-		socket.write(respond(data.toString()));
+		
+		socket.write('[' + clientNumber + ']' + respond(data.toString()));
 	}
 
 	socket.on ('data',incomingDataListener);
