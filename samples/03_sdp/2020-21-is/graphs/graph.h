@@ -3,6 +3,7 @@
 
 #include <unordered_map>
 #include <map>
+#include <iostream>
 
 template <class VertexType, class CostType>
 class Graph
@@ -39,12 +40,13 @@ class Graph
     VertexIterator begin() const;
     VertexIterator end() const;
 
-
     private:
     
     std::unordered_map<VertexType,std::map<VertexType,CostType>> graph;
 
-
 };
+
+template <class VertexType, class CostType>
+void exportToDot(const Graph<VertexType,CostType> &g, std::ostream&);
 
 #endif

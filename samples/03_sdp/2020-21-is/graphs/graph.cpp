@@ -76,6 +76,23 @@ typename Graph<VertexType,CostType>::VertexIterator Graph<VertexType,CostType>::
     return typename Graph<VertexType,CostType>::VertexIterator(graph.end());
 }
 
+template <class VertexType, class CostType>
+void exportToDot(const Graph<VertexType,CostType> &g, std::ostream& out)
+{
+    out << "digraph G{\n";
+
+    for (VertexType v : g)
+    {
+        out << "\"" << v << "\";\n";
+        for (auto n : g.neighbors(v))
+        {
+            out << "\"" << v << "\"" << "->" << "\"" << n.first << "\"[label=\"" << n.second <<"\"];\n";
+        }
+    }
+
+    out<< "}";
+}
+
 
 
 #endif
