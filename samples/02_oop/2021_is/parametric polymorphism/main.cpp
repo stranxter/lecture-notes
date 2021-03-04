@@ -14,9 +14,10 @@ Array<T> inputArray()
     std::cout << "Please enter array size:";
     std::cin >> n;
 
-    Array<T> arr;
-    arr.buf = new T[n];
-    arr.size = n;
+    Array<T> arr{new T[n],n};
+    
+    //arr.buf = new T[n];
+    //arr.size = n;
 
     for (size_t i = 0; i < n; ++i)
     {
@@ -30,7 +31,7 @@ Array<T> inputArray()
 template <typename T>
 size_t findIndexMax (Array<T> arr) 
 {
-    size_t indexMax = 1;
+    size_t indexMax = 0;
     for (size_t i = 1; i < arr.size; ++i)
     {
         if (arr.buf[indexMax] < arr.buf[i])
