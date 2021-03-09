@@ -1,0 +1,26 @@
+<!-- Block vs inline outer display type-->
+<head>
+    <style>
+    span
+    {
+        border: 2px solid blue;
+        padding: .5em;
+    }
+    .block 
+    {
+        display: block;
+        /*padding-bottom: 100px;*/
+    }    
+    .inline
+    {
+        color:red;
+        /*padding-bottom: 100px;*/
+    }
+    p
+    {
+        padding-top: 5em;
+    }
+    </style>
+</head>
+
+<p>I am another paragraph. Some of the <span class="inline">words</span> have been wrapped in a <span class="block">span element.</span> The text continues</p>

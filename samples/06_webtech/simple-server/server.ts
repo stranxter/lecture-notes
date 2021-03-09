@@ -1,4 +1,3 @@
-import { SlowBuffer } from "buffer";
 import * as Net from "net";
 
 function respond(command:string):string
@@ -16,9 +15,12 @@ let clientsCounter:number = 0;
 
 function connectionListener(socket:Net.Socket):void
 {
+	clientsCounter++;
+	console.log("Connection established. Clients so far: " + clientsCounter);
+
+	
 	socket.write('Echo server. Welcome!\n');
 	let clientNumber:number = clientsCounter;
-	clientsCounter++;
 
 	function incomingDataListener (data:Buffer):void
 	{
@@ -26,10 +28,10 @@ function connectionListener(socket:Net.Socket):void
 		socket.write('[' + clientNumber + ']' + respond(data.toString()));
 	}
 
-	socket.on ('data',incomingDataListener);
+	socket.on('data',incomingDataListener);
 
 }
 
 let server:Net.Server = Net.createServer(connectionListener);
 
-server.listen(1337, '127.0.0.1');
+server.listen(1337);
