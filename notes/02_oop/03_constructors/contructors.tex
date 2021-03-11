@@ -117,7 +117,7 @@ double z = 'q';
 \begin{flushleft}
 \relscale{0.75}
 \begin{lstlisting}
-CharSet s1 = "hello";
+CharSet s1("hello");
 \end{lstlisting}  
 \end{flushleft}
 \pause
@@ -126,7 +126,7 @@ CharSet s1 = "hello";
 \begin{flushleft}
 \relscale{0.75}
 \begin{lstlisting}
-CharSet s2 = 'b';
+CharSet s2('b');
 \end{lstlisting}  
 \end{flushleft}
 \pause
@@ -136,7 +136,7 @@ CharSet s2 = 'b';
 \begin{flushleft}
 \relscale{0.75}
 \begin{lstlisting}
-CharSet s3 = 5;
+CharSet s3(5);
 \end{lstlisting}  
 \end{flushleft}
 
@@ -264,8 +264,8 @@ int main ()
 \relscale{0.75}
 \begin{lstlisting}
 
-  CharSet s1 = "hello";
-  CharSet s2 = s1; 
+  CharSet s1("hello");
+  CharSet s2(s1); 
 
   s2.print();
 
