@@ -5,16 +5,26 @@
 template <typename T>
 class Vector
 {
-    //...
     public:
-
     Vector();
     Vector(const Vector<T>& other);
 
-    void add(const T& data);
+    void push_back(const T& data);
+    
+    T getElement(size_t i) const;
+    void setElement(size_t i, const T& x);
+
+    T& operator[](size_t i); 
+    T operator[](size_t i) const; 
 
     Vector<T>& operator=(const Vector<T>& other);
 
+    template <typename E>
+    friend std::ostream& operator<<(std::ostream&,Vector<E>);
+
+    size_t length() const;
+
+    ~Vector();
 
     private:
     T *contents;

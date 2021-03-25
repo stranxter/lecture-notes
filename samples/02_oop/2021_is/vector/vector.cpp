@@ -1,5 +1,5 @@
 #include "vector.h"
-
+#include <cassert>
 
 template <typename T>
 Vector<T>::Vector()
@@ -9,7 +9,7 @@ Vector<T>::Vector()
 }
 
 template <typename T>
-void Vector<T>::add(const T& data)
+void Vector<T>::push_back(const T& data)
 {
     //contents: буфер в паметта, съдържащ size на брой числа,
     //вмъкнати до момента чрез add
@@ -75,4 +75,46 @@ std::ostream& operator<<(std::ostream &out, Vector<T> v)
     }
     out << "}";
     return out;
+}
+
+
+template <typename T>
+Vector<T>::~Vector()
+{   
+    //if (contents != nullptr)
+    delete []contents;
+}
+
+template <typename T>
+size_t Vector<T>::length() const
+{
+    return size;
+}
+
+template <typename T>
+T Vector<T>::getElement(size_t i) const
+{
+    assert(i >= 0 && i < size);
+    return contents[i];
+}
+
+template <typename T>
+void Vector<T>::setElement(size_t i, const T& x)
+{
+    assert(i >= 0 && i < size);
+    contents[i] = x;
+}
+
+template <typename T>
+T& Vector<T>::operator[](size_t i)
+{
+    assert(i >= 0 && i < size);
+    return contents[i];    
+}
+
+template <typename T>
+T Vector<T>::operator[](size_t i) const
+{
+    assert(i >= 0 && i < size);
+    return contents[i];    
 }
