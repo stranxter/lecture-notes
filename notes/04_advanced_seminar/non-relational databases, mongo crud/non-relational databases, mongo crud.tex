@@ -204,10 +204,10 @@ Books[1] = {id:1,
 Заявка
 
 \begin{lstlisting}
-db.Books.findOne({id:1}).authors.forEach (
-  function (author) {
-      print (author.name);
-  });
+  db.books
+    .findOne({id:1})
+    .authors
+    .map(a=>a.name);
 \end{lstlisting}
 
 
@@ -485,6 +485,7 @@ var books =
 
 
 \begin{lstlisting}
+
 var kalinsBooks =
   db.books.find(
     {authors:
@@ -520,6 +521,9 @@ Books[1] =
 \frametitle{Create}
 
 \begin{lstlisting}
+
+use kalindb;
+
 KalinsNewBook =
   {id:3,
    title:"Нещо умно",
@@ -595,10 +599,10 @@ db.books.remove({ id: 3 });
 \relscale{0.5}
 
 \begin{lstlisting}
-people[0] = {sex:"male", age:34};
-people[1] = {sex:"female", age:24};
-people[2] = {sex:"male", age:35};
-people[3] = {sex:"female", age:54};
+people[0] = {gender:"male", age:34};
+people[1] = {gender:"female", age:24};
+people[2] = {gender:"male", age:35};
+people[3] = {gender:"female", age:54};
 \end{lstlisting}
 
 
@@ -607,8 +611,9 @@ people[3] = {sex:"female", age:54};
 
 
 \begin{lstlisting}
-var map =
-  ()=>{emit (this.sex,this.age);}
+var mapFunction = function(){
+  emit(this.gender, this.age);
+ };
 \end{lstlisting}
 
 \vspace{0.2cm}
@@ -628,8 +633,9 @@ var map =
 \pause
 
 \begin{lstlisting}
-var reduce =
-   (key,values)=>Array.sum(val)/val.length;
+var reduceFunction = function(keyGender, valuesAges){
+  return Array.sum(valuesAges)/valuesAges.length;
+};
 \end{lstlisting}
 
 \vspace{0.2cm}
@@ -638,12 +644,12 @@ var reduce =
 
 \begin{lstlisting}
 reduce ("male", [34,35]) --> 34.5
-redece ("female", [24,54]) --> 39
+reduce ("female", [24,54]) --> 39
 \end{lstlisting}
 
 \pause
 \begin{lstlisting}
-db.people.mapReduce (map, reduce, { out: "mptest1" });
+db.people.mapReduce ( mapFunction, reduceFunction, { out: "mrexample" });
 \end{lstlisting}
 
 
