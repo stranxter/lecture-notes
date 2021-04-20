@@ -280,7 +280,7 @@ console.log("Hello World");
 \pause
 Видове
   \begin{itemize}
-\item key-value
+\item Key-value
 \item Графови бази данни
 \item Документни бази данни
 \end{itemize}
@@ -297,7 +297,7 @@ console.log("Hello World");
 \begin{itemize}
 \item СУБД не поддържат ограничения за цялостност (relational constraints)
 \item В частност външни ключове
-\item Проблем с изолацията
+\item Други ACID предизвикателства 
 \end{itemize}
 
 }
@@ -306,7 +306,7 @@ console.log("Hello World");
 \frametitle{Някои представители и приложения}
 
 \begin{itemize}
-  \item key-value (KV):Apache Cassandra, Dynamo, memcached, Redis, BigTable,
+  \item Key-value: Apache Cassandra, Dynamo, memcached, Redis, BigTable,
   \item Document: Apache CouchDB, MongoDB, SimpleDB
 \end{itemize}
 
@@ -341,16 +341,28 @@ console.log("Hello World");
 \begin{frame}[fragile]
 \frametitle{Collapsing relations}
 
+\relscale{0.8}
+
+
 \begin{verbatim}
-CUSTOMER (Customer_ID, Customer_Name, Address)
-CUSTOMER_ACCOUNT (Customer_ID, Account_Bal, Market_Segment)
+EMPLOYEE (Employee_ID, Last_Name, First_Name, Office_Location)
+WORKSTATIONS (WS_ID, WS_Type, Operating_System, Employee_ID)
 \end{verbatim}
 
-\vspace{\baselineskip}
 
 \begin{verbatim}
-CUSTOMER (Customer_ID, Customer_Name,
-          Address, Account_Bal, Market_Segment)
+EMPLOYEE(Employee_ID, Last_Name, First_Name, Office_Location, 
+         WS_ID, WS_Type, Operating_System)
+\end{verbatim}
+
+\begin{verbatim}
+{ Employee_ID:"12", 
+  Last_Name: "Georgiev", 
+  First_Name: "Kalin",
+  Office_Location: "Sofia",
+  Workstations:
+   [{WS_ID:70, WS_Type: "Desktop", Operating_System: "Ubuntu Linux"},
+    {WS_ID:71, WS_Type: "Laptop", Operating_System: "MacOS"}]}
 \end{verbatim}
 
 \end{frame}
