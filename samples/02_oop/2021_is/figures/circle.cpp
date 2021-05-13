@@ -1,8 +1,9 @@
 #include <cmath>
 
 #include "circle.h"
+#include "draw/sdlwrapper.h"
 
-Circle::Circle(double _r):Figure("Circle"),r(_r)
+Circle::Circle(double _x, double _y, double _r):Figure("Circle"),r(_r),x(_x), y(_y)
 {}
 
 double Circle::surface()
@@ -12,12 +13,22 @@ double Circle::surface()
 
 void Circle::saveToFile(std::ostream &out)
 {
-    out << "circle " << r << " ";
+    out << "circle " << x << " " << y << " " << r << " ";
 }
 
 void Circle::loadFromFile (std::istream &in)
 {
-    in >> r;
+    in >> x >> y >> r;
 }
 
 Circle::Circle():Figure("Circle"){}
+
+void Circle::draw()
+{
+    sdlw::drawFile(x-r/2,y-r/2,r*2,r*2,"draw/images/circle.png");
+}
+
+Figure* Circle::clone()
+{
+    return new Circle(*this);
+}

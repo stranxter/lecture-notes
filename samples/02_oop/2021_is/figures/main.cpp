@@ -5,90 +5,68 @@
 #include "figure.h"
 #include "rectangle.h"
 #include "circle.h"
+#include "group.h"
+
+#include "draw/sdlwrapper.h"
 
 
-double sumSurface(Figure* figures[], int n)
+Figure* createSomeFigure()
 {
-    double sum = 0;
-    for (int i = 0; i < n; ++i)
-    {
-        sum += figures[i]->surface();
-    }
-    return sum;
+
+    Rectangle r(10,10,100,50);
+    std::cout << r.surface() << std::endl;
+
+    Circle c(50,50,60);
+
+    Group g1;
+    g1.addFigure(&r);
+    g1.addFigure(&c);
+
+    Rectangle r2(230,50,10,70), r3(330,50,10,70);
+    Group *g2 = new Group();
+    g2->addFigure(&g1);
+    g2->addFigure(&r2);
+    g2->addFigure(&r3);
+
+    return g2;
+
 }
 
-void saveToStream(std::ostream& out, std::vector<Figure*> figures)
-{
-    out << figures.size() << " ";
-    
-    for (Figure *f : figures)
-    {
-        f->saveToFile(out);
-    }
-}
-
-
-Figure* figureFactory(std::string figureType)
-{
-    if (figureType == "circle")
-    {
-        return new Circle();
-
-    } else if (figureType == "rect")
-    {
-        return new Rectangle();
-
-    } else 
-    {
-        assert(false);
-        return nullptr;
-    }
-}
-
-std::vector<Figure*> loadFromStream(std::istream& in)
-{
-    
-    int nFigures;
-    in >> nFigures;
-    
-    std::vector<Figure*> result;
-    std::string figureType;
-
-    for (int i = 0; i < nFigures; ++i)
-    {
-        in >> figureType;
-        Figure* newFigure = figureFactory(figureType);
-        newFigure->loadFromFile(in);      
-        result.push_back(newFigure);
-
-    }
-    
-    return result;
-}
 
 int main()
 {
-    //Figure f("Abstract Figure");
-    //f.surface();
-    //std::cout << f.surface() << std::endl;
+   
 
-    Rectangle r(2,3);
-    std::cout << r.surface() << std::endl;
-
-    Circle c(2);
-
-    std::vector<Figure*> figures = {&r,&c};
+    Figure *f = createSomeFigure();
 
     std::ofstream out ("figures.fmi");
 
-    saveToStream(out, figures);
+    f->saveToFile(out);
     out.close();
 
+
+    sdlw::setColor(255,0,0);
+    f->draw();
+    sdlw::updateGraphics();
+    std::cin.get();
+
+    delete f;
+
+
+/*
     std::ifstream in ("figures.fmi");
     
     std::vector<Figure*> figures2 = loadFromStream(in);
 
     saveToStream(std::cout,figures2);
+x
+    sdlw::setColor(255,0,0);
+    sdlw::drawLine(0,0,100,100);
+    sdlw::drawFile(20,20,30,30,"draw/images/circle.png");
+    sdlw::drawText(40,40,40,"Hello world?!?");
+    sdlw::updateGraphics();
+    std::cin.get();
 
+*/
 
 }

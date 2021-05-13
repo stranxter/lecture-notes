@@ -3,3 +3,7 @@
 
 Figure::Figure(const std::string& _label):label(_label){}
 
+Figure::~Figure()
+{
+    
+}

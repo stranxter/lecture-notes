@@ -11,6 +11,16 @@ namespace sdlw
         //global variables for SLD window and renderer
         SDL_Window *SDLWin = 0;
         SDL_Renderer *SDLRen = 0;
+        /*memorize colors set by SetColor*/
+        Uint8 _r = 0, _g = 0, _b = 0;
+
+        void setColor (Uint8 r, Uint8 g, Uint8 b)
+        {
+            SDL_SetRenderDrawColor(SDLRen, r, g, b, SDL_ALPHA_OPAQUE);
+            _r = r;
+            _g = g;
+            _b = b;
+        } 
 
         class SdlInit
         {
@@ -60,11 +70,6 @@ namespace sdlw
             SDL_DestroyTexture(texture);
         }
 
-        void setColor (int r, int g, int b)
-        {
-            SDL_SetRenderDrawColor(SDLRen, r, g, b, SDL_ALPHA_OPAQUE);
-        } 
-
         void drawPixel(int x, int y)
         {
             SDL_RenderDrawPoint(SDLRen, x, y);
@@ -91,18 +96,17 @@ namespace sdlw
             SDL_RenderPresent(SDLRen);
         } 
 
-        void drawText ()
+        void drawText (int x, int y, int size, const char* text)
         {
-            TTF_Font *font = TTF_OpenFont("roboto.ttf", 25);
-            SDL_Color color = {255, 255, 255};
-            SDL_Surface *surface = TTF_RenderText_Solid(font,
-                                                        "Welcome to Gigi Labs", color);
+            TTF_Font *font = TTF_OpenFont("draw/images/roboto.ttf", size);
+            SDL_Color color = {_r, _g, _b};
+            SDL_Surface *surface = TTF_RenderText_Solid(font,text,color);
             SDL_Texture *texture = SDL_CreateTextureFromSurface(SDLRen, surface);
 
             int texW = 0;
             int texH = 0;
             SDL_QueryTexture(texture, NULL, NULL, &texW, &texH);
-            SDL_Rect dstrect = {0, 0, texW, texH};
+            SDL_Rect dstrect = {x, y, texW, texH};
 
             SDL_RenderCopy(SDLRen, texture, NULL, &dstrect);
             SDL_RenderPresent(SDLRen);
