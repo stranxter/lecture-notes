@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cassert>
-
 #include "llist.h"
 
 template <typename T>
@@ -112,4 +111,50 @@ typename LList<T>::box* LList<T>::locate(size_t i) const
         crr = crr->next;
     }
     return crr;
+}
+
+template <typename T>
+const T& LList<T>::operator[] (size_t i)
+{
+    return get(i);
+}
+
+
+template <typename T>
+LList<T>::Iterator::Iterator(box *init):current(init)
+{
+
+}
+
+template <typename T>
+bool LList<T>::Iterator::operator != (const typename LList<T>::Iterator& other) const
+{
+    return current != other.current;
+}
+
+template <typename T>
+typename LList<T>::Iterator& LList<T>::Iterator::operator ++()
+{
+    assert(current != nullptr);
+    current = current->next;
+    return *this;
+}
+
+template <typename T>
+T LList<T>::Iterator::operator *()
+{
+    assert(current != nullptr);
+    return current->data;
+}
+
+template <typename T>
+typename LList<T>::Iterator LList<T>::begin()
+{
+    return LList<T>::Iterator(first);
+}
+
+template <typename T>
+typename LList<T>::Iterator LList<T>::end()
+{
+    return LList<T>::Iterator(nullptr);
 }

@@ -5,6 +5,9 @@ class LList
 {
     public:
 
+    using value_type = T;
+
+
     LList();
 
     void push(const T&);
@@ -13,6 +16,7 @@ class LList
     bool insertAt(size_t i, const T&);
     bool pop();
     bool deleteAt(size_t i);
+    const T& operator[] (size_t i);
 
     private:
 
@@ -21,6 +25,30 @@ class LList
         T data;
         box *next;
     };
+
+
+    public:
+
+    class Iterator
+    {
+        public:
+        Iterator(box *init);
+
+        bool operator != (const Iterator& other) const;
+        Iterator& operator ++();
+        T operator *();
+
+        private:
+        box* current;     
+
+    };
+
+    Iterator begin();
+    Iterator end();
+
+
+    private:
+
 
     box* locate(size_t i) const;
 
