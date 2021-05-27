@@ -87,7 +87,7 @@ int main()
 
 
    std::cout << sum2(MappedVectorIt(v.begin(),f2), 
-                     MappedVectorIt(v.end(),f)) 
+                     MappedVectorIt(v.end(),f2)) 
              << std::endl;
 
 
@@ -97,28 +97,17 @@ int main()
    using MappedIstream = MappedIterator<std::istream_iterator<int>>;
 
     std::cout << sum2(MappedIstream(it,f2), 
-                      MappedIstream(std::istream_iterator<int>(),f)) 
+                      MappedIstream(std::istream_iterator<int>(),f2)) 
                 << std::endl;
 
 
     std::istream_iterator<int> cinIt(std::cin);
 
     std::cout << sum2(MappedIstream(cinIt,f2), 
-                      MappedIstream(std::istream_iterator<int>(),f)) 
+                      MappedIstream(std::istream_iterator<int>(),f2)) 
                 << std::endl;
 
 
 
-/*
-    LList<int> l;
-    l.push(0); //7
-    l.push(1); //6
-    l.push(2); //5
-    l.push(3); //4`
-    l.push(4); //3
-    l.push(5); //2 
-
-    std::cout << sum<int,LList<int>>(l) << std::endl;
-*/
     return 0;
 }
