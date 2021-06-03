@@ -25,7 +25,7 @@ Circle::Circle():Figure("Circle"){}
 
 void Circle::draw()
 {
-    sdlw::drawFile(x-r/2,y-r/2,r*2,r*2,"draw/images/circle.png");
+    sdlw::drawFillCircle(x-r/2,y-r/2,r);
 }
 
 Figure* Circle::clone()

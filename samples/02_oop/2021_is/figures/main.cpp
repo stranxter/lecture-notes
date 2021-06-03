@@ -16,11 +16,13 @@ Figure* createSomeFigure()
     Rectangle r(10,10,100,50);
     std::cout << r.surface() << std::endl;
 
-    Circle c(50,50,60);
+    Circle c(50,50,60),
+           c2(250,250,40);
 
     Group g1;
     g1.addFigure(&r);
     g1.addFigure(&c);
+    g1.addFigure(&c2);
 
     Rectangle r2(230,50,10,70), r3(330,50,10,70);
     Group *g2 = new Group();
