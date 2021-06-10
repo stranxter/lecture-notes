@@ -118,3 +118,10 @@ T Vector<T>::operator[](size_t i) const
     assert(i >= 0 && i < size);
     return contents[i];    
 }
+
+
+template <typename T>
+Vector<T>::operator int()
+{
+    return size;
+}

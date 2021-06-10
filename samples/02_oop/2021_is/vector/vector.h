@@ -17,6 +17,8 @@ class Vector
     T& operator[](size_t i); 
     T operator[](size_t i) const; 
 
+    operator int();
+
     Vector<T>& operator=(const Vector<T>& other);
 
     template <typename E>
