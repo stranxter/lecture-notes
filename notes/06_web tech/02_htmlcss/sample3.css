@@ -12,3 +12,8 @@ p
 {
     color:red;
 }
+
+.blue-para[important="yes"]
+{
+    font-style: italic;
+}

@@ -1,0 +1,13 @@
+*.log
+*.out
+*.gz
+*.vrb
+*.toc
+*.nav
+*.fls
+*.aux
+*.snm
+*.fdb_latexmk
+*DS_Store
+*.vscode
+*.o
