@@ -6,11 +6,13 @@
 #За Linux & Mac ползвайте приложения Makefile.
 #
 #И в двата случая е необходимо първо да
-#инсталирате SDL2.
+#инсталирате SDL2, SDL2_image и SDL2_ttf
 CXX = clang++
-SDL =  -L/usr/local/lib -lSDL2 -lSDL2_image -lSDL2_ttf
+#Изпползваййте sdl2-config --cflags, за да намерите къде е инсталиран
+#SDL2 и коригирайте тези два реда съответно
+SDL =  -L/opt/homebrew/lib -lSDL2 -lSDL2_image -lSDL2_ttf
+CXXFLAGS = -Wall -c -std=c++11 -I/opt/homebrew/include -D_THREAD_SAFE
 # If your compiler is a bit older you may need to change -std=c++11 to -std=c++0x
-CXXFLAGS = -Wall -c -std=c++11
 LDFLAGS = $(SDL)
 DEPS = $(wildcard *.h)
 OBJS = $(patsubst %.cpp,$(builddir)%.o,$(wildcard *.cpp))  $(patsubst draw/%.cpp,$(builddir)%.o,$(wildcard draw/*.cpp)) 
