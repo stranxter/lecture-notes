@@ -216,15 +216,15 @@
   Следните задачи да се решат с показаните на лекции графични примитиви, базирани на платформата за компютърни игри SDL2. За целта е необходимо да инсталирате SDL2 на компютъра си и да настроите средата си за програмиране така, че да свърже SLD2 с вашия проект. Информация за това можете да намерите на сайта на платформата.
 	Задачите можете да решите с помощта на всяка друга библиотека, поддържаща примитивите за рисуване на точки и отсечки.
 
-  Примерната програма от лекции използва файла \code{mygraphics.h}, който можете да намерите в \href{https://github.com/stranxter/lecture-notes/tree/master/samples/01_programming%20101/2018/pixels}{\underline{хранилището на курса}}:
+  Примерната програма от лекции използва модула \code{Sdlwrapper}, който можете да намерите в \href{https://github.com/stranxter/lecture-notes/tree/master/samples/01_programming%20101/2022-23-kn/pixels/draw}{\underline{хранилището на курса}}:
   \begin{mdframed}[hidealllines=true,backgroundcolor=lightgray!20]
   \relscale{0.8}
   \begin{verbatim}
-  #include "mygraphics.h"
+  #include "draw/sdlwrapper.h"
   \end{verbatim}
   \end{mdframed}
 
-  \code{Mygraphics} ``обвива'' библиотеката SLD2 и дефинира следните лесни за използване макроси:
+  \code{Sdlwrapper} ``обвива'' библиотеката SLD2 и дефинира следните лесни за използване примитиви:
 
   \begin{itemize}
     \item \code{setColor (r,g,b)}: Дефинира цвят на рисуване с компоненти $r,g,b\in[0,255]$. Например, белият цвят се задава с $(255,255,255)$, червеният с $(255,0,0)$ и т.н.

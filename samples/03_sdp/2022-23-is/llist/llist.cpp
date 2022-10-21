@@ -5,7 +5,7 @@
 template <typename T>
 LList<T>::LList()
 {
-    first = nullptr;
+
 }
 
 template <typename T>
@@ -104,6 +104,13 @@ LList<T>::~LList()
 }
 
 template <typename T>
+LList<T>::LList(const LList<T> &other)
+{
+    first=copy2(other.first);  
+}
+
+
+template <typename T>
 LList<T>& LList<T>::operator= (const LList<T> &other)
 {
     if (this != &other)
@@ -149,3 +156,48 @@ typename LList<T>::box* LList<T>::copy2(LList<T>::box* other)
 
     return new LList<T>::box {other->data,copy2(other->next)};
 }
+
+
+template <typename T>
+ListIterator<T> LList<T>::begin() const
+{
+    return ListIterator<T>(first);
+}
+template <typename T>
+ListIterator<T> LList<T>::end() const
+{
+    return ListIterator<T>(nullptr);
+}
+
+template <typename T>
+ListIterator<T>::ListIterator(typename LList<T>::box *first)
+{
+    current = first;
+}
+
+template <typename T>
+T ListIterator<T>::operator*()
+{
+    if (current==nullptr)
+    {
+        throw std::out_of_range("Iterator out of range.");
+    }
+    return current->data;
+}
+template <typename T>
+ListIterator<T>& ListIterator<T>::operator++()
+{
+    if (current==nullptr)
+    {
+        throw std::out_of_range("Iterator out of range.");
+    }
+    current=current->next;
+
+    return *this;
+}
+template <typename T>
+bool ListIterator<T>::operator!=(const ListIterator<T> &other) const
+{
+    return current != other.current;
+}
+    
