@@ -1048,6 +1048,48 @@ bool member (int A[], size_t n, int x)
 
 \end{enumerate}
 
+\subsection{Рекурсивен парсер}
+
+\begin{enumerate}[resume]
+\item Нека е дадена следната граматика на език за програмиране, зададена чрез BNF:
+
+\begin{flushleft}
+\relscale{0.7}
+\begin{lstlisting}[mathescape]
+<program> ::= (<statement>;)$^+$
+<statement> ::= <assignment> | <output>
+<assignment> ::= set <variable> = <expression>
+<output> ::= print <expression>
+<variable> ::= a..z
+<expression> ::= <variable> | <number> | <complex-expr>
+<complex-exp> ::= <expression>(<operator><expression>)$^*$ 
+<complex-exp> ::=(<expression>(<operator><expression>)$^+$)
+\end{lstlisting}
+\end{flushleft}
+
+Примерни програми на този език и съответния резултат на стандартния изход са:
+\begin{lstlisting}[mathescape]
+  print 10;
+\end{lstlisting}
+\emph{Изход:} 10
+
+\begin{lstlisting}[mathescape]
+  set x = 3*(1+2);
+  print x + 10;
+\end{lstlisting}
+\emph{Изход:} 20
+
+\begin{lstlisting}[mathescape]
+  set x = 10;
+  set y = 5*5;
+  print x*y*2;
+\end{lstlisting}
+\emph{Изход:} 500
+
+Да се напише интерпретатор за дадения език.
+
+\end{enumerate}
+
 \pagebreak
 
 \small{Някои от задачите по обектно-ориентирано програмиране са решени в сборника \cite{sbornik2}\textit{Магдалина Тодорова, Петър Армянов, Калин Николов, ``Сборник от задачи по програмиране на C++. Част втора. Обектно-ориентирано програмиране''}. За тези задачи е запазена номерацията в сборника.}
