@@ -80,6 +80,42 @@ TEST_CASE ("Eval test")
     
 }
 
+TEST_CASE ("RPN Test")
+{
+    
+    std::vector<std::pair<std::string,int>> tests =
+        {{"2 1 +", 3},
+         {"1 2 3 * +", 7},
+         {"7 3 1 2 + * *", 63},
+         {"1", 1}};
+
+    for (auto test : tests)
+    {
+        std::stringstream expr(test.first);
+        CHECK(evaluateRPN(expr)==test.second);
+    }
+    
+}
+
+TEST_CASE ("Shunting Yard Test")
+{
+
+    std::vector<std::pair<std::string,int>> tests =
+        {{"7*(3*(2+1))", 63},
+         {"1+2*3", 7},
+         {"1", 1},
+         {"((1+2)*(3+4))",21}};
+
+    for (auto test : tests)
+    {
+        std::stringstream expr(test.first);
+        std::stringstream RPNexpr(InfixToRPN(expr));
+        CHECK(evaluateRPN(RPNexpr)==test.second);
+    }
+
+}
+
+
 int main()
 {
        

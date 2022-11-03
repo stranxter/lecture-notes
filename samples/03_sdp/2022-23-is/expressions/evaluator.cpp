@@ -1,6 +1,10 @@
 #include "tokenizer.h"
+#include <stack>
+#include <iostream>
+#include <string>
+#include <sstream>
 
-int compute (char op, int left, int right)
+int apply(char op, int left, int right)
 {
     switch(op)
     {
@@ -11,6 +15,16 @@ int compute (char op, int left, int right)
     }
     throw("Unknown operator");
     return 0;
+}
+
+bool highPriority(char op)
+{
+    return op == '*' || op == '/';
+}
+
+bool parenthesis(char c)
+{
+    return c == '(' || c == ')';
 }
 
 int evaluate(std::istream &in)
@@ -46,8 +60,95 @@ int evaluate(std::istream &in)
     //                                                         ^
     //                                                         |
         in >> next; assert(next.type == Token::CLOSE_PAR);
-        return compute(op.symbol,left,right);
+        return apply(op.symbol,left,right);
 
     }
     throw "Syntax error.";
+}
+
+int evaluateRPN(std::istream &in)
+{
+    std::stack<int> s;
+
+    Token t;
+    in >> t;
+
+    while (in)
+    {
+        if (t.type == Token::NUMBER)
+        {
+            s.push(t.value);
+        } else 
+        {
+            assert(t.type == Token::OPERATOR);
+            assert(s.size() >= 2);
+            int right = s.top(); s.pop();
+            int left = s.top(); s.pop();
+            s.push(apply(t.symbol,left,right));
+        }
+        in >> t;
+    }
+    assert(s.size()==1);
+    return s.top();
+}
+
+std::string InfixToRPN(std::istream &in)
+{
+    std::stringstream output;
+    std::stack<char> operatorStack;
+
+    Token t;
+    in >> t;
+    while (in)
+    {
+        switch(t.type)
+        {
+            case Token::NUMBER:
+                output << t.value << " ";
+                break;
+            case Token::OPERATOR:
+                if (!highPriority(t.symbol))
+                {
+                    while (operatorStack.size() > 0 &&
+                           !parenthesis(operatorStack.top())     
+                    )/* &&
+                        проверка за приоритет, ако се налага*/
+                    {
+                        output << operatorStack.top() << " ";
+                        operatorStack.pop();
+                    }                    
+                    operatorStack.push(t.symbol);
+                } 
+                else 
+                {
+                    operatorStack.push(t.symbol);
+                }
+                break;
+            case Token::OPEN_PAR:
+                operatorStack.push(t.symbol);
+                break;
+            case Token::CLOSE_PAR:
+                while (operatorStack.size() > 0 &&
+                       !parenthesis(operatorStack.top()))
+                {
+                        output << operatorStack.top() << " ";
+                        operatorStack.pop();
+                }
+                assert(operatorStack.size() > 0);
+                operatorStack.pop();//вадим отварящата скоба
+                break;
+            default: assert(false);
+                
+        }
+        in >> t;
+    }
+
+    while (operatorStack.size()>0)
+    {
+        output << operatorStack.top() << " ";
+        operatorStack.pop();
+    }
+
+
+    return output.str();
 }

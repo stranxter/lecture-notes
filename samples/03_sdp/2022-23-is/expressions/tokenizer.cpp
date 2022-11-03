@@ -40,18 +40,19 @@ std::istream& operator>>(std::istream &in, Token &t)
         {
             case '+': case '-': case '/': case '*': 
                 t.type = Token::OPERATOR;
-                t.symbol = next;
                 break;
             case '(': 
                 t.type = Token::OPEN_PAR;
-                t.symbol = '(';
                 break;
             case ')': 
                 t.type = Token::CLOSE_PAR;
-                t.symbol = ')';
+                break;
+            case '!':
+                t.type = Token::EOE;
                 break;
             default: throw "Unrecognized token"; 
         }
+        t.symbol=next;
         t.value=0;
         in.get();
     }
