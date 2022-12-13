@@ -34,10 +34,17 @@ bool way(int sx, int sy, int gx, int gy)
 
     game[sx][sy] = 10;
 
-    return way(sx,sy+1,gx,gy) ||
-           way(sx+1,sy,gx,gy) ||
-           way(sx,sy-1,gx,gy) ||
-           way(sx-1,sy,gx,gy);
+    bool success =  way(sx,sy+1,gx,gy) ||
+                    way(sx+1,sy,gx,gy) ||
+                    way(sx,sy-1,gx,gy) ||
+                    way(sx-1,sy,gx,gy);
+    
+    if(success)
+    {
+        std::cout << "(" << sx << "," << sy << ")";
+    }
+    
+    return success;
     
 }
 
