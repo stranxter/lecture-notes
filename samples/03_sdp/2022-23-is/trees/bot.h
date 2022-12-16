@@ -1,5 +1,7 @@
 #pragma once
 #include <iostream>
+#include <functional>
+#include <vector>
 
 
 template <typename T>
@@ -21,12 +23,17 @@ class BinOrdTree
     void add(const T&);
     void addRec(const T&);
     void toDotty(std::ostream&);
+    
+    std::vector<T> leaves();
+    std::vector<T> level(int k);
 
     bool member(const T& x);
     size_t size();
     bool checkOrder();
 
     BinOrdTree<T>& operator=(const BinOrdTree<T>&);
+
+    void printLevels();
 
     ~BinOrdTree();
 
@@ -40,6 +47,9 @@ class BinOrdTree
 
     box* root;
 
+    std::vector<T> leaves(box*);
+    std::vector<T> level(box*, int k);
+
     void add(box *&,const T&);
     void toDotty(box *, std::ostream &out);
     void printDotStatements(box *, std::ostream &out);
@@ -48,7 +58,8 @@ class BinOrdTree
     void clear(box* root);
 
     bool member(box *,const T&);
-    size_t count(box *);
     bool checkOrder(box *, const Maybe<T>&, const Maybe<T>&);
+
+    size_t count(box *,std::function<bool(const T&)> f);
 
 };

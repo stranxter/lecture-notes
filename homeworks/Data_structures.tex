@@ -539,8 +539,69 @@ Node 10
   \item Да се дефинира функция \texttt{T getAt([подходящ тип]t, size\_t i)}, която намира $i$-тият пореден елемент на дървото при обхождане корен-ляво-дясно.
   
   Пример: За дървото от Фигура \ref{fig:tree1}, елементът с пореден номер 0 е 10, с номер 1 е 5, с номер 2 е 20 и т.н.
+
+
+  \begin{figure}
+    \centering
+    \begin{tikzpicture}[auto, node distance=2cm,>=latex']
+    \node [treenode] {a}
+      child {
+        node [treenode] {b}
+        child {
+          node [treenode] {c}  
+        }
+        child [missing]
+      }
+      child {
+        node [treenode] {d}
+        child {
+          node [treenode] {e}
+          child [missing]
+          child {
+            node [treenode] {f}
+          }
+        }
+        child {
+          node [treenode] {g}
+        }
+      };
+    \end{tikzpicture}
+    \caption{Дърво със символи}
+    \label{fig:chartree}
+    \end{figure}
+    
+    \begin{figure}
+      \centering
+      \begin{tikzpicture}[auto, node distance=2cm,>=latex']
+         \node [treenode] {d}
+          child {
+            node [treenode] {e}
+            child [missing]
+            child {
+              node [treenode] {f}
+            }
+          }
+          child {
+            node [treenode] {g}
+          };
+      \end{tikzpicture}
+      \caption{Поддърво на дървото от фигура \ref{fig:chartree}}
+      \label{fig:subtree}
+      \end{figure}
+
+  \item Нека е дадено двоично дърво, чиито възли съдържат символи (\texttt{char}). Да се намери:
   
+  \begin{enumerate}[label=\alph*)]
+    \item Най-дългия символен низ, който може да се получи при последователно конкатениране на символите от корена на дървото по пътя до някое негово листо. На дървото от фигура \ref{fig:chartree} това е низа ``adef''.
+    \item Най-дългия символен низ, който може да се получи при конкатениране на символите по възлите на някое ниво в дървото, отляво надясно. На дървото от фигура \ref{fig:chartree} това е низа ``ceg''.
+  \end{enumerate}
+
+  \item Нека са дадени две дървета $t_1$ и $t_2$. Да се напише функция \texttt{bool equals([подходящ тип] $t_1$,[подходящ тип] $t_2$)}, която проверява дали двете дървета са еднакви (използвайте интуитивна дифиниция за еднаквост на дървета).
+
+  \item Нека са дадени две дървета $t_1$ и $t_2$. Да се напише функция \texttt{bool subtree([подходящ тип] $t_1$,[подходящ тип] $t_2$)}, която проверява дали някое поддърво на $t_1$ е еднакво с $t_2$. Например условието и изпълнено за дърветата на фигури \ref{fig:chartree} и \ref{fig:subtree}.
+
 \end{enumerate}
+
 
 \subsection {Представяне на аритметичен израз чрез дърво}
 \begin{enumerate}[resume]
@@ -577,7 +638,7 @@ Node 10
     }
   };
 \end{tikzpicture}
-\caption{Дърво на израза \code{(1*(2+3))}.}
+\caption{Дърво на израза \code{(1*(2+3))}}
 \label{fig:treeexpr}
 \end{figure}
 
@@ -827,6 +888,32 @@ Node 10
 
 
   \emph{Упътване: предварително намерете вектора $(s_0,s_1,...,s_{h-1})$ и го използвайте за балансирането.}
+   
+  \begin{figure}
+    \centering
+    \relscale{0.75}
+    \begin{tikzpicture}[]
+
+      \node [treenode] {10}
+      child {
+        node [treenode] {5}
+        child {
+          node [treenode] {2}
+        }
+        child [missing]
+      }
+      child [missing];
+  
+
+    \end{tikzpicture}
+    \caption{``Орязана'' версия на дървот от фигура \ref{fig:treenodecount}}
+    \label{fig:pruned}
+    \end{figure}
+  
+  
+
+
+  \item Да се дефинира функция \texttt{prunetree}, която ``отсича'' (премахва) всички поддървета на дадено двоично дърво, чиито корени имат стойност, по-малки от стойността на някой от наследниците им. Дървото от фигура \ref{fig:pruned} се получава при ``орязване'' на дървото от фигура \ref{fig:treenodecount}.
 \end{enumerate}
 
 \pagebreak
@@ -900,7 +987,7 @@ void dottyPrint (std::ostream& out, TrieNode *root)
   ]
   %edge label={node[midway,left] {\small{Help!}}}
   \end{forest}
-  \caption{Trie, съдържащо думите ``to'', ``tea'', ``ted'', ``ten'', ``A'', ``i'', ``in'' и ``inn''.}
+  \caption{Trie, съдържащо думите ``to'', ``tea'', ``ted'', ``ten'', ``A'', ``i'', ``in'' и ``inn''}
   \label{fig:trie1}
   \end{figure}
 

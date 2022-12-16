@@ -1,4 +1,6 @@
 #include "bot.h"
+#include <iostream>
+#include <queue>
 
 
 template <typename T>
@@ -12,7 +14,7 @@ BinOrdTree<T>::BinOrdTree(const BinOrdTree<T> &other)
 }
 
 template <typename T>
-typename BinOrdTree<T>::box* copy(const typename BinOrdTree<T>::box *otherRoot)
+typename BinOrdTree<T>::box* BinOrdTree<T>::copy(const typename BinOrdTree<T>::box *otherRoot)
 {
     if(otherRoot == nullptr)
     {
@@ -44,7 +46,7 @@ BinOrdTree<T>& BinOrdTree<T>::operator=(const BinOrdTree<T> &other)
     if(this != &other)
     {
         clear(root);
-        root=copy(other->root);
+        root=copy(other.root);
     }
     return *this;
 }
@@ -150,33 +152,19 @@ void BinOrdTree<T>::add(typename BinOrdTree<T>::box *&current,const T &x)
 template <typename T>
 bool BinOrdTree<T>::member(const T& x)
 {
-
+    return member(root,x);     
 }
+
 template <typename T>
 size_t BinOrdTree<T>::size()
 {
-
+    return count(root,[](const T&)->bool{return true;});
 }
 
 template <typename T>
 bool BinOrdTree<T>::member(box *root,const T &x)
 {
-    return root != nullptr &&
-           (root->data == x ||
-            member(root->left,x) ||
-            member(root->right,x));
-}
-
-template <typename T>
-size_t BinOrdTree<T>::count(box *current)
-{
-    if(current == nullptr)
-    {
-        return 0;
-    }
-
-    return count(current->left) +
-           count(current->right) + 1;
+    return count(root,[x](const T& el)->bool{return el==x;}) > 0;
 }
 
 template <typename T>
@@ -205,6 +193,121 @@ bool BinOrdTree<T>::checkOrder(box *current,
 
     return checkOrder(current->left,min,Maybe<T>(current->data)) &&
            checkOrder(current->right,Maybe<T>(current->data),max);
+
+}
+
+template <typename T>
+size_t BinOrdTree<T>::count(box *current,
+                            std::function<bool(const T&)> p)
+{
+    if(current==nullptr)
+    {
+        return 0;
+    }
+
+    return p(current->data) +
+           count(current->left,p) +
+           count(current->right,p);
+}
+
+template <typename T>
+std::vector<T> operator+ (const std::vector<T>& t1,
+                          const std::vector<T>& t2)
+{
+    std::vector<T> result = t1;
+    result.insert(result.end(),t2.begin(),t2.end());
+    return result;
+}
+
+template <typename T>
+std::vector<T> BinOrdTree<T>::leaves(box *current)
+{   
+    std::vector<T> result;
+
+    if (current==nullptr)
+    {
+        return result;
+    }
+
+    if(current->left == nullptr && current->right == nullptr)
+    {
+        result.push_back(current->data);
+        return result;
+    }
+    return leaves(current->left) + leaves(current->right);
+}
+
+
+template <typename T>
+std::vector<T> BinOrdTree<T>::level(box *current, int k)
+{   
+    std::vector<T> result;
+
+    if (current==nullptr)
+    {
+        return result;
+    }
+
+    if(k == 0)
+    {
+        result.push_back(current->data);
+        return result;
+    }
+
+    return level(current->left,k-1) + level(current->right,k-1);
+}
+   
+template <typename T>
+std::vector<T> BinOrdTree<T>::leaves()
+{
+    return leaves(root);
+}
+
+template <typename T>
+std::vector<T> BinOrdTree<T>::level(int k)
+{
+    return level(root,k);
+}
+
+template <typename T>
+void BinOrdTree<T>::printLevels()
+{
+    std::queue<typename BinOrdTree<T>::box*> q;
+
+    if(root==nullptr)
+    {
+        return;
+    }
+    
+    q.push(root);
+    q.push(nullptr);
+    int lcount = 0;
+
+    while(q.size() > 0)
+    {
+        typename BinOrdTree<T>::box* current = q.front(); q.pop();
+
+        if(current != nullptr)
+        {
+
+            std::cout << lcount << ":" << current->data << " ";
+            
+            if (current->left)
+            {
+                q.push(current->left);    
+            }
+            if (current->right)
+            {
+                q.push(current->right);
+            }
+        }else{
+            ++lcount;
+            if(q.size() > 0)
+            {
+                q.push(nullptr);
+            }
+        }
+    }
 
 
 }
