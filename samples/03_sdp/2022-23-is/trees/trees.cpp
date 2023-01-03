@@ -39,7 +39,6 @@ bool setAt(box<T> *&root, const char *trace, const T& data)
         }
         return false;
     }
-
 }
 
 template <typename T>
