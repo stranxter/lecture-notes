@@ -27,5 +27,5 @@ class Trie
     };
     Node *root;
 
-    Node *lookup(const std::string&)
+    Node *lookup(const std::string&);
 };
