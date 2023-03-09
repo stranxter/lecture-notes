@@ -1,5 +1,12 @@
-<!-- Block vs inline outer display type-->
+<!-- 
+     Sample 4.
+     Block vs inline outer display type.
+     Padding vs. Margin.
+-->
+
 <head>
+    <title>Sample 4.</title>
+    <meta charset="UTF-8"/>
     <style>
     span
     {
@@ -19,11 +26,11 @@
     .inline
     {
         color:red;
-        width: 400px;/*
+        width: 400px;
+        padding: 10px;
         /*background-color: lightblue;
         width:100px;
         /*padding-bottom: 100px;*/
-        /*display:inline;*/
     }
     p
     {
@@ -33,3 +40,5 @@
 </head>
 
 <p>I am another paragraph. Some of the <span class="inline">words</span> have been wrapped in a <span class="block">span element.</span> The text continues</p>
+
+<p>Забележете как<span class="inline">inline елементите</span> не "счупват потока" на съдържанието. Това, което може да се модифицира в един inline елемент, е как се изобразяват глифовете в него и отношенията между съседните глифове. Например, можем да сменяме шрифт, цвят и хоризонтално отстояние. Обаче не можем да променим вертикалното отстояние. Ако се налага да изменим потока по някакъв начин, тогава използваме<span class="block">block елементи</span>.</p>

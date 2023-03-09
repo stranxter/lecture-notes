@@ -1,16 +1,27 @@
+/*
+    Sample 3.
+    Style sheet(s).
+    Selectors.
+    Declarations. 
+    Selectors: type, class, individual elements.
+
+*/
 p
 {
-  color:green;
+    color:green;
+    
 }
 
 .blue-para
 {
     color:blue;
+    
 }
 
 #special-para
 {
     color:red;
+    font-style: italic;
 }
 
 .blue-para[important="yes"]
