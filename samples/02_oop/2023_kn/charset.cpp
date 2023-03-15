@@ -64,6 +64,9 @@ class CharSet
 
 int main()
 {
+
+    CharSet *cs = new CharSet('z');
+
     CharSet a,b,c;
 
     std::cout << a.empty();
@@ -74,4 +77,9 @@ int main()
     c = a + b;
 
     CharSet d("Hello");
+    CharSet s('x');
+
+    delete cs;
+
+    cs = new CharSet('q');
 }

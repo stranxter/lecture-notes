@@ -1,42 +1,63 @@
+#define DOCTEST_CONFIG_IMPLEMENT
+#include "doctest.h"
+
 #include <iostream>
 #include <cstring>
 
-
 class String
 {
-    public:
 
+    private:
+
+    char *str;
+    void copy(const char *other)
+    {
+        this->str = new char [strlen(other)+1];
+        strcpy(str,other);
+
+    }
+
+    public:
 
     String()
     {
-
+        str = new char;
+        *str  = 0;
     }
 
-    char *str;
-
-    void init(const char *s)
+    String(const char *s)
     {
-        str = new char[strlen(s)+1];
+        str = new char [strlen(s)+1];
         strcpy(str,s);
     }
 
-    String operator+(String other)
+    String& operator+=(const String& other)
+    {
+        *this = *this + other;
+
+        return *this;
+    }
+
+
+    String operator+(const String& other) const
     {
 
-        String result;
-        result.str = new char[strlen(this->str)+strlen(other.str)+1];
+        char *r = new char[strlen(this->str)+strlen(other.str)+1];
+        
+        strcpy(r,this->str);
+        strcat(r,other.str);
 
-        strcpy(result.str,this->str);
-        strcat(result.str,other.str);
+        String result;
+        delete result.str;
+        result.str = r;
 
         return result;
     }
 
     //d = a * 4;
-    String operator*(unsigned int n)
+    String operator*(unsigned int n) 
     {
-        String result;
-        result.init(this->str);
+        String result(this->str);
 
         while (n > 1)
         {
@@ -47,10 +68,46 @@ class String
         return result;
     }
 
-    bool operator==(String other)
+    bool operator==(const String& other) const
     {
         return strcmp(this->str,other.str)==0;
     }
+
+    bool operator!=(const String &other) const
+    {
+        return !(*this == other);
+    }
+    String& operator=(const String &other) 
+    {
+        //s3 = (s1.operator=(s2));
+
+        //this->str     |     other.str
+        if (this != &other)
+        {
+            delete this->str;
+            copy(other.str);
+        }
+
+        return *this;
+    }
+
+    String(String &other)
+    {
+        copy(other.str);
+
+    }
+
+    ~String()
+    {
+        delete []str;
+    }
+
+    char& operator[](unsigned int i)    //UNSAFE TBD
+    {
+        return str[i];
+    }
+
+    friend std::ostream& operator<<(std::ostream& stream, String s);
 
 };
 
@@ -62,34 +119,58 @@ std::ostream& operator<<(std::ostream& stream, String s)
 }
 
 
+String makeSuperString()
+{
+    String result("Super String");
+
+    return result;
+}
+
+
+TEST_CASE("Test Concatenation")
+{   
+    String a("Hello"), b("World"), c("HelloWorld");
+
+    CHECK((a+b==c));
+
+    a = "123";
+    b = "456";
+
+    a += b;
+    CHECK(a=="123456");
+
+    a += a;
+    CHECK(a=="123456123456");
+}
+
+TEST_CASE("Test Copy Contructor")
+{
+    String a("Hello"),b(a);
+
+    CHECK(a==b);
+
+    a[0] = 'z';
+
+    CHECK(a!=b);
+}
+
+TEST_CASE("Test Assignment")
+{
+    String a("Hello"),b;
+
+    b = a;
+
+    CHECK(a==b);
+
+    a[0]='z';
+
+    CHECK(a!=b);
+}
+
 int main()
 {
 
-    String a("Hello"),b,c(" World!");
-
-    //String d = a + b + c;
-
-    String d;
-    
-    d = a + b + c; //a.operator+(b)
-
-    d = a * 4;
-
-    a = d;
-   
-    std::cout << a.str << std::endl;
-    std::cout << d.str << std::endl;
-
-    a.str[0] = '!';
-
-    std::cout << a.str << std::endl;
-    std::cout << d.str << std::endl;
-
-    (std::cout << d) << "!" << std::endl;
-
-    
-
-
+    doctest::Context().run();
 
 
 }
