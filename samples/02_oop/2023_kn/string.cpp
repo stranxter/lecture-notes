@@ -169,8 +169,5 @@ TEST_CASE("Test Assignment")
 
 int main()
 {
-
     doctest::Context().run();
-
-
 }
