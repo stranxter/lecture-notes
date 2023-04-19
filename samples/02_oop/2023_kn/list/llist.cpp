@@ -61,6 +61,7 @@ typename LList<T>::box* LList<T>::locateBox(size_t i) const
     {
         crr = crr->next;
     }
+    
     return crr;
 }
 
@@ -170,4 +171,59 @@ typename LList<T>::box* LList<T>::rec_copy(box* other_first) const
 
     return new typename LList<T>::box{other_first->data,rec_copy(other_first->next)};
 
+}
+
+template <typename T>
+typename LList<T>::const_iterator LList<T>::begin() const
+{
+    typename LList<T>::const_iterator fromFirst(first);
+    return fromFirst;
+}
+template <typename T>
+typename LList<T>::const_iterator LList<T>::end() const
+{
+    typename LList<T>::const_iterator toEnd(nullptr);
+    return toEnd;
+}
+
+
+template <typename T>
+typename LList<T>::iterator LList<T>::begin()
+{
+    typename LList<T>::iterator fromFirst(first);
+    return fromFirst;
+}
+
+template <typename T>
+typename LList<T>::iterator LList<T>::end()
+{
+    typename LList<T>::iterator toEnd(nullptr);
+    return toEnd;
+}
+
+template <typename T, typename ElemRef>
+LListIterator<T,ElemRef>::LListIterator(typename LList<T>::box *start):position(start)
+{
+}
+
+template <typename T, typename ElemRef>
+ElemRef LListIterator<T,ElemRef>::operator*()
+{
+    return position->data;
+}
+    
+template <typename T, typename ElemRef>
+LListIterator<T,ElemRef>& LListIterator<T,ElemRef>::operator++()
+{
+    if (position == nullptr)
+    {
+        throw "No more elements!";
+    }
+    position = position->next;
+    return *this;
+}
+template <typename T, typename ElemRef>
+bool LListIterator<T,ElemRef>::operator!= (const LListIterator &other)
+{
+    return position != other.position;
 }
