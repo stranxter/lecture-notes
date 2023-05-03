@@ -57,6 +57,16 @@ int main()
     sdlw::updateGraphics();
     std::cin.get();
 
+    g2->writeToStream(std::cout);
+    std::ofstream out ("figs.txt");
+    g2->writeToStream(out);
+    out.close();
+    std::ifstream in("figs.txt");
+    std::string label;
+    in >> label; //прочитаме водещото "Group"
+    g2->loadFromStream(in);
+    g2->writeToStream(std::cout);
+
     delete g2;
     delete c1;
     delete c2;

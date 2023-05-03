@@ -24,4 +24,6 @@ class Group : public Figure
 
     private:
     std::vector<Figure*> figures;
+
+    void clear();
 };

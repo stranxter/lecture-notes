@@ -51,15 +51,22 @@ void Group::writeToStream(std::ostream &os)
 }
 void Group::loadFromStream(std::istream &is)
 {
+    clear();
     is >> figures;
 }
 
-Group::~Group()
+void Group::clear()
 {
    for (Figure *f : figures)
    {
         delete f;
    }
+   figures.clear();
+}
+
+Group::~Group()
+{
+    clear();
 }
 
 Figure* Group::clone()
