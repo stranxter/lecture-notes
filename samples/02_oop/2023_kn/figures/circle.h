@@ -22,6 +22,11 @@ class Circle : public Figure
     
     Figure* clone();
 
+    Point2D getCenter() const;
+    double getRadius() const;
+
+    void accept(Visitor*);
+
     private:
     Point2D center;
     double r;

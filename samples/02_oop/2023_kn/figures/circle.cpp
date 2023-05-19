@@ -39,3 +39,17 @@ Figure* Circle::clone()
     return new Circle(*this);
 }
 
+Point2D Circle::getCenter() const
+{
+    return center;
+}
+
+double Circle::getRadius() const
+{
+    return r;
+}
+
+void Circle::accept(Visitor *v)
+{
+    v->visitCircle(this);
+}

@@ -78,3 +78,27 @@ Figure* Group::clone()
     }
     return newGroup;
 }
+
+const std::vector<Figure*>& Group::getMembers()
+{
+    return figures;
+}
+
+void Group::accept(Visitor *v)
+{
+    v->visitGroup(this);
+}
+Group::Group():position({0,0})
+{
+
+}
+
+void Group::setPosition(Point2D p)
+{
+    position = p;
+}
+
+Point2D Group::getPosition()
+{
+    return position;
+}

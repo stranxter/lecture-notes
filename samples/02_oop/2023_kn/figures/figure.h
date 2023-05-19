@@ -1,10 +1,17 @@
 #pragma once
 
 #include <iostream>
+#include "visitor.h"
+#include "utils.h"
+#include "draw/sdlwrapper.h"
 
 class Figure
 {
     public:
+
+    Figure();
+
+    virtual void accept(Visitor*) = 0;
 
     virtual double perimeter() = 0;
     virtual double surface() = 0;
@@ -20,12 +27,12 @@ class Figure
 
     virtual ~Figure() = default;
 
-};
+    void setColor(sdlw::color);
+    sdlw::color getColor();
 
-struct Point2D
-{
-    double x,y;
+    private:
+    sdlw::color col;
+
 };
 
 std::ostream& operator << (std::ostream &out, const std::vector<Figure*>& figures);
-

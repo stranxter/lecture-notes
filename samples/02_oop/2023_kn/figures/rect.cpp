@@ -39,3 +39,21 @@ Figure* Rect::clone()
 {
     return new Rect(*this);
 }
+
+Point2D Rect::getVertex() const
+{
+    return a;
+}
+double Rect::getW() const
+{
+    return w;
+}
+double Rect::getH() const
+{
+    return h;
+}
+
+void Rect::accept(Visitor *v)
+{
+    v->visitRect(this);
+}

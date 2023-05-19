@@ -8,7 +8,14 @@
 namespace sdlw
 {
 
-        void setColor(Uint8 r, Uint8 g, Uint8 b);
+        struct color
+        {
+            Uint8 r;
+            Uint8 g;
+            Uint8 b;
+        };
+
+        void setColor(color c);
         void drawPixel(int x, int y);
         void drawLine(int x1, int y1, int x2, int y2);
         void drawFillRect(int x, int y, int w, int h);

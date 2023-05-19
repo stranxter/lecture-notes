@@ -7,6 +7,11 @@ class Group : public Figure
 {
 
     public:
+    Group();
+
+    void setPosition(Point2D);
+    Point2D getPosition();
+
     void addElement(Figure *f);
 
     double perimeter();
@@ -22,8 +27,15 @@ class Group : public Figure
 
     ~Group();
 
+    const std::vector<Figure*>& getMembers();
+
+    void accept(Visitor*);
+
     private:
     std::vector<Figure*> figures;
+    Point2D position;
 
     void clear();
+
+
 };

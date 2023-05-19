@@ -14,6 +14,8 @@
 
 #include "ffactory.h"
 
+#include "painter.h"
+
 
 double sumPerim(std::vector<Figure*> figures)
 {
@@ -35,6 +37,11 @@ int main()
     Circle *c2 = new Circle({300,300},50);
     Rect *r2 = new Rect({400,400},100,50);
 
+    c1->setColor({255,255,255});
+    r1->setColor({0,0,255});
+    c2->setColor({0,255,255});
+    r2->setColor({255,255,0});
+
     Group g1;
 
     Group *g2 = new Group;
@@ -44,15 +51,24 @@ int main()
     g1.addElement(r1);
 
     g1.translate(0,250);
+    g1.setColor({50,50,50});
 
     g2->addElement(c2);
     g2->addElement(r2);
     g2->addElement(&g1);
 
-    sdlw::setColor(255,0,0);
+    sdlw::setColor({255,0,0});
     sdlw::drawLine(0,0,800,500);
 
-    g2->draw();
+    //g2->draw();
+    Painter *p = new Painter();
+    g2->accept(p);
+
+    //sdlw::updateGraphics();
+    //std::cin.get();
+
+    g2->setPosition({100,25});
+    g2->accept(p);
 
     sdlw::updateGraphics();
     std::cin.get();

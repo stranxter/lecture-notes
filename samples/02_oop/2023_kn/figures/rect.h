@@ -19,6 +19,12 @@ class Rect : public Figure
    
     Figure* clone();
 
+    Point2D getVertex() const;
+    double getW() const;
+    double getH() const;
+
+    void accept(Visitor*);
+
     private:
     Point2D a;
     double w;

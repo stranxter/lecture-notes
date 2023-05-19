@@ -14,12 +14,12 @@ namespace sdlw
         /*memorize colors set by SetColor*/
         Uint8 _r = 0, _g = 0, _b = 0;
 
-        void setColor (Uint8 r, Uint8 g, Uint8 b)
+        void setColor (color c)
         {
-            SDL_SetRenderDrawColor(SDLRen, r, g, b, SDL_ALPHA_OPAQUE);
-            _r = r;
-            _g = g;
-            _b = b;
+            SDL_SetRenderDrawColor(SDLRen, c.r, c.g, c.b, SDL_ALPHA_OPAQUE);
+            _r = c.r;
+            _g = c.g;
+            _b = c.b;
         } 
 
         class SdlInit
@@ -39,7 +39,7 @@ namespace sdlw
                 SDL_Event e;
         		SDL_PollEvent(&e);
 
-                setColor(0, 0, 0);
+                setColor({0, 0, 0});
                 SDL_RenderClear(SDLRen);
             }
             ~SdlInit() 
