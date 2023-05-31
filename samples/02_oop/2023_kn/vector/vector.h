@@ -22,9 +22,11 @@ class Vector
 
     Vector();
     Vector(const Vector<T> &other);
+    Vector(const Vector<T>&& other);
     Vector(const T arr[], size_t size);
 
     Vector<T>& operator=(const Vector<T> &other);
+    Vector<T>& operator=(Vector<T>&& other);
     bool operator==(const Vector<T> &other) const;
     bool operator!=(const Vector<T> &other) const;    
 
