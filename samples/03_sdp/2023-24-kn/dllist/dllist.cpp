@@ -5,9 +5,12 @@ DLList<T>::DLList():first(nullptr),last(nullptr),count(0)
 {
 }
 template <typename T>
-DLList<T>::DLList(const DLList&)
+DLList<T>::DLList(DLList &other):first(nullptr),last(nullptr),count(0)
 {
-    //!!!!!
+    for(T x:other)
+    {
+        push_back(x);
+    }
 }
 template <typename T>
 DLList<T>::DLList(const DLList&&)
@@ -78,6 +81,19 @@ bool DLList<T>::pop_front()
 }
 
 template<typename T>
+typename DLList<T>::const_iterator DLList<T>::begin() const
+{
+    typename DLList<T>::const_iterator it(first,&last);
+    return it;
+}
+template<typename T>
+typename DLList<T>::const_iterator DLList<T>::end() const
+{
+    typename DLList<T>::const_iterator it(nullptr,&last);
+    return it;
+}
+
+template<typename T>
 typename DLList<T>::iterator DLList<T>::begin()
 {
     typename DLList<T>::iterator it(first,&last);
@@ -90,9 +106,11 @@ typename DLList<T>::iterator DLList<T>::end()
     return it;
 }
 
+
 template<typename T>
-DLList<T>::iterator::iterator(typename DLList<T>::node *crr, 
-                              typename DLList<T>::node * const *plast)
+template<typename ElRef>
+DLList<T>::iterator_template<ElRef>::iterator_template(typename DLList<T>::node *crr, 
+                                                       typename DLList<T>::node * const *plast)
 {
     current = crr;
     ptr_to_last = plast;
@@ -100,18 +118,21 @@ DLList<T>::iterator::iterator(typename DLList<T>::node *crr,
 
 
 template<typename T>
-T DLList<T>::iterator::operator*() const
+template<typename ElRef>
+ElRef DLList<T>::iterator_template<ElRef>::operator*() const
 {
     return current->data;
 }
 template<typename T>
-typename DLList<T>::iterator& DLList<T>::iterator::operator++()
+template<typename ElRef>
+typename DLList<T>::template iterator_template<ElRef>& DLList<T>::iterator_template<ElRef>::operator++()
 {
     current = current->next;
     return *this;    
 }
 template<typename T>
-typename DLList<T>::iterator& DLList<T>::iterator::operator--()
+template<typename ElRef>
+typename DLList<T>::template iterator_template<ElRef>& DLList<T>::iterator_template<ElRef>::operator--()
 {
     if (current == nullptr)
     {
@@ -122,10 +143,12 @@ typename DLList<T>::iterator& DLList<T>::iterator::operator--()
     return *this;
 }
 template<typename T>
-bool DLList<T>::iterator::operator != (const typename DLList<T>::iterator& other)
+template<typename ElRef>
+bool DLList<T>::template iterator_template<ElRef>::operator != (const typename DLList<T>::iterator_template<ElRef>& other)
 {
     return current != other.current;
 }
+
 template<typename T>
 void DLList<T>::remove(const typename DLList<T>::iterator&)
 {

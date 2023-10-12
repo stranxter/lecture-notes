@@ -5,7 +5,7 @@ class DLList
 {
     public:
     DLList();
-    DLList(const DLList&);
+    DLList(DLList&);
     DLList(const DLList&&);
 
     void push_front(const T&);
@@ -22,24 +22,30 @@ class DLList
         node *next, *prev;
     };
 
-    public:
-    class iterator
+    template <typename ElRef>
+    class iterator_template
     {
         public:
 
-        iterator(node *ptr, node* const *);
+        iterator_template(node *ptr, node* const *);
 
-        T operator*() const;
-        iterator& operator++();
-        iterator& operator--();
-        bool operator != (const iterator&);
+        ElRef operator*() const;
+        iterator_template& operator++();
+        iterator_template& operator--();
+        bool operator != (const iterator_template&);
 
         private:
         node* current;
         node* const* ptr_to_last;
     };
 
+    public:
+    using iterator = iterator_template<T&>;
+    using const_iterator = iterator_template<T>;
+
+    const_iterator begin() const;
     iterator begin();
+    const_iterator end() const;
     iterator end();
     
     void remove(const iterator&);

@@ -5,6 +5,53 @@
 
 #include "dllist/dllist.cpp"
 
+
+template <typename Container>
+bool compare(const Container& c1, const Container& c2)
+{
+    typename Container::const_iterator i1 = c1.begin();
+    typename Container::const_iterator i2 = c2.begin();
+
+    while(i1 != c1.end() && 
+          i2 != c2.end() &&
+          *i1 == *i2)
+    {
+        ++i1;
+        ++i2;
+    }
+
+    return !(i1 != c1.end()) && !(i2 != c2.end());
+}
+
+TEST_CASE("Test Copying")
+{
+    std::vector<int> elems = {1,2,3,4,5};  
+    DLList<int> l;
+    for(int x: elems)
+    {
+        l.push_back(x);
+    }
+
+    DLList<int> l2(l),l3;
+    CHECK(compare(l,l2));
+
+    *l.begin() = 100;
+    CHECK(*l.begin() != *l2.begin());
+
+    l.pop_front();
+    CHECK(!compare(l,l2));
+
+    DLList<int> l4(l3);
+    CHECK(l4.size() == 0);
+    l4.push_front(10);
+    CHECK(*l4.begin() == 10);
+    CHECK(!(++l4.begin() != l4.end()));
+
+
+    
+}
+
+
 TEST_CASE("Test Head Removal")
 {
     std::vector<int> elems = {1,2,3,4,5};
@@ -40,6 +87,7 @@ int main()
     DLList<int>::iterator current = l.begin();
     while (current != l.end())
     {
+        *current = *current + 1;
         std::cout << *current << " ";
         ++current;
     }
