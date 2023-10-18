@@ -1,14 +1,16 @@
 #include <iostream>
 
-
 int main()
 {
 
-    int x = 0;
+    int x = 65;
+    char y = 65;
 
-    {
-        int x = 1;
-        std::cout << x;
-    }
+    std::cout << x << std::endl << y << std::endl;
+
+    double z = 10.15;
+
+    std::cout << z << std::endl << std::scientific << z << std::endl;
+
 
 }
