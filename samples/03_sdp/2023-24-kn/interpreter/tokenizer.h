@@ -7,7 +7,7 @@
 class Tokenizer
 {
     public:
-    enum Tokens{OPEN_PAR, NUMBER, OPERATOR, CLOSE_PAR};
+    enum Tokens{OPEN_PAR, NUMBER, OPERATOR, CLOSE_PAR, EOE};
 
     Tokenizer(std::istream s);
 
@@ -21,3 +21,4 @@ class Tokenizer
 };
 
 std::istream& operator>>(std::istream&, Tokenizer::Token&);
+std::ostream& operator<<(std::ostream&, const Tokenizer::Token&);
