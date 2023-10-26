@@ -40,6 +40,7 @@ bool way(int sx, int sy,
            way(sx,sy-1,ex,ey) ||
            way(sx-1,sy,ex,ey);
 
+    //lab[sy][sx] = 0; ???
 
 }
 
@@ -92,8 +93,6 @@ class PathFinder
     {
         Position current = trace.top(); trace.pop();
         
-        //std::cout << "Current =" << current << std::endl;
-
         lab[current.y][current.x] = 2;
     
         trace.push({current.x-1,current.y});
