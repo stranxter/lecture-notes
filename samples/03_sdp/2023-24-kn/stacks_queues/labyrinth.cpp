@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stack>
+#include <queue>
 
 const unsigned int labSize = 5;
 
@@ -7,7 +8,7 @@ int lab[labSize][labSize] = {0, 1, 0, 0, 0,
                              0, 1, 0, 0, 0,
                              0, 0, 0, 0, 0,
                              0, 1, 1, 1, 1,
-                             0, 0, 1, 0, 0};
+                             0, 0, 0, 0, 0};
 
 
 bool correct(int sx, int sy)
@@ -51,6 +52,14 @@ struct Position {
     {
         return x == p.x && y == p.y;
     }
+    bool operator!=(const Position& p)
+    {
+        return !(*this == p);
+    }    
+    Position left(){return {x-1,y};}
+    Position right(){return {x+1,y};}
+    Position up(){return {x,y-1};}
+    Position down(){return {x,y+1};}
 };
 
 bool correct(Position p)
@@ -118,11 +127,57 @@ class PathFinder
     Position goal;
 };
 
+const Position sentinel = {-5,-5};
+
+int waybfs (Position start,
+            Position goal)
+{
+    std::queue<Position> q;
+
+    Position current = start;
+    q.push(current);
+    //std::cout << current;
+    q.push(sentinel);
+    
+    int countLevel = 0;
+
+    while(!q.empty() && current != goal)
+    {
+        q.pop();
+
+        if(correct(current))
+        {
+            lab[current.y][current.x] = 2;
+            q.push(current.down());
+            q.push(current.right());
+            q.push(current.up());
+            q.push(current.left());
+        }
+
+        if(current == sentinel && q.size() > 1)
+        {
+            q.push(sentinel);
+            ++countLevel;
+        }
+
+        if(!q.empty())
+        {
+            current = q.front();     
+            //std::cout << current;
+        }
+
+    }
+
+    return (current == goal?countLevel:-1);
+}
+
+
 
 int main()
 {
    // std::cout << way(0,0,4,4);
 
+/*
     PathFinder finder(0,0,4,4);
 
     while(!finder.done())
@@ -131,7 +186,7 @@ int main()
         std::cin.get();
         finder.walk();
     }
-
-    std::cout << "path found=" << finder.found() << std::endl;
+*/
+    std::cout << "path found=" << waybfs({0,0},{4,0}) << std::endl;
 
 }
