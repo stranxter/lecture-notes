@@ -58,6 +58,101 @@ void Tree::insertHelp(int x, const char *trace, Tree::box *&current)
         throw "Invalid trace!";
     }
 }
+
+void Tree::insertBot(int x)
+{
+    insertBotHelp(x,root);
+}
+
+void Tree::insertBotHelp(int x, box *&current)
+{
+    if(current == nullptr)
+    {
+        current=new typename Tree::box{nullptr, nullptr, x};
+        return;
+    }
+
+    if(x < current->data)
+    {
+        insertBotHelp(x,current->left);
+    } else 
+    {
+        insertBotHelp(x,current->right);
+    }
+
+}
+
+bool Tree::memberBot(int x) const
+{
+    return memberBot(x,root);
+}
+
+
+bool Tree::memberBot(int x, box *current) const
+{
+    if(current == nullptr)
+    {
+        return false;
+    }
+
+    if(current->data == x)
+    {
+        return true;
+    }
+
+    if(x < current->data)
+    {
+        return memberBot(x,current->left);
+    }
+
+    return memberBot(x,current->right);
+}
+
+bool Tree::remove(int x)
+{
+    return removeHelp(x,root);
+}
+
+bool Tree::removeHelp(int x, box *&current)
+{
+    if(current == nullptr)
+    {   
+        return false;
+    }
+
+    if(current->data == x)
+    {  
+        if(current->right == nullptr)
+        {
+            typename Tree::box* left = current->left;
+            delete current;
+            current = left; //!!!!! референция към "родителския указаел"
+            return true;
+        } else
+        {
+            int replacememt = leftmost(current->right);
+            current->data = replacememt;
+            return removeHelp(replacememt,current->right);
+        }
+    }
+    if(x < current->data)
+    {
+        return removeHelp(x,current->left);
+    } else 
+    {
+        return removeHelp(x,current->right);
+    }
+}
+
+int Tree::leftmost(box* current)
+{
+    while(current->left != nullptr)
+    {
+        current = current->left;
+    }
+    return current->data;
+}
+
 void Tree::print()
 {
     print(root,0);

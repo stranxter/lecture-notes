@@ -5,6 +5,7 @@
 #include <sstream>
 
 #include "tree.h"
+#include "trie.cpp"
 
 
 TEST_CASE("Test Membership")
@@ -96,6 +97,110 @@ TEST_CASE("Test Serialization")
     CHECK(s.str() == s2.str());
 
 }
+
+TEST_CASE("Test Removal")
+{
+    Tree t;
+
+    t.insertBot(50);
+    t.insertBot(30);
+    t.insertBot(90);
+    t.insertBot(20);
+    t.insertBot(45);
+    t.insertBot(70);
+    t.insertBot(99);
+
+    std::vector<int> toRemove = {99, 30, 50};
+
+    for(int x:toRemove)
+    {
+        CHECK(t.member(x));
+        t.remove(x);
+        CHECK(!t.member(x));
+    }
+}
+
+TEST_CASE("Test Contains")
+{
+    Trie<int> t;
+
+    std::vector<std::pair<const char*,int>> keys = {{"",0},
+                                                    {"to",7}, 
+                                                    {"tea",3},
+                                                    {"ted",4},
+                                                    {"ten",12},
+                                                    {"A",15},
+                                                    {"i",11},
+                                                    {"in",5},
+                                                    {"inn",9}};
+    for(auto kv: keys)
+    {
+        CHECK(!t.contains(kv.first));
+        t[kv.first] = kv.second;
+        CHECK(t.contains(kv.first));
+    }
+
+    for(auto kv: keys)
+    {
+        CHECK(t.contains(kv.first));
+    }
+    
+}
+
+TEST_CASE("Test Remove")
+{
+    Trie<int> t;
+
+    std::vector<std::pair<const char*,int>> keys = {{"",0},
+                                                    {"to",7}, 
+                                                    {"tea",3},
+                                                    {"ted",4},
+                                                    {"ten",12},
+                                                    {"A",15},
+                                                    {"i",11},
+                                                    {"in",5},
+                                                    {"inn",9}};
+    for(auto kv: keys)
+    {
+        t[kv.first] = kv.second;
+    }
+
+    t.remove("in");
+    CHECK(!t.contains("in"));
+    CHECK(t.contains("inn"));
+
+    t.remove("inn");
+    CHECK(!t.contains("inn"));
+    CHECK(t.contains("i"));
+
+}
+
+
+
+TEST_CASE("Test Access")
+{
+    Trie<int> t;
+
+    std::vector<std::pair<const char*,int>> keys = {{"to",7}, 
+                                                    {"tea",3},
+                                                    {"ted",4},
+                                                    {"ten",12},
+                                                    {"A",15},
+                                                    {"i",11},
+                                                    {"in",5},
+                                                    {"inn",9}};
+    for(auto kv: keys)
+    {
+        t[kv.first] = kv.second;
+    }
+
+    for(auto kv: keys)
+    {
+        CHECK(t[kv.first] == kv.second);
+    }
+    
+}
+
 
 int main()
 {

@@ -18,12 +18,15 @@ class Tree
     //Tree& operator = (const Tree&);
 
     void insert(int x, const char *trace);
+    void insertBot(int x);
+    bool remove(int x);
     void print();
     void printDot();
 
     ~Tree();
 
     bool member(int x);
+    bool memberBot(int x) const;
     int sum();
 
     private:
@@ -70,10 +73,15 @@ class Tree
     private:
 
     void insertHelp(int x, const char *trace, box *&current);
+    void insertBotHelp(int x, box *&current);
+    bool removeHelp(int x, box *&current);
+    int leftmost(box* current);
+
     void print(box *&current, int depth);
     void printDot(box *&current);
 
     bool member(int x, box *current);
+    bool memberBot(int x, box *current) const;
     int sum(box *current);
 
     box *root;
