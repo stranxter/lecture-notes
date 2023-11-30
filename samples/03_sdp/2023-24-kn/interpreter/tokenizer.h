@@ -7,16 +7,24 @@
 class Tokenizer
 {
     public:
-    enum Tokens{OPEN_PAR, NUMBER, OPERATOR, CLOSE_PAR, EOE};
-
-    Tokenizer(std::istream s);
+    enum Tokens{OPEN_PAR, NUMBER, OPERATOR, CLOSE_PAR, EOE, IF, THEN, ELSE};
 
     struct Token
     {
         Tokens type;
         char symbol;
         int value;
+        std::string keyword;
     };
+
+    Tokenizer(std::istream&);
+
+    Token getNextToken();
+    Token peekToken();
+
+    private:
+    std::istream &in;
+    Token *peeked;
 
 };
 

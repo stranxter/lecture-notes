@@ -4,6 +4,8 @@
 #include "tokenizer.h"
 #include "receval.h"
 #include "rpneval.h"
+#include "exprtree.h"
+#include "treebuilder.h"
 
 #include <iostream>
 #include <fstream>
@@ -56,6 +58,24 @@ TEST_CASE("Test Recursive Evaluation")
     }
 }
 
+TEST_CASE("Test Tree Evaluation")
+{
+    std::vector<std::pair<std::string,int>> expressions = {{"((1+2)*3)",9},
+                                                           {"99",99},
+                                                           {"(3*(1+2))",9},
+                                                           {"(((1+1)*(2+3))+8)",18},
+                                                           {"(2 + if (1+2) then 3 else 4)",5}};    
+    for(std::pair<std::string,int> p : expressions)
+    {
+        std::stringstream e (p.first);
+
+        Expression* t = parseExpression(e);
+
+        CHECK(t->eval() == p.second);
+    }
+
+}
+
 TEST_CASE("Test RPN Evaluation")
 {
     std::vector<std::pair<std::string,int>> expressions = {{"8 1 + $",9},
@@ -89,7 +109,7 @@ TEST_CASE("Test Infix to RPN")
 int main()
 {
 
-    std::string e;
+/*    std::string e;
     std::cout << ">";
     std::getline(std::cin,e);
 
@@ -105,6 +125,14 @@ int main()
     }
 
     std::cout << "Bye!";
+*/
+
+    std::stringstream s("(2 + if (1+2) then 3 else 4)");
+    Expression *e = parseExpression(s);
+    std::ofstream expr ("expr.dot");
+    expr << "digraph G{\n";
+    e->toDotty(expr);
+    expr << "}";
 
     doctest::Context().run();
 }
