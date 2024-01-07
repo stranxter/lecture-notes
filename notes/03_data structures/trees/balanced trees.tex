@@ -76,15 +76,14 @@
       \includegraphics[width=4cm]{images/bal_tree_right_left_rotation_3}
  \end{column}
 \end{columns}
-  \centerline{Дясна-лява ротация[1]}
-  
-  \end{frame}
+  \centerline{Дясна-лява ротация[1]}  
+\end{frame}
   
 
-  \section{Ротации}
+  \section{AVL дървета}
 
   \begin{frame}
-    \centerline{Балансирани дървета}
+    \centerline{AVL дървета}
   \end{frame}
     
 
@@ -98,16 +97,116 @@
   
   \end{frame}
   
+\section{Цена на достъпа}
+
+\begin{frame}
+  \centerline{Цена на достъпа}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Ретро ли са лентите?}
+
+\begin{columns}
+  \begin{column}{0.5\textwidth}
+      \includegraphics[width=4.5cm]{images/tape_old_1}
+  \end{column}
+  \begin{column}{0.5\textwidth}
+       \includegraphics[width=4.5cm]{images/tape_old_2}
+  \end{column}
+\end{columns}
+\bigskip
+\centerline{Магнитна лента[2] и UNIVAC[3]}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Linear Tape-Open (LTO)}
+
+\begin{columns}
+  \begin{column}{0.3\textwidth}
+      \includegraphics[width=4cm]{images/lto_cartridge}
+  \end{column}
+  \begin{column}{0.7\textwidth}
+       \includegraphics[width=8.5cm]{images/lto_sales}
+  \end{column}
+\end{columns}
+\bigskip
+\centerline{LTO касетка[4] и LTO продажби[4]}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Tape Library}
+
+\begin{center}
+  \includegraphics[width=9cm]{images/fujifilm}
+  
+  \bigskip
+  Image credit: Fujifilm  
+\end{center}
+
+\end{frame}
+
+\section{B-дървета}
+
+\begin{frame}
+  \centerline{B-дървета}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{B-дърво}
+  \begin{center}
+    \includegraphics[width=6cm]{images/btree_example_1}
+    
+    \bigskip
+    Б-Дърво[5]
+  \end{center}
+
+  \relsize{-2}
+
+  \begin{columns}[t]
+    \begin{column}{0.5\textwidth}
+      B-дърво от ред $m$:
+      \begin{itemize}
+        \item Всеки връх има поне m наследника
+        \item Всеки вътрешен връх има поне [m/2] наследника
+        \item Коренът има поне два наследника, освен ако е листо
+        \item Всички листа са на еднакво ниво
+        \item Вътрешен връх с $k$ наследника има точно $k-1$ елемента
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{itemize}
+        \item Б-дървета
+      \end{itemize}
+      $h_{max} = \lfloor log_{[m/2]}\frac{n+1}{2} \rfloor$
+      \begin{itemize}
+        \item Идеално балансирано двоично дърво
+      \end{itemize}
+      $h=\lfloor log_2{n} \rfloor$
+
+    \end{column}
+  \end{columns}
+  
+
+\end{frame}
 
 \begin{frame}
 \centerline{Въпроси?}
 \end{frame}
 
-\begin{frame}[fragile]
+\begin{frame}[t]
   \frametitle{Източници}
   
  [1]\href{https://en.wikipedia.org/wiki/AVL_tree}{Wikipedia:AVL Tree}
-  
+ 
+ [2]\href{https://en.wikipedia.org/wiki/Magnetic_tape}{Wikipedia:Magnetic tape}
+
+ [3]\href{https://www.cs.auckland.ac.nz/historydisplays/FifthFloor/MagneticDataStorage/MagneticTapes.php}{The University of Aucland, Dept. of Computer Sceince}
+
+ [4]\href{https://en.wikipedia.org/wiki/Linear_Tape-Open}{Wikipedia:Linear Tape-Open}
+
+ [5]\href{https://faculty.cs.niu.edu/~freedman/340/340notes/340multi.htm}{Reva Freedman, Dept. of Computer Science, Northern Illinois University}
+ 
   \end{frame}
 
 
@@ -115,10 +214,10 @@
 \end{document}
 
 \begin{columns}[t]
-  \begin{column}{0.55\textwidth}
+  \begin{column}{0.5\textwidth}
 
   \end{column}
-  \begin{column}{0.45\textwidth}
+  \begin{column}{0.5\textwidth}
 
   \end{column}
 \end{columns}

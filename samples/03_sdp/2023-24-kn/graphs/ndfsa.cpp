@@ -66,8 +66,7 @@ NDFSA::Transitions const& NDFSA::transitions (State s) const
         return a.at(s);
     }
 
-    return emptyTransitions;
-     
+    return emptyTransitions;   
 }
     
 bool NDFSA::isFinal(State s) const
