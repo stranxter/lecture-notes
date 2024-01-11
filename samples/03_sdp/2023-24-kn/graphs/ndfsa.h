@@ -2,6 +2,7 @@
 #include <iostream>
 #include <map>
 #include <set>
+#include <string>
 
 class NDFSA
 {
@@ -15,6 +16,8 @@ class NDFSA
 
     void clear();
 
+    bool accept(const std::string&) const;
+
     void setStart(State);
     void setFinal(State);
     void addTransition(State,char,State);
@@ -23,8 +26,9 @@ class NDFSA
     States const& getStates() const;
     States const& getFinals() const;
     States const& getStarts() const;
-
     Transitions const& transitions (State) const;
+    States const& delta(State, char) const;
+    
     bool isFinal(State s) const;
 
     private:
@@ -34,6 +38,7 @@ class NDFSA
     States starts;
 
     static Transitions emptyTransitions;
+    static States emptyStates;
 
 };
 
