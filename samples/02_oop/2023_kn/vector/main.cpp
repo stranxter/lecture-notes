@@ -276,8 +276,44 @@ TEST_CASE("Test Reduce with Strings")
 
 }
 
+
+/*
+
+X -> Y -> Z
+
+- заделяме памет за елементите на result
+- заделяме памет за копие на елементите на result
+- освобождаме result
+- използваме копието
+  - заделяне на памет за крайния резултат
+  - копиране на копието
+- особождаваме копието
+
+*/
+
+Vector<int> makeSomeVector()
+{
+    Vector<int> result;
+    result += 1;
+    result += 2;
+    result += 3;
+
+    return result;
+}
+
 int main()
 {
+
+    Vector<int> v;
+    v += 1;
+    v += 2;
+    v += 3;
+
+    Vector<int> v2(v);
+
+    Vector<int> v3(makeSomeVector());
+
+    v2 = makeSomeVector();
 
     doctest::Context().run();
 }

@@ -1,0 +1,223 @@
+\documentclass{beamer}
+\usepackage{relsize}
+\usepackage{color}
+
+\usepackage{listings}
+\usetheme{CambridgeUS}
+%\usepackage{beamerthemesplit} % new
+\usepackage{enumitem}
+\usepackage{amsmath}                    % See geometry.pdf to learn the layout options.
+\usepackage{amsthm}                   % See geometry.pdf to learn the layout options. There
+\usepackage{amssymb}                    % See geometry.pdf to learn the layout options.
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage[english,bulgarian]{babel}
+
+\lstset{language=C++,
+                basicstyle=\ttfamily,
+                keywordstyle=\color{blue}\ttfamily,
+                stringstyle=\color{red}\ttfamily,
+                commentstyle=\color{green}\ttfamily,
+                morecomment=[l][\color{magenta}]{\#}
+}
+
+\newtheorem{mydef}{Дефиниция}[section]
+\newtheorem{lem}{Лема}[section]
+\newtheorem{thm}{Твърдение}[section]
+
+\DeclareMathOperator{\restrict}{\upharpoonright}
+
+\setitemize{label=\usebeamerfont*{itemize item}%
+  \usebeamercolor[fg]{itemize item}
+  \usebeamertemplate{itemize item}}
+
+\setbeamercovered{transparent}
+
+
+
+\begin{document}
+\title[Структури от данни и програмиране]{Балансирани дървета}
+\author{Калин Георгиев}
+\frame{\titlepage}
+
+\section{Ротации}
+
+\begin{frame}[fragile]
+\frametitle{Прости ротации}
+
+\begin{itemize}
+  \item Балансиращ фактор, $bf(r)=h(r.right)-h(r.left)$
+\end{itemize}
+
+\begin{columns}[t]
+  \begin{column}{0.5\textwidth}
+      \includegraphics[width=4.5cm]{images/bal_tree_left_rotation_1}
+  \end{column}
+  \begin{column}{0.5\textwidth}
+       \includegraphics[width=4.5cm]{images/bal_tree_left_rotation_2}
+  \end{column}
+\end{columns}
+\centerline{Лява ротация[1]}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Двукратни ротации}
+    
+  \begin{columns}[t]
+    \begin{column}{0.33\textwidth}
+        \includegraphics[width=4cm]{images/bal_tree_right_left_rotation_1}
+    \end{column}
+    \begin{column}{0.33\textwidth}
+         \includegraphics[width=4cm]{images/bal_tree_right_left_rotation_2}
+    \end{column}
+    \begin{column}{0.33\textwidth}
+      \includegraphics[width=4cm]{images/bal_tree_right_left_rotation_3}
+ \end{column}
+\end{columns}
+  \centerline{Дясна-лява ротация[1]}  
+\end{frame}
+  
+
+  \section{AVL дървета}
+
+  \begin{frame}
+    \centerline{AVL дървета}
+  \end{frame}
+    
+
+  \begin{frame}[fragile]
+  \frametitle{AVL дървета}
+  
+  \begin{center}
+    \includegraphics[width=8cm]{images/bal_tree_avl}  
+  \end{center}
+  \centerline{AVL дърво[1]}
+  
+  \end{frame}
+  
+\section{Цена на достъпа}
+
+\begin{frame}
+  \centerline{Цена на достъпа}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Ретро ли са лентите?}
+
+\begin{columns}
+  \begin{column}{0.5\textwidth}
+      \includegraphics[width=4.5cm]{images/tape_old_1}
+  \end{column}
+  \begin{column}{0.5\textwidth}
+       \includegraphics[width=4.5cm]{images/tape_old_2}
+  \end{column}
+\end{columns}
+\bigskip
+\centerline{Магнитна лента[2] и UNIVAC[3]}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Linear Tape-Open (LTO)}
+
+\begin{columns}
+  \begin{column}{0.3\textwidth}
+      \includegraphics[width=4cm]{images/lto_cartridge}
+  \end{column}
+  \begin{column}{0.7\textwidth}
+       \includegraphics[width=8.5cm]{images/lto_sales}
+  \end{column}
+\end{columns}
+\bigskip
+\centerline{LTO касетка[4] и LTO продажби[4]}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Tape Library}
+
+\begin{center}
+  \includegraphics[width=9cm]{images/fujifilm}
+  
+  \bigskip
+  Image credit: Fujifilm  
+\end{center}
+
+\end{frame}
+
+\section{B-дървета}
+
+\begin{frame}
+  \centerline{B-дървета}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{B-дърво}
+  \begin{center}
+    \includegraphics[width=6cm]{images/btree_example_1}
+    
+    \bigskip
+    Б-Дърво[5]
+  \end{center}
+
+  \relsize{-2}
+
+  \begin{columns}[t]
+    \begin{column}{0.5\textwidth}
+      B-дърво от ред $m$:
+      \begin{itemize}
+        \item Всеки връх има най-много m наследника
+        \item Всеки вътрешен връх има поне [m/2] наследника
+        \item Коренът има поне два наследника, освен ако е листо
+        \item Всички листа са на еднакво ниво
+        \item Вътрешен връх с $k$ наследника има точно $k-1$ елемента
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{itemize}
+        \item Б-дървета
+      \end{itemize}
+      $h_{max} = \lfloor log_{[m/2]}\frac{n+1}{2} \rfloor$
+      \begin{itemize}
+        \item Идеално балансирано двоично дърво
+      \end{itemize}
+      $h=\lfloor log_2{n} \rfloor$
+
+    \end{column}
+  \end{columns}
+  
+
+\end{frame}
+
+\begin{frame}
+\centerline{Въпроси?}
+\end{frame}
+
+\begin{frame}[t]
+  \frametitle{Източници}
+  
+ [1]\href{https://en.wikipedia.org/wiki/AVL_tree}{Wikipedia:AVL Tree}
+ 
+ [2]\href{https://en.wikipedia.org/wiki/Magnetic_tape}{Wikipedia:Magnetic tape}
+
+ [3]\href{https://www.cs.auckland.ac.nz/historydisplays/FifthFloor/MagneticDataStorage/MagneticTapes.php}{The University of Aucland, Dept. of Computer Sceince}
+
+ [4]\href{https://en.wikipedia.org/wiki/Linear_Tape-Open}{Wikipedia:Linear Tape-Open}
+
+ [5]\href{https://faculty.cs.niu.edu/~freedman/340/340notes/340multi.htm}{Reva Freedman, Dept. of Computer Science, Northern Illinois University}
+ 
+  \end{frame}
+
+
+
+\end{document}
+
+\begin{columns}[t]
+  \begin{column}{0.5\textwidth}
+
+  \end{column}
+  \begin{column}{0.5\textwidth}
+
+  \end{column}
+\end{columns}

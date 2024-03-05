@@ -22,6 +22,13 @@ Vector<T>::Vector(const Vector<T> &other)
     copy(other.elements,other.s);
 }
 template <typename T>
+Vector<T>::Vector(const Vector<T>&& other)
+{
+    elements = other.elements;
+    other.elements = nullptr;
+}
+
+template <typename T>
 Vector<T>::Vector(const T arr[], size_t size)
 {
     copy(arr,size);
@@ -32,13 +39,19 @@ Vector<T>& Vector<T>::operator=(const Vector<T> &other)
 {
     if(this != &other)
     {
-        if (elements != nullptr)
-        {
-            delete []elements;
-        }
+        delete []elements;
         copy(other.elements,other.s);
     }
     return *this;
+}
+
+template <typename T>
+Vector<T>&  Vector<T>::operator=(Vector<T>&& other)
+{
+    delete []elements;
+    elements = other.elements;
+    other.elements = nullptr;
+    
 }
 
 template <typename T>

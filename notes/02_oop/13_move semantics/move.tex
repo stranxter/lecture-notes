@@ -1,0 +1,156 @@
+\documentclass{beamer}
+\usepackage{relsize}
+\usepackage{color}
+
+\usepackage{listings}
+\usetheme{CambridgeUS}
+%\usepackage{beamerthemesplit} % new 
+\usepackage{enumitem}
+\usepackage{amsmath}                    % See geometry.pdf to learn the layout options. 
+\usepackage{amsthm}                   % See geometry.pdf to learn the layout options. There 
+\usepackage{amssymb}                    % See geometry.pdf to learn the layout options. 
+\usepackage[utf8]{inputenc} 
+\usepackage{graphicx}
+\usepackage[english,bulgarian]{babel}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{caption}
+\usepackage{tikz}
+\usepackage{forest}
+\usetikzlibrary{shapes,arrows,positioning,calc,chains}
+
+\lstset{language=C++,
+                basicstyle=\ttfamily,
+                keywordstyle=\color{blue}\ttfamily,
+                stringstyle=\color{red}\ttfamily,
+                commentstyle=\color{green}\ttfamily,
+                morecomment=[l][\color{magenta}]{\#}
+}
+
+\newtheorem{mydef}{Дефиниция}[section]
+\newtheorem{lem}{Лема}[section]
+\newtheorem{thm}{Твърдение}[section]
+
+\DeclareMathOperator{\restrict}{\upharpoonright}
+
+\setitemize{label=\usebeamerfont*{itemize item}%
+  \usebeamercolor[fg]{itemize item}
+  \usebeamertemplate{itemize item}}
+
+\setbeamercovered{transparent}
+
+\captionsetup{font=footnotesize}
+
+\lstset{breaklines=true}
+\tikzset{
+block/.style = {draw, fill=white, rectangle,align = center},
+entry/.style = {draw, fill=black, circle, radius=3em},
+condition/.style = {draw, fill=white, diamond, align = center,node distance=3cm},
+fork/.style = {draw, fill=black, circle,inner sep=1pt},
+lnode/.style={rectangle split, rectangle split parts=3,draw, rectangle split horizontal},
+treenode/.style = {align=center, inner sep=0pt, text centered, circle, font=\sffamily\bfseries, draw=black, fill=white, text width=1.5em}
+}
+
+
+\begin{document}
+\title[Обектно-ориентирано програмиране]{Move семантика} 
+\author{Калин Георгиев} 
+\frame{\titlepage} 
+
+
+\section{Преместване вместо копиране} 
+
+\begin{frame}[fragile]
+  \frametitle{Кога копирането е проблем?}
+  \begin{itemize}
+    \item \verb#String s(makeSomeString());#
+    \item \verb#s=makeSomeString();#
+  \end{itemize}
+
+  \bigskip
+  И това, но то се оптимизира:
+  \bigskip
+
+  \begin{itemize}
+    \item \verb#return String("hello");#
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Lvalues и Rvalues}
+
+  \begin{itemize}
+    \item Кои са възможните lvalues: \texttt{x}, \texttt{a[i]}, \texttt{*p}, \texttt{f(x)}, ...
+    \item Нещо, на което можеш да му взешем адреса. Локатор
+    \item Кои са възможните rvalues: \texttt{42}, \texttt{f(x)}
+    \item Нещо, което е временен обект
+  \end{itemize}
+
+  \bigskip
+
+  Как да ``засечем'' rvalue? Rvalue референции: \verb#String&& s#
+
+    
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Как се прави \texttt{move} конструктор и оператор =?}
+
+\begin{lstlisting}[basicstyle=\small]
+  String::String(String&& other)
+  {
+    str = other.str;
+    other.str = nullptr;
+  }
+
+  String& operator=(String&& other)
+  {
+    delete str;
+    str = other.str;
+    other.str = nullptr;
+  }
+\end{lstlisting}  
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{\texttt{std::move}: Да форсираме преместване}
+
+\begin{lstlisting}[basicstyle=\small]
+  class Person
+  {
+    String name;
+    //...
+    Person::Person(Person&& other)
+                    :name(other.name){}
+  };
+\end{lstlisting}  
+
+Vs.
+
+\begin{lstlisting}[basicstyle=\small]
+    Person::Person(Person&& other)
+                    :name(std::move(other.name)){}
+\end{lstlisting}  
+
+\end{frame}
+
+
+\begin{frame}
+\centerline{Благодаря за вниманието!}
+\end{frame}
+
+
+\end{document}
+
+\begin{columns}[t]
+  \begin{column}{0.55\textwidth}
+
+  \end{column}
+  \begin{column}{0.45\textwidth}
+
+  \end{column}
+\end{columns}
+
+

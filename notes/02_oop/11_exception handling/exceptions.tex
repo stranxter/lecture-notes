@@ -113,11 +113,27 @@ treenode/.style = {align=center, inner sep=0pt, text centered, circle, font=\sff
   \begin{itemize}
     \item \texttt{Stack unwinding}
     \item Изключения в конструктори
+    \begin{itemize}
+        \item RAII: Притежанието на ресурс е инварианта на класа
+    \end{itemize}    
     \item Изключения в деструктори
-    \item \texttt{RAII}
+    \begin{itemize}
+      \item Изключение по време на обработка на изключение
+      \item Прехвърляне на отговорността на потребителя (напр. std::fstream::close)
+    \end{itemize}
   \end{itemize}
+
 \end{frame}
 
+
+\begin{frame}[fragile]
+  \frametitle{Алтернативи във функционален стил}
+
+  \begin{itemize}
+    \item \verb#std::pair<T,bool>#
+    \item \verb#std::optional<T>#
+  \end{itemize}
+\end{frame}
 
 \begin{frame}
 \centerline{Благодаря за вниманието!}
