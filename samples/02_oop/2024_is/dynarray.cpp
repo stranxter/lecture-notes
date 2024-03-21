@@ -5,9 +5,66 @@
 template <typename T>
 class DynArray
 {
-    public:
+    private:
     T *arr;
     unsigned int size;
+
+    public:
+
+    int getSize() const
+    {
+        return size;
+    }
+    DynArray()
+    {
+        std::cout << "DynArray()\n";
+        init();
+    }
+
+    DynArray(int i)
+    {
+        std::cout << "DynArray(int)\n";
+        this->size = i;
+        this->arr = new T[i];
+    }
+
+    DynArray(int ia[], int size)
+    {
+        std::cout << "DynArray(ia[])\n";        
+        this->size = size;
+        this->arr = new T[size];
+        for(int count=0; count <  size; ++count)
+        {
+            this->arr[count] = ia[count];
+        }
+    }
+   
+    DynArray(const DynArray<T>& other)
+    {
+
+        std::cout << "DynArray(DynArray&)\n";
+        copy(other);
+    }
+
+    void copy(const DynArray<T>& other)
+    {
+        this->size = other.size;
+        this->arr = new T[this->size];
+        for(int count=0; count <  this->size; ++count)
+        {
+            this->arr[count] = other.arr[count];
+        }    
+    }
+
+    DynArray<T>& operator=(const DynArray<T>& other)
+    {
+        if(this != &other)
+        {
+            clear();
+            copy(other);
+        }
+        return *this;
+    }
 
     void init()
     {
@@ -15,7 +72,7 @@ class DynArray
         this->arr = nullptr;    
     }
 
-    void push_back(T x)
+    void push_back(const T& x)
     {
         /*
             a:{
@@ -63,7 +120,7 @@ class DynArray
     }
 
     //c=a+b
-    DynArray<T> operator+(DynArray<T> b)
+    DynArray<T> operator+(const DynArray<T>& b) const
     {
         DynArray<T> result;
         result.init();
@@ -72,14 +129,14 @@ class DynArray
         return result;
     }
 
-    DynArray<T>& operator+=(T x)
+    DynArray<T>& operator+=(const T& x)
     {
         push_back(x);
         return *this;
     }
 
     //(a += b)
-    DynArray<T>& operator+=(DynArray<T> b)
+    DynArray<T>& operator+=(const DynArray<T>& b)
     {
         /*
             a:{
@@ -109,8 +166,11 @@ class DynArray
         return *this;
     }
 
-//    bool equals(DynArray<T> b)
-    bool operator==(DynArray<T> b)
+    bool operator!=(const DynArray<T>& b) const
+    {
+        return !(*this == b);
+    }
+    bool operator==(const DynArray<T>& b) const
     {
         if(this->size != b.size)
         {
@@ -126,28 +186,105 @@ class DynArray
         return true;
     }
 
+    T operator[](unsigned int i) const
+    {
+        return this->arr[i];
+    }
+
+    T& operator[](unsigned int i)
+    {
+        return this->arr[i];
+    }
+
+    void clear()
+    {
+        delete arr;
+    }
+
+    ~DynArray()
+    {
+        clear();
+        std::cout << "Game over!\n";
+    }
+
 };
 
-
 template<typename T>
-std::ostream& operator<<(std::ostream& out,DynArray<T> arr)
+std::ostream& operator<<(std::ostream& out,const DynArray<T>& arr)
 {   //DynArray<T>* this;
     out << "{";
-    for(int i = 0; i < arr.size; ++i)
+    for(int i = 0; i < arr.getSize(); ++i)
     {
-        out << arr.arr[i] << " ";
+        out << arr[i] << " ";
     }
     out << "}";
 
     return out;
 }
 
+/*
+    T& operator[](unsigned int i) const
+    {
+        return this->arr[i];
+    }
+*/
+void set0(DynArray<int>& dai)
+{
+    for(int i = 0; i < dai.getSize(); ++i)
+    {
+        dai[i]= 0;
+    }
+}
 
+DynArray<int> makeZeros(unsigned int n)
+{
+    DynArray<int> result(n);
+    for(int i = 0; i < n; ++i)
+    {
+        result[i] = 0;
+    }
+    return result;
+}
 
 int main()
 {
+
+    int ia[] = {1,2,3,4,5};
+    DynArray<int> a2(ia,5); 
+    std::cout << "a2=" << a2 << std::endl;
+
+    set0(a2);
+    std::cout << "a2=" << a2 << std::endl;
+
+    DynArray<int> *matrix = new DynArray<int>[3];
+
+    delete []matrix;
+
+    std::cout << makeZeros(20) << std::endl;
+
     DynArray<int> a;
-    a.init();
+
+    DynArray<int> a1(5);
+
+    set0(a2);
+    std::cout << "a2=" << a2 << std::endl;
+
+    DynArray<int> a3(a2);
+    std::cout << "a3=" << a3 << std::endl;
+    a3[2] = 10;
+
+    std::cout << "a2=" << a2 << std::endl;
+    std::cout << "a3=" << a3 << std::endl;
+
+    a2+=10;
+    std::cout << "a2=" << a2 << std::endl;
+    std::cout << "a3=" << a3 << std::endl;
+
+    a3=a2;
+    a2[0]=400;
+    std::cout << "======ASSIGNMENT=====\n";
+    std::cout << "a2=" << a2 << std::endl;
+    std::cout << "a3=" << a3 << std::endl;
 
     a.push_back(10);
     a.push_back(20);
@@ -155,13 +292,14 @@ int main()
     a.push_back(40);
     a.push_back(50);
 
+    //a.arr = 0;
+
     std::cout << a;
 
     //remove_element(a,3);
     //printArray(a);
 
     DynArray<int> b;
-    b.init();
 
     ((b+=10)+=20)+=30;
     int x = 0, y =5;
@@ -172,7 +310,6 @@ int main()
     std::cout << (a == a) << std::endl;
 
     DynArray<int> c;
-    c.init();
     c.push_back(10);
     c.push_back(20);
     c.push_back(30);
@@ -184,6 +321,8 @@ int main()
     std::cout << (b == c) << std::endl;
 
     DynArray<int> z;
+
+    return 0;
 
     z = a + b;
 
