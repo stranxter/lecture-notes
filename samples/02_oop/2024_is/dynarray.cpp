@@ -1,213 +1,229 @@
 #include <iostream>
 #include <fstream>
+#include <cmath>
 
+#include "dynarray.h"
 
 template <typename T>
-class DynArray
+int DynArray<T>::getSize() const
 {
-    private:
-    T *arr;
-    unsigned int size;
+    return size;
+}
+template <typename T>
+void DynArray<T>::setSize(unsigned int newSize)
+{
+    T* newArr = new T[newSize];    
 
-    public:
-
-    int getSize() const
+    for(int i = 0; i < std::min(size,newSize); ++i)
     {
-        return size;
+        newArr[i] = arr[i];
     }
-    DynArray()
-    {
-        std::cout << "DynArray()\n";
-        init();
-    }
+    
+    delete []arr;
+    arr = newArr;
+    size = newSize;
+}
 
-    DynArray(int i)
+template <typename T>
+DynArray<T>::DynArray()
+{
+    std::cout << "DynArray()\n";
+    init();
+}
+template <typename T>
+DynArray<T>::DynArray(int i)
+{
+    std::cout << "DynArray(int)\n";
+    this->size = i;
+    this->arr = new T[i];
+}
+template <typename T>
+DynArray<T>::DynArray(int ia[], int size)
+{
+    std::cout << "DynArray(ia[])\n";        
+    this->size = size;
+    this->arr = new T[size];
+    for(int count=0; count <  size; ++count)
     {
-        std::cout << "DynArray(int)\n";
-        this->size = i;
-        this->arr = new T[i];
+        this->arr[count] = ia[count];
     }
+}
+template <typename T>
+DynArray<T>::DynArray(const DynArray<T>& other)
+{
 
-    DynArray(int ia[], int size)
-    {
-        std::cout << "DynArray(ia[])\n";        
-        this->size = size;
-        this->arr = new T[size];
-        for(int count=0; count <  size; ++count)
-        {
-            this->arr[count] = ia[count];
-        }
-    }
-   
-    DynArray(const DynArray<T>& other)
-    {
+    std::cout << "DynArray(DynArray&)\n";
+    copy(other);
+}
 
-        std::cout << "DynArray(DynArray&)\n";
+template <typename T>
+void DynArray<T>::copy(const DynArray<T>& other)
+{
+    this->size = other.size;
+    this->arr = new T[this->size];
+    for(int count=0; count <  this->size; ++count)
+    {
+        this->arr[count] = other.arr[count];
+    }    
+}
+template <typename T>
+DynArray<T>& DynArray<T>::operator=(const DynArray<T>& other)
+{
+    if(this != &other)
+    {
+        clear();
         copy(other);
     }
+    return *this;
+}
 
-    void copy(const DynArray<T>& other)
-    {
-        this->size = other.size;
-        this->arr = new T[this->size];
-        for(int count=0; count <  this->size; ++count)
-        {
-            this->arr[count] = other.arr[count];
-        }    
-    }
+template <typename T>
+void DynArray<T>::init()
+{
+    this->size = 0;
+    this->arr = nullptr;    
+}
 
-    DynArray<T>& operator=(const DynArray<T>& other)
-    {
-        if(this != &other)
-        {
-            clear();
-            copy(other);
+template <typename T>
+void DynArray<T>::push_back(const T& x)
+{
+    /*
+        a:{
+            arr -------------> [1] [2] [3]
+            size: 3
         }
-        return *this;
-    }
+    */
+T* tmp = new T[this->size+1];
+    /*
+        a:{
+            arr -------------> [1] [2] [3]
+            size: 3
+        }
+        tmp ----------------> [13134] [756] [12313] [464745]
+    */
+for(int i = 0; i < this->size; ++i)
+{
+    tmp[i] = this->arr[i];
+}
+    /*
+        a:{
+            arr -------------> [1] [2] [3]
+            size: 3
+        }
+        tmp ----------------> [1] [2] [3] [464745]
+    */
+tmp[this->size] = x;
+this->size++;
+    /*
+        a:{
+            arr -------------> [1] [2] [3]
+            size: 4
+        }
+        tmp ----------------> [1] [2] [3] [x]
+    */
+    delete []this->arr;
+    this->arr = tmp;
+    /*
+        a:{
+            arr --------\ ~~~~~~~~~~~~~~~~~~~
+            size: 4      \
+        }              |
+        tmp ----------------> [1] [2] [3] [x]
+    */
+}
 
-    void init()
-    {
-        this->size = 0;
-        this->arr = nullptr;    
-    }
+template <typename T>
+DynArray<T> DynArray<T>::operator+(const DynArray<T>& b) const
+{
+    DynArray<T> result;
+    result.init();
+    (result += *this) += b;
 
-    void push_back(const T& x)
-    {
-        /*
-            a:{
-                arr -------------> [1] [2] [3]
-                size: 3
-            }
-        */
-    T* tmp = new T[this->size+1];
-        /*
-            a:{
-                arr -------------> [1] [2] [3]
-                size: 3
-            }
-            tmp ----------------> [13134] [756] [12313] [464745]
-        */
+    return result;
+}
+template <typename T>
+DynArray<T>& DynArray<T>::operator+=(const T& x)
+{
+    push_back(x);
+    return *this;
+}
+
+template <typename T>
+DynArray<T>& DynArray<T>::operator+=(const DynArray<T>& b)
+{
+    /*
+        a:{
+            arr -------------> [1] [2] [3] [4] [5] [+1] [+2] [+3]
+            size: 5
+        }
+        b:{
+            arr -------------> [1] [2] [3]
+            size: 3
+        }
+    */
+
+    T* tmp = new T[this->size+b.size];
     for(int i = 0; i < this->size; ++i)
     {
         tmp[i] = this->arr[i];
     }
-        /*
-            a:{
-                arr -------------> [1] [2] [3]
-                size: 3
-            }
-            tmp ----------------> [1] [2] [3] [464745]
-        */
-    tmp[this->size] = x;
-    this->size++;
-        /*
-            a:{
-                arr -------------> [1] [2] [3]
-                size: 4
-            }
-            tmp ----------------> [1] [2] [3] [x]
-        */
-        delete []this->arr;
-        this->arr = tmp;
-        /*
-            a:{
-                arr --------\ ~~~~~~~~~~~~~~~~~~~
-                size: 4      \
-            }              |
-            tmp ----------------> [1] [2] [3] [x]
-        */
+    for(int i = this->size; i < this->size+b.size; ++i)
+    {
+        tmp[i] = b.arr[i-this->size];
     }
 
-    //c=a+b
-    DynArray<T> operator+(const DynArray<T>& b) const
-    {
-        DynArray<T> result;
-        result.init();
-        (result += *this) += b;
+    this->size = this->size + b.size;
+    delete []this->arr;
+    this->arr = tmp;
 
-        return result;
+    return *this;
+}
+
+template <typename T>
+bool DynArray<T>::operator!=(const DynArray<T>& b) const
+{
+    return !(*this == b);
+}
+template <typename T>
+bool DynArray<T>::operator==(const DynArray<T>& b) const
+{
+    if(this->size != b.size)
+    {
+        return false;
     }
-
-    DynArray<T>& operator+=(const T& x)
+    for(int i = 0; i < this->size; ++i)
     {
-        push_back(x);
-        return *this;
-    }
-
-    //(a += b)
-    DynArray<T>& operator+=(const DynArray<T>& b)
-    {
-        /*
-            a:{
-                arr -------------> [1] [2] [3] [4] [5] [+1] [+2] [+3]
-                size: 5
-            }
-            b:{
-                arr -------------> [1] [2] [3]
-                size: 3
-            }
-        */
-
-        T* tmp = new T[this->size+b.size];
-        for(int i = 0; i < this->size; ++i)
-        {
-            tmp[i] = this->arr[i];
-        }
-        for(int i = this->size; i < this->size+b.size; ++i)
-        {
-            tmp[i] = b.arr[i-this->size];
-        }
-
-        this->size = this->size + b.size;
-        delete []this->arr;
-        this->arr = tmp;
-
-        return *this;
-    }
-
-    bool operator!=(const DynArray<T>& b) const
-    {
-        return !(*this == b);
-    }
-    bool operator==(const DynArray<T>& b) const
-    {
-        if(this->size != b.size)
+        if(this->arr[i] != b.arr[i])
         {
             return false;
         }
-        for(int i = 0; i < this->size; ++i)
-        {
-            if(this->arr[i] != b.arr[i])
-            {
-                return false;
-            }
-        }
-        return true;
     }
+    return true;
+}
 
-    T operator[](unsigned int i) const
-    {
-        return this->arr[i];
-    }
+template <typename T>
+T DynArray<T>::operator[](unsigned int i) const
+{
 
-    T& operator[](unsigned int i)
-    {
-        return this->arr[i];
-    }
+    return this->arr[i];
+}
+template <typename T>
+T& DynArray<T>::operator[](unsigned int i)
+{
+    return this->arr[i];
+}
 
-    void clear()
-    {
-        delete arr;
-    }
-
-    ~DynArray()
-    {
-        clear();
-        std::cout << "Game over!\n";
-    }
-
-};
+template <typename T>
+void DynArray<T>::clear()
+{
+    delete arr;
+}
+template <typename T>
+DynArray<T>::~DynArray()
+{
+    clear();
+    std::cout << "Game over!\n";
+}
 
 template<typename T>
 std::ostream& operator<<(std::ostream& out,const DynArray<T>& arr)
@@ -223,11 +239,7 @@ std::ostream& operator<<(std::ostream& out,const DynArray<T>& arr)
 }
 
 /*
-    T& operator[](unsigned int i) const
-    {
-        return this->arr[i];
-    }
-*/
+
 void set0(DynArray<int>& dai)
 {
     for(int i = 0; i < dai.getSize(); ++i)
@@ -246,97 +258,4 @@ DynArray<int> makeZeros(unsigned int n)
     return result;
 }
 
-int main()
-{
-
-    int ia[] = {1,2,3,4,5};
-    DynArray<int> a2(ia,5); 
-    std::cout << "a2=" << a2 << std::endl;
-
-    set0(a2);
-    std::cout << "a2=" << a2 << std::endl;
-
-    DynArray<int> *matrix = new DynArray<int>[3];
-
-    delete []matrix;
-
-    std::cout << makeZeros(20) << std::endl;
-
-    DynArray<int> a;
-
-    DynArray<int> a1(5);
-
-    set0(a2);
-    std::cout << "a2=" << a2 << std::endl;
-
-    DynArray<int> a3(a2);
-    std::cout << "a3=" << a3 << std::endl;
-    a3[2] = 10;
-
-    std::cout << "a2=" << a2 << std::endl;
-    std::cout << "a3=" << a3 << std::endl;
-
-    a2+=10;
-    std::cout << "a2=" << a2 << std::endl;
-    std::cout << "a3=" << a3 << std::endl;
-
-    a3=a2;
-    a2[0]=400;
-    std::cout << "======ASSIGNMENT=====\n";
-    std::cout << "a2=" << a2 << std::endl;
-    std::cout << "a3=" << a3 << std::endl;
-
-    a.push_back(10);
-    a.push_back(20);
-    a.push_back(30);
-    a.push_back(40);
-    a.push_back(50);
-
-    //a.arr = 0;
-
-    std::cout << a;
-
-    //remove_element(a,3);
-    //printArray(a);
-
-    DynArray<int> b;
-
-    ((b+=10)+=20)+=30;
-    int x = 0, y =5;
-
-    std::cout << ((a += b) += 30);
-
-    std::cout << (a == b) << std::endl;
-    std::cout << (a == a) << std::endl;
-
-    DynArray<int> c;
-    c.push_back(10);
-    c.push_back(20);
-    c.push_back(30);
-    std::cout << b;
-    std::cout << c;
-    std::cout << (b == c) << std::endl;
-
-    c.push_back(10);
-    std::cout << (b == c) << std::endl;
-
-    DynArray<int> z;
-
-    return 0;
-
-    z = a + b;
-
-    std::cout << "a=" << a << " thank you and good bye!\n";
-    std::cout << b;
-    std::cout << z;
-
-    std::ofstream f("kalin.txt");
-
-    f << z;
-
-    std::cout << "\n\n\n\n\n";
-
-    DynArray<DynArray<int>> m;
-    std::cout << (((m+=a)+=b)+=c);
-
-}
+*/
