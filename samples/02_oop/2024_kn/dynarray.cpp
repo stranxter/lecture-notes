@@ -1,3 +1,5 @@
+#pragma once
+
 #include <iostream>
 
 template <typename T>
@@ -6,30 +8,41 @@ class DynArray
     public:
 
     T *arr;
-    size_t size;
+    size_t crr_size;
+    using value_type = T;
+
+    T operator[](int i)
+    {
+        return arr[i];
+    }
+
+    int size()
+    {
+        return this->crr_size;
+    }
 
     DynArray() //конструктор
     {
         arr = new T[0];
-        size = 0;
+        crr_size = 0;
 
-        std::cout << "I AM BORN!n";
+        //std::cout << "I AM BORN!n";
     }
 
     DynArray(T x) //конструктор
     {
         arr = new T[1];
-        size = 1;
+        crr_size = 1;
         arr[0] = x;
     }
 
     void copy(const DynArray& other)
     {
-        this->size = other.size;
+        this->crr_size = other.crr_size;
 
-        this->arr = new T[this->size];
+        this->arr = new T[this->crr_size];
 
-        for(int i = 0; i < this->size; ++i)
+        for(int i = 0; i < this->crr_size; ++i)
         {
             this->arr[i] = other.arr[i];
         }
@@ -38,7 +51,7 @@ class DynArray
     
     DynArray(const DynArray& other)
     {
-        std::cout << "COPY CONSTRUCTOR\n";          
+        //std::cout << "COPY CONSTRUCTOR\n";          
         copy(other);
     }
     
@@ -61,16 +74,16 @@ class DynArray
         //arr[size] = x;
         //arr------>[1] [3] [1] [5] +[x]
 
-        T *newArr = new T[size+1];
+        T *newArr = new T[crr_size+1];
         //newArr --------> [?] [?] [?] [?] [?]
 
-        for(int i = 0; i < size; ++i)
+        for(int i = 0; i < crr_size; ++i)
         {
             newArr[i] = arr[i];
         }
         //newArr --------> [1] [3] [1] [5] [?]
 
-        newArr[size] = x;
+        newArr[crr_size] = x;
         //newArr --------> [1] [3] [1] [5] [x]
 
         //arr---------> [1] [3] [1] [5]
@@ -84,7 +97,7 @@ class DynArray
         //arr------\    ~~~~~~~~~~~~~~~~~~~~~~~~~~
         //newArr -----> [1] [3] [1] [5] [x]
 
-        ++size;
+        ++crr_size;
 
         return *this;
     }
@@ -94,12 +107,12 @@ class DynArray
         DynArray result;
         result.init();
 
-        for(int i = 0; i < this->size; ++i)
+        for(int i = 0; i < this->crr_size; ++i)
         {
             result += this->arr[i];
         }
 
-        for(int i = 0; i < other.size; ++i)
+        for(int i = 0; i < other.crr_size; ++i)
         {
             result += other.arr[i];
         }
@@ -110,10 +123,10 @@ class DynArray
 
     bool operator==(const DynArray& other)
     {
-        if (this->size != other.size)
+        if (this->crr_size != other.crr_size)
             return false;
 
-        for(int i = 0; i < this->size; ++i)
+        for(int i = 0; i < this->crr_size; ++i)
         {
             if(this->arr[i] != other.arr[i])
             {
@@ -126,7 +139,7 @@ class DynArray
 
     ~DynArray()
     {
-        std::cout << "DESTRUCTOR!\n";
+        //std::cout << "DESTRUCTOR!\n";
         delete arr;
     }
 
@@ -136,7 +149,7 @@ template<typename T>
 std::ostream& operator<<(std::ostream& out, const DynArray<T>& da)
 {
     out << "{";
-    for (int i = 0; i < da.size; ++i)
+    for (int i = 0; i < da.crr_size; ++i)
     {
         std::cout << da.arr[i] << " ";
     }
@@ -147,7 +160,7 @@ std::ostream& operator<<(std::ostream& out, const DynArray<T>& da)
 
 void printSize(DynArray<int> arr)
 {
-    std::cout << "size = " << arr.size;
+    std::cout << "size = " << arr.crr_size;
     arr += 30;
     std::cout << arr;
 }
@@ -161,54 +174,3 @@ DynArray<int> createSuperArray()
     return superArray;
 }
 
-int main()
-{
-
-    DynArray<int> a,b,c;
-    DynArray<int> newArrayCopyOfOtherArray(a);
-
-    a += 10;
-    a += 20;
-
-    b = a;
-    std::cout << a;
-    std::cout << b;
-
-    a.arr[0] = 40;
-    std::cout << a;
-    std::cout << b;
-
-    DynArray<double> *parray = new DynArray<double>[10];
-    delete []parray;
-    //DynArray<double> arrays[10];
-
-/*
-    DynArray<int> a,b;
-    DynArray<int> c(10);
-
-    DynArray<double> *parray = new DynArray<double>[10];
-
-    std::cout << *parray;
-
-    
-    std::cout << a;
-    a += 1;
-    a += 2;
-    b += 3;
-    b += 4;
-
-    std::cout << a;
-
-    a = b + b; //{1,2,3,4,3,4}
-
-    std::cout << a;
-
-    if (a == b)
-    {
-        std::cout << "Yes!";
-    }
-   */
-
-    //a = b;
-     
-}
