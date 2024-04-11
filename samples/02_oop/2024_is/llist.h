@@ -5,12 +5,36 @@ template <typename T>
 class LList
 {
 
+    private:
+    struct box
+    {
+        T data;
+        box *next;
+    };
+
     public:
+    class Iterator
+    {
+        public:
+
+        Iterator(box*);
+
+        T& operator*() const;
+        Iterator& operator++();
+        bool operator!=(const Iterator&) const;
+
+        private:
+        box *current;
+    };
+
+    Iterator begin();
+    Iterator end();
+
     LList();
     LList(const LList<T>&);
 
     void push(const T&);
-    unsigned int size() const;
+    unsigned int getSize() const;
     T& operator[](unsigned int);
     const T& operator[](unsigned int) const;
 
@@ -20,12 +44,9 @@ class LList
 
     ~LList();
 
+    using value_type = T;
+
     private:
-    struct box
-    {
-        T data;
-        box *next;
-    };
     box *first;
 
     box* locate(unsigned int) const;

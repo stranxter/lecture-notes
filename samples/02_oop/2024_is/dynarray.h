@@ -9,6 +9,26 @@ class DynArray
 {
     public:
 
+    class Iterator
+    {
+        public:
+
+        Iterator(unsigned int, T*);
+
+        T& operator*() const;
+        Iterator& operator++();
+        bool operator!=(const Iterator&) const;
+
+        private:
+        unsigned int i;
+        T *arr;
+    };
+
+    Iterator begin();
+    Iterator end();
+
+
+
     int getSize() const;
     void setSize(unsigned int newSize);
     DynArray();
@@ -27,6 +47,8 @@ class DynArray
     T& operator[](unsigned int i);
 
     ~DynArray();
+
+    using value_type = T;
 
     private:
     T *arr;

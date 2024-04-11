@@ -1,6 +1,40 @@
 #include <iostream>
 #include "llist.h"
 
+
+template <typename T>
+LList<T>::Iterator::Iterator(typename LList<T>::box *_current):current(_current){}
+
+template <typename T>
+T& LList<T>::Iterator::operator*() const
+{
+    return current->data;
+}
+
+template <typename T>
+typename LList<T>::Iterator& LList<T>::Iterator::operator++()
+{
+    current = current->next;
+    return *this;
+}
+
+template <typename T>
+bool LList<T>::Iterator::operator!=(const Iterator& other) const
+{
+    return current != other.current;
+}
+
+template <typename T>
+typename LList<T>::Iterator LList<T>::begin()
+{
+    return LList<T>::Iterator(first);
+}
+template <typename T>
+typename LList<T>::Iterator LList<T>::end()
+{
+    return LList<T>::Iterator(nullptr);
+}
+
 template <typename T>
 LList<T>::LList():first(nullptr)
 {
@@ -18,7 +52,7 @@ void LList<T>::push(const T& x)
 }
 
 template <typename T>
-unsigned int LList<T>::size() const
+unsigned int LList<T>::getSize() const
 {
     unsigned count = 0;
     LList<T>::box *crr = first;

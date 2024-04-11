@@ -3,6 +3,46 @@
 
 
 template <typename T>
+List<T>::Iterator::Iterator(box *_current):current(_current)
+{
+
+}
+
+template <typename T>
+typename List<T>::Iterator& 
+    List<T>::Iterator::operator++()
+{
+    current = current->next;
+    return *this;
+}
+
+template <typename T>
+T& List<T>::Iterator::operator*()
+{
+    return current->data;
+}
+
+template <typename T>
+bool List<T>::Iterator::operator!=(const typename List<T>::Iterator &other)
+{
+    return current != other.current;
+}
+
+
+template <typename T>
+typename List<T>::Iterator List<T>::begin()
+{
+    return List<T>::Iterator(first);
+}
+
+template <typename T>
+typename List<T>::Iterator List<T>::end()
+{
+    return List<T>::Iterator(nullptr);
+}
+
+
+template <typename T>
 List<T>::List():first(nullptr),current_size(0)
 {}
 

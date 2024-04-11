@@ -11,6 +11,44 @@ class DynArray
     size_t crr_size;
     using value_type = T;
 
+    class Iterator
+    {
+        public:
+        
+        Iterator(unsigned int i,
+                 T* _arr):current_element(i),
+                          arr(_arr){}
+
+        T& operator*()
+        {
+            return arr[current_element];
+        }
+        Iterator& operator++()
+        {
+            ++current_element;
+            return *this;
+        }
+        bool operator!=(const Iterator& other)
+        {
+            return current_element != 
+                other.current_element;
+        }
+
+        private:
+        unsigned int current_element;
+        T *arr;
+
+    };
+
+    Iterator begin()
+    {
+        return Iterator(0,arr);
+    }
+    Iterator end()
+    {
+        return Iterator(size(),arr);
+    }
+
     T operator[](int i)
     {
         return arr[i];

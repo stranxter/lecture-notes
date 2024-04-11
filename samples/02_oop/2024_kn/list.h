@@ -13,6 +13,23 @@ class List
         box *next;
     };
     
+    class Iterator
+    {
+        public:
+
+        Iterator(box *_current);
+
+        Iterator& operator++();
+        T& operator*();
+        bool operator!=(const Iterator&);
+
+        private:
+        box *current;
+    };
+
+    Iterator begin();
+    Iterator end();
+
     List();
     List(const List<T>& other);
 
