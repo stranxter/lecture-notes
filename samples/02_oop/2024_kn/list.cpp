@@ -1,131 +1,158 @@
 #include <iostream>
+#include "list.h"
+
 
 template <typename T>
-class List
+List<T>::Iterator::Iterator(box *_current):current(_current)
 {
-    public:
 
-    struct box
+}
+
+template <typename T>
+typename List<T>::Iterator& 
+    List<T>::Iterator::operator++()
+{
+    current = current->next;
+    return *this;
+}
+
+template <typename T>
+T& List<T>::Iterator::operator*()
+{
+    return current->data;
+}
+
+template <typename T>
+bool List<T>::Iterator::operator!=(const typename List<T>::Iterator &other)
+{
+    return current != other.current;
+}
+
+
+template <typename T>
+typename List<T>::Iterator List<T>::begin()
+{
+    return List<T>::Iterator(first);
+}
+
+template <typename T>
+typename List<T>::Iterator List<T>::end()
+{
+    return List<T>::Iterator(nullptr);
+}
+
+
+template <typename T>
+List<T>::List():first(nullptr),current_size(0)
+{}
+
+
+template <typename T>
+void List<T>::pop()
+{
+    //         ------------
+    //         |           |
+    //         |           \/
+    //first ---|  [1]---->[2]---->[3] //first ----> [1]---->[2]---->[3]
+
+    box *save = first;
+    first = first->next;
+    delete save;
+    --current_size;
+}
+
+template <typename T>
+void List<T>::push(const T& x)
+{
+    //first --|  [1]---->[2]---->[3] //first ----> [1]---->[2]---->[3]
+    //        |   ^
+    //       \/   |
+    //       [x]--|
+
+    //first ----> [x] -----> [1]---->[2]---->[3]
+
+    //box *myNewElement = new box{x,first};
+    //first = myNewElement;
+
+    first = new box{x,first};
+    ++current_size;
+
+}
+
+template <typename T>
+int List<T>::size() const
+{
+    return current_size;
+}
+
+template <typename T>
+T& List<T>::operator[](unsigned int i)
+{
+    typename List<T>::box *crr = first;
+    for(int count = 0; count < i; ++count)
     {
-        T data;
-        box *next;
-    };
-
-    box *first;
-
-    List():first(nullptr)
-    {}
-
-
-
-    void pop()
-    {
-        //         ------------
-        //         |           |
-        //         |           \/
-        //first ---|  [1]---->[2]---->[3] //first ----> [1]---->[2]---->[3]
-
-        box *save = first;
-        first = first->next;
-        delete save;
+        crr = crr->next;
     }
 
-    void push(const T& x)
+    return crr->data ;
+}
+
+template <typename T>
+void List<T>::clear()
+{
+    typename List<T>::box *save = first;
+    while (first != nullptr)
     {
-        //first --|  [1]---->[2]---->[3] //first ----> [1]---->[2]---->[3]
-        //        |   ^
-        //       \/   |
-        //       [x]--|
+        save = first->next;
+        delete first;
+        first = save;
+    }        
+}
 
-        //first ----> [x] -----> [1]---->[2]---->[3]
+template <typename T>
+List<T>::~List()
+{
+    clear();
+}
 
-        //box *myNewElement = new box{x,first};
-        //first = myNewElement;
+template <typename T>
+List<T>::List(const List<T>& other)
+{
+    copy(other);
+}
 
-        first = new box{x,first};
-
+template <typename T>
+void List<T>::copy(const List<T>& other)
+{
+    if(other.first == nullptr)
+    {
+        first = nullptr;
+        return;
     }
 
-    int size() const
+    first = new box{other.first->data, nullptr};
+    typename List<T>::box *previous = first;
+    typename List<T>::box *otherCurent = other.first->next;
+    
+    while (otherCurent != nullptr)
     {
-        int count = 0;
-        box *crr = first;
-        while (crr != nullptr)
-        {
-            ++count;
-            crr = crr->next;
-        }
+        previous->next = new box{otherCurent->data,nullptr};
+        otherCurent = otherCurent->next;
+        previous = previous->next;
+    }     
+    current_size = other.current_size;
+}
 
-        return count;
-
-    }
-
-    T& operator[](unsigned int i)
+template <typename T>
+List<T>& List<T>::operator=(const List<T> &other)
+{
+    if(this != &other)
     {
-        box *crr = first;
-        for(int count = 0; count < i; ++count)
-        {
-            crr = crr->next;
-        }
-
-        return crr->data ;
-    }
-
-
-    void clear()
-    {
-        box *save = first;
-        while (first != nullptr)
-        {
-            save = first->next;
-            delete first;
-            first = save;
-        }        
-    }
-
-    ~List()
-    {
-
         clear();
-
-    }
-
-    List(const List<T>& other)
-    {
         copy(other);
     }
-
-    void copy(const List<T>& other)
-    {
-        if(other.first == nullptr)
-        {
-            first = nullptr;
-            return;
-        }
-
-        first = new box{other.first->data, nullptr};
-        box *previous = first;
-        box *otherCurent = other.first->next;
-        
-        while (otherCurent != nullptr)
-        {
-            previous->next = new box{otherCurent->data,nullptr};
-            otherCurent = otherCurent->next;
-            previous = previous->next;
-        }           
-    }
-
-    List<T>& operator=(const List<T> &other)
-    {
-        if(this != &other)
-        {
-            clear();
-            copy(other);
-        }
-        return *this;
-    }
-
-};
+    return *this;
+}
 
 template <typename T>
 std::ostream& operator<<(std::ostream& out, const List<T>& l)
@@ -142,55 +169,18 @@ std::ostream& operator<<(std::ostream& out, const List<T>& l)
     return out;
 }
 
-int main()
+
+template <typename T>
+bool List<T>::operator==(const List<T> &other) const
 {
+    if(size() != other.size()) return false;
 
-    List<int> l1;
-
-    l1.push(10);
-    l1.push(20);
-    l1.push(30);
-
-    std::cout << l1.size() << std::endl;
-    std::cout << l1 << std::endl;
-
-    l1.pop();
-
-    std::cout << l1 << std::endl;
-
-    for(int i = 0; i < l1.size(); ++i)
+    List<T>::box *crr = first, *other_crr = other.first;
+    while (crr != nullptr && other_crr != nullptr && crr->data == other_crr->data)
     {
-        ++l1[i];
+        crr = crr->next;
+        other_crr = other_crr->next;
     }
-    std::cout << l1 << std::endl;
 
-    List<int> l2;
-
-    l2.push(10);
-    l2.push(20);
-
-    List<int> l3;
-
-    l3 = l1;
-    std::cout << l3 << std::endl;
-    l1[0] = 100;
-    std::cout << l1 << std::endl;
-    std::cout << l3 << std::endl;
-
-    List<int> empty;
-    l3 = empty;
-
-    List<int> l5(l1);
-/*
-    std::cout << l1 + l2 << std::endl;
-
-
-    l1.deleteAt(3);
-
-    std::cout << l1 << std::endl;
-
-    l1.insertAt(3,450);
-
-    std::cout << l1 << std::endl;
-*/
+    return crr == nullptr;
 }

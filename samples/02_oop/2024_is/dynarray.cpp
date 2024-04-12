@@ -4,6 +4,41 @@
 
 #include "dynarray.h"
 
+
+template <typename T>
+DynArray<T>::Iterator::Iterator(unsigned int start, T* _arr):i(start),arr(_arr){}
+
+template <typename T>
+T& DynArray<T>::Iterator::operator*() const
+{
+    return arr[i];
+}
+
+template <typename T>
+typename DynArray<T>::Iterator& DynArray<T>::Iterator::operator++()
+{
+    ++i;  
+    return *this;
+}
+
+template <typename T>
+bool DynArray<T>::Iterator::operator!=(const typename DynArray<T>::Iterator &other) const
+{
+    return i != other.i;
+}
+
+
+template <typename T>
+typename DynArray<T>::Iterator DynArray<T>::begin()
+{
+    return DynArray<T>::Iterator(0,arr);
+}
+template <typename T>
+typename DynArray<T>::Iterator DynArray<T>::end()
+{
+    return DynArray<T>::Iterator(size,arr); 
+}
+
 template <typename T>
 int DynArray<T>::getSize() const
 {
@@ -27,20 +62,17 @@ void DynArray<T>::setSize(unsigned int newSize)
 template <typename T>
 DynArray<T>::DynArray()
 {
-    std::cout << "DynArray()\n";
     init();
 }
 template <typename T>
 DynArray<T>::DynArray(int i)
 {
-    std::cout << "DynArray(int)\n";
     this->size = i;
     this->arr = new T[i];
 }
 template <typename T>
 DynArray<T>::DynArray(int ia[], int size)
 {
-    std::cout << "DynArray(ia[])\n";        
     this->size = size;
     this->arr = new T[size];
     for(int count=0; count <  size; ++count)
@@ -52,7 +84,6 @@ template <typename T>
 DynArray<T>::DynArray(const DynArray<T>& other)
 {
 
-    std::cout << "DynArray(DynArray&)\n";
     copy(other);
 }
 
@@ -222,7 +253,6 @@ template <typename T>
 DynArray<T>::~DynArray()
 {
     clear();
-    std::cout << "Game over!\n";
 }
 
 template<typename T>
