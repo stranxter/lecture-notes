@@ -7,12 +7,17 @@ class Square : public Figure
 {
 
     public:
-    Square(Point, Point, Point);
+    Square(Point, Point);
 
     double area() const;
     double perimeter() const;
+    void draw() const;
+
+    double side() const;
+    void saveToFile(std::ostream&) const;
 
     private:
-    Point p1, p2, p3;
+    Point p1, p2;
+
 
 };

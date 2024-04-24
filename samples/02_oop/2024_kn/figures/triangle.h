@@ -11,6 +11,8 @@ class Triangle : public Figure
 
     double area() const;
     double perimeter() const;
+    void draw() const;
+    void saveToFile(std::ostream&) const;
 
     private:
     Point p1, p2, p3;

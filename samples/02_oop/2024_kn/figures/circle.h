@@ -10,6 +10,8 @@ class Circle : public Figure
 
     double area() const;
     double perimeter() const;
+    void draw() const;
+    void saveToFile(std::ostream&) const;
 
     private:
     Point center;

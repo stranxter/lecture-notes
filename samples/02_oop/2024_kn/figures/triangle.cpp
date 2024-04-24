@@ -1,6 +1,7 @@
 #include "triangle.h"
 
 #include <cmath>
+#include "draw/sdlwrapper.h"
 
 Triangle::Triangle(Point _p1, Point _p2, Point _p3):p1(_p1),p2(_p2),p3(_p3)
 {
@@ -35,4 +36,16 @@ double Triangle::side_b() const
 double Triangle::side_c() const
 {
     return sqrt((p1.x-p2.x)*(p1.x-p2.x) + (p1.y-p2.y)*(p1.y-p2.y));
+}
+
+void Triangle::draw() const
+{
+    sdlw::drawLine(scale*p1.x,scale*p1.y,scale*p2.x,scale*p2.y);
+    sdlw::drawLine(scale*p2.x,scale*p2.y,scale*p3.x,scale*p3.y);
+    sdlw::drawLine(scale*p3.x,scale*p3.y,scale*p1.x,scale*p1.y);
+}
+
+void Triangle::saveToFile(std::ostream& os) const
+{
+    os << "Triangle " << p1.x << " " << p1.y << " " << p2.x << " " << p2.y << " " << p3.x << " " << p3.y << std::endl;
 }
