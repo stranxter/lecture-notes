@@ -1,13 +1,14 @@
-#pragma once
-
 #include "figure.h"
+
 #include "utils.h"
 
-class Circle : public Figure
+class Triangle : public Figure
 {
+
     public:
 
-    Circle(const Point& center, double radius);
+    Triangle(const Point& _p1, const Point& _p2, const Point& _p3);
+
 
     double area() const;
     double perimeter() const;
@@ -15,7 +16,12 @@ class Circle : public Figure
     void save(std::ostream& out) const;
     void load(std::istream& in);
 
+    double sidea() const;
+    double sideb() const;
+    double sidec() const;
+
     private:
-    Point center;
-    double radius;
+    Point p1;
+    Point p2;
+    Point p3;
 };

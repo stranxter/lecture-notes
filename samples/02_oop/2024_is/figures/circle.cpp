@@ -1,5 +1,6 @@
 #include "circle.h"
 
+#include "draw/sdlwrapper.h"
 
 Circle::Circle(const Point& _center, double _radius):center(_center),radius(_radius)
 {
@@ -15,5 +16,20 @@ double Circle::area() const
 double Circle::perimeter() const
 {
     return 2 * 3.14 * radius;
+}
+
+void Circle::draw() const
+{
+    sdlw::drawFillCircle(center.x*scale, center.y*scale, radius*scale);
+}
+
+void Circle::save(std::ostream& out) const
+{
+    out << "Circle " << center.x << " " << center.y << " " << radius << std::endl;
+}
+
+void Circle::load(std::istream& in)
+{
+    in >> center.x >> center.y >> radius;
 }
 
