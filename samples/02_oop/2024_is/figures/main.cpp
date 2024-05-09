@@ -1,6 +1,7 @@
 #include "square.h"
 #include "circle.h"
 #include "triangle.h"
+#include "group.h"
 
 #include <iostream>
 #include <vector>
@@ -9,73 +10,64 @@
 #include "draw/sdlwrapper.h"
 
 
-double area(std::vector<Figure*> figure)
+void testManual()
 {
-    double sum = 0;
-
-    for(Figure* f : figure)
-    {
-        sum += f->area();
-    }
-
-    return sum;
-}
-
-void drawAll(std::vector<Figure*> figure)
-{
-    for(Figure* f : figure)
-    {
-        f->draw();
-    }
-}
-
-void saveAll(std::vector<Figure*> figure, std::ostream& out)
-{
-    for(Figure* f : figure)
-    {
-        f->save(out);
-    }
-}
-
-std::vector<Figure*> loadFromFile(std::istream &in)
-{
-
-    std::vector<Figure*> result;
-
-    std::string type;
-    while (in >> type)
-    {
-        Figure *newFigure = Figure::figureFactory(type);
-        newFigure->load(in);
-        result.push_back(newFigure);
-
-    }    
-
-    return result;
-}
-
-int main()
-{
-  
-    /*
-    std::vector<Figure*> figures = {new Circle({100,100},30),
-                                    new Triangle({60,60},{90,90},{70,200}),
-                                    new Square({30,30},{10,10})};
-    */
-
-   std::ifstream in("figures.txt");
-   std::vector<Figure*> figures = loadFromFile(in);
-
-    std::cout << area(figures) << std::endl;
 
     sdlw::setColor(255,255,255);
-    Figure::scale = 2;
-    drawAll(figures);
+
+
+    Group *boy = new Group();
+    boy->add(new Circle({100,100},30)); //memory leak!
+    boy->add(new Square({100,150},{150,100}));
+
+    Group *picto = new Group;
+    picto->add(boy);
+    picto->add(new Circle({50,100},30));
+    picto->add(new Triangle({50,140},{20,200},{80,200}));
+
+    Group *picto2 = new Group(*picto);
+
+    picto->draw({140,40});
+    picto2->draw({240,40});
+
 
     sdlw::updateGraphics();
     std::cin.get();
 
-    std::ofstream out("`.txt");
-    saveAll(figures,out);
+    std::ofstream out("figures.txt");
+    picto->save(out);
 
+    delete picto;
+    delete picto2;
+
+
+}
+
+void testWithFile()
+{
+    std::ifstream in("figures.txt");
+    std::string type;
+    in >> type;
+
+    Figure *picture = Figure::figureFactory(type);
+    picture->load(in);
+
+
+    sdlw::setColor(255,255,255);
+    Figure::scale = 2;
+    picture->draw({0,0});
+
+    sdlw::updateGraphics();
+    std::cin.get();
+
+    delete picture;
+
+}
+
+int main()
+{
+
+    testManual();
+    //testWithFile();
+  
 }

@@ -49,3 +49,13 @@ void Triangle::saveToFile(std::ostream& os) const
 {
     os << "Triangle " << p1.x << " " << p1.y << " " << p2.x << " " << p2.y << " " << p3.x << " " << p3.y << std::endl;
 }
+
+void Triangle::loadFromFile(std::istream& is)
+{
+    is >> p1.x >> p1.y >> p2.x >> p2.y >> p3.x >> p3.y;
+}
+
+Figure* Triangle::copy() const
+{
+    return new Triangle(*this);
+}

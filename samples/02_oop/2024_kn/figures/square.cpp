@@ -34,3 +34,13 @@ void Square::saveToFile(std::ostream& os) const
 {
     os << "Square " << p1.x << " " << p1.y << " " << p2.x << " " << p2.y << std::endl;
 }
+
+void Square::loadFromFile(std::istream& is)
+{
+    is >> p1.x >> p1.y >> p2.x >> p2.y;
+}   
+
+Figure* Square::copy() const
+{
+    return new Square(*this);
+}

@@ -13,6 +13,9 @@ class Triangle : public Figure
     double perimeter() const;
     void draw() const;
     void saveToFile(std::ostream&) const;
+    void loadFromFile(std::istream&);
+
+    Figure* copy() const;
 
     private:
     Point p1, p2, p3;

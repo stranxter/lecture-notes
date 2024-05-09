@@ -12,9 +12,10 @@ class Triangle : public Figure
 
     double area() const;
     double perimeter() const;
-    void draw() const;
+    void draw(Point origin) const;
     void save(std::ostream& out) const;
     void load(std::istream& in);
+    Figure* copy() const;
 
     double sidea() const;
     double sideb() const;

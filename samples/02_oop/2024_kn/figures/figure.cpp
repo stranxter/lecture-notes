@@ -3,6 +3,7 @@
 #include "circle.h"
 #include "square.h"
 #include "triangle.h"
+#include "group.h"
 
 
 double Figure::scale = 0;
@@ -24,6 +25,9 @@ Figure* Figure::figureFactory(std::string type)
     } else if(type == "Triangle")
     {
         return new Triangle({0,0},{0,0},{0,0});
+    }  else if(type == "Group")
+    {
+        return new Group();
     } else
     {
         throw "Invalid figure type";

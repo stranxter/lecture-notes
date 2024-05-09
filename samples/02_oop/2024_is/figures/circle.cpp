@@ -18,9 +18,9 @@ double Circle::perimeter() const
     return 2 * 3.14 * radius;
 }
 
-void Circle::draw() const
+void Circle::draw(Point origin = {0,0}) const
 {
-    sdlw::drawFillCircle(center.x*scale, center.y*scale, radius*scale);
+    sdlw::drawFillCircle(center.x*scale+origin.x*scale, center.y*scale+origin.y*scale, radius*scale);
 }
 
 void Circle::save(std::ostream& out) const
@@ -33,3 +33,8 @@ void Circle::load(std::istream& in)
     in >> center.x >> center.y >> radius;
 }
 
+
+Figure* Circle::copy() const
+{
+    return new Circle(center, radius);
+}

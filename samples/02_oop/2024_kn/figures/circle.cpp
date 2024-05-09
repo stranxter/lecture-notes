@@ -28,4 +28,14 @@ void Circle::saveToFile(std::ostream& os) const
     os << "Circle " << center.x << " " << center.y << " " << r << std::endl;
 }
 
+void Circle::loadFromFile(std::istream& in)
+{
+    in >> center.x >> center.y >> r;
+}
+
+Figure* Circle::copy() const
+{
+    return new Circle(*this);
+}
+
 

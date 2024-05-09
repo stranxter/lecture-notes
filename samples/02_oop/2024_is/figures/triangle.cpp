@@ -36,11 +36,14 @@ double Triangle::perimeter() const
     return sidea() + sideb() + sidec();
 }  
 
-void Triangle::draw() const
+void Triangle::draw(Point origin) const
 {
-    sdlw::drawLine(p1.x*scale, p1.y*scale, p2.x*scale, p2.y*scale);
-    sdlw::drawLine(p2.x*scale, p2.y*scale, p3.x*scale, p3.y*scale);
-    sdlw::drawLine(p3.x*scale, p3.y*scale, p1.x*scale, p1.y*scale);
+    sdlw::drawLine(p1.x*scale+origin.x*scale, p1.y*scale+origin.y*scale, 
+                   p2.x*scale+origin.x*scale, p2.y*scale+origin.y*scale);
+    sdlw::drawLine(p2.x*scale+origin.x*scale, p2.y*scale+origin.y*scale, 
+                   p3.x*scale+origin.x*scale, p3.y*scale+origin.y*scale);
+    sdlw::drawLine(p3.x*scale+origin.x*scale, p3.y*scale+origin.y*scale, 
+                   p1.x*scale+origin.x*scale, p1.y*scale+origin.y*scale);
 }
 
 void Triangle::save(std::ostream& out) const
@@ -51,4 +54,9 @@ void Triangle::save(std::ostream& out) const
 void Triangle::load(std::istream& in)
 {
     in >> p1.x >> p1.y >> p2.x >> p2.y >> p3.x >> p3.y;
+}
+
+Figure* Triangle::copy() const
+{
+    return new Triangle(p1, p2, p3);
 }

@@ -21,12 +21,16 @@ double Square::perimeter() const
 {
     return 4 * side();
 }
-void Square::draw() const
+void Square::draw(Point origin) const
 {
-    sdlw::drawLine(p1.x*scale, p1.y*scale, p2.x*scale, p1.y*scale);
-    sdlw::drawLine(p2.x*scale, p1.y*scale, p2.x*scale, p2.y*scale);
-    sdlw::drawLine(p2.x*scale, p2.y*scale, p1.x*scale, p2.y*scale);
-    sdlw::drawLine(p1.x*scale, p2.y*scale, p1.x*scale, p1.y*scale);
+    sdlw::drawLine(p1.x*scale+origin.x*scale, p1.y*scale+origin.y*scale, 
+                   p2.x*scale+origin.x*scale, p1.y*scale+origin.y*scale);
+    sdlw::drawLine(p2.x*scale+origin.x*scale, p1.y*scale+origin.y*scale, 
+                   p2.x*scale+origin.x*scale, p2.y*scale+origin.y*scale);
+    sdlw::drawLine(p2.x*scale+origin.x*scale, p2.y*scale+origin.y*scale, 
+                   p1.x*scale+origin.x*scale, p2.y*scale+origin.y*scale);
+    sdlw::drawLine(p1.x*scale+origin.x*scale, p2.y*scale+origin.y*scale, 
+                   p1.x*scale+origin.x*scale, p1.y*scale+origin.y*scale);
 }
 
 void Square::save(std::ostream& out) const
@@ -37,5 +41,10 @@ void Square::save(std::ostream& out) const
 void Square::load(std::istream& in)
 {
     in >> p1.x >> p1.y >> p2.x >> p2.y;
+}
+
+Figure* Square::copy() const
+{
+    return new Square(p1, p2);
 }
 

@@ -10,9 +10,10 @@ class Square : public Figure
     Square(const Point& _p1, const Point& _p2);
     double area() const;
     double perimeter() const;
-    void draw() const;
+    void draw(Point origin) const;
     void save(std::ostream& out) const;
     void load(std::istream& in);
+    Figure* copy() const;
 
     double side() const;
 

@@ -3,6 +3,7 @@
 #include "circle.h"
 #include "triangle.h"
 #include "square.h"
+#include "group.h"
 
 double Figure::scale = 1;
 
@@ -19,6 +20,10 @@ Figure* Figure::figureFactory(const std::string &type)
     else if(type == "Square")
     {
         return new Square({0,0},{0,0});
+    }
+    else if(type == "Group")
+    {
+        return new Group();
     }
     else
     {

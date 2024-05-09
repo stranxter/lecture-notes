@@ -15,6 +15,9 @@ class Square : public Figure
 
     double side() const;
     void saveToFile(std::ostream&) const;
+    void loadFromFile(std::istream&);
+
+    Figure* copy() const;
 
     private:
     Point p1, p2;
