@@ -9,6 +9,9 @@
 
 #include "draw/sdlwrapper.h"
 
+#include "painter.h"
+#include "writer.h"
+
 
 void testManual()
 {
@@ -27,15 +30,18 @@ void testManual()
 
     Group *picto2 = new Group(*picto);
 
-    picto->draw({140,40});
-    picto2->draw({240,40});
+    Painter p1({140,40}), p2({240,40});
+
+    picto->accept(&p1);
+    picto2->accept(&p2);
 
 
     sdlw::updateGraphics();
     std::cin.get();
 
     std::ofstream out("figures.txt");
-    picto->save(out);
+    Writer w(out);
+    picto->accept(&w);
 
     delete picto;
     delete picto2;
@@ -52,10 +58,12 @@ void testWithFile()
     Figure *picture = Figure::figureFactory(type);
     picture->load(in);
 
+    Painter p({0,0});
+
 
     sdlw::setColor(255,255,255);
     Figure::scale = 2;
-    picture->draw({0,0});
+    picture->accept(&p);
 
     sdlw::updateGraphics();
     std::cin.get();
@@ -67,7 +75,7 @@ void testWithFile()
 int main()
 {
 
-    testManual();
-    //testWithFile();
+    //testManual();
+    testWithFile();
   
 }

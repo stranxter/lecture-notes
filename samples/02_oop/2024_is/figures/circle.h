@@ -11,10 +11,13 @@ class Circle : public Figure
 
     double area() const;
     double perimeter() const;
-    void draw(Point origin) const;
-    void save(std::ostream& out) const;
     void load(std::istream& in);
     Figure* copy() const;
+
+    void accept(Visitor* v);
+
+    Point getCenter() const;
+    double getRadius() const;
 
     private:
     Point center;

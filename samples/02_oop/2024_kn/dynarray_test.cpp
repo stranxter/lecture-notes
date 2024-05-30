@@ -1,14 +1,44 @@
 
 #include "dynarray.cpp"
 
+
+
+DynArray<int> makeArray(unsigned int size)
+{
+    DynArray<int> a(size);
+    for (unsigned int i = 0; i < size; i++)
+    {
+        a += i;
+    }
+    return a;
+}
+
 int main()
 {
 
-    DynArray<int> a,b,c;
+    DynArray<int> a(makeArray(5)),b,c;
+    b = std::move(c);
+
+
     DynArray<int> newArrayCopyOfOtherArray(a);
 
     a += 10;
     a += 20;
+
+    try
+    {
+        std::cout << a[-1] << std::endl;    
+        std::cout << a[2] << std::endl;    
+    }
+    catch(array_exception_out_of_bounds &e)
+    {
+        std::cerr << e.msg << '\n';
+    }
+    catch(array_exception_out_of_memory &e)
+    {
+        std::cerr << e.msg << '\n';
+    }
+    
 
     b = a;
     std::cout << a;
@@ -21,6 +51,9 @@ int main()
     DynArray<double> *parray = new DynArray<double>[10];
     delete []parray;
     //DynArray<double> arrays[10];
+
+
+    DynArray<int> d(std::move(a));
 
 /*
     DynArray<int> a,b;

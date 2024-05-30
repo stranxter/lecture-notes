@@ -1,5 +1,5 @@
+#pragma once
 #include "figure.h"
-
 #include "utils.h"
 
 class Triangle : public Figure
@@ -12,14 +12,19 @@ class Triangle : public Figure
 
     double area() const;
     double perimeter() const;
-    void draw(Point origin) const;
-    void save(std::ostream& out) const;
     void load(std::istream& in);
     Figure* copy() const;
+
+
+    void accept(Visitor* v);
 
     double sidea() const;
     double sideb() const;
     double sidec() const;
+
+    Point getp1() const;
+    Point getp2() const;
+    Point getp3() const;
 
     private:
     Point p1;

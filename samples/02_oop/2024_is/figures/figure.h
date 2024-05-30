@@ -3,18 +3,18 @@
 #include "utils.h"
 
 class Figure;
-
+class Visitor;
 
 class Figure
 {
     public:
     virtual double area() const = 0;
     virtual double perimeter() const = 0;
-    virtual void draw(Point origin) const = 0;
-    virtual void save(std::ostream& out) const = 0;
     virtual void load(std::istream& in) = 0;
 
     virtual Figure* copy() const = 0;
+
+    virtual void accept(Visitor* v) = 0;
 
     virtual ~Figure() = default;
 

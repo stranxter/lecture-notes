@@ -1,7 +1,7 @@
 #include "triangle.h"
 
-#include "draw/sdlwrapper.h"
 #include <cmath>
+#include "visitor.h"
 
 Triangle::Triangle(const Point& _p1, const Point& _p2, const Point& _p3):p1(_p1),p2(_p2),p3(_p3)
 {
@@ -36,20 +36,25 @@ double Triangle::perimeter() const
     return sidea() + sideb() + sidec();
 }  
 
-void Triangle::draw(Point origin) const
+Point Triangle::getp1() const
 {
-    sdlw::drawLine(p1.x*scale+origin.x*scale, p1.y*scale+origin.y*scale, 
-                   p2.x*scale+origin.x*scale, p2.y*scale+origin.y*scale);
-    sdlw::drawLine(p2.x*scale+origin.x*scale, p2.y*scale+origin.y*scale, 
-                   p3.x*scale+origin.x*scale, p3.y*scale+origin.y*scale);
-    sdlw::drawLine(p3.x*scale+origin.x*scale, p3.y*scale+origin.y*scale, 
-                   p1.x*scale+origin.x*scale, p1.y*scale+origin.y*scale);
+    return p1;
 }
 
-void Triangle::save(std::ostream& out) const
+void Triangle::accept(Visitor* v)
 {
-    out << "Triangle " << p1.x << " " << p1.y << " " << p2.x << " " << p2.y << " " << p3.x << " " << p3.y << std::endl;
+    v->visitTriangle(this);
 }
+
+Point Triangle::getp2() const
+{
+    return p2;
+}
+
+Point Triangle::getp3() const
+{
+    return p3;
+}   
 
 void Triangle::load(std::istream& in)
 {

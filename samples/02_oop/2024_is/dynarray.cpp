@@ -124,7 +124,11 @@ void DynArray<T>::push_back(const T& x)
             size: 3
         }
     */
-T* tmp = new T[this->size+1];
+    T* tmp;
+    if(this->size < 1000)
+        tmp = new T[this->size+1];
+    else 
+        throw DynaArrayOutOfMemoeryExceptioin{this->size};
     /*
         a:{
             arr -------------> [1] [2] [3]
@@ -132,10 +136,10 @@ T* tmp = new T[this->size+1];
         }
         tmp ----------------> [13134] [756] [12313] [464745]
     */
-for(int i = 0; i < this->size; ++i)
-{
-    tmp[i] = this->arr[i];
-}
+    for(int i = 0; i < this->size; ++i)
+    {
+        tmp[i] = this->arr[i];
+    }
     /*
         a:{
             arr -------------> [1] [2] [3]
@@ -143,8 +147,8 @@ for(int i = 0; i < this->size; ++i)
         }
         tmp ----------------> [1] [2] [3] [464745]
     */
-tmp[this->size] = x;
-this->size++;
+    tmp[this->size] = x;
+    this->size++;
     /*
         a:{
             arr -------------> [1] [2] [3]
@@ -235,12 +239,19 @@ bool DynArray<T>::operator==(const DynArray<T>& b) const
 template <typename T>
 T DynArray<T>::operator[](unsigned int i) const
 {
-
+    if(i < 0 || i > size)
+    {
+        throw "Index out of bounds";
+    }
     return this->arr[i];
 }
 template <typename T>
 T& DynArray<T>::operator[](unsigned int i)
 {
+    if(i < 0 || i > size)
+    {
+        throw "Index out of bounds";
+    }
     return this->arr[i];
 }
 

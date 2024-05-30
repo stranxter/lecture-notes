@@ -3,6 +3,10 @@
 #include <iostream>
 #include <fstream>
 
+struct DynaArrayOutOfMemoeryExceptioin
+{
+    unsigned int elementsBeforeDeath;
+};
 
 template <typename T>
 class DynArray

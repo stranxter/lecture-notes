@@ -2,6 +2,19 @@
 
 #include <iostream>
 
+struct array_exception_out_of_bounds
+{
+    const char* msg;
+    array_exception_out_of_bounds(const char* _msg):msg(_msg){}
+};
+
+struct array_exception_out_of_memory
+{
+    const char* msg;
+    array_exception_out_of_memory(const char* _msg):msg(_msg){}
+};
+
+
 template <typename T>
 class DynArray
 {
@@ -51,6 +64,14 @@ class DynArray
 
     T operator[](int i)
     {
+        if(i < 0)
+        {
+            throw array_exception_out_of_bounds("soory");
+        }
+        if(i >= crr_size)
+        {
+            throw array_exception_out_of_memory("sorry");
+        }
         return arr[i];
     }
 
@@ -92,7 +113,26 @@ class DynArray
         //std::cout << "COPY CONSTRUCTOR\n";          
         copy(other);
     }
-    
+
+    DynArray(DynArray&& other)
+    {
+        arr = other.arr;
+        crr_size = other.crr_size;
+        other.arr = nullptr;
+        other.crr_size = 0;
+    }
+
+
+    DynArray<T>& operator=(DynArray&& other)
+    {
+        delete arr;
+        arr = other.arr;
+        crr_size = other.crr_size;
+        other.arr = nullptr;
+        other.crr_size = 0;
+    }
+
+
     DynArray<T>& operator=(const DynArray& other)
     {
         //a=b | &a->this, b->other

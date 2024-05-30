@@ -3,6 +3,13 @@
 #include "utils.h"
 
 
+#include "visitor.h"
+
+void Group::accept(Visitor* v)
+{
+    v->visitGroup(this);
+}
+
 Group::Group(const Group &other)
 {
     copyContents(other);
@@ -41,22 +48,18 @@ double Group::perimeter() const
     return sum;
 }
 
-void Group::draw(Point origin) const
+std::vector<Figure*>::iterator Group::begin()
 {
-    for(Figure* f : figures)
-    {
-        f->draw(origin);
-    }
+    return figures.begin();
+
 }
 
-void Group::save(std::ostream& out) const
+std::vector<Figure*>::iterator Group::end()
 {
-    out << "Group " << figures.size() << std::endl;
-    for(Figure* f : figures)
-    {
-        f->save(out);
-    }
+    return figures.end();
+
 }
+
 void Group::load(std::istream& in)
 {
     int n;
@@ -98,4 +101,9 @@ Group& Group::operator=(const Group &other)
         copyContents(other);
     }
     return *this;
+}
+
+unsigned int Group::size() const
+{
+    return figures.size();
 }

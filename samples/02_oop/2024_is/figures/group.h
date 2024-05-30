@@ -1,3 +1,4 @@
+#pragma once
 #include "figure.h"
 #include <vector>
 
@@ -11,8 +12,6 @@ class Group : public Figure
 
     double area() const;
     double perimeter() const;
-    void draw(Point origin) const;
-    void save(std::ostream& out) const;
     void load(std::istream& in);
 
     Group& operator=(const Group&);
@@ -21,8 +20,15 @@ class Group : public Figure
 
     void add(Figure*);
     void clear();
-    
+
+    void accept(Visitor* v);
+
     ~Group();
+
+    std::vector<Figure*>::iterator begin();
+    std::vector<Figure*>::iterator end();
+
+    unsigned int size() const;
 
     private:
     std::vector<Figure*> figures;
