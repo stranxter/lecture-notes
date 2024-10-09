@@ -32,7 +32,6 @@ class DynArray
     Iterator end();
 
 
-
     int getSize() const;
     void setSize(unsigned int newSize);
     DynArray();
@@ -42,7 +41,7 @@ class DynArray
 
     DynArray<T>& operator=(const DynArray<T>& other);
     void push_back(const T& x);
-    DynArray<T> operator+(const DynArray<T>& b) const;
+    DynArray<T> operator+(const DynArray<T>& b) const;  
     DynArray<T>& operator+=(const T& x);
     DynArray<T>& operator+=(const DynArray<T>& b);
     bool operator!=(const DynArray<T>& b) const;
