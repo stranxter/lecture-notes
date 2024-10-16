@@ -21,8 +21,6 @@ class ExprOperator : public Expression
     ExprOperator(char, Expression*, Expression*);
     int value() const;
 
-    static int apply(char op, Expression *left, Expression *right);
-
     private:
     char op;
     Expression *left;

@@ -15,6 +15,7 @@ class TokenStream
     TokenStream(std::istream&);
     Token get();
     Token peek();
+    bool eof();
 
     private:
     std::istream &in;

@@ -10,6 +10,7 @@
 
 #include "expression.h"
 #include "parser.h"
+#include "polish.h"
 
 TEST_CASE("Test Tree Eval")
 {
@@ -46,6 +47,50 @@ TEST_CASE("Test Conditional Expression")
     
     Expression *e = parseExpression(in);
     CHECK(e->value() == 4);
+}
+
+int rpn(std::string s)
+{
+    std::stringstream in(s);
+    TokenStream tokens(in);
+    return (evalRPN(tokens));
+}
+
+TEST_CASE("Test RPN Evaluation")
+{
+    std::vector<std::pair<std::string,int>> tests = 
+                                 {{"1 2 + $",3},
+                                  {"1 2 3 + + $",6},
+                                  {"2 3 4 + * $",14},
+                                  {"1 2 + 3 4 + + $",10}};
+    for(auto test:tests)
+    {
+        CHECK(rpn(test.first)==test.second);
+    }
+}
+
+void toRPNhelper(std::string s)
+{
+    std::stringstream in(s);
+    TokenStream tokens(in);
+    std::cerr << toRPN (tokens) << std::endl;
+}
+
+TEST_CASE("Test Infix to RPN")
+{
+    std::vector<std::pair<std::string,int>> tests = 
+                                 {{"1 + 2 $",3},
+                                  {"1 + 2 + 3 $",6},
+                                  {"2 + 3 * 4 $",14},
+                                  {"1+2*3-4 $",0},
+                                  {"(1+2)*3 $",0},
+                                  {"3*(1+2) $",0},
+                                  {"3+(1*2) $",0},
+                                  {"3*(1+2*(1+3)+4) $",0}};
+    for(auto test:tests)
+    {
+        toRPNhelper(test.first);
+    }
 }
 
 

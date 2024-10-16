@@ -11,7 +11,8 @@ bool isOperator(char c)
     return c == '+' || 
            c == '-' || 
            c == '*' || 
-           c == '/';
+           c == '/' ||
+           c == '$';
 }
 
 bool is_whitespace(char c)
@@ -90,4 +91,9 @@ Token TokenStream::peek()
     peekedToken = get();
     isTokenPeeked = true;
     return peekedToken;
+}
+
+bool TokenStream::eof()
+{
+    return in.eof();
 }

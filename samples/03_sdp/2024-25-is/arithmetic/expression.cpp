@@ -1,6 +1,6 @@
 #include "expression.h"
 #include <string>
-#include <functional>
+#include "evalutils.h"
 
 ExprConstant::ExprConstant(int val):_value(val){}
 
@@ -13,27 +13,11 @@ ExprOperator::ExprOperator(char _op, Expression *_left, Expression *_right)
             :op(_op),left(_left),right(_right){}
 
 
-std::function<int(int,int)> to_function(char op)
-{
-    switch(op)
-    {
-        case '+': return [](int x, int y)->int {return x+y;};
-        case '-': return [](int x, int y)->int {return x-y;};
-        case '*': return [](int x, int y)->int {return x*y;};
-        case '/': return [](int x, int y)->int {return x/y;};
-        default: throw std::string("Uknown operator:") + op;
-    }
-}
-
-int ExprOperator::apply(char op, Expression *left, Expression *right)
-{
-    return to_function(op)(left->value(),right->value());
-}
 
 int ExprOperator::value() const
 {
 
-    return apply(op,left,right);
+    return apply(op,left->value(),right->value());
 
 }
 
