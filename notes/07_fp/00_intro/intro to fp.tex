@@ -78,6 +78,113 @@
 
 }
 
+\section{Език за програмиране Haskell}
+
+\begin{frame}
+  \centerline{Език за програмиране Haskell}
+\end{frame}
+
+
+\subsection{}
+
+\begin{frame}[fragile]
+  \frametitle{Първи стъпки в езика}
+  \begin{itemize}
+    \item Аритметични операции
+    \item Логически стойности, сравнения, логически операции
+    \item Условен оператор
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Функции}
+
+  Модул Prelude
+
+  \bigskip
+
+  succ, pred, min, max, div, mod, abs, signum, even, odd, gcd, sqrt, log, sin, cos, round, ceiling, floor
+
+  \bigskip
+
+  \begin{itemize}
+    \item Предаване на аргументи
+    \item Изрази като аргументи
+    \begin{lstlisting}[basicstyle=\small, language=Haskell]
+    max 1 2 + 3
+    max 1 $ 2+3
+    \end{lstlisting}
+    \item Оператор \verb|$|
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Оператори}
+
+  \verb#+, -, *, /, ^, ==, /=, >, <, >=, <=, &&, ||, not#
+
+  \bigskip
+
+  \begin{itemize}
+    \item Операторите са функции
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Дефиниране на функции}
+
+  \begin{itemize}
+    \item Име, аргументи, тяло
+    \item Currying
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Типова сигнатура}
+
+  Int, Double, Bool
+
+  \begin{itemize}
+    \item Тип на фунцкия с повече аргументи
+  \end{itemize}
+
+\end{frame}
+
+\subsection{Списъци и символни низове}
+
+\begin{frame}
+  \centerline{Списъци и символни низове}
+\end{frame}
+  
+
+\subsection{}
+
+
+\begin{frame}[fragile]
+  \frametitle{Характеристика на езика}
+  
+\begin{itemize}
+  \item Чисто функционален език
+  \item Строго типизиран език
+  \begin{lstlisting}[basicstyle=\small, language=Haskell]
+    5 + "5"
+    f :: [Int] -> Int
+    f [] = 0
+    f _ = 1
+    \end{lstlisting}
+  \item Лениво (мързеливо) оценяване
+  \begin{lstlisting}[basicstyle=\small, language=Haskell]
+    f x = x : f (x+1)
+    take 5 (f 0)
+  \end{lstlisting}
+\end{itemize}
+
+
+\end{frame}
+
 
 
 \end{document}
