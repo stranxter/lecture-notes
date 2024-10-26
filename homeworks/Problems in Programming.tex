@@ -1,4 +1,4 @@
-\documentclass[12pt,a4paper]{article}
+\documentclass[12pt,a4paper]{book}
 \usepackage[utf8]{inputenc}
 %\usepackage{amsmath}
 \usepackage{mathtools}
@@ -51,7 +51,8 @@ lnode/.style={rectangle split, rectangle split parts=3,draw, rectangle split hor
 treenode/.style = {align=center, inner sep=0pt, text centered, circle, font=\sffamily\bfseries, draw=black, fill=white, text width=1.5em}
 }
 
-
+\renewcommand{\thesection}{\arabic{section}}
+\raggedbottom 
 
 \author{\textit{Калин Георгиев}\\
 \small{kalin@fmi.uni-sofia.bg}}
@@ -71,15 +72,19 @@ treenode/.style = {align=center, inner sep=0pt, text centered, circle, font=\sff
 
 \pagebreak
 
-\input{Programming_101.tex}
+\input{01_Programming_101.tex}
 
 \pagebreak 
 
-\input{Object_oriented_programming.tex}
+\input{02_Object_oriented_programming.tex}
 
 \pagebreak 
 
-\input{Data_structures.tex}
+\input{03_Data_structures.tex}
+
+\pagebreak
+
+\input{04_Functional_programming.tex}
 
 \pagebreak
 

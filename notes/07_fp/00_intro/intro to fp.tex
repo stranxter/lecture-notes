@@ -13,6 +13,8 @@
 \usepackage{graphicx}
 \usepackage[english,bulgarian]{babel}
 
+\usepackage{caption}
+
 \usetheme{CambridgeUS}
 \usecolortheme{crane}
 
@@ -36,7 +38,7 @@
 
 \setbeamercovered{transparent}
 
-
+\captionsetup{font=tiny} 
 
 \begin{document}
 \title[Увод в курса]{Въведение във функционалното програмиране}
@@ -93,6 +95,7 @@
     \item Аритметични операции
     \item Логически стойности, сравнения, логически операции
     \item Условен оператор
+    \item Локални дефиниции
   \end{itemize}
 \end{frame}
 
@@ -109,10 +112,8 @@
 
   \begin{itemize}
     \item Предаване на аргументи
-    \item Изрази като аргументи
     \begin{lstlisting}[basicstyle=\small, language=Haskell]
     max 1 2 + 3
-    max 1 $ 2+3
     \end{lstlisting}
     \item Оператор \verb|$|
   \end{itemize}
@@ -128,6 +129,7 @@
 
   \begin{itemize}
     \item Операторите са функции
+    \item Функции като оператори
   \end{itemize}
 \end{frame}
 
@@ -138,20 +140,73 @@
   \begin{itemize}
     \item Име, аргументи, тяло
     \item Currying
+    \item Рекурсия
+    \item Ламбда функции
   \end{itemize}
 \end{frame}
 
 
 \begin{frame}[fragile]
-  \frametitle{Типова сигнатура}
+  \frametitle{Основни типове в Haskell}
 
-  Int, Double, Bool
+  Int, Integer, Float, Double, Bool, Char
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Типове на функциите}
 
   \begin{itemize}
+    \item Типови декларации
+    \item Тип на функция
     \item Тип на фунцкия с повече аргументи
   \end{itemize}
 
 \end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Типови класове}
+
+  \begin{figure}
+    \includegraphics[width=8cm]{images/type-inclusion.png}
+    \caption{Основни типови класове в Haskell [1]}
+  \end{figure}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Типови класове и типови променливи}
+
+  \begin{tabular}{c|l}
+    Eq & ==, /= \\
+    Ord & <, <=, >, >= \\
+    Show & show \\
+    Read & read \\
+    Num & +, -, *, abs, signum \\
+    Integral & div, mod, toInteger \\
+    Fractional & /, recip    
+  \end{tabular}
+
+  \bigskip
+
+  \begin{itemize}
+    \item Типови променливи
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Произведение на типове}
+
+  \begin{itemize}
+    \item Двойки и n-торки
+    \item \verb#fst, snd#
+  \end{itemize}
+
+\end{frame}
+
 
 \subsection{Списъци и символни низове}
 
@@ -159,6 +214,55 @@
   \centerline{Списъци и символни низове}
 \end{frame}
   
+\begin{frame}[fragile]
+  \frametitle{Списъци}
+
+  \begin{itemize}
+    \item Хомогенни линейни структури, \verb|[a]|
+    \item Представяне в паметта
+    \item Основни операции
+  \end{itemize}
+
+  \bigskip
+
+  head, tail, last, init, length, null, reverse, take, drop, maximum, minimum, sum, product, elem
+
+  \bigskip
+
+  \includegraphics[width=14.0cm]{images/02_ll_flatchain}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Оператори над списъци}
+
+  \begin{itemize}
+    \item Списъчен конструктор \verb|:|
+    \item \verb|++|
+    \item \verb|!!|
+    \item Интервали
+  \end{itemize}
+
+  \bigskip
+
+  head, tail, last, init, length, null, reverse, take, drop, maximum, minimum, sum, product, elem
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Символни низове}
+
+  \begin{itemize}
+    \item Списъци от символи
+  \end{itemize}
+
+  \bigskip
+  
+
+\end{frame}
+
+
 
 \subsection{}
 
@@ -186,6 +290,14 @@
 \end{frame}
 
 
+\begin{frame}[fragile]
+  \frametitle{Цитирани източници}
+
+  \relscale{0.5}
+    [1] Antoni Diller, Introduction to Haskell, 
+        https://www.cantab.net/users/antoni.diller/haskell/haskell.html
+\end{frame}
+
 
 \end{document}
 
@@ -205,4 +317,4 @@
   \end{column}
 \end{columns}
 
-#
+
