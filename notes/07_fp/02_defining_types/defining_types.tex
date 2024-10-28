@@ -1,0 +1,215 @@
+\documentclass{beamer}
+\usepackage{relsize}
+\usepackage{color}
+
+\usepackage{listings}
+\usetheme{CambridgeUS}
+%\usepackage{beamerthemesplit} % new
+\usepackage{enumitem}
+\usepackage{amsmath}                    % See geometry.pdf to learn the layout options.
+\usepackage{amsthm}                   % See geometry.pdf to learn the layout options. There
+\usepackage{amssymb}                    % See geometry.pdf to learn the layout options.
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage[english,bulgarian]{babel}
+
+\usepackage{caption}
+
+\usetheme{CambridgeUS}
+\usecolortheme{crane}
+
+\lstset{language=C++,
+                basicstyle=\ttfamily,
+                keywordstyle=\color{blue}\ttfamily,
+                stringstyle=\color{red}\ttfamily,
+                commentstyle=\color{green}\ttfamily,
+                morecomment=[l][\color{magenta}]{\#}
+}
+
+\newtheorem{mydef}{Дефиниция}[section]
+\newtheorem{lem}{Лема}[section]
+\newtheorem{thm}{Твърдение}[section]
+
+\DeclareMathOperator{\restrict}{\upharpoonright}
+
+\setitemize{label=\usebeamerfont*{itemize item}%
+  \usebeamercolor[fg]{itemize item}
+  \usebeamertemplate{itemize item}}
+
+\setbeamercovered{transparent}
+
+\captionsetup{font=tiny} 
+
+\begin{document}
+\title[Увод в курса]{Дефиниране на типове (1)}
+\frame{\titlepage}
+
+\section{Дефиниране на типове}
+\subsection{data}
+
+
+\begin{frame}[fragile]
+  \frametitle{Изброим тип}
+
+\begin{lstlisting}[basicstyle=\small]
+  data Season = Winter | Spring | Summer | Autumn
+
+  season month
+    | month < 2 = Winter
+    | month < 5 = Spring
+    | month < 8 = Summer
+    | month < 11 = Autumn
+    | otherwise = Winter
+\end{lstlisting}
+
+\begin{itemize}
+  \item Конструктор
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Някои неща ``на готово''}
+
+\begin{itemize}
+  \item Образци
+  \begin{lstlisting}[basicstyle=\small]
+      seasonn Spring = 1
+      seasonn Summer = 2
+      seasonn Autumn = 3
+      seasonn Winter = 4
+  \end{lstlisting}
+  \item Сравнение
+  \begin{lstlisting}[basicstyle=\small]
+      ...deriving (Eq)
+      >Winter == Winter
+      ...deriving (Ord)
+      >Winter < Spring
+  \end{lstlisting}
+  \item Сравнение
+  \begin{lstlisting}[basicstyle=\small]
+      ...deriving (Ord)
+      >Winter < Spring
+  \end{lstlisting}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Някои неща ``на готово''}
+
+\begin{itemize}
+  \item Извеждане, въвеждане
+  \begin{lstlisting}[basicstyle=\small]
+      ...deriving (Show, Read)
+  \end{lstlisting}
+  \item Интервали
+  \begin{lstlisting}[basicstyle=\small]
+      ...deriving (Enum)
+      >[Spring .. Winter]
+  \end{lstlisting}
+  \item Преобразуване към цяло число
+  \begin{lstlisting}[basicstyle=\small]
+      ...deriving (Enum)
+      >fromEnum Summer
+      >toEnum 2 :: Season
+  \end{lstlisting}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Конструктори с параметри}
+
+  \begin{lstlisting}[basicstyle=\small]
+    data Point = Point Double Double
+  \end{lstlisting}
+
+\begin{itemize}
+  \item Защо не просто двойка $(Double, Double)$?
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Синоним на тип}
+
+  \begin{lstlisting}[basicstyle=\small]
+    data Point = (Double, Double)
+  \end{lstlisting}
+
+\begin{itemize}
+  \item Може и така... но!
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Полиморфизъм}
+
+  \begin{lstlisting}[basicstyle=\small]
+    data Shape = Circle Double | Rectangle Double Double
+
+    area :: Shape -> Double
+    area (Circle r) = pi * r * r
+    area (Rectangle a b) = a * b
+  \end{lstlisting}
+
+\begin{itemize}
+  \item Предефиниране на функции (overloading)
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Какво всъщност са конструкторите?}
+
+  \begin{lstlisting}[basicstyle=\small]
+    >:t Circle
+  \end{lstlisting}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Записи}
+
+  \begin{lstlisting}[basicstyle=\small]
+    data Student = Student {name :: String
+                           ,fn :: String
+                           ,grades :: [(String,Double)]}
+
+    x :: Student = Student {name = "Ivan"
+                           ,fn = "123456"
+                           ,grades = [("OOP",5.5),
+                                      ("FP",6.0)]}                           
+
+    >grades x
+    >:t grades
+  \end{lstlisting}
+
+\end{frame}
+
+
+
+\end{document}
+
+
+
+\begin{columns}[t]
+  \begin{column}{0.2\textwidth}
+
+\relscale{0.63}
+\begin{lstlisting}
+\end{lstlisting}
+\relscale{1}
+
+  \end{column}
+  \begin{column}{0.8\textwidth}
+
+  \end{column}
+\end{columns}
+
+
