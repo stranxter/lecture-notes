@@ -112,6 +112,29 @@ bool isSubset(int arr1[10], int arr2[10])
     return n == 10;
 }
 
+
+void insertSorted(int arr[10],int count,int x)
+{
+    //пореден номер на елемент в масива, където би следвало да запишем x
+    int insertPosition  = 0;
+
+    while(insertPosition < count &&
+          arr[insertPosition] <= x)
+
+    {
+        ++insertPosition;    
+    }
+    //{10,20,....} +15, insertPosition = 1
+    for(int i = count-1; i >= insertPosition; --i)
+    {
+        arr[i+1]=arr[i];
+    }
+
+    arr[insertPosition] = x;
+
+}
+
+
 int main()
 {
     int arr[10];
@@ -132,6 +155,19 @@ int main()
     cout << "ascendingprefix=" << longestAscendingPrefix(arr) << endl;
     cout << "isSubset=" << isSubset(arr,arr2) << endl;
 
+
+    int arr3[10] = {0};
+
+    insertSorted(arr3,0,10);
+    insertSorted(arr3,1,15);
+    insertSorted(arr3,2,20);
+    insertSorted(arr3,3,0);
+    insertSorted(arr3,4,50);
+
+    for(int i = 0; i < 5; ++i)
+    {
+        std::cout << arr3[i] << " ";
+    }
 
     return 0;
 }
