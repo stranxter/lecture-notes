@@ -112,7 +112,106 @@ bool isSubset(int arr1[10], int arr2[10])
     return n == 10;
 }
 
+//колко от елементите в началото на масива са <= x
+/*
 
+   10 20 30 40 50 60 70 X X X | x = 45
+                ^
+                |
+    0  1  2  3  4  5  6 7 8 9
+*/
+
+int smallerPrefixLength(int x, int arr[10], int length)
+{
+    int current = 0;
+    while(arr[current] <= x && current < length)
+    {
+        ++current;
+    }
+
+    return current;
+}
+
+//премества надясно елементите на масива ОТ елемента 
+//firtToMove нататък
+/*
+                |-------->
+   10 20 30 40 50 60 70 X X X 
+                ^
+                |
+    0  1  2  3  4  5  6 7 8 9
+*/
+
+void shiftRight(int arr[10],int firstToMtove, int arrLength)
+{
+/*
+   10 20 30 40 50 60 70 X X X 
+                ^
+                |
+    0  1  2  3  4  5  6 7 8 9
+*/
+
+    for(int i = arrLength; i > firstToMtove; --i)
+    {
+        arr[i] = arr[i-1];
+    }
+}
+
+void insertSorted(int arr[10],int length,int x)
+{
+    int placeToInsert = smallerPrefixLength(x,arr,length);
+    shiftRight(arr,placeToInsert,length);
+    arr[placeToInsert]=x;
+}
+
+/*
+    търсим минималния елемент в подмасива на arr, 
+    започващ с елемента с индекс from
+*/
+//X X X X X X Y Y Y Y Y Y Y Y Y Y Y Y
+//            ^
+//            |
+//          from
+int findMinIndexInSubarray(int arr[10], int from)
+{
+    int minCandidate = from;
+    for(int i = from; i < 10; ++i)
+    {
+        if(arr[i]<arr[minCandidate])
+        {
+            minCandidate = i;
+        }
+    }
+    return minCandidate;
+}
+
+void swap(int arr[10], int i, int j)
+{
+    int save = arr[j];
+    arr[j] = arr[i];
+    arr[i] = save;
+}
+
+void ssort(int arr[10])
+{
+    for(int sortedPrefixLength = 0; sortedPrefixLength < 10; ++sortedPrefixLength)
+    {
+        //X X X X X X Y Y Y Y Y Y Y Y Y Y Y Y 
+        //            ^
+        //            |
+        //      sortedPrefixLength
+        int minIndex = findMinIndexInSubarray(arr,sortedPrefixLength);
+
+        //X X X X X X Y Y Y Y Y Y Y Y Y Y Y Y 
+        //            ^               ^
+        //            |               |
+        //      sortedPrefixLength    |
+        //                          minIndex
+        swap(arr,sortedPrefixLength,minIndex);
+    }
+}
+
+/*
 void insertSorted(int arr[10],int count,int x)
 {
     //пореден номер на елемент в масива, където би следвало да запишем x
@@ -133,12 +232,39 @@ void insertSorted(int arr[10],int count,int x)
     arr[insertPosition] = x;
 
 }
+*/
 
+void merge(int arr1[5], int arr2[5], int result[10])
+{
+
+/*
+    0 0 0 0 0 X X X X X 
+    1 1 1 1 1 Z Z Z Z Z
+*/
+
+    int i1 = 0, i2 = 0;
+    while(i1+i2 < 10)
+    {
+        if(i1 < 5 && arr1[i1]<arr2[i2])
+        {
+            //случай, в който вземеме елемент от arr1
+            result[i1+i2]=arr1[i1];
+            ++i1;
+
+        } else if (i2 < 5)
+        {
+            //случай, в който вземеме елемент от arr2
+            result[i1+i2]=arr2[i2];
+            ++i2;
+        }
+    }  
+
+}
 
 int main()
 {
     int arr[10];
-
+/*
     for(int n = 0; n < 10; ++n)
     {
         cout << "Моля, въдедете число номер " << n << ":";
@@ -155,7 +281,9 @@ int main()
     cout << "ascendingprefix=" << longestAscendingPrefix(arr) << endl;
     cout << "isSubset=" << isSubset(arr,arr2) << endl;
 
+*/
 
+/*
     int arr3[10] = {0};
 
     insertSorted(arr3,0,10);
@@ -164,9 +292,29 @@ int main()
     insertSorted(arr3,3,0);
     insertSorted(arr3,4,50);
 
-    for(int i = 0; i < 5; ++i)
+*/
+
+/*
+    int arr4[10] = {7,2,1,10,3,76,3,-12,0,99};
+
+    ssort(arr4);
+
+    for(int i = 0; i < 10; ++i)
     {
-        std::cout << arr3[i] << " ";
+        std::cout << arr4[i] << " ";
+    }
+*/
+
+
+    int arr5[5] = {10,20,30,40,50};
+    int arr6[5] = {11,12,13,20,1000};
+    int arr7[10] = {0};
+
+    merge(arr5,arr6,arr7);
+
+    for(int i = 0; i < 10; ++i)
+    {
+        std::cout << arr7[i] << " ";
     }
 
     return 0;
