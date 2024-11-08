@@ -1,0 +1,181 @@
+\documentclass{beamer}
+\usepackage{relsize}
+\usepackage{color}
+
+\usepackage{listings}
+\usetheme{CambridgeUS}
+%\usepackage{beamerthemesplit} % new
+\usepackage{enumitem}
+\usepackage{amsmath}                    % See geometry.pdf to learn the layout options.
+\usepackage{amsthm}                   % See geometry.pdf to learn the layout options. There
+\usepackage{amssymb}                    % See geometry.pdf to learn the layout options.
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage[english,bulgarian]{babel}
+
+\usepackage{caption}
+\usepackage{tikz}
+
+\usetheme{CambridgeUS}
+\usecolortheme{crane}
+
+\lstset{language=C++,
+                basicstyle=\ttfamily,
+                keywordstyle=\color{blue}\ttfamily,
+                stringstyle=\color{red}\ttfamily,
+                commentstyle=\color{green}\ttfamily,
+                morecomment=[l][\color{magenta}]{\#}
+}
+
+\newtheorem{mydef}{Дефиниция}[section]
+\newtheorem{lem}{Лема}[section]
+\newtheorem{thm}{Твърдение}[section]
+
+\DeclareMathOperator{\restrict}{\upharpoonright}
+
+\setitemize{label=\usebeamerfont*{itemize item}%
+  \usebeamercolor[fg]{itemize item}
+  \usebeamertemplate{itemize item}}
+
+\setbeamercovered{transparent}
+
+\captionsetup{font=tiny} 
+
+\begin{document}
+\title[Увод в курса]{Функции от висок ред}
+\frame{\titlepage}
+
+\section{Рекурсия}
+\subsection{}
+
+\begin{frame}
+  \centerline{Функциите като параметри на други функции}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{filter}
+
+  \begin{itemize}
+    \item Прости примери (>, even)
+    \item Примери: структурирани данни
+    \item Примери: операции над множества
+    \item quicksort
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{По-задълбочен поглед}
+
+  \begin{itemize}
+    \item Реализация на $filter$
+    \item Производителност
+    \item Филтриране на безкрайни списъци
+  \end{itemize}
+
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[xshift=5mm,yshift=-15mm,anchor=north west] at (current page.north west){%
+    \includegraphics[width=155mm]{images/02_ll_flatchain.pdf}};
+  \end{tikzpicture}
+  
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{map}
+
+  \begin{itemize}
+    \item Прости примери (+1, even, digits, toUpper)
+    \item Примери: структурирани данни
+    \item Списъци от функции
+    \item Реализация
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{foldr}
+
+  \begin{itemize}
+    \item Прилагане на опреация с акумулатор
+    \item Примери: сума, произведение, конкатенация
+    \item $map$ и $filter$ с $foldr$
+    \item $elem$ с $foldr$. Сравнение с $elem$
+    \item Примери: структурирани данни
+    \item Реализация
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{foldl}
+
+  \begin{itemize}
+    \item Реализация
+    \item $reverse$ с $foldl$
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{foldl1, foldr1}
+
+  \begin{itemize}
+    \item maximum, minimum
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+  \centerline{MapReduce}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{MapReduce}
+
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[xshift=00mm,yshift=-15mm,anchor=north] at (current page.north){%
+    \includegraphics[width=55mm]{images/mapreduce}};
+  \end{tikzpicture}
+
+
+  \begin{itemize}
+    \item Пример със структурирани данни
+    \item ``Език'' за заявки
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Други примери}
+
+  zipwith, takewhile, dropwhile, iterate, unfoldr
+
+\end{frame}
+
+
+\begin{frame}
+  \centerline{Благодаря за вниманието!}
+\end{frame}
+
+
+
+\end{document}
+
+
+\begin{columns}[t]
+  \begin{column}{0.2\textwidth}
+
+\relscale{0.63}
+\begin{lstlisting}
+\end{lstlisting}
+\relscale{1}
+
+  \end{column}
+  \begin{column}{0.8\textwidth}
+
+  \end{column}
+\end{columns}
+
+
