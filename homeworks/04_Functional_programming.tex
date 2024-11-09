@@ -118,4 +118,75 @@
 
 
 
+\section {map, filter, fold}
 
+\begin{enumerate}[resume]
+	\item Направете и тествайте собствена реализация на функциите \code{map}, \code{filter} и \code{fold(l,r,l1,r1)}.
+	\item Нека е даден списък \code{l::[(Int,Int,Int)]} с тройки $(a_i,b_i,c_i)$. С помощта на \code{map}, \code{fold} и \code{filter} да се намерят:
+	
+	\begin{enumerate}[label=\alph*)]
+		\item Списъка от сумите на елементите на тройките $[(a_i+b_i+c_i)]$
+		\item Тройка от сумите на отделните компоненти на елемнтите на \code{l}, $(\sum a_i,\sum b_i, \sum c_i)$
+		\item Броя на тройките, за които $a_i+b_i>c_i$
+		\item Дали има поне една тройка, за която $a_i=b_i=c_i$ (\code{True} или \code{False})
+	\end{enumerate}
+\end{enumerate}
+
+
+\begin{mdframed}[hidealllines=true,backgroundcolor=gray!20]
+На лекции разглеждаме модел на лабиринт, сържащ цел и препятсвия.
+\begin{lstlisting}[basicstyle=\small,language=Haskell]
+type Pos = (Int, Int)
+  
+data Tile = Road | Wall | Gold
+            deriving (Show, Eq)  
+data Game = Game { pos :: Pos, world :: [[Tile]]}
+            deriving (Show)
+myWorld :: Game = Game { pos = (0, 0), 
+                         world = [[Road, Wall, Gold], 
+                                  [Road, Wall, Road], 
+                                  [Road, Road, Road]]}
+\end{lstlisting}
+\begin{center}
+	\includegraphics[width=4cm]{images/maze}	
+\end{center}
+
+Следите функции ``придвижват'' играча в лабиринта:
+
+\begin{lstlisting}[basicstyle=\small,language=Haskell]
+left (Game (x, y) w) = Game (x-1, y) w
+right (Game (x, y) w) = Game (x+1, y) w
+up (Game (x, y) w) = Game (x, y-1) w
+down (Game (x, y) w) = Game (x, y+1) w	
+\end{lstlisting}
+
+И помощни функции при изследване на играта:
+
+\begin{lstlisting}[basicstyle=\small,language=Haskell]
+foundGold  :: Game -> Bool
+foundGold  (Game (x,y) w) = (w !! y) !! x == Gold
+stuck  :: Game -> Bool
+stuck  (Game (x,y) w) = dead w (x, y)
+dead :: [[Tile]] -> Pos -> Bool
+dead w (x, y) = x < 0 || x >= length w ||
+                y < 0 || y >= length w || 
+                (w !! y) !! x == Wall
+move :: Game -> (Pos -> Pos) -> Maybe Game
+move (Game p w) mv = if dead w (mv p) 
+                       then Nothing 
+                       else Just $ Game (mv p) w
+\end{lstlisting}
+
+\end{mdframed}
+
+\begin{enumerate}[resume]
+	\item С помощта на \code{map}, \code{mapMaybe}, \code{filter} и \code{fold} да се намерят:
+	\begin{enumerate}[label=\alph*)]
+		\item Броя на препятсвията в даден лабиринт
+		\item Броя съседи на целта, които не са препятсвия
+		\item Дали целта е оградена изцяло от препятствия (\code{True} или \code{False})
+	\end{enumerate}
+
+	\item(*) С помощта на \code{foldr} да се дефинира функция, която проверява дали дали даден списък от числа \code{l::[Int]} е нареден във възходящ ред. \emph{Упътване: Използвайте двойка \code{(Bool,Int)} за акумулатор.}
+
+\end{enumerate}
