@@ -155,6 +155,62 @@
 \end{frame}
 
 
+\begin{frame}[fragile]
+  \frametitle{Път в лабиринт}
+
+  \begin{lstlisting}[basicstyle=\tiny,language=Haskell]
+--findGold :: game visited -> path
+findGold :: Maybe Game -> [Pos] -> [Pos]
+findGold Nothing _ = []
+findGold (Just g@(Game p w)) visited
+    | foundGold g = [p]
+    | (stuck g) || (elem p visited) = []
+    | downpath /= [] = p : downpath
+    | rightpath /= [] = p : rightpath
+    | uppath /= [] = p : uppath
+    | leftpath /= [] = p : leftpath
+    where downpath = findGold (down g) (p:visited)
+          rightpath = findGold (right g) (p:visited)
+          uppath = findGold (up g) (p:visited)
+          leftpath = findGold (left g) (p:visited)  
+  \end{lstlisting}
+  
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{mapMaybe}
+
+\begin{lstlisting}[basicstyle=\tiny,language=Haskell]
+findGold :: Maybe Game -> [Pos] -> Maybe [Pos]
+findGold Nothing _ = Nothing
+findGold (Just g@(Game p w)) visited
+    | foundGold g = Just [p]
+    | (stuck g) || (elem p visited) || null routes = Nothing
+    | otherwise = Just $ p : (head routes)
+    where routes = mapMaybe (\dir -> findGold (dir g) (p:visited))
+                            [down, right, up, left]  
+\end{lstlisting}
+  
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{без Lambda}
+
+\begin{lstlisting}[basicstyle=\tiny,language=Haskell]
+findGold :: Maybe Game -> [Pos] -> Maybe [Pos]
+findGold Nothing _ = Nothing
+findGold (Just g@(Game p w)) visited
+    | foundGold g = Just [p]
+    | (stuck g) || (elem p visited) || null routes = Nothing
+    | otherwise = Just $ p : (head routes)
+    where routes = mapMaybe ((flip findGold) (p:visited))
+                            [down g, right g, up g, left g]  
+\end{lstlisting}
+  
+\end{frame}
+
+
 \begin{frame}
   \centerline{Благодаря за вниманието!}
 \end{frame}

@@ -1,3 +1,4 @@
+
 fistdivisor x = divisorhelp x 2
 
 divisorhelp x k 
