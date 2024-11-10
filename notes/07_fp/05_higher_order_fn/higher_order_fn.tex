@@ -210,11 +210,85 @@ findGold (Just g@(Game p w)) visited
   
 \end{frame}
 
+\begin{frame}
+  \centerline{List Comprehensions}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{List Comprehensions}
+
+\verb#map# и \verb#filter# в едно
+
+\bigskip
+
+\begin{lstlisting}[basicstyle=\small,language=Haskell]
+squares = [x*x | x <- [1..10]]
+evens = [x | x <- [1..10], even x]
+squaresOfEvens = [x*x | x <- [1..10], even x]
+\end{lstlisting}
+  
+\bigskip
+
+Прилича ли на $\{x^2 | x \in \{1,2,\dots,10\} \land x \equiv 0 (mod 2)\}$?
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{List Comprehensions}
+
+Какво става ако комбинираме повече от един списък?
+
+\bigskip
+
+\begin{lstlisting}[basicstyle=\small,language=Haskell]
+pairs = [(x,y) | x <- [1..10], y <- [1..10]]
+\end{lstlisting}
+  
+\bigskip
+
+Прилича ли на $\{x^2 | x \in \{1,2,\dots,10\} \land x \equiv 0 (mod 2)\}$?
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{List Comprehensions}
+
+Работа с безкрайни списъци
+
+\bigskip
+
+\begin{lstlisting}[basicstyle=\small,language=Haskell]
+squares = [x*x | x <- [1..]]
+\end{lstlisting}
+  
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{List Comprehensions}
+
+Трябва да се внимава
+
+\bigskip
+
+\begin{lstlisting}[basicstyle=\small,language=Haskell]
+allpairs = [(x,y) | x <- [1..], y <- [1..]]
+take 10 allpairs
+\end{lstlisting}
+  
+\bigskip
+
+А така?
+
+\begin{lstlisting}[basicstyle=\small,language=Haskell]
+allpairs = [(x,y) | x <- [1..], x <= 10, y <- [1..]]
+take 10 allpairs
+\end{lstlisting}
+
+\end{frame}  
+
 
 \begin{frame}
   \centerline{Благодаря за вниманието!}
 \end{frame}
-
 
 
 \end{document}
