@@ -45,7 +45,7 @@
 \title[Увод в курса]{Функции от по-висок ред}
 \frame{\titlepage}
 
-\section{Рекурсия}
+\section{Функции от по-висок ред}
 \subsection{}
 
 \begin{frame}
@@ -284,6 +284,47 @@ take 10 allpairs
 \end{lstlisting}
 
 \end{frame}  
+
+\begin{frame}
+  \centerline{Функции, които връщат функции. Closures}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Операции с финкции}
+
+\begin{itemize}
+  \item С функциите работим като с данни: прилагаме операции над тях
+  \item Какви операции знаем над функции?
+\end{itemize}
+
+\bigskip
+
+\begin{itemize}
+  \item Прилагане на функция. Currying
+  \item Композиция (., >>=)
+  \item Елементи на списъци и n-торки
+  \item Дефиниране
+  \item Дефиниране с $\lambda$
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Closures}
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[xshift=0,yshift=-5,anchor=north] at (current page.north){%
+    \includegraphics[width=125mm]{images/closure}};
+  \end{tikzpicture}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{filter}
+
+Примери: negate, cut, switch, repeated, derive
+
+\end{frame}
 
 
 \begin{frame}
