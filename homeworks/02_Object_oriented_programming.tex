@@ -292,18 +292,19 @@ public:
   \item Да се дефинира функция \code{before(n,f)}, където $n \geq 1$ е естествено число, а $f:A \rightarrow B$ е едноместна функция от произволен тип. \code{before} да връща функция $h:A \rightarrow B$, която при първите си \code{n} извиквания да дава същите стойности като \code{f}, а след това - последната върната от \code{f} стойност.
   
 \end{enumerate}
-
-\begin{figure}
-  \begin{centering}
-  \includegraphics[width=7cm]{images/trapezoidal}
-  \caption{Chained trapezoidal rule. Източник: Wikipedia\cite{trapezoidal}}
-  \label{fig:trapezoidal}
-  \end{centering}
-\end{figure}
   
 
 \begin{mdframed}[hidealllines=true,backgroundcolor=gray!20]
-  Методът на трапеците\cite{trapezoidal} (Trapezoidal rule) е числен метод за приблежено изчисление на стойността на определения интеграл $\int_{a}^{b} f(x) dx$ на функцията $f(x)$ в интервала $[a,b]$. Същността на метода е разбиване на интервала $[a,b]$ на определен брой подинтервали $[x_i,x_{i+1}]$. За всеки подинтервал се построява правоъгълен трапец с основа $x_i x_{i+1}$ и бедра, свързващи основата с графиката на функцията в точките $f(x_i)$ и $f(x_{i+1})$ (вж. фиг. \ref{fig:trapezoidal}). Лицата на така построените трапеци се сумират, което дава приблезижение на стойността на определения интеграл. Можете да прочетете повече за метода например \href{https://en.wikipedia.org/wiki/Trapezoidal_rule}{тук}\cite{trapezoidal}.
+  Методът на трапеците\cite{trapezoidal} (Trapezoidal rule) е числен метод за приблежено изчисление на стойността на определения интеграл $\int_{a}^{b} f(x) dx$ на функцията $f(x)$ в интервала $[a,b]$. Същността на метода е разбиване на интервала $[a,b]$ на определен брой подинтервали $[x_i,x_{i+1}]$. За всеки подинтервал се построява правоъгълен трапец с основа $x_i x_{i+1}$ и бедра, свързващи основата с графиката на функцията в точките $f(x_i)$ и $f(x_{i+1})$ (вж. фиг. \ref{fig:trapezoidal}). Лицата на така построените трапеци се сумират, което дава приближение на стойността на определения интеграл. Можете да прочетете повече за метода например \href{https://en.wikipedia.org/wiki/Trapezoidal_rule}{тук}\cite{trapezoidal}.
+
+  {\centering
+  \includegraphics[width=7cm]{images/trapezoidal}
+  \label{fig:trapezoidal}
+  \captionof{figure}{Chained trapezoidal rule. Източник: Wikipedia\cite{trapezoidal}}
+  \par}
+
+    
+
 \end{mdframed}  
 
 \begin{enumerate}[resume]
