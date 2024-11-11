@@ -58,6 +58,94 @@
 
 
 
+\begin{frame}[fragile]
+  \frametitle{Да си припомним Maybe монада}
+
+\begin{tikzpicture}[remember picture,overlay]
+  \node[xshift=0mm,yshift=-10mm,anchor=north east] at (current page.north east){%
+  \includegraphics[width=55mm]{images/composition}};
+\end{tikzpicture}
+
+
+\begin{lstlisting}[basicstyle=\small,language=Haskell]
+move (Game p w) mv = if dead w (mv p) 
+                     then Nothing 
+                     else Just $ Game (mv p) w
+left g = move g (\(x, y) -> (x-1, y))
+...
+
+myWorld = Game {...}
+
+>Just myWorld >>= down >>= down >>= right >>= ...
+\end{lstlisting}
+\begin{itemize}
+  \item Как дефинираме \verb#>>=# за \verb#Maybe#?
+\end{itemize}
+
+\begin{lstlisting}[basicstyle=\small,language=Haskell]
+Nothing >>= f = Nothing
+Just x >>= f = f x
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Какво е IO монада}
+\begin{itemize}
+  \item Обвързва ``чиста'' стойност с операциите за прочитането ѝ
+  \item Позволява композиране на последователни операции, започващи с въведена стойност
+  \item Тъй като всяка такава операция зависи от външния свят, резултатът от нея не е чист, макар че изчислението може да е чисто
+  \item Това е ролята на \verb#return#: ``опакова'' чиста стойност в контекста на IO
+  \item Но МОЖЕМ да изпозлваме чисти изчисления ВЪТРЕ
+\end{itemize}
+\begin{lstlisting}[basicstyle=\small,language=Haskell]
+getLine                                   :: IO(String)
+        >>= (\line -> return $ head line) :: IO(Char)
+        >>= (\char -> return $ ord char)  :: IO(Int)
+\end{lstlisting}
+  
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{do нотация}
+\begin{itemize}
+  \item Опростява писането при композиране на монадични операции
+  \item Подчертва последователността на операциите
+  \item Улеснява извличането на чисти стойности
+  \item let vs. \verb#<-#
+\end{itemize}
+\begin{lstlisting}[basicstyle=\small,language=Haskell]
+test = do
+    line1 <- getLine
+    let h1 = head line1
+    line2 <- getLine
+    let h2 = head line1
+    let ascii = max (ord h1) (ord h2)
+    return ascii
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{IO монада}
+\begin{itemize}
+  \item Така и така сме в \verb#do#, защо да не изведем нещо?
+\end{itemize}
+\begin{lstlisting}[basicstyle=\small,language=Haskell]
+test = do
+    line1 <- getLine
+    let h1 = head line1
+    putStrLn $ "First letter: " ++ [h1]
+    line2 <- getLine
+    let h2 = head line2
+    putStrLn $ "Second letter: " ++ [h2]
+    let ascii = max (ord h1) (ord h2)
+    putStrLn $ "Max ascii: " ++ (show ascii)
+    return ascii\end{lstlisting}
+\end{frame}
+
+
+
 \begin{frame}
   \centerline{Благодаря за вниманието!}
 \end{frame}

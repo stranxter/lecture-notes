@@ -12,8 +12,8 @@ people :: [Person] =
      Person {name = "Maria Ivanova", gender = F, birthdate = (05,05,2003)},
      Person {name = "Ivana Marinova", gender = F, birthdate = (20,02,2000)}]
 
-doybefore (d1,m1) (d2,m2) = m1 < m2 || (m1 == m2 && d1 < d2)
-yearsdiff today@(d',m',y') (d,m,y) = y' - y - (if doybefore (d,m) (d',m') then 0 else 1)
+daybefore (d1,m1) (d2,m2) = m1 < m2 || (m1 == m2 && d1 < d2)
+yearsdiff today@(d',m',y') (d,m,y) = y' - y - (if daybefore (d,m) (d',m') then 0 else 1)
 
 reverse' :: [a] -> [a]
 reverse' = foldl (flip (:)) []
