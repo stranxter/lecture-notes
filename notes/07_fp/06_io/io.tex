@@ -141,9 +141,62 @@ test = do
     putStrLn $ "Second letter: " ++ [h2]
     let ascii = max (ord h1) (ord h2)
     putStrLn $ "Max ascii: " ++ (show ascii)
-    return ascii\end{lstlisting}
+    return ascii
+\end{lstlisting}
 \end{frame}
 
+
+\begin{frame}[fragile]
+  \frametitle{Сериализация}
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[xshift=0,yshift=-14mm,anchor=north] at (current page.north){%
+    \includegraphics[width=70mm]{images/serialization}};
+  \end{tikzpicture}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Сериализация}
+
+\begin{lstlisting}[basicstyle=\small,language=Haskell]
+data Gender = M | F
+    deriving (Show,Eq)
+data Person = Person {name :: String, 
+                      gender:: Gender, 
+                      birthdate :: (Int,Int,Int)}
+    deriving (Show,Eq)
+people :: [Person] = 
+    [Person {name = "Kalin Georgiev", 
+             gender = M, 
+             birthdate = (01,01,1981)},
+     ...]
+\end{lstlisting}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Десериализация}
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[xshift=0,yshift=-14mm,anchor=north] at (current page.north){%
+    \includegraphics[width=80mm]{images/deserialization}};
+  \end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Десериализация}
+
+Форматът Comma Seprated Values, \verb#CSV#
+
+\begin{verbatim}
+name,gender,birthdate
+Kalin Georgiev,M,01-01-1981
+Maria Ivanova,F,05-05-2003
+\end{verbatim}
+
+\end{frame}
 
 
 \begin{frame}
