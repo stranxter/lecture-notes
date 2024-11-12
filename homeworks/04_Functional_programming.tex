@@ -119,7 +119,7 @@
 
 \end{enumerate}
 
-\section {map, filter, fold}
+\section {Функции от по-висок ред}
 
 \begin{enumerate}[resume]
 	\item Направете и тествайте собствена реализация на функциите \code{map}, \code{filter} и \code{fold(l,r,l1,r1)}.
@@ -136,6 +136,14 @@
 	\item За списък от числа $L$ да се намери списък със сумите на всички двойки последователни елементи на $L$. Например $[1,5,3,4,2] \rightarrow [6,8,7,6]$. \emph{Упътване: Използвайте \code{zip}.}
 	
 	\item С помощта на \code{zipWith} да се дефинира функция \code{sums :: [Int] -> [Int]}, която по списък от числа $L=l_1,l_2,l3,...$ намира списъка $S=l_1,(l_1+l2_),(l_1+l_2+l_3),...$. 
+	
+	\item Да се дефинира функция \code{separate :: (a->Bool) -> [a] -> ([a],[a])}, която по предикат $p$ и списък $l$ връща двойката \code{(pref,suf)}. \code{pref} е най-дългият възможен префикс, такъв че всички негови елементи увовлетворяват \code{p}. \code{suf} е останалата част от списъка $l$. Например, \code{separate even [2,4,6,7,8,10] -> ([2,4,6],[7,8,10])}. \emph{Забележка: вижте функцията \code{break}  в \code{Prelude}.}
+	
+	\item Да се дефинира функция \code{split :: (a->Bool) -> [a] -> [[a]]}, получваваща предикат \code{p} и списък \code{l}. Елементите на \code{l}, удовлетворяващи \code{p}, се считат за ``разделители'' в \code{l} и списъкът се разделя на части, обособени от тези разделители. Например:
+\begin{lstlisting}[basicstyle=\small,language=Haskell]
+split (==',') "part1,part 2,part3" 
+             -> ["part1","part 2","part3"]
+\end{lstlisting}
 \end{enumerate}
 
 \begin{mdframed}[hidealllines=true,backgroundcolor=gray!20]
