@@ -44,3 +44,15 @@ readPerson s = Person {name = name,
                where
                 [name,gender,dmy] = split (==',') s
                 [d,m,y] = split (=='-') dmy
+
+writePerson :: Person -> String
+writePerson p = name p ++ "," ++ 
+                show (gender p) ++ "," ++
+                show d ++ "-" ++ show m ++ "-" ++ show y
+                where
+                    (d,m,y) = birthdate p
+
+readPeople :: IO ([Person])
+readPeople = do
+    contents <- readFile "data.csv"
+    return $ map readPerson $ lines contents

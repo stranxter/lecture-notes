@@ -176,17 +176,24 @@ people :: [Person] =
 
 
 \begin{frame}[fragile]
-  \frametitle{Десериализация}
-  \begin{tikzpicture}[remember picture,overlay]
-    \node[xshift=0,yshift=-14mm,anchor=north] at (current page.north){%
-    \includegraphics[width=80mm]{images/deserialization}};
-  \end{tikzpicture}
+  \frametitle{show и read}
+
+\begin{itemize}
+  \item Сериализация и десериализация с \verb#show# и \verb#read#
+  \item Запис на текст във файл
+\end{itemize}
+
+\bigskip
+
+\begin{lstlisting}[basicstyle=\small,language=Haskell]
+writeFile "test.txt" $ show people
+\end{lstlisting}
+
 \end{frame}
 
 
-
 \begin{frame}[fragile]
-  \frametitle{Десериализация}
+  \frametitle{CSV}
 
 Форматът Comma Seprated Values, \verb#CSV#
 
@@ -196,7 +203,44 @@ Kalin Georgiev,M,01-01-1981
 Maria Ivanova,F,05-05-2003
 \end{verbatim}
 
+\begin{lstlisting}[basicstyle=\small,language=Haskell]
+writeFile "data.csv" $ 
+          concat $ map ((++"\n").writePerson) people
+\end{lstlisting}
+
+
 \end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Десериализация}
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[xshift=0,yshift=-14mm,anchor=north] at (current page.north){%
+    \includegraphics[width=80mm]{images/deserialization}};
+  \end{tikzpicture}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Четене от файл}
+
+
+\begin{lstlisting}[basicstyle=\small,language=Haskell]
+readPeople :: IO ([Person])
+readPeople = do
+    contents <- readFile "data.csv"
+    return $ map readPerson $ lines contents  
+\end{lstlisting}
+
+\bigskip
+
+\begin{itemize}
+  \item \verb#readFile# извършва мързеливо четене
+\end{itemize}
+
+
+\end{frame}
+
 
 
 \begin{frame}
