@@ -3,6 +3,21 @@
 #include "../doctest.h"
 
 #include "bintree.cpp"
+#include "triemap.cpp"
+
+
+TEST_CASE("Basic Map Test")
+{
+    TrieMap<int> t;
+
+    CHECK(t.hasKey("to") == false);
+
+    t.setValue("to",7);
+
+    CHECK(t.getValue("to")==7);
+    
+}
+
 
 TEST_CASE("Test Tree Membership")
 {
