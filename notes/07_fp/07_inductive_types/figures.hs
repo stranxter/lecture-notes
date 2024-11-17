@@ -40,3 +40,4 @@ svg (Group figs) = concatMap svg figs
 allsvg :: Figure -> String
 allsvg fig = "<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n" ++  svg fig ++ "</svg>"
 
+-- <g transform="rotate(45 225 265)">

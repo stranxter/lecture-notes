@@ -49,8 +49,128 @@
 \subsection{}
 
 \begin{frame}[fragile]
-\frametitle{Чисто функционално програмиране}
+\frametitle{Хетерогенни списъци}
+
+\begin{itemize}
+  \item Списъците са от тип \verb#[a]#, следователно елементите са еднотипни
+  \item Haskell позволява обеденение на типове
+\end{itemize}
+
+\bigskip
+
+\begin{lstlisting}[basicstyle=\small,language=Haskell]
+type Point =  (Float,Float)
+data Figure = Circle Point Float | 
+              Square Point Float |
+              Rectangle Point Float Float |
+              Triangle  Point Point Point 
+\end{lstlisting}
 \end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Хетерогенни списъци}
+  
+  \begin{lstlisting}[basicstyle=\small,language=Haskell]
+girl :: [Figure] = [Triangle (200,200) (100,300) (300,300),
+                    Circle (200,100) 50,
+                    Rectangle (100,320) 20 100,
+                    Rectangle (280,320) 20 100]
+  \end{lstlisting}
+\end{frame}
+
+\section{Полиморфизъм}
+
+\begin{frame}[fragile]
+  \frametitle{Полиморфизъм}
+  
+  \begin{lstlisting}[basicstyle=\small,language=Haskell]
+distance :: Point -> Point -> Float
+distance (x1,y1) (x2,y2) = sqrt ((x1-x2)^2 + (y1-y2)^2)
+
+perimeter :: Figure -> Float
+perimeter (Circle _ r) = 2 * pi * r
+perimeter (Square _ s) = 4 * s
+perimeter (Rectangle _ w h) = 2 * (w + h)
+perimeter (Triangle a b c) = 
+              sum $ zipWith distance [a,b,c] [b,c,a]
+
+ghci>sum $ map perimeter girl              
+  \end{lstlisting}
+\end{frame}
+
+\section{SVG}
+
+\begin{frame}
+  \centerline{Леко отклонение: форматът SVG}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Scalable Vector Graphics}
+  
+\begin{lstlisting}[basicstyle=\tiny,language=xml]
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+  <circle cx="200.0" cy="100.0" r="50.0" 
+          fill="none" stroke="black"/>
+  <rect x="100.0" y="320.0" width="20.0" height="100.0" 
+        fill="none" stroke="black"/>
+  <polygon points="200.0,200.0 100.0,300.0 300.0,300.0 " 
+           fill="none" stroke="black"/>
+</svg>  
+\end{lstlisting}
+
+\bigskip
+
+\begin{lstlisting}[basicstyle=\tiny,language=haskell]
+svg :: Figure -> String
+svg (Circle (x,y) r) = "<circle cx=\"" ++ show x ++ "\"" ++
+                               "cy=\"" ++ show y ++ "\"" ++ 
+                               "r=\"" ++ show r ++ "\"" ++ 
+                               "fill=\"none\" stroke=\"black\"/>\n"
+\end{lstlisting}
+
+\end{frame}
+
+\section{Индуктивни типове}
+
+\begin{frame}
+  \centerline{Групата от фигури също е фигура}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Индуктивен тип}
+\begin{lstlisting}[basicstyle=\tiny,language=Haskell]
+data Figure = Circle Point Float | 
+              Square Point Float |
+              Rectangle Point Float Float |
+              Triangle  Point Point Point |
+              Group [Figure]
+
+girl :: Figure =   Group [Triangle (200,200) (100,300) (300,300),
+                          Circle (200,100) 50,
+                          Rectangle (100,320) 20 100,
+                          Rectangle (280,320) 20 100]
+
+boy :: Figure  =   Group [Rectangle (400,170)  100 140, 
+                          Circle (450,100) 50,
+                          Rectangle (400,320) 20 100,
+                          Rectangle (480,320) 20 100]
+
+picture :: Figure = Group [girl, boy, Rectangle (50,30) 500 500]
+\end{lstlisting}
+
+\begin{itemize}
+  \item И това, разбира се, поражда рекурсия:
+\end{itemize}
+
+\begin{lstlisting}[basicstyle=\small,language=Haskell]
+perimeter (Group figs) = sum $ map perimeter figs
+\end{lstlisting}
+
+
+\end{frame}
+
+
 
 \begin{frame}
   \centerline{Благодаря за вниманието!}
