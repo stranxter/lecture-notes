@@ -1,10 +1,4 @@
 import Data.Time.Calendar
-import Data.Time.Clock.POSIX
-
-epoch :: IO Int
-epoch = do
-    ptime <- getPOSIXTime
-    return $ round ptime
 
 data Task = SimpleTask {descr :: String, start :: Day, duration :: Integer} | 
             ComplexTask {descr:: String, subtasks :: [Task]}
