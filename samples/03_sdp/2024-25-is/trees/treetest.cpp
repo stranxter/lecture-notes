@@ -5,6 +5,7 @@
 #include "bintree.cpp"
 #include "triemap.cpp"
 
+//dot -Tpdf tree.dot -o tree.pdf
 
 TEST_CASE("Basic Map Test")
 {
@@ -17,6 +18,30 @@ TEST_CASE("Basic Map Test")
     CHECK(t.getValue("to")==7);
     
 }
+
+TEST_CASE("Map Test")
+{
+    TrieMap<int> t;
+
+    t["to"] = 7;
+    t["tea"] = 3;
+    t["ted"] = 4;
+    t["ten"] = 12;
+    t["A"] = 15;
+    t["i"] = 11;    
+    t["in"] = 5;
+    t["inn"] = 9;
+
+    CHECK(t["to"] == 7);
+    CHECK(t["in"] == 5);
+    CHECK(!t.hasKey("te"));
+    CHECK(!t.hasKey("innn"));
+
+    std::ofstream treef ("mytree.dot");
+    t.toDotty(treef);
+ 
+}
+
 
 
 TEST_CASE("Test Tree Membership")

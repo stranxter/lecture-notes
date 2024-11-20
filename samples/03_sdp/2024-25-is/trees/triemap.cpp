@@ -6,8 +6,9 @@ TrieMap<Value>::TrieMap()
 {
 }
 
+
 template <typename Value>
-void TrieMap<Value>::setValue(const std::string& key, const Value &val)
+typename TrieMap<Value>::TrieNode* TrieMap<Value>::createNode(const std::string& key, const Value& val)
 {
     if(root == nullptr)
     {
@@ -49,7 +50,13 @@ void TrieMap<Value>::setValue(const std::string& key, const Value &val)
     {
         *(current->value) = val;
     }
+    return current;
+}
 
+template <typename Value>
+void TrieMap<Value>::setValue(const std::string& key, const Value &val)
+{
+    createNode(key,val);
 }
 
 
@@ -102,3 +109,73 @@ typename TrieMap<Value>::TrieNode* TrieMap<Value>::locateNode(const std::string&
 
 }
 
+template<typename Value>
+Value& TrieMap<Value>::operator[](const std::string& key)
+{
+
+    TrieMap<Value>::TrieNode* node = locateNode(key);
+    if(node != nullptr)
+    {
+        if(node->value == nullptr)
+        {
+            node->value = new Value();
+        }
+        return *(node->value);
+    } else 
+    {
+        return *(createNode(key,Value())->value);
+    }
+}
+
+template<typename Value>
+Value TrieMap<Value>::operator[](const std::string& key) const
+{
+    return getValue(key);
+}
+
+template<typename Value>
+void TrieMap<Value>::toDotty(std::ostream& out) const
+{
+    out << "digraph G{\n";
+    toDotty(root,out);
+    out << "}";
+}
+
+template<typename Value>
+void TrieMap<Value>::toDotty(typename TrieMap<Value>::TrieNode* node, std::ostream& out) const
+{
+    if(node == nullptr)
+    {
+        return;
+    }
+
+    if (node->value != nullptr)
+    {
+        out << (long)node << "[label=\"" << *(node->value) << "\"]\n";    
+    } else 
+    {
+        out << (long)node << "[label=\"_\"]\n";
+    }
+    
+
+    for(auto c: node->children)
+    {
+        out << (long)node << "->" << (long)(c.ptr) << "[label = \"" << c.label << "\"]\n";
+        toDotty(c.ptr,out);
+    }
+}
+
+
+template<typename Value>
+void TrieMap<Value>::free(typename TrieMap<Value>::TrieNode *node)
+{
+    if(node == nullptr)
+        return;
+
+    for(auto c: node->children)
+    {
+        free(c.ptr);
+    }
+    if (node->value != nullptr) delete node->value;
+    delete node;
+}
