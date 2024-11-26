@@ -331,3 +331,114 @@ Maria Ivanova,F,05-05-2003
 	
 
 \end{enumerate}
+
+
+\section{Оценка на (аритметичен) израз}
+
+
+\begin{mdframed}[hidealllines=true,backgroundcolor=gray!20]
+\textbf{Оценка на изрази}
+
+
+По време на лекции разработваме лексически анализатор, рекурсивен парсер и интепретатор на прост език, състоящ се от аритметични изрази от следния вид:
+\begin{flushleft}
+  \relscale{0.7}
+  \begin{lstlisting}[mathescape]
+  <expression> ::= <number> | (<expression> <operator> <exprerssion>)
+  <number> ::= {0,..,9}+
+  <operator> ::= + | - | * | /
+  \end{lstlisting}
+\end{flushleft}
+
+За двата вида възможни изрази -- числова константа и приложение на двуместен аритметичен оператор, оградено в скоби -- дефинираме съответно възли в синтактично дърво. Дърво на израза построяваме от символен низ и оценяваме рекурсивно.
+
+\end{mdframed}
+
+
+\begin{enumerate}[resume]
+	\item Интерпретаторът на изрази от лекции да се разшири с възможност за групиране на изрази в ``блокове'', започващи с ключовата дума \code{begin} и завършващи с ключовата дума \code{end}:
+	\begin{flushleft}
+	  \relscale{0.7}
+	  \begin{lstlisting}[mathescape]
+	<expression> ::= ... | begin (<expression>;)+ end
+	  \end{lstlisting}
+	\end{flushleft}
+	
+	Оценката на блок от изрази да се състои в последоватлено оценяване на всички изрази в блока и използване на онцеката на последния израз от блока като оценка на целия блок. Например: \code{begin 1; 2; 3; end} има оценка $3$.
+	
+\item Езикът, разработен на лекции, да се разшири с условен оператор от вида:
+\begin{flushleft}
+  \relscale{0.6}
+  \begin{lstlisting}[mathescape]
+<expression> ::= ... | if <expression> than <expression> else <expression>
+  \end{lstlisting}
+\end{flushleft}
+
+Оценката на изразите от този вид е оценката на \code{expthen} или \code{exprelse} в зависимост от оценката на \code{condition}.
+
+
+
+\item Интерпретаторът, разработен на лекции, да се разшири с възможност за присвояване на стойност на променлива:
+
+\begin{flushleft}
+\relscale{0.7}
+\begin{lstlisting}[mathescape]
+<expression> ::= ... | <assignment>
+<assignment> ::= set <variable> = <expression>
+\end{lstlisting}
+\end{flushleft}
+
+Примерни изрази на този език и съответния резултат от оценката им са:
+
+\begin{lstlisting}[mathescape]
+begin
+  set x = (3*(1+2));
+  x;
+end
+\end{lstlisting}
+\emph{Оценка:} 9
+
+\begin{lstlisting}[mathescape]
+begin
+  set x = 10;
+  set y = 5*5;
+  ((x*y)*2);
+end
+\end{lstlisting}
+\emph{Оценка:} 500
+
+
+\item(*) Интерпретаторът на аритметични изрази от лекции да се разшири с възможност за извеждане на стойност на израз на стандартния изход:
+\begin{flushleft}
+  \relscale{0.7}
+  \begin{lstlisting}[mathescape]
+<expression> ::= ... | print <exprression>
+  \end{lstlisting}
+\end{flushleft}
+
+Оценката на израз от типа \code{print e} се намира като оценката на израза \code{e}, като освен това се произвежда извеждане на страндартния изход като страничен ефект. Всяка отделна стайност да бъде изведена на нов ред.
+
+Примрер: Оценката на израза \code{print 1} ще е $1$ и ще доведе до извежане на ``1'' на стандарния изход. Оценката на 
+
+\begin{flushleft}
+  \relscale{0.7}
+  \begin{lstlisting}[mathescape]
+begin 
+   print 1; 
+   print 2; 
+   print begin 3; 4; end;
+end
+  \end{lstlisting}
+\end{flushleft}
+ще доведе до извеждане на следните редове на стандартния изход: 
+\begin{flushleft}
+  \relscale{0.7}
+  \begin{lstlisting}[mathescape]
+1
+2
+4
+  \end{lstlisting}
+\end{flushleft}
+
+
+\end{enumerate}
