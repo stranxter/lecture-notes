@@ -122,8 +122,53 @@ evalall s [e] = (eval s e)
 evalall s (e:es) = evalall s' es
     where (_,s') = eval s e
 
+
+parsestr = (unfoldr parse) . tokens
 evalstr = evalall (State (fromList []) (fromList [])) . 
-                  (unfoldr parse) . tokens
-
-
+                  parsestr
 --evalstr "define fact x : if x then (x * call fact (x-1)) else 1 call fact 4"
+
+{-Output in Dot Format-}
+
+toDot :: Expression -> Int -> (String,Int)
+toDot (Constant n) i = (show i ++ " [label=\"" ++ show n ++ "\"];\n",i+1)
+toDot (Variable name) i = (show i ++ " [label=\"" ++ name ++ "\"];\n",i+1)
+toDot (Op left op right) i = (show i ++ " [label=\"" ++ [op] ++ "\"];\n" ++ 
+                             show i ++ " -> " ++ show (i+1) ++ ";\n" ++
+                             show i ++ " -> " ++ show i' ++ ";\n" ++
+                             s' ++ s'',i'')
+    where (s',i') = toDot left (i+1)
+          (s'',i'') = toDot right i'
+toDot (Condition cond then' else') i = (show i ++ " [label=\"if\"];\n" ++
+                                        show i ++ " -> " ++ show (i+1) ++ ";\n" ++
+                                        show i ++ " -> " ++ show i' ++ ";\n" ++
+                                        show i ++ " -> " ++ show i'' ++ ";\n" ++
+                                        s' ++ s'' ++ s''',i''')
+      where (s',i') = toDot cond (i+1)
+            (s'',i'') = toDot then' i'
+            (s''',i''') = toDot else' i''
+toDot (FnDef name arg body) i = (show i ++ " [label=\"define\"];\n" ++
+                                 show (i+1) ++ " [label=\"" ++ name ++ "\"];\n" ++
+                                 show (i+2) ++ " [label=\"" ++ arg ++ "\"];\n" ++
+                                 show i ++ " -> " ++ show (i+1) ++ ";\n" ++
+                                 show i ++ " -> " ++ show (i+2) ++ ";\n" ++
+                                 show i ++ " -> " ++ show (i+3) ++ ";\n" ++
+                                 s' ,i')
+    where (s',i') = toDot body (i+3)
+toDot (FnCall name value) i = (show i ++ " [label=\"call\"];\n" ++
+                              show i ++ " -> " ++ show (i+1) ++ ";\n" ++
+                              show i ++ " -> " ++ show i' ++ ";\n" ++
+                              s' ++ s'',i'')
+    where (s',i') = toDot (Variable name) (i+1)
+          (s'',i'') = toDot value i'
+
+
+toDotAll :: [Expression] -> Int -> (String,Int)
+toDotAll [] _ = ("",0)
+toDotAll (e:es) i = (s ++ s',i'')
+    where (s,i') = toDot e i
+          (s',i'') = toDotAll es i'
+
+toDotty :: [Expression] -> String
+toDotty es = "digraph G {\n" ++ s ++ "}"
+    where (s,_) = toDotAll es 0

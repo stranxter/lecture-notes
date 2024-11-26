@@ -1,0 +1,505 @@
+\documentclass{beamer}
+\usepackage{relsize}
+\usepackage{color}
+
+\usepackage{listings}
+\usetheme{CambridgeUS}
+%\usepackage{beamerthemesplit} % new
+\usepackage{enumitem}
+\usepackage{amsmath}                    % See geometry.pdf to learn the layout options.
+\usepackage{amsthm}                   % See geometry.pdf to learn the layout options. There
+\usepackage{amssymb}                    % See geometry.pdf to learn the layout options.
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage[english,bulgarian]{babel}
+
+\usepackage{caption}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning,calc,positioning,fit,chains}
+
+
+\usetheme{CambridgeUS}
+\usecolortheme{crane}
+
+\lstset{language=C++,
+                basicstyle=\ttfamily,
+                keywordstyle=\color{blue}\ttfamily,
+                stringstyle=\color{red}\ttfamily,
+                commentstyle=\color{green}\ttfamily,
+                morecomment=[l][\color{magenta}]{\#}
+}
+
+\tikzset{
+block/.style = {draw, fill=white, rectangle,align = center},
+entry/.style = {draw, fill=black, circle, radius=3em},
+condition/.style = {draw, fill=white, diamond, align = center,node distance=3cm},
+fork/.style = {draw, fill=black, circle,inner sep=1pt},
+lnode/.style={rectangle split, rectangle split parts=3,draw, rectangle split horizontal},
+treenode/.style = {align=center, inner sep=0pt, text centered, circle, font=\sffamily\bfseries, draw=black, fill=white, text width=1.5em},
+token/.style={rectangle split, rectangle split parts=2,draw, rectangle split horizontal=false}
+}
+
+\newtheorem{mydef}{Дефиниция}[section]
+\newtheorem{lem}{Лема}[section]
+\newtheorem{thm}{Твърдение}[section]
+
+\DeclareMathOperator{\restrict}{\upharpoonright}
+
+\setitemize{label=\usebeamerfont*{itemize item}%
+  \usebeamercolor[fg]{itemize item}
+  \usebeamertemplate{itemize item}}
+
+\setbeamercovered{transparent}
+
+\captionsetup{font=tiny} 
+
+\begin{document}
+\title[Дърво на израза]{Оценка на аритметичен израз}
+\frame{\titlepage}
+
+\begin{frame}
+  \centerline{Съвсем малко теория}
+\end{frame}
+  
+  
+  \subsection{Формални езици}
+  
+  
+  \begin{frame}[fragile]
+  \frametitle{Формални граматики}
+  
+  \begin{verbatim}
+  the cat meows.
+  the dog barks at the cat.
+  the student lies to the teacher.
+  \end{verbatim}
+  
+  \pause
+  
+  \begin{itemize}
+    \item Азбука: $\Sigma=\{a..z\}$
+    \item Нетерминални символи: $\{\mathbf{Verb},\mathbf{Object},\mathbf{Subject}, \mathbf{Prep}, \mathbf{Sentence}\}$
+    \item Продукционни правила:
+  \end{itemize}
+  
+  \pause
+  
+  $\mathbf{Object} \rightarrow cat | dog | student$
+  
+  $\mathbf{Subject} \rightarrow cat | dog | teacher$
+  
+  $\mathbf{Verb} \rightarrow meows | barks | lies$
+  
+  $\mathbf{Prep} \rightarrow to | at$
+  
+  $\mathbf{Sentence} \rightarrow the  \quad \mathbf{Object} \quad  \mathbf{Verb}$
+  
+  $\mathbf{Sentence} \rightarrow the \quad \mathbf{Object}  \quad\mathbf{Verb}  \quad\mathbf{Prep} \quad the \quad \mathbf{Subject}$
+  
+  
+  
+  \end{frame}
+  
+  
+  \begin{frame}[fragile]
+  \frametitle{Извод на \texttt{the cat meows at the dog}}
+  
+  \relscale{0.9}
+  
+  \begin{flushright}
+  
+  \relscale{0.5}
+  
+  $\mathbf{Object} \rightarrow cat | dog | student$
+  
+  $\mathbf{Subject} \rightarrow cat | teacher$
+  
+  $\mathbf{Verb} \rightarrow meows | barks | lies$
+  
+  $\mathbf{Prep} \rightarrow to | at$
+  
+  $\mathbf{Sentence} \rightarrow the  \quad \mathbf{Object} \quad  \mathbf{Verb}$
+  
+  $\mathbf{Sentence} \rightarrow the \quad \mathbf{Object}  \quad\mathbf{Verb}  \quad\mathbf{Prep} \quad the \quad \mathbf{Subject}$
+  
+  \end{flushright}
+  
+  
+  \vspace{0.2cm}
+  \pause
+  
+  $\mathbf{Sentence} \rightarrow the \quad \mathbf{Object}  \quad\mathbf{Verb}  \quad\mathbf{Prep} \quad the \quad \mathbf{Subject}$
+  
+  \pause
+  
+  \begin{flushright}
+  \relscale{0.5}
+  $\mathbf{Object} \rightarrow cat$
+  \end{flushright}
+  
+  $\mathbf{Sentence} \rightarrow the \quad cat \quad\mathbf{Verb}  \quad\mathbf{Prep} \quad the \quad \mathbf{Subject}$
+  
+  
+  
+  \pause
+  
+  \begin{flushright}
+  \relscale{0.5}
+  $\mathbf{Verb} \rightarrow meows$
+  \end{flushright}
+  
+  $\mathbf{Sentence} \rightarrow the \quad cat \quad meows  \quad\mathbf{Prep} \quad the \quad \mathbf{Subject}$
+  
+  \pause
+  
+  \begin{flushright}
+  \relscale{0.5}
+  $\mathbf{Prep} \rightarrow at$
+  \end{flushright}
+  
+  $\mathbf{Sentence} \rightarrow the \quad cat \quad meows  \quad at \quad the \quad \mathbf{Subject}$
+  
+  
+  
+  \pause
+  
+  \begin{flushright}
+  \relscale{0.5}
+  $\mathbf{Subject} \rightarrow dog$
+  \end{flushright}
+  
+  $\mathbf{Sentence} \rightarrow the \quad cat \quad meows  \quad at \quad the \quad dog$
+  
+  
+  \end{frame}
+  
+  
+  \begin{frame}[fragile]
+  \frametitle{Синтактично дърво}
+  
+  
+  \centering
+  \begin{tikzpicture}[auto, sibling distance=1.5cm,>=latex',level 2/.style={sibling distance=3cm}]
+  \node [] {Sentence}
+    child {
+      node [style = {text=red}] {the}
+    }
+    child {
+      node [] {Object}
+      child {
+        node [style = {text=red}] {teacher}
+      }
+    }
+    child {
+      node [] {Verb}
+      child {
+        node [style = {text=red}] {barks}
+      }
+    }
+    child {
+      node [] {Prep}
+      child {
+        node [style = {text=red}] {at}
+      }
+    }
+    child {
+      node [style = {text=red}] {the}
+    }
+    child {
+      node [] {Subject}
+      child {
+        node [style = {text=red}] {student}
+      }
+    };
+  \end{tikzpicture}
+  
+  \end{frame}
+  
+  \begin{frame}[fragile]
+  \frametitle{Мета-език на Бекус-Наур}
+  
+\begin{verbatim}
+<digit> ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 
+<unsigned int> ::= <digit>+
+<integer> ::= [+|-] <unsigned int>
+<identifier> ::= _ (<letter> | <digit> | _ )* 
+<identifier> ::= <leter> (<letter> | <digit> | _ )* 
+\end{verbatim}
+  
+\end{frame}
+
+
+\subsection{Аритметичен израз}
+\begin{frame}
+  \centerline{Аритметичен израз}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Аритметичен израз}
+
+\begin{small}
+\begin{verbatim}
+<expression> ::= <number> 
+<expression> ::= (<expression> <operator> <exprerssion>)
+<number> ::= {0,..,9}+
+<operator> ::= + | - | * | /
+\end{verbatim}
+\end{small}
+
+\end{frame}  
+
+
+\begin{frame}
+\centerline{Лексически анализ}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Лексически анализ}
+
+\begin{verbatim}
+  (1   +2)
+  
+      *    3
+\end{verbatim}
+
+\bigskip
+\bigskip
+
+\begin{tikzpicture}[auto, scale=0.6, every node/.style={scale=0.6}, node distance=3cm,>=latex']
+\node[token] (n1) {\nodepart{two}(\nodepart{one}OPEN\_PAR};
+\node[token, right of = n1] (n2) {\nodepart{two}1\nodepart{one}NUMBER};
+\node[token, right of = n2] (n3) {\nodepart{two}+\nodepart{one}OPERATOR};
+\node[token, right of = n3] (n4) {\nodepart{two}2\nodepart{one}NUMBER};
+\node[token, right of = n4] (n5) {\nodepart{two})\nodepart{one}CLOSE\_PAR};
+\node[token, right of = n5] (n6) {\nodepart{two}*\nodepart{one}OPERATOR};
+\node[token, right of = n6] (n7) {\nodepart{two}3\nodepart{one}NUMBER};
+\end{tikzpicture}
+
+\bigskip
+\bigskip
+
+\begin{lstlisting}[basicstyle=\small,language=Haskell]
+data Token = Number Int | 
+             Operator Char | 
+             OpenParen | 
+             CloseParen
+
+lexer :: String -> [String]
+tokens :: String -> [Token]
+\end{lstlisting}
+  
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Синтактично дърво}
+
+
+\begin{columns}[t]
+  \begin{column}{0.3\textwidth}
+
+    \begin{figure}
+      \centering
+      \begin{tikzpicture}[auto, node distance=2cm,>=latex']
+      \node [treenode] {*}
+        child {
+          node [treenode] {+}
+          child {
+            node [treenode] {1}
+          }
+          child {
+            node [treenode] {2}
+          }
+        }
+        child {
+          node [treenode] {3}
+        };
+      \end{tikzpicture}
+      \caption{Дърво на израза \texttt{(1+2)*3}.}
+      \label{fig:treeexpr}
+      \end{figure}
+      
+
+  \end{column}
+  \begin{column}{0.7\textwidth}
+
+\begin{lstlisting}[basicstyle=\small,language=Haskell]
+data Expression = 
+     Constant Int | 
+     Op Expression Char Expression
+
+parse :: [Token] 
+         -> Maybe (Expression,[Token])     
+parsestr = (unfoldr parse) . tokens
+\end{lstlisting}
+
+  \end{column}
+\end{columns}
+
+\end{frame}  
+  
+
+\begin{frame}[fragile]
+  \frametitle{Оценка на дърво}
+
+
+\begin{columns}[t]
+  \begin{column}{0.3\textwidth}
+
+    \begin{figure}
+      \centering
+      \begin{tikzpicture}[auto, node distance=2cm,>=latex']
+      \node [treenode] {*}
+        child {
+          node [treenode] {+}
+          child {
+            node [treenode] {1}
+          }
+          child {
+            node [treenode] {2}
+          }
+        }
+        child {
+          node [treenode] {3}
+        };
+      \end{tikzpicture}
+      \caption{Дърво на израза \texttt{(1+2)*3}.}
+      \label{fig:treeexpr}
+      \end{figure}
+      
+
+  \end{column}
+  \begin{column}{0.7\textwidth}
+
+\begin{lstlisting}[basicstyle=\small,language=Haskell]
+eval :: Expression -> Int
+eval (Constant n) = ...
+eval (Op left op right) = ...
+\end{lstlisting}
+
+  \end{column}
+\end{columns}
+
+\end{frame}  
+
+
+\begin{frame}[fragile]
+  \frametitle{Добавяне на променливи}
+
+
+\begin{columns}[t]
+  \begin{column}{0.3\textwidth}
+
+    \begin{figure}
+      \centering
+      \begin{tikzpicture}[auto, node distance=2cm,>=latex']
+      \node [treenode] {*}
+        child {
+          node [treenode] {+}
+          child {
+            node [treenode] {1}
+          }
+          child [] {
+            node [treenode,style={draw=red}] {x}
+          }
+        }
+        child {
+          node [treenode] {3}
+        };
+      \end{tikzpicture}
+      \caption{Дърво на израза \texttt{(1+x)*3}.}
+      \label{fig:treeexpr}
+      \end{figure}
+      
+
+  \end{column}
+  \begin{column}{0.7\textwidth}
+
+\begin{lstlisting}[basicstyle=\small,language=Haskell]
+
+data Token = Number Int | 
+             Operator Char | 
+             OpenParen | 
+             CloseParen |
+             Variable String
+
+data Expression = 
+     Constant Int | 
+     Op Expression Char Expression |
+     Var String
+     
+
+\end{lstlisting}
+
+  \end{column}
+\end{columns}
+
+\end{frame}  
+
+
+\begin{frame}[fragile]
+  \frametitle{Оценка на променливи}
+
+
+\begin{columns}[t]
+  \begin{column}{0.3\textwidth}
+
+    \begin{figure}
+      \centering
+      \begin{tikzpicture}[auto, node distance=2cm,>=latex']
+      \node [treenode] {*}
+        child {
+          node [treenode] {+}
+          child {
+            node [treenode] {1}
+          }
+          child [] {
+            node [treenode,style={draw=red}] {x}
+          }
+        }
+        child {
+          node [treenode] {3}
+        };
+      \end{tikzpicture}
+      \caption{Дърво на израза \texttt{(1+x)*3}.}
+      \label{fig:treeexpr}
+      \end{figure}
+      
+
+  \end{column}
+  \begin{column}{0.7\textwidth}
+
+\begin{lstlisting}[basicstyle=\small,language=Haskell]
+
+type Environment = [(String,Int)]
+eval :: Environment -> Expression -> Int     
+
+\end{lstlisting}
+
+  \end{column}
+\end{columns}
+
+\end{frame}  
+
+
+
+
+\end{document}
+
+
+\begin{columns}[t]
+  \begin{column}{0.2\textwidth}
+
+\relscale{0.63}
+\begin{lstlisting}
+\end{lstlisting}
+\relscale{1}
+
+  \end{column}
+  \begin{column}{0.8\textwidth}
+
+  \end{column}
+\end{columns}
+
+
