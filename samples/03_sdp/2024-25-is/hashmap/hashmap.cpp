@@ -1,4 +1,5 @@
 #include "hashmap.h"
+#include <cassert>
 
 template<typename Key, typename Value>
 HashMap<Key,Value>::HashMap(unsigned int(*_hf)(const Key&),unsigned int capacity):hf(_hf)
@@ -16,7 +17,7 @@ bool HashMap<Key,Value>::hasKey(const Key& key) const
         return false;
     }
 
-    typename HashMap<Key,Value>::row *current = table[hash];
+    row* current = table[hash];
     while(current != nullptr && current->key != key)
     {
         current = current->next;
