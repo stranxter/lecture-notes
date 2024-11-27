@@ -6,7 +6,7 @@ template<typename Key, typename Value>
 class HashMap
 {
     public:
-    HashMap(unsigned int capacity = 255, unsigned int(*_hf)(const Key&));
+    HashMap(unsigned int(*_hf)(const Key&), unsigned int capacity = 255);
     bool hasKey(const Key& k);
 
     private:
@@ -18,5 +18,5 @@ class HashMap
         row *next;
     };
     std::vector<row*> table;
-    usnigned int(*hf)(const Key&)
+    unsigned int(*hf)(const Key&);
 };
