@@ -23,6 +23,30 @@ TEST_CASE("Empty Map Test")
     CHECK(!map.hasKey("test"));
 }
 
+TEST_CASE("Test Addition and HasKey")
+{
+    HashMap<std::string,std::string> map(strhash,5);
+
+    map.add("one","");
+    CHECK(map.hasKey("one"));
+    CHECK(!map.hasKey("two"));
+
+    map.add("eno","");
+    CHECK(map.hasKey("one"));
+    CHECK(map.hasKey("eno"));
+    CHECK(!map.hasKey("neo"));
+
+    map.add("two","");
+    map.add("three","");
+    map.add("four","");
+    map.add("five","");
+    map.add("six","");
+
+    CHECK(map.hasKey("five"));
+    CHECK(map.hasKey("six"));
+
+}
+
 
 int main()
 

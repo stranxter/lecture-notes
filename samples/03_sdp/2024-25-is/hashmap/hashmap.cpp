@@ -8,7 +8,7 @@ HashMap<Key,Value>::HashMap(unsigned int(*_hf)(const Key&),unsigned int capacity
 
 
 template<typename Key, typename Value>
-bool HashMap<Key,Value>::hasKey(const Key& key)
+bool HashMap<Key,Value>::hasKey(const Key& key) const
 {
     unsigned int hash = hf(key) % table.size();
     if(table[hash] == nullptr)
@@ -23,4 +23,10 @@ bool HashMap<Key,Value>::hasKey(const Key& key)
     }
 
     return current != nullptr;
+}
+
+template<typename Key, typename Value>
+void HashMap<Key,Value>::add(const Key& key, const Value& val)
+{
+
 }

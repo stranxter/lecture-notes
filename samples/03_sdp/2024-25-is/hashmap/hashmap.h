@@ -7,7 +7,9 @@ class HashMap
 {
     public:
     HashMap(unsigned int(*_hf)(const Key&), unsigned int capacity = 255);
-    bool hasKey(const Key& k);
+    bool hasKey(const Key& k) const;
+
+    void add(const Key&, const Value&);
 
     private:
 
