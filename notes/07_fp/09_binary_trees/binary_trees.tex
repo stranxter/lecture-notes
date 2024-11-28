@@ -373,6 +373,56 @@ mytree =
     \end{frame}
         
 
+\begin{frame}
+  \centerline{Сериализация и десериализация}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Scheme формат}
+
+
+\begin{itemize}
+  \item Пазно дърво: $()$
+  \item Дърво с корен $x$, ляво поддърво $l$ и дясно поддърво $r$: $(x\: l \: r)$
+\end{itemize}
+
+\bigskip
+
+\begin{columns}[t]
+  \begin{column}{0.35\textwidth}
+
+\begin{verbatim}
+(7 
+  (30 
+      (15 () ()) 
+      (3 () ())) 
+  (77 
+      () 
+      (15 
+          (70 () ()) 
+          ())))  
+\end{verbatim}
+    
+  \end{column}
+  \begin{column}{0.65\textwidth}
+\begin{verbatim}
+Node 7
+  (Node 30 
+        (Node 15 Empty Empty)
+        (Node 3 Empty Empty))
+  (Node 77
+        Empty
+        (Node 15
+              (Node 70 Empty Empty)
+              Empty))
+\end{verbatim}
+  \end{column}
+\end{columns}
+
+
+
+
+\end{frame}
 
 \section{Двоични наредени дървета}
 \begin{frame}
@@ -388,6 +438,8 @@ mytree =
     \begin{column}{0.3\textwidth}
   
       \begin{itemize}
+        \item Търсене
+        \item Минимален и максимален елемент
         \item Вмъкване
       \end{itemize}
 
@@ -422,6 +474,30 @@ mytree =
   \end{columns}
   
 \end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Изтриване}
+  
+  \includegraphics[width=14cm]{images/tree_delete_1}
+  
+  \end{frame}
+  
+    
+  \begin{frame}[fragile]
+  \frametitle{Изтриване}
+  
+  \includegraphics[width=14cm]{images/tree_delete_2}
+  
+  \end{frame}
+
+  
+  \begin{frame}[fragile]
+  \frametitle{Изтриване}
+  
+  \includegraphics[width=14cm]{images/tree_delete_3}
+  
+  \end{frame}
+  
 
 
 
