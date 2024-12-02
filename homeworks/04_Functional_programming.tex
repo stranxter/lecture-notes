@@ -511,3 +511,95 @@ end
   \item Нека са дадени две дървета $t_1$ и $t_2$. Да се напише функция \texttt{subtree $t_1$ $t_2$}, която проверява дали някое поддърво на $t_1$ е еднакво с $t_2$. Вж. фигури \ref{fig:chartree} и \ref{fig:subtree}.
 
 \end{enumerate}
+
+
+\subsection {Decision Tree}
+
+\begin{mdframed}[hidealllines=true,backgroundcolor=gray!20]
+\textbf{Decision Tree}
+
+
+На лекции разглеждаме двоични дървета, в чиито вътрешни възли се съдържа въпрос, а в листата -- имена на класове от обекти. Такива дървета са вариант на т.нар. ``класификационни дървета'' (``decision trees''), които служат за класификация на обекти спрямо техни атрибути.
+
+\bigskip
+
+\begin{lstlisting}[basicstyle=\small,language=Haskell]
+data Node = Class String | 
+            Attr {question :: String, 
+                  yes :: Node, 
+                  no :: Node} 
+	deriving Show
+\end{lstlisting}
+\end{mdframed}
+
+\begin{enumerate}[resume]
+	\item Нека е дадено класификационно дърво \code{t}. Да се дефинират функции:
+	\begin{itemize}
+		\item \code{questions::Node -> [String]}, която връща списък с всички въпроси, които се задават в дървото.
+		\item \code{classes::Node -> ([Bool],String)}, която връща списък с всички класове в дървото, като за всеки клас са дадени отговорите на всички въпроси в реда, в който ги събира функцията \code{questions}.
+	\end{itemize}
+	Например, за дървото от Фигура \ref{fig:decisiontree}, \code{questions t} връща 
+	
+	\verb#["Има ли пера?", "Може ли да лети?", "Има ли перки?"]#,
+	
+	а \code{classes t} връща:
+\begin{verbatim}
+[([True,True,False],"Гълъб"),
+ ([True,False,False],"Пингвин"),
+ ([False,False,True],"Делфин"),
+ ([False,False,False],"Куче")]
+\end{verbatim}
+
+
+\begin{figure}[h]
+	\centering
+\begin{tikzpicture}[auto, level 1/.style={sibling distance=5cm},level 2/.style={sibling distance=2cm},>=latex',edge from parent/.style={draw,-latex}]
+	\node [] {Има ли пера?}
+		child {
+		node [] {Може ли да лети?} 
+		child {
+			node [] {Гълъб} 
+			edge from parent[] node[left] {да}
+		}
+		child {
+			node [] {Пингвин}
+			edge from parent[] node[left] {не}
+		}
+		edge from parent[] node[left] {да}
+		}
+		child {
+		node [] {Има ли перки?}
+		child {
+			node [] {Делфин}
+			edge from parent[] node[left] {да}
+		}
+		child {
+			node [] {Куче}
+			edge from parent[] node[left] {не}
+		}
+		edge from parent[] node[left] {не}
+		};
+	\end{tikzpicture}
+	\caption{Дърво за класификация на животински видове}
+	\label{fig:decisiontree}
+\end{figure}
+
+	
+	\item Даден е списък с въпроси \code{questions::[String]} и списък с класове, за всеки от които е известен отговорът на всеки въпрос \code{classes::[([Bool],String)]}. Например:
+\begin{verbatim}
+questions = [ "Има ли пера?", 
+              "Може ли да лети?", 
+              "Има ли перки?"]
+classes = [([True,True,False],"Гълъб"),
+           ([True,False,False],"Пингвин"),
+           ([False,False,True],"Делфин"),
+           ([False,False,False],"Куче")]
+\end{verbatim}
+Да се дефинира функция \code{buildTree :: [String] -> [([Bool],String)] -> Node}, която по зададен списък с въпроси и списък с класове, създава класификационно дърво за дадените класове при условие, че съществува число $n$, такова че броя въпроси е точно $2^n-1$, броя класове е $2^n$ и няма два различни класа с еднакви отговори за всички въпроси.
+
+За списъците от примера, резултатното дърво е същото като на Фигура \ref{fig:decisiontree}. 
+
+\emph{Упътване: За даден списък с класове, коренът на дървото за класификацията им ще съдържа този въпрос, за който има равен брой положителни и отрицателни отговори.}
+\end{enumerate}
+
+
