@@ -79,6 +79,40 @@ TEST_CASE("Test Tree Membership")
 
 }
 
+TEST_CASE("Test Tree Iterator")
+{
+    BinTree<int> t;
+    t.insertBOT(50);
+    t.insertBOT(30);
+    t.insertBOT(90);
+    t.insertBOT(20);
+    t.insertBOT(45);
+    t.insertBOT(70);
+    t.insertBOT(99);
+
+    int count = 0, last_element = -1;
+
+    /*
+    for(BinTree<int>::iterator it = t.begin(); it != t.end(); ++it)
+    {
+        x = *it;
+    }
+    */
+    for(int x : t)
+    {
+        ++count;
+        if(count > 0)
+        {
+            CHECK(x > last_element);
+        }
+        last_element = x;
+    }
+
+    CHECK(count == 7);
+
+}
+
+
 
 int main()
 {

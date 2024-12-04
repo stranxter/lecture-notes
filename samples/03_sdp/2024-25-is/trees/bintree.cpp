@@ -296,3 +296,64 @@ bool BinTree<T>::removeHelper(Node *&current, const T&x)
     return true;
 
 }
+
+
+template <typename T>
+void BinTree<T>::iterator::windstack()
+{
+    while(s.top()->left != nullptr)
+    {
+        s.push(s.top()->left);
+    }
+}
+
+
+template <typename T>
+BinTree<T>::iterator::iterator(Node *root)
+{
+    if(root != nullptr)
+    {
+        s.push(root);
+        windstack();
+    }
+}
+
+template <typename T>
+typename BinTree<T>::iterator& BinTree<T>::iterator::operator++()
+{
+    Node* crr = s.top(); s.pop();
+    if(crr->right != nullptr)
+    {
+        s.push(crr->right);
+        windstack();
+    }
+    return *this;
+}
+
+template <typename T>
+T BinTree<T>::iterator::operator*() const
+{
+    if(s.empty())
+    {
+        throw "No more elements to iterate";
+    }
+    return s.top()->value;
+}
+
+template <typename T>
+bool BinTree<T>::iterator::operator !=(const BinTree<T>::iterator &other) const
+{
+    return s != other.s;
+}
+
+template <typename T>
+typename BinTree<T>::iterator BinTree<T>::begin() const
+{
+    return iterator(root);
+}
+
+template <typename T>
+typename BinTree<T>::iterator BinTree<T>::end() const
+{
+    return iterator(nullptr);
+}

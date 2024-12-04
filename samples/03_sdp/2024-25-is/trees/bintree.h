@@ -1,11 +1,11 @@
 #pragma once
+#include<stack>
 
-template <typename T>
-
+template<typename T>
 class BinTree
 {
-
     public:
+
     BinTree();
     void insert(const char *trace, const T& x);
     void insertBOT(const T& x);
@@ -18,7 +18,6 @@ class BinTree
     T min() const;
 
     bool remove(const T&x);
-
 
     private:
     struct Node
@@ -38,9 +37,28 @@ class BinTree
     Node *createTreeFromHaskell(std::istream&);
 
     bool removeHelper(Node *&current, const T&x);
-    
-    
+        
     Node *root;
+
+
+    public:
+
+    class iterator
+    {
+        public:
+        iterator(Node*);
+        iterator& operator++();
+        T operator*() const;
+        bool operator !=(const iterator&) const;
+        private:
+        std::stack<Node*> s;
+        void windstack();
+    };
+
+    iterator begin() const;
+    iterator end() const;
+
+
 
 };
 
