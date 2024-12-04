@@ -42,7 +42,31 @@ TEST_CASE("Map Test")
  
 }
 
+TEST_CASE("Test Trie Key Iteration")
+{
+    std::map<std::string,int> testdata = {{"to",7},
+                                          {"tea",3},
+                                          {"ted",4},
+                                          {"ten",12},
+                                          {"A",15},
+                                          {"i",11},
+                                          {"in",5},
+                                          {"inn",9}};
 
+    TrieMap<int> t;
+    for(auto test : testdata)
+    {   
+        t[test.first] = test.second;
+    }
+
+    int count = 0;
+    for(std::string key : t)
+    {
+        CHECK(t[key]==testdata[key]);
+        ++count;
+    }
+    CHECK(count == 8);
+}
 
 TEST_CASE("Test Tree Membership")
 {
@@ -98,6 +122,7 @@ TEST_CASE("Test Tree Iterator")
         x = *it;
     }
     */
+   
     for(int x : t)
     {
         ++count;
