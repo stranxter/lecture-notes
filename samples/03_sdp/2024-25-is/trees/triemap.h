@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <stack>
 
 template <typename Value>
 class TrieMap
@@ -46,5 +47,23 @@ class TrieMap
     TrieNode *root = nullptr;
 
     void free(TrieNode *node);
+
+    public:
+
+    class iterator
+    {
+        public:
+        iterator(TrieNode*);
+        std::string operator*() const;
+        iterator& operator++();
+        bool operator!=(const iterator&) const;
+        private:
+        std::stack<std::pair<TrieNode*,std::string>> s;
+        void skip_non_values();
+        void next();
+    };
+
+    iterator begin() const;
+    iterator end() const;
 
 };

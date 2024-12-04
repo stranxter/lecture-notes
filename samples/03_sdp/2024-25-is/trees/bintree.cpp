@@ -67,9 +67,9 @@ void BinTree<T>::printHelper(typename BinTree<T>::Node *current,int depth) const
         return;
     }
 
-    printHelper(current->right,depth+1);
-    std::cout << std::setw(depth*5) << current->value << std::endl;
     printHelper(current->left,depth+1);
+    std::cout << std::setw(depth*5) << current->value << std::endl;
+    printHelper(current->right,depth+1);
 
 }
 

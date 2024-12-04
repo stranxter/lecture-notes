@@ -179,3 +179,62 @@ void TrieMap<Value>::free(typename TrieMap<Value>::TrieNode *node)
     if (node->value != nullptr) delete node->value;
     delete node;
 }
+
+
+
+template<typename Value>
+TrieMap<Value>::iterator::iterator(TrieNode *root)
+{
+    s.push({root,""});
+    skip_non_values();
+}
+
+template<typename Value>
+void TrieMap<Value>::iterator::skip_non_values()
+{
+    while(!s.empty() && s.top().first->value == nullptr)
+    {
+        next();
+    }
+}
+
+template<typename Value>
+void TrieMap<Value>::iterator::next()
+{
+    std::pair<TrieNode*,std::string> t = s.top(); s.pop();
+    for(child c : t.first->children)
+    {
+        s.push({c.ptr,t.second+c.label});
+    }
+}
+
+template<typename Value>
+std::string TrieMap<Value>::iterator::operator*() const
+{
+    return s.top().second;
+}
+
+template<typename Value>
+typename TrieMap<Value>::iterator& TrieMap<Value>::iterator::operator++()
+{
+    next(); skip_non_values();
+    return *this;
+}
+
+template<typename Value>
+bool TrieMap<Value>::iterator::operator!=(const iterator &other) const
+{
+    return s != other.s;
+}
+
+template<typename Value>
+typename TrieMap<Value>::iterator TrieMap<Value>::begin() const
+{
+    return iterator(root);
+}
+
+template<typename Value>
+typename TrieMap<Value>::iterator TrieMap<Value>::end() const
+{
+    return iterator(nullptr);
+}

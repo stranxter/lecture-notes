@@ -1,0 +1,327 @@
+\documentclass{beamer}
+\usepackage{relsize}
+\usepackage{color}
+
+\usepackage{listings}
+\usetheme{CambridgeUS}
+%\usepackage{beamerthemesplit} % new
+\usepackage{enumitem}
+\usepackage{amsmath}                    % See geometry.pdf to learn the layout options.
+\usepackage{amsthm}                   % See geometry.pdf to learn the layout options. There
+\usepackage{amssymb}                    % See geometry.pdf to learn the layout options.
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage[english,bulgarian]{babel}
+
+\usepackage{caption}
+\usepackage{tikz}
+\usepackage{forest}
+
+\usetikzlibrary{shapes,arrows,positioning,calc,positioning,fit,chains}
+
+\usetheme{CambridgeUS}
+\usecolortheme{crane}
+
+\lstset{language=C++,
+                basicstyle=\ttfamily,
+                keywordstyle=\color{blue}\ttfamily,
+                stringstyle=\color{red}\ttfamily,
+                commentstyle=\color{green}\ttfamily,
+                morecomment=[l][\color{magenta}]{\#}
+}
+
+\tikzset{
+block/.style = {draw, fill=white, rectangle,align = center},
+entry/.style = {draw, fill=black, circle, radius=3em},
+condition/.style = {draw, fill=white, diamond, align = center,node distance=3cm},
+fork/.style = {draw, fill=black, circle,inner sep=1pt},
+lnode/.style={rectangle split, rectangle split parts=3,draw, rectangle split horizontal},
+treenode/.style = {align=center, inner sep=0pt, text centered, circle, font=\sffamily\bfseries, draw=black, fill=white, text width=1.5em},
+flexnode/.style = {align=center, text centered, ellipse, font=\sffamily\bfseries, draw=black, fill=white},
+token/.style={rectangle split, rectangle split parts=2,draw, rectangle split horizontal=false}
+}
+
+
+\newtheorem{mydef}{Дефиниция}[section]
+\newtheorem{lem}{Лема}[section]
+\newtheorem{thm}{Твърдение}[section]
+
+\DeclareMathOperator{\restrict}{\upharpoonright}
+
+\setitemize{label=\usebeamerfont*{itemize item}%
+  \usebeamercolor[fg]{itemize item}
+  \usebeamertemplate{itemize item}}
+
+\setbeamercovered{transparent}
+
+\captionsetup{font=tiny} 
+
+\begin{document}
+\title[Речници]{Префиксни дървета. Речници}
+\frame{\titlepage}
+
+\section{Какво е речник (``map'', ``dictionary'')}
+\subsection{}
+
+
+\begin{frame}[fragile]
+\frametitle{Речник}
+\begin{center}
+\begin{tabular} {c | l}
+  cat & a small animal that is related \\
+      & to lions and tigers and that is \\
+      & often kept by people as a pet \\
+      \hline\\
+  dog & canid; especially :  a highly variable \\
+      & domestic mammal (Canis familiaris) closely \\
+      & related to the gray wolf
+\end{tabular}  
+\end{center}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Други изображения}
+
+Информация, най-често обемна и структурирана, която се асоциира с ключ: проста, атомарна, уникална стойност, която идентифицира информацията.
+
+\bigskip
+
+\begin{itemize}
+  \item Телефонен указател
+  \item Хистограми
+  \item Кешове
+  \item Конфигурации
+  \item Сесийни ключове
+\end{itemize}
+
+\end{frame}  
+
+
+
+\begin{frame}[fragile]
+\frametitle{Променливи на средата}
+
+\begin{columns}[t]
+  \begin{column}{0.5\textwidth}
+\begin{flushleft}
+\relscale {0.7}
+\begin{lstlisting}
+ var x = 10;
+ var y = "Hello"; 
+\end{lstlisting}
+\end{flushleft}
+  \end{column}
+
+  \begin{column}{0.5\textwidth}
+\begin{flushleft}
+\begin{tabular} {c | l}
+  x   & 10 \\
+      \hline\\
+  y & ``hello''
+
+\end{tabular}  
+\end{flushleft}
+
+  \end{column}
+\end{columns}
+
+
+\begin{columns}[t]
+  \begin{column}{0.5\textwidth}
+\begin{flushleft}
+\relscale {0.7}
+\begin{lstlisting}
+ var x = 10;
+ var y = "Good bye!"; 
+\end{lstlisting}
+\end{flushleft}
+  \end{column}
+
+  \begin{column}{0.5\textwidth}
+\begin{flushleft}
+\begin{tabular} {c | l}
+  x   & 10 \\
+      \hline\\
+  y & ``Good bye!''
+
+\end{tabular}  
+\end{flushleft}
+
+  \end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+  \centerline{Асоциативни списъци!}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Асоциативни списъци}
+
+\begin{lstlisting}[basicstyle=\small,language=Haskell]
+type Assoc k v = [(k,v)]
+
+ghci> :t lookup
+lookup :: Eq a => a -> [(a, b)] -> Maybe b
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}
+  \centerline{Префиксни дървета (Trie)}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Trie}
+  
+
+\begin{columns}[t]
+  \begin{column}{0.20\textwidth}
+
+
+  	\begin{tabular}{c | c}
+  		\textit{key} & \textit {value} \\\hline
+  		to & 7 \\
+  		tea & 3 \\
+  		ted & 4 \\
+  		ten & 12 \\
+  		A & 15 \\
+  		i & 11 \\
+  		in & 5 \\
+  		inn & 9 \\
+  	\end{tabular}
+
+  \end{column}
+  \begin{column}{0.80\textwidth}
+    \relscale{0.8}
+    \begin{figure}
+      \centering
+      \begin{forest}
+      for tree={align=center, inner sep=0pt, text centered, circle, font=\sffamily\bfseries, draw=black, fill=white, text width=1.5em }
+      [\_, name=ROOT
+        [\_, name=ROOT_T, edge label={node[midway,left] {\small{t}}}
+          [7, name=ROOT_TO, edge label={node[midway,left] {\small{o}}}]
+          [\_, name=ROOT_TE, edge label={node[midway,left] {\small{e}}}
+            [3, edge label={node[midway,left] {\small{a}}}]
+            [4, edge label={node[midway,left] {\small{d}}}]
+            [12, edge label={node[midway,left] {\small{n}}}]
+          ]
+        ]
+        [15, name=ROOT_A, edge label={node[midway,right] {\small{A}}}]
+        [11, name= ROOT_i, edge label={node[midway,right] {\small{i}}}
+          [5, edge label={node[midway,left] {\small{n}}}
+            [9, edge label={node[midway,left] {\small{n}}}]
+          ]
+        ]
+      ]
+      %edge label={node[midway,left] {\small{Help!}}}
+      \end{forest}
+      \label{fig:trie1}
+      \end{figure}
+    
+  \end{column}
+\end{columns}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Добавяне на ключ в Trie}
+  
+
+\begin{columns}[t]
+  \begin{column}{0.20\textwidth}
+
+
+  	\begin{tabular}{c | c}
+  		\textit{key} & \textit {value} \\\hline
+  		to & 7 \\
+  		tea & 3 \\
+  		ted & 4 \\
+  		ten & 12 \\
+  		A & 15 \\
+  		i & 11 \\
+  		in & 5 \\
+  		inn & 9 \\
+  	\end{tabular}
+
+  \end{column}
+  \begin{column}{0.80\textwidth}
+    \relscale{0.8}
+    \begin{figure}
+      \centering
+      \begin{forest}
+      for tree={align=center, inner sep=0pt, text centered, circle, font=\sffamily\bfseries, draw=black, fill=white, text width=1.5em }
+      [\_, name=ROOT
+        [\_, name=ROOT_T, edge label={node[midway,left] {\small{t}}}
+          [7, name=ROOT_TO, edge label={node[midway,left] {\small{o}}}]
+          [\_, name=ROOT_TE, edge label={node[midway,left] {\small{e}}}
+            [3, edge label={node[midway,left] {\small{a}}}]
+            [4, edge label={node[midway,left] {\small{d}}}]
+            [12, edge label={node[midway,left] {\small{n}}}]
+          ]
+        ]
+        [15, name=ROOT_A, edge label={node[midway,right] {\small{A}}}]
+        [11, name= ROOT_i, edge label={node[midway,right] {\small{i}}}
+          [5, edge label={node[midway,left] {\small{n}}}
+            [9, edge label={node[midway,left] {\small{n}}}]
+          ]
+        ]
+      ]
+      \node[treenode, draw=red, left=0.5cm of ROOT, text = red] (nROOT) {\_};
+      \node[treenode, draw=red, left=0.5cm of ROOT_T, text = red] (nROOT_T) {\_};
+      \node[treenode, draw=red, left=0.5cm of ROOT_TO, text = red] (nROOT_TO) {7};
+      \node[treenode, draw=red, below left=0.5cm of nROOT_TO, text = red] (nROOT_TON) {\_};
+      \node[treenode, draw=red, below left=0.5cm of nROOT_TON, text = red] (nROOT_TONE) {10};
+      \draw [->,red] (nROOT) -- (ROOT_A);
+      \draw [->,red] (nROOT) -- (ROOT_i);
+      \draw [->,red] (nROOT_T) -- (ROOT_TE);
+      \draw [->,red] (nROOT) -- (nROOT_T) node[midway,left] {\small{t}};
+      \draw [->,red] (nROOT_T) -- (nROOT_TO) node[midway,left] {\small{o}};
+      \draw [->,red] (nROOT_TO) -- (nROOT_TON) node[midway,left] {\small{n}};
+      \draw [->,red] (nROOT_TON) -- (nROOT_TONE) node[midway,left] {\small{e}};
+      %edge label={node[midway,left] {\small{Help!}}}
+      \end{forest}
+      \label{fig:trie1}
+      \end{figure}
+    
+  \end{column}
+\end{columns}
+
+\end{frame}
+
+
+\begin{frame}
+  \centerline{Data.Map}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Добавяне на ключ в Trie}
+\begin{lstlisting}[basicstyle=\small,language=Haskell]
+import qualified Data.Map as Map
+
+fromList, lookup, findWithDefault, 
+insert, insertWith, delete
+null, size, member
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}
+  \centerline{Благодаря за вниманието!}
+\end{frame}
+
+
+\end{document}
+
+
+\begin{columns}[t]
+  \begin{column}{0.3\textwidth}
+
+  \end{column}
+  \begin{column}{0.7\textwidth}
+
+  \end{column}
+\end{columns}
+
+

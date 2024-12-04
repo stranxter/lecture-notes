@@ -59,6 +59,7 @@ TEST_CASE("Test Trie Key Iteration")
         t[test.first] = test.second;
     }
 
+    
     int count = 0;
     for(std::string key : t)
     {
@@ -116,10 +117,11 @@ TEST_CASE("Test Tree Iterator")
 
     int count = 0, last_element = -1;
 
+    
     /*
     for(BinTree<int>::iterator it = t.begin(); it != t.end(); ++it)
     {
-        x = *it;
+        std::cout << *it;
     }
     */
    
