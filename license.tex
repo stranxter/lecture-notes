@@ -1,0 +1,10 @@
+\newcommand{\license}[1]{
+  \begin{tikzpicture}[remember picture,overlay]
+      \node[xshift=0mm,yshift=13mm,anchor=south east] at (current page.south east)
+      {\tiny{Материалите са разработени от Калин Георгиев за курсовете по програмиране на ФМИ, СУ}};
+      \node[xshift=0mm,yshift=10mm,anchor=south east] at (current page.south east)
+      {\tiny{Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International}};
+      \node[xshift=0mm,yshift=5mm,anchor=south east] at (current page.south east){%
+      \includegraphics[width=30mm]{{#1}/license}};
+    \end{tikzpicture}
+}
