@@ -185,6 +185,8 @@ void TrieMap<Value>::free(typename TrieMap<Value>::TrieNode *node)
 template<typename Value>
 TrieMap<Value>::iterator::iterator(TrieNode *root)
 {
+    if(root == nullptr)
+        return;
     s.push({root,""});
     skip_non_values();
 }

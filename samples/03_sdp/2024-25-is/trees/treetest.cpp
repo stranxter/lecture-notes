@@ -59,8 +59,8 @@ TEST_CASE("Test Trie Key Iteration")
         t[test.first] = test.second;
     }
 
-    
     int count = 0;
+
     for(std::string key : t)
     {
         CHECK(t[key]==testdata[key]);
