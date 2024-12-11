@@ -29,9 +29,10 @@ int main()
     map["Varna"]["Stara Zagora"] = 10;
 
 
+    std::cout << "Neighbours of Plovdiv:\n";
     for(const auto& [neighbor, cost] : map["Plovdiv"])
     {
-
+        std::cout << neighbor << std::endl;
     }
   
 
@@ -44,6 +45,13 @@ int main()
     country["Varna"].insert("Sofia");
     country["Sofia"].insert("Plovdiv");
     country["Sofia"].insert("Varna");
+
+    std::cout << "Neighbours of Plovdiv:\n";
+    for(const std::string& neighbor : country["Plovdiv"])
+    {
+        std::cout << neighbor << std::endl;
+    }
+
 
     std::cout << way<std::string>(country,"Sofia","Stara Zagora") << std::endl;
     std::cout << way<std::string>(country,"Krichim","Sofia") << std::endl;
