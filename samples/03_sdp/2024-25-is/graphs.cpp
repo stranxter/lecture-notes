@@ -61,6 +61,12 @@ std::vector<V> best_path_dfs_helper(const WGraph<V,C> &g,
 
 }
 
+template<typename V>
+std::vector<V> level(const Graph<V> &g, const V& from, unsigned k)
+{
+    
+}
+
 
 template<typename V, typename C>
 std::vector<V> best_path_dfs(const WGraph<V,C> &g, const V &from, const V &to) 
