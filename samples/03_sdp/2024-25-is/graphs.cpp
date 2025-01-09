@@ -3,6 +3,7 @@
 #include <map>
 #include <string>
 #include <set>
+#include <optional>
 
 template<typename V,typename C>
 using WGraph = std::unordered_map<V,std::map<V,C>>;
@@ -64,7 +65,25 @@ std::vector<V> best_path_dfs_helper(const WGraph<V,C> &g,
 template<typename V>
 std::vector<V> level(const Graph<V> &g, const V& from, unsigned k)
 {
-    
+
+    std::queue<std::optional<V>> q;
+
+    q.push(from);
+    q.push({});
+
+    while(true)
+    {
+
+        std::optional<V> v = q.top();
+
+        if(v.has_
+        {
+
+        }
+
+
+
+    }
 }
 
 
