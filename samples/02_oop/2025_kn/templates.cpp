@@ -186,9 +186,6 @@ int main()
     map(ia,tests,10,even);
     printArray(tests,10);
 
-
-    
-
 }
 
 
