@@ -15,9 +15,15 @@ myelem x l = if null l
              else if head l == x 
                   then True
                   else myelem x (tail l) 
-
+{-
 mylength l = if null l then 0 else 1 + mylentgh (tail l)
 
 count x l = if null l 
             then 0
             else (count x (head l)) + (if head l == x then 1 else 0)
+
+-}
+
+myzip l1 l2 = if (null l1) || 
+                 (null l2) then []
+                                else (head l1, head l2) : myzip (tail l1) (tail l2)
