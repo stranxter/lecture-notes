@@ -5,6 +5,9 @@ public:
     A() {
         std::cout << "Constr of A" << std::endl;
     }
+
+
+
     A(const A& other) {
         std::cout << "Copy constr of A" << std::endl;
     }
@@ -15,6 +18,7 @@ public:
     ~A() {
         std::cout << "Destr of A" << std::endl;
     }
+
 };
 
 class B {
@@ -76,7 +80,7 @@ int main()
 
     {
 
-        A a;
+        A a(450);
         A a1(a);
         A a2 = a;
         a1 = a2;
