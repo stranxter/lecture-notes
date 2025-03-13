@@ -55,10 +55,31 @@ mostcommon (x:xs)
   | xn > yn = (x,xn)
   | otherwise = (y,yn)
   where
-       xn = 1 + count x xs 
+       xn = count x (x:xs) 
        (y,yn) = mostcommon xs
            
-
 h x
  | even x = 1
  | x > 10 = 2
+
+mysum [] = 0
+mysum (x:xs) = x + mysum xs
+
+dup [] = False
+dup (x:xs) = dup xs || elem x xs
+
+mytake 0 _ = []
+mytake _ [] = []
+mytake n (x:xs) = x : mytake (n-1) xs
+
+common [] _ = []
+common _ [] = []
+common (x:xs) (y:ys) 
+ | x /= y = []
+ | otherwise = x : common xs ys 
+
+merge [] l = l
+merge l [] = l
+merge (x:xs) (y:ys)
+  |x < y = x : merge xs (y:ys)
+  |otherwise = y : merge (x:xs) ys
