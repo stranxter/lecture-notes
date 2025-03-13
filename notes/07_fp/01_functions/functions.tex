@@ -141,10 +141,12 @@
   \frametitle{where: let наобратно}
   \begin{lstlisting}[basicstyle=\small]
     mostcommon [x] = (x,1)
-    mostcommon (x:xs) 
-        | count x xs == n = (x,n+1)
-        | otherwise = (y,n)
-        where (y,n) = mostcommon xs    
+    mostcommon (x:xs)
+      | xn > yn = (x,xn)
+      | otherwise = (y,yn)
+      where
+           xn = 1 + count x xs 
+           (y,yn) = mostcommon xs
   \end{lstlisting}
 \end{frame}
 

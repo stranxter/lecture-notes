@@ -41,3 +41,24 @@ myzip (h1:t1) (h2:t2) = (h1,h2) : myzip t1 t2
 shrink [] = []
 shrink [_] = []
 shrink (x1:x2:t) = (x1+x2):shrink t
+
+count :: Eq a => a -> [a] -> Int
+--count x l = брой срещания на x  в l
+count _ [] = 0
+count x (y:xs) 
+  | x == y = 1 + rest
+  | otherwise = rest
+  where rest = count x xs
+
+mostcommon [x] = (x,1)
+mostcommon (x:xs)
+  | xn > yn = (x,xn)
+  | otherwise = (y,yn)
+  where
+       xn = 1 + count x xs 
+       (y,yn) = mostcommon xs
+           
+
+h x
+ | even x = 1
+ | x > 10 = 2
