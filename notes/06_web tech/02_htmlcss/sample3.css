@@ -11,7 +11,14 @@
 p
 {
     color:green;
+    font-style: italic;
     
+}
+
+.pink-para
+{
+    color:pink;
+        
 }
 
 .blue-para

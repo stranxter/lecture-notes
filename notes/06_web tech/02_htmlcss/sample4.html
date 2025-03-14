@@ -14,23 +14,41 @@
         /*padding: 2.5em;
         margin: 2em;*/
     }
+
+/*
+The box will break onto a new line.
+The width and height properties are respected.
+Padding, margin and border will cause other elements to be pushed away from the box.
+If width is not specified, the box will extend in the inline direction to fill the space available in its container. In most cases, the box will become as wide as its container, filling up 100% of the space available.
+*/
+
     .block 
     {
         display: block;
         /*background-color: gray;*/
-        /*width:450px;*/
+        /* width:450px; */
+        /* height: 300px; */
         /*margin:120px;*/
-        padding: 50px;
+        /*padding: 50px;*/
         /*padding-bottom: 100px;*/
     }    
+
+
+/*
+The box will not break onto a new line.
+The width and height properties will not apply.
+Top and bottom padding, margins, and borders will apply but will not cause other inline boxes to move away from the box.
+Left and right padding, margins, and borders will apply and will cause other inline boxes to move away from the box.
+*/    
     .inline
     {
+        display:inline-block;
         color:red;
-        width: 400px;
-        padding: 10px;
-        margin:50px;
+        /* width: 400px; */
+        /* height: 300px; */
+        /*padding: 10px;*/
+        /*margin:50px;*/
         /*background-color: lightblue;*/
-        width:100px;
         /*padding-bottom: 100px;*/
     }
     p
