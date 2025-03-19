@@ -6,11 +6,20 @@ public:
         std::cout << "Constr of A" << std::endl;
     }
 
-
+    A(int x)
+    {
+        std::cout << "Constr of A(" << x << ")" << std::endl;
+    }
 
     A(const A& other) {
         std::cout << "Copy constr of A" << std::endl;
     }
+    A& operator=(int x) 
+    {
+        std::cout << "Op= of A" << std::endl;
+        return *this;
+    }
+
     A& operator=(const A& other) {
         std::cout << "Op= of A" << std::endl;
         return *this;
@@ -64,9 +73,31 @@ void f(A a) {}
 void g(A& a) {}
 void h(A* a) {}
 
+class D
+{
+    private:
+    int i;
+    A a;
+    public:
+    D():a(5)
+    //D()
+    {
+       // a = 5;
+        std::cout << "Constr of D" << std::endl;
+    }
+    ~D()
+    {
+        std::cout << "Destr of D" << std::endl;
+    }
+};
+
 int main()
 {
-    {
+
+
+    D d;
+
+/*     {
         C arr[2];
         A* ptr;
         {
@@ -95,4 +126,4 @@ int main()
         C c1(c);
         c = c1;
     }
-}
+ */}

@@ -14,16 +14,17 @@ unsigned charCount(char ch, const char* str) {
     return cnt;
 }
 
+template<typename T>
 class DynArray 
 { 
 private:
     unsigned size = 0;
-    int* first = nullptr;
+    T* first = nullptr;
 
     void copyFrom(const DynArray& other) {
         size = other.size;
 
-        first = new int[size];
+        first = new T[size];
         for (size_t i = 0; i < size; i++)
         {
             first[i] = other.first[i];
@@ -40,7 +41,7 @@ public:
 
     explicit DynArray(unsigned n)
     {
-        first = new int[n] {};
+        first = new T[n] {};
         size = n;
     }
 
@@ -50,7 +51,7 @@ public:
             return;
         }
         size = charCount(' ', str) + 1;
-        first = new int[size];
+        first = new T[size];
         unsigned idx = 0;
 
         while (*str != '\0') {
@@ -68,6 +69,11 @@ public:
 
     DynArray(const DynArray& other) {
         copyFrom(other);
+    }
+
+    T& operator[](unsigned i)
+    {
+        return first[i];
     }
 
     DynArray& operator=(const DynArray& other) {
@@ -94,9 +100,9 @@ public:
         std::cout << "}:" << size << std::endl;
     }
 
-    DynArray& operator+=(int x)
+    DynArray& operator+=(T x)
     {
-        int *newBuffer = new int[size+1];
+        T *newBuffer = new T[size+1];
     
         for(int i = 0; i < size; ++i)
         {
@@ -115,7 +121,7 @@ public:
     DynArray operator+(const DynArray& b)
     {
         DynArray result;
-        result.first = new int [size + b.size];
+        result.first = new T [size + b.size];
         result.size = size + b.size;
     
         for(int i = 0; i < size; ++i)
@@ -130,7 +136,7 @@ public:
         return result;
     }
 
-    bool member(int x) const
+    bool member(T x) const
     {
         for(int i = 0; i < size; ++i)
         {
@@ -146,7 +152,8 @@ public:
 
 };
 
-bool operator==(const DynArray& a, const DynArray& b)
+template <typename T>
+bool operator==(const DynArray<T>& a, const DynArray<T>& b)
 {
     if(a.size != b.size)
     {
@@ -164,19 +171,13 @@ bool operator==(const DynArray& a, const DynArray& b)
     return true;
 }
 
-struct Test {
-    DynArray arr;
-
-    Test() : arr(1) {}
-};
-
 int main()
 {
-    DynArray arr1("13 7 0");
+    DynArray<int> arr1("13 7 0");
 
-    DynArray arr2(arr1);
+    DynArray<int> arr2(arr1);
 
-    DynArray arr[2]; 
+    DynArray<int> arr[2]; 
 
     arr1.print();
     arr2.print();
@@ -185,10 +186,8 @@ int main()
     arr1.print();
     arr2.print();
 
-    Test t;
-    Test t1(t);
+    std::cout << arr1[4]+arr2[5] << std::endl;
 
-    (t.arr += 10) += 20;
-    t.arr.print();
-    t1.arr.print();
+    arr1[4] = 0;
+
 }
