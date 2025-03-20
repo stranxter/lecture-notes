@@ -83,3 +83,20 @@ merge l [] = l
 merge (x:xs) (y:ys)
   |x < y = x : merge xs (y:ys)
   |otherwise = y : merge (x:xs) ys
+
+
+p1 [] = []
+p1 (x:xs) = (x+1):p1 xs
+
+sql [] = []
+sql (x:xs) = (x*x):p1 xs
+
+op1 x = x + 1
+opsqx x = x * x 
+
+
+mymap :: (a->b) -> [a] -> [b]
+mymap f [] = []
+mymap f (x:xs) = (f x):mymap f xs
+
+sq2 = \x -> x * x
