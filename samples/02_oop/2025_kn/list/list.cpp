@@ -5,13 +5,13 @@ List<T>::List()
 {
 }
 template <typename T>
-bool List<T>::empty()
+bool List<T>::empty() const
 {
     return first == nullptr;
 }
 
 template <typename T>
-unsigned List<T>::count()
+unsigned List<T>::count() const
 {
     unsigned c = 0;
     box<T> *current = first;
@@ -22,6 +22,68 @@ unsigned List<T>::count()
     }
     return c;
 }
+
+template <typename T>
+void List<T>::clear()
+{
+    box<T> *save;
+    while(first != nullptr)
+    {
+        save = first->next;
+        delete first;
+        first = save;
+    }
+    first = nullptr;
+}
+
+
+template <typename T>
+List<T>::~List()
+{
+    clear();
+}
+
+template <typename T>
+List<T>::List(const List<T>& other)
+{
+    copyfrom(other.first);
+}
+template <typename T>
+void List<T>::copyfrom(box<T> *other)
+{
+    box<T> *current = other;
+    box<T> *prevCreated = nullptr;
+    box<T> *newCreated = nullptr;
+
+    while(current != nullptr)
+    {
+        newCreated = new box<T>{current->data,nullptr};
+        if(prevCreated == nullptr)
+        { 
+            first = newCreated;
+        } else 
+        {
+            prevCreated->next = newCreated;
+        }
+        prevCreated = newCreated;
+
+        //prevCreated = prevCreated->next = nex box<T>{current->data,nullptr};
+
+        current=current->next;
+    }
+
+}
+
+template <typename T>
+void List<T>::operator=(const List& other) //&other == this
+{
+    if(&other != this)
+    {
+        clear();
+        copyfrom(other.first);    
+    }
+}
+
 
 template <typename T>
 T& List<T>::operator[](unsigned i)
@@ -35,7 +97,18 @@ T& List<T>::operator[](unsigned i)
 }
 
 template <typename T>
-box<T>* List<T>::pointerTo(unsigned i)
+T List<T>::operator[](unsigned i) const
+{
+    box<T> *current = pointerTo(i);
+    if(current == nullptr)
+    {
+        throw "Index our of bounds.";
+    }
+    return current->data;
+}
+
+template <typename T>
+box<T>* List<T>::pointerTo(unsigned i) const
 {
     unsigned c = 0;
     box<T> *current = first;
@@ -67,3 +140,4 @@ void List<T>::push(T x)
     newBox->next = first;
     first = newBox;
 }
+

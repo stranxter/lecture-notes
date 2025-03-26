@@ -51,8 +51,21 @@ TEST_CASE("Test Insertion")
 
 }
 
+TEST_CASE("Test Assignement")
+{
+    List<int> l;
+    l.push(3);
+    l.push(2);
+    l.push(1);
+    l.push(0);
+
+    CHECK(l[0] == 0);
+    l[0] = 100;
+    CHECK(l[0] == 100);
+}
+
 template<typename T>
-void print(List<T> l)
+void print(const List<T>& l)
 {
     std::cout << "{";
     for(int i = 0; i < l.count(); ++i)
@@ -62,16 +75,9 @@ void print(List<T> l)
     std::cout << "}\n";
 }
 
+
 int main()
 {
-
-    List<int> l;
-    l.push(1);
-    l.push(2);
-    l.push(3);
-    l.push(4);
-    print(l);
-
    doctest::Context().run();
    return 0;
 }
