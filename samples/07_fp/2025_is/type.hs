@@ -41,3 +41,5 @@ myshow :: MyIntList -> String
 myshow Empty = "$"
 myshow (L h t) = (show h) ++ ":" ++ (myshow t)
 
+data Point a = Point a a
+

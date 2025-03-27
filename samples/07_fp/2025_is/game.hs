@@ -18,10 +18,15 @@ dead w (x, y) = x < 0 || x >= length w ||
 
 failgame (Game pos w) = dead w pos
 
-left (Game (x, y) w) = Game (x-1, y) w
-right (Game (x, y) w) = Game (x+1, y) w
-up (Game (x, y) w) = Game (x, y-1) w
-down (Game (x, y) w) = Game (x, y+1) w
+move :: Game -> (Pos -> Pos) -> Maybe Game
+move (Game p w) mv
+   | dead w moved = Nothing
+   | otherwise = Just $ Game moved w
+   where moved = mv p
 
-(->>) :: Game -> (Game->Game) -> Game
-g ->> f = f g
+left g = move g (\(x, y) -> (x-1, y))
+right g = move g (\(x, y) -> (x+1, y))
+up g = move g (\(x, y) -> (x, y-1))
+down g = move g (\(x, y) -> (x, y+1))
+
+
