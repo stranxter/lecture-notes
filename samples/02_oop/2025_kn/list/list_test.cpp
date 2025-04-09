@@ -76,8 +76,3 @@ void print(const List<T>& l)
 }
 
 
-int main()
-{
-   doctest::Context().run();
-   return 0;
-}
