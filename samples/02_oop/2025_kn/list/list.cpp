@@ -141,3 +141,37 @@ void List<T>::push(T x)
     first = newBox;
 }
 
+template <typename T>
+ListIterator<T> List<T>::begin()
+{
+    return ListIterator<T>(first);
+}
+
+template <typename T>
+ListIterator<T> List<T>::end()
+{
+    return ListIterator<T>(nullptr);
+}
+
+template <typename T>
+ListIterator<T>::ListIterator(box<T> *first):current(first)
+{
+}
+template <typename T>
+ListIterator<T>& ListIterator<T>::operator++()
+{
+    current = current->next;
+    return *this;
+} 
+
+template <typename T>
+T& ListIterator<T>::operator*()
+{
+    return current->data;
+}
+
+template <typename T>
+bool  ListIterator<T>::operator!=(const ListIterator<T> &other)
+{
+    return this->current != other.current;
+}

@@ -6,9 +6,25 @@ struct box
 };
 
 template <typename T>
+class ListIterator
+{
+    public:
+    ListIterator(box<T>*);
+    ListIterator& operator++(); 
+    T& operator*();
+    bool operator!=(const ListIterator<T>&);
+    private:
+    box<T> *current;
+};
+
+template <typename T>
 class List
 {
     public:
+
+    using value_type = T;
+    using iterator = ListIterator<T>;
+
     List();
     List(const List& other);
     bool empty() const;
@@ -22,6 +38,9 @@ class List
 
     ~List();
     void clear();
+
+    ListIterator<T> begin();
+    ListIterator<T> end();
 
     private:
     box<T> *first = nullptr;
