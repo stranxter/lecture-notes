@@ -41,32 +41,69 @@ void saveSVG(std::vector<Figure*>v, std::ostream &f)
 
 }
 
+std::ostream& operator<<(std::ostream& out,const std::vector<Figure*> v)
+{
+    out << v.size() << std::endl;
+    for (Figure* fig : v)
+    {
+        fig->serialize(out);
+        out << std::endl;
+    }
+    return out;
+}
+
+Figure* factory(std::string type)
+{
+    if (type == "circle")
+    {
+        return new Circle();
+    } else if (type == "rect")
+    {
+        return new Rect();
+    } else if (type == "tri")
+    {
+        return new Triangle();
+    }
+
+    throw "Unknow object type!";
+    return nullptr;
+}
+
+std::istream& operator>>(std::istream &in, std::vector<Figure*>& v)
+{   
+    v.clear();
+    int n;
+    in >> n;
+    for(int i = 0; i < n; ++i)
+    {
+
+        std::string type;
+        in >> type;
+
+        Figure *f = factory(type);
+
+        f->deserialize(in);
+        v.push_back(f);
+    }
+    return in;
+}
+
 int main()
 {
 
-    Circle c1(100,100,30), c2(20,20,50);
-    Rect r1(100,100,50,50), r2(150,150,50,100);
-    Triangle t({180,30},{100,100},{250,200});
+    std::vector<Figure*> figures={new Circle({100,100},30),
+                                  new Circle({20,20},50),
+                                  new Rect({100,100},50,50),
+                                  new Rect({{150,150},50,100}),
+                                  new Triangle({180,30},{100,100},{250,200}),
+                                  new Rect({0,0},10,20)};
 
-    /*
-    std::vector<Circle> circles = {c1,c2};
-    std::vector<Rect> rects = {r1,r2};
-    */
+    /* =========== SVG export ============== */
 
-    Rect r(0,0,10,20);
+    std::ofstream svg("figures.svg");
+    saveSVG(figures,svg);
 
-    //std::cout << "1:" << r.Figure::surface() << std::endl;
-    std::cout << "2:" << r.Rect::surface() << std::endl;
-    std::cout << "3:" << r.surface() << std::endl;
-
-    Rect *pr = &r;
-    std::cout << "4:" << pr->surface() << std::endl;
-
-    Figure *pf = &r;
-    std::cout << "5:" << pf->surface() << std::endl;
-
-
-    std::vector<Figure*> figures={&c1,&c2,&r1,&r2,&t};
+    /* =========== drawing ================== */
 
     std::cout << sumSurface(figures) << std::endl;
 
@@ -77,10 +114,20 @@ int main()
     sdlw::updateGraphics();
     std::cin.get();
 
-    std::ofstream out("figures.svg");
+    /* =========== seriazing / deserializing ==========*/
 
-    saveSVG(figures,out);
+    std::ofstream out("figures.kn2025");
 
+    std::cout << figures;
+    out << figures;
 
+    out.close();
+
+    std::ifstream in("figures.kn2025");
+    std::vector<Figure*> arr2;
+
+    in >> arr2;
+
+    std::cout << arr2;
 
 }

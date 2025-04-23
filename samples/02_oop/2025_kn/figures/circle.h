@@ -5,14 +5,18 @@
 class Circle : public Figure
 {
     public:
-    Circle(double, double, double);
+    Circle(Point, double);
+    Circle();
 
     double surface();
     double perimeter();
 
     void draw();
     void toSVG(std::ostream&);
+    void serialize(std::ostream&);
+    void deserialize(std::istream&);
 
     private:
-    double x,y,r;
+    Point c;
+    double r;
 };

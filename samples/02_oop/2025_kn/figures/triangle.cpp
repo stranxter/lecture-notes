@@ -3,6 +3,9 @@
 
 #include "draw/sdlwrapper.h"
 
+
+Triangle::Triangle():p1({0,0}),p2({0,0}),p3({0,0}){}
+
 Triangle::Triangle(Point _p1, Point _p2, Point _p3):p1(_p1),p2(_p2),p3(_p3){}
 
 double dist(Point a, Point b)
@@ -33,4 +36,14 @@ void Triangle::draw()
 void Triangle::toSVG(std::ostream &f)
 {
   //  f << "<rect x=\"" << x << "\" y=\"" << y << "\" width=\"" << w << "\" height=\"" << h << "\"/>\n";
+}
+
+void Triangle::serialize(std::ostream &out)
+{
+    out << "tri " << p1 << " " << p2 << " " << p3;
+}
+
+void Triangle::deserialize(std::istream &in)
+{
+    in >> p1 >> p2 >> p3;
 }

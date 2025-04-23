@@ -7,6 +7,9 @@ struct Point
     double y;
 };
 
+std::ostream& operator << (std::ostream&,const Point&);
+std::istream& operator >> (std::istream&,Point&);
+
 class Figure
 {
     public:
@@ -16,7 +19,7 @@ class Figure
     virtual void draw() = 0;
     virtual void toSVG(std::ostream&) = 0;
 
-    private:
-    char label[15];
+    virtual void serialize(std::ostream&) = 0;
+    virtual void deserialize(std::istream&) = 0;
 
 };

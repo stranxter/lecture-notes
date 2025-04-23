@@ -5,14 +5,18 @@
 class Rect : public Figure
 {
     public:
-    Rect(double, double, double, double);
+    Rect(Point, double, double);
+    Rect();
 
     double surface();
     double perimeter();
 
     void draw();
     void toSVG(std::ostream&);
-
+    void serialize(std::ostream&);
+    void deserialize(std::istream&);
+    
     private:
-    double x,y,w,h;
+    Point c;
+    double w,h;
 };
