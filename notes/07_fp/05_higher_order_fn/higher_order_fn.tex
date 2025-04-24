@@ -245,9 +245,6 @@ squaresOfEvens = [x*x | x <- [1..10], even x]
 pairs = [(x,y) | x <- [1..10], y <- [1..10]]
 \end{lstlisting}
   
-\bigskip
-
-Прилича ли на $\{x^2 | x \in \{1,2,\dots,10\} \land x \equiv 0 (mod 2)\}$?
 \end{frame}
 
 \begin{frame}[fragile]
@@ -303,7 +300,7 @@ take 10 allpairs
 \begin{itemize}
   \item Прилагане на функция. Currying
   \item Композиция (., >>=)
-  \item Елементи на списъци и n-торки
+  \item Функции като елементи на списъци и n-торки
   \item Дефиниране
   \item Дефиниране с $\lambda$
 \end{itemize}
