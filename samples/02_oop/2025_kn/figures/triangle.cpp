@@ -6,7 +6,7 @@
 
 Triangle::Triangle():p1({0,0}),p2({0,0}),p3({0,0}){}
 
-Triangle::Triangle(Point _p1, Point _p2, Point _p3):p1(_p1),p2(_p2),p3(_p3){}
+Triangle::Triangle(Point _p1, Point _p2, Point _p3, Color _clr):Figure(_clr),p1(_p1),p2(_p2),p3(_p3){}
 
 double dist(Point a, Point b)
 {
@@ -26,8 +26,15 @@ double Triangle::perimeter()
     return a+b+c;    
 }
 
+Figure* Triangle::clone()
+{
+    return new Triangle(*this);
+}
+
+
 void Triangle::draw()
 {
+    predraw();
     sdlw::drawLine(p1.x,p1.y,p2.x,p2.y);
     sdlw::drawLine(p2.x,p2.y,p3.x,p3.y);
     sdlw::drawLine(p1.x,p1.y,p3.x,p3.y);

@@ -5,7 +5,7 @@
 class Rect : public Figure
 {
     public:
-    Rect(Point, double, double);
+    Rect(Point, double, double, Color=white);
     Rect();
 
     double surface();
@@ -15,6 +15,8 @@ class Rect : public Figure
     void toSVG(std::ostream&);
     void serialize(std::ostream&);
     void deserialize(std::istream&);
+
+    virtual Figure* clone();
     
     private:
     Point c;

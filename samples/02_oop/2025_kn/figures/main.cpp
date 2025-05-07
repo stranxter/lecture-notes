@@ -9,6 +9,7 @@
 #include "rectangle.h"
 #include "figure.h"
 #include "triangle.h"
+#include "group.h"
 
 double sumSurface(std::vector<Figure*> v)
 {
@@ -41,62 +42,39 @@ void saveSVG(std::vector<Figure*>v, std::ostream &f)
 
 }
 
-std::ostream& operator<<(std::ostream& out,const std::vector<Figure*> v)
-{
-    out << v.size() << std::endl;
-    for (Figure* fig : v)
-    {
-        fig->serialize(out);
-        out << std::endl;
-    }
-    return out;
-}
 
-Figure* factory(std::string type)
-{
-    if (type == "circle")
-    {
-        return new Circle();
-    } else if (type == "rect")
-    {
-        return new Rect();
-    } else if (type == "tri")
-    {
-        return new Triangle();
-    }
-
-    throw "Unknow object type!";
-    return nullptr;
-}
-
-std::istream& operator>>(std::istream &in, std::vector<Figure*>& v)
-{   
-    v.clear();
-    int n;
-    in >> n;
-    for(int i = 0; i < n; ++i)
-    {
-
-        std::string type;
-        in >> type;
-
-        Figure *f = factory(type);
-
-        f->deserialize(in);
-        v.push_back(f);
-    }
-    return in;
-}
-
-int main()
+void drawSign()
 {
 
-    std::vector<Figure*> figures={new Circle({100,100},30),
-                                  new Circle({20,20},50),
-                                  new Rect({100,100},50,50),
+    Group *boy = new Group  ({new Circle({100,100},30),
+                              new Rect({100,200},35,45)});
+    
+    Group *girl = new Group ({new Circle({200,100},30),
+                              new Triangle({200,140},{140,250},{240,250})});
+
+    Group sign ({girl,boy,new Rect({150,100},300,300)},blue);
+
+    Group sign2(sign);
+    sign2.setColor(red);
+    
+    sign.draw();
+
+    std::ofstream out("sign.kn2025");
+
+    sign.serialize(out);
+
+}
+
+
+void tests()
+{
+    std::vector<Figure*> figures={new Circle({100,100},30,red),
+                                  new Circle({20,20},50, blue),
+                                  new Rect({100,100},50,50,yellow),
                                   new Rect({{150,150},50,100}),
-                                  new Triangle({180,30},{100,100},{250,200}),
+                                  new Triangle({180,30},{100,100},{250,200},blue),
                                   new Rect({0,0},10,20)};
+
 
     /* =========== SVG export ============== */
 
@@ -110,9 +88,6 @@ int main()
     sdlw::setColor(255,255,255);
 
     drawAll(figures);
-
-    sdlw::updateGraphics();
-    std::cin.get();
 
     /* =========== seriazing / deserializing ==========*/
 
@@ -129,5 +104,32 @@ int main()
     in >> arr2;
 
     std::cout << arr2;
+
+}
+
+void testSignLoading()
+{
+    std::ifstream in("sign.kn2025");
+
+    Group loadedSign;
+    std::string type;
+    in >> type;
+
+    loadedSign.deserialize(in);
+
+    loadedSign.draw();
+
+
+}
+
+int main()
+{
+
+    //tests();
+    //drawSign();
+    testSignLoading();
+
+    sdlw::updateGraphics();
+    std::cin.get();
 
 }

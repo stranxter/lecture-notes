@@ -5,7 +5,7 @@
 class Circle : public Figure
 {
     public:
-    Circle(Point, double);
+    Circle(Point, double,Color=white);
     Circle();
 
     double surface();
@@ -15,6 +15,8 @@ class Circle : public Figure
     void toSVG(std::ostream&);
     void serialize(std::ostream&);
     void deserialize(std::istream&);
+
+    virtual Figure* clone();
 
     private:
     Point c;
