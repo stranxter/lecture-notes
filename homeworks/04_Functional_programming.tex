@@ -295,16 +295,99 @@ move (Game p w) mv = if dead w (mv p)
 \section {$\lambda$ функции}
 
 \begin{enumerate}[]
-	\item Да се дефинира функция \code{caseof :: [a->Bool] -> [a->b] -> a->b}. Функцията приема $k$ на брой предиката над $a$ и $k$ на брой функции $a\rightarrow b$. Функцията \code{caseof} връща функция, която приема елемент $x$ от тип $a$ и връща резултата от първата функция, за която предикатът е изпълнен за $x$. Ако няма такава функция, функцията връща резултата от последната функция в списъка. Например, функцията:
-\begin{lstlisting}[basicstyle=\small,language=Haskell]
-myf = caseof [even, odd] [(\x -> x+1), (\x -> x-1)]
-\end{lstlisting}
-	ще увеличава с единица четните числа и ще намалява с единица нечетните числа.
-		
+
+\item ``Двойно-линейна функция'' наричаме функция $f:Doube \rightarrow Double$, която има стойност $a_1x$  за $x \leq 0$ и стойност $a_2x$ за $x > 0$. Да се дефинира функция \code{dlin::Double -> Double-> (Double->Double)}, която по аргументи $a_1$ и $a_2$, създава съответната двойно-линейна функция. Функцията на фигура \ref{fig:dlin} може да се създаде чрез \code{dlin (-1) 1}.
+
+
+    \begin{figure}
+    \centering
+    \relscale{0.7}
+
+        \begin{tikzpicture}[auto,>=latex']
+        \node [fork, name=center, fill = red] (center) at(4,0){};
+        \node [name=ay] (ay) at(4,5) {};
+        \node [name=axp] (axp) at(8,0) {};
+        \node [name=axn] (axn) at(0,0) {};
+
+
+		\node [fork, name=v0] (v0) at(4,0) {};
+        \node [fork, name=v1] (v1) at(0,4) {};
+		\node [fork, name=v2] (v2) at(8,4) {};
+        \draw [->] (center)--(ay);
+        \draw [->] (center)--(axp);
+        \draw [->] (center)--(axn);
+
+		\draw [-] (v0)--(v1);
+        \draw [-] (v0)--(v2);
+        \draw[help lines, densely dotted] (0,0) grid (8,5);
+        \end{tikzpicture}
+
+      \caption{Двойно-линейна функция за $a_1=-1$, $a_2=1$}
+      \label{fig:dlin}
+    \end{figure}
+
+
+
+\item ``Правоъгълна функция'' наричаме функция $f:Doube \rightarrow Double$, която редува две стойности $low$ и $high$, $low < high$, като ги разменя със стъпка $step$ по аргумента. Вж. фиг \ref{fig:rectfn}. Да се дефинира функция \code{rectfn::Double -> Double -> Double -> (Double->Double)}, която по аргументи $low$, $high$ и $step$ създава съответната правоъгълна функция. Функцията на фигурата може да се създаде чрез \code{rectfn 2 4 2}.
+
+    \begin{figure}
+    \centering
+    \relscale{0.7}
+
+        \begin{tikzpicture}[auto,>=latex']
+        \node [fork, name=center, fill = red] (center) at(0,0){};
+        \node [name=ay] (ay) at(0,5) {};
+        \node [name=ax] (ax) at(10,0) {};
+
+
+		\node [fork, name=v0] (v0) at(0,2) {};
+        \node [fork, name=v1] (v1) at(2,2) {};
+		\node [fork, name=v2] (v2) at(2,4) {};
+        \node [fork, name=v3] (v3) at(4,4) {};
+        \node [fork, name=v4] (v4) at(4,2) {};
+        \node [fork, name=v5] (v5) at(6,2) {};
+        \node [fork, name=v6] (v6) at(6,4) {};
+        \node [fork, name=v7] (v7) at(8,4) {};
+        \node [fork, name=v8] (v8) at(8,2) {};
+        \node [fork, name=v9] (v9) at(10,2) {};
+
+
+        \draw [->] (center)--(ay);
+        \draw [->] (center)--(ax);
+
+		\draw [-] (v0)--(v1);
+        \draw [-] (v2)--(v3);
+        \draw [-] (v4)--(v5);
+        \draw [-] (v6)--(v7);
+        \draw [-] (v8)--(v9);
+        \draw[densely dashed] (v1) -- (v2);
+        \draw[densely dashed] (v3) -- (v4);
+        \draw[densely dashed] (v5) -- (v6);
+        \draw[densely dashed] (v7) -- (v8);
+        \draw[help lines, densely dotted] (0,0) grid (10,5);
+        \end{tikzpicture}
+
+      \caption{Правоъгълна функция, $low=2$, $high=4$, $step=2$}
+      \label{fig:rectfn}
+    \end{figure}
+
 	\item   Да се дефинира функция \code{createfn :: [(a,b)]->a->b}, която по даден списък от двойки $(a_i,b_i)$, връща функция $f:a \rightarrow b$ дефинирана за всички $a_i$, така че $f(a_i)=b_i$. Например:
 
 \begin{lstlisting}[basicstyle=\small,language=Haskell]
 createfn [(1,2),(2,4),(3,6)] 2 -> 4
+\end{lstlisting}
+
+
+	\item Да се дефинира функция \code{caseof :: [(a->Bool,a->b)] -> (a -> b)}. Функцията приема $k$ на брой двойки ($p_i,f_i)$, където $p_i$ е предикат над $a$, а $f_i$ е функция $a \rightarrow b$. Функцията \code{caseof} връща функция, която приема аргумент $x$ от тип $a$ и връща стойността $f_i(x)$ на първата функция в списъка, за която предикатът $p_i(x)$ е изпълнен. Ако няма такъв предикат, да се връща стойността на последната функция в списъка. Например, функцията \code{myf}, дефинирана така:
+\begin{lstlisting}[basicstyle=\small,language=Haskell]
+myf = caseof [(even,\x -> x+1), (odd, \x -> x-1)]
+\end{lstlisting}
+	ще увеличава с единица четните числа и ще намалява с единица нечетните числа.
+		
+\item Да се дефинира функция \code{member::[a]->(a->bool)}. Стойността на функцията за даден списък $l$ е функция над $a$, която проверява дали $a$ е елемент на $l$. На следния пример функцията \code{myf} има стойност истина за всички четни числа и лъжа за останалите.
+
+\begin{lstlisting}[basicstyle=\small,language=Haskell]
+myf = member [2,4,..]
 \end{lstlisting}
 
 \item Да се дефинира функция \code{integrate :: (Double->Double) -> Int -> Double -> Double -> Double}, която по функция $f: Double \rightarrow Double$ и цяло положително число $N$ връща $i(a,b)$ от тип $i:Double \times Double \rightarrow Double$, изчисляваща приближено стойността на определния интеграл $\int_{a}^{b} f(x) dx$ (приемайки, че такъв съществува) по метода на трапеците, по-специално Chained trapezoidal rule\cite{trapezoidal} с $N$ на брой подинтервала. (вж. фиг. \ref{fig:trapezoidal})
