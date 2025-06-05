@@ -32,7 +32,7 @@ split :: (a->Bool) -> [a] -> [[a]]
 split p [] = []
 split p xs = first : rest
     where
-        (first, next) = break p xs
+        (first, next) = break p xs 
         rest = case next of
             [] -> []
             x -> split p (tail x)
