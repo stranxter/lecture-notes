@@ -279,7 +279,76 @@ Just x >>= f = f x
 \end{itemize}
 
 \end{frame}
- 
+
+\section{Вход/Изход}
+\begin{frame}
+  \centerline{Вход/Изход}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Какво е IO монада?}
+\begin{itemize}
+  \item Обвързва ``чиста'' стойност с операциите за прочитането ѝ
+  \item Позволява композиране на последователност от операции, зависими от вход и изход
+  \item Тъй като смисълът от някои операции е да произведат страничен ефект, понятието ``стойност'' за тях няма смисъл (\texttt{void}). Това изключва възможността на тях да гледаме ``функционално''
+  \item Стойността, получена чрез входна операция, не е ``чиста'', но изчислението с нея може да е чисто
+\end{itemize}
+
+\begin{lstlisting}[basicstyle=\small,language=Haskell]
+io = do 
+    x <- getLine
+    putStrLn ("You entered: " ++  x)
+    putStrLn "Thank you!"
+    return x
+\end{lstlisting}
+  
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{do нотация}
+\begin{itemize}
+  \item Опростява писането при композиране на монадични операции
+  \item Подчертва последователността на операциите
+  \item Улеснява извличането на чисти стойности
+  \item let vs. \verb#<-#
+\end{itemize}
+\begin{lstlisting}[basicstyle=\small,language=Haskell]
+test = do
+    line1 <- getLine
+    let h1 = head line1
+    line2 <- getLine
+    let h2 = head line1
+    let ascii = max (ord h1) (ord h2)
+    return ascii
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{IO монада}
+\begin{itemize}
+  \item Така и така сме в \verb#do#, защо да не изведем нещо?
+\end{itemize}
+\begin{lstlisting}[basicstyle=\small,language=Haskell]
+test = do
+    line1 <- getLine
+    let h1 = head line1
+    putStrLn $ "First letter: " ++ [h1]
+    line2 <- getLine
+    let h2 = head line2
+    putStrLn $ "Second letter: " ++ [h2]
+    let ascii = max (ord h1) (ord h2)
+    putStrLn $ "Max ascii: " ++ (show ascii)
+    return ascii
+\end{lstlisting}
+\end{frame}
+
+
+
+
+
+
 \input{../../thankyou.tex}
 
 
