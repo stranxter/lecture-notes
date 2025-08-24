@@ -1,0 +1,196 @@
+\documentclass{beamer}
+\usepackage{relsize}
+\usepackage{color}
+
+\usepackage{listings}
+\usetheme{CambridgeUS}
+%\usepackage{beamerthemesplit} % new
+\usepackage{enumitem}
+\usepackage{amsmath}                    % See geometry.pdf to learn the layout options.
+\usepackage{amsthm}                   % See geometry.pdf to learn the layout options. There
+\usepackage{amssymb}                    % See geometry.pdf to learn the layout options.
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage[english,bulgarian]{babel}
+
+\usepackage{caption}
+\usepackage{tikz}
+\usepackage{forest}
+
+\usetikzlibrary{shapes,arrows,positioning,calc,positioning,fit,chains}
+
+\usetheme{CambridgeUS}
+\usecolortheme{crane}
+
+\lstset{language=C++,
+                basicstyle=\ttfamily,
+                keywordstyle=\color{blue}\ttfamily,
+                stringstyle=\color{red}\ttfamily,
+                commentstyle=\color{green}\ttfamily,
+                morecomment=[l][\color{magenta}]{\#}
+}
+
+\tikzset{
+block/.style = {draw, fill=white, rectangle,align = center},
+entry/.style = {draw, fill=black, circle, radius=3em},
+condition/.style = {draw, fill=white, diamond, align = center,node distance=3cm},
+fork/.style = {draw, fill=black, circle,inner sep=1pt},
+lnode/.style={rectangle split, rectangle split parts=3,draw, rectangle split horizontal},
+treenode/.style = {align=center, inner sep=0pt, text centered, circle, font=\sffamily\bfseries, draw=black, fill=white, text width=1.5em},
+flexnode/.style = {align=center, text centered, ellipse, font=\sffamily\bfseries, draw=black, fill=white},
+token/.style={rectangle split, rectangle split parts=2,draw, rectangle split horizontal=false}
+}
+
+
+\newtheorem{mydef}{Дефиниция}[section]
+\newtheorem{lem}{Лема}[section]
+\newtheorem{thm}{Твърдение}[section]
+
+\DeclareMathOperator{\restrict}{\upharpoonright}
+
+\setitemize{label=\usebeamerfont*{itemize item}%
+  \usebeamercolor[fg]{itemize item}
+  \usebeamertemplate{itemize item}}
+
+\setbeamercovered{transparent}
+
+\captionsetup{font=tiny} 
+
+\begin{document}
+\title[Наследяване]{Наследяване в Haskell}
+\frame{\titlepage}
+
+\section{Полиморфизъм в Хаскел}
+
+\subsection{}
+\begin{frame}[fragile]
+\frametitle{Полиморфизъм | Обединение на типове}
+
+  \begin{lstlisting}[basicstyle=\small]
+    data Shape = Circle Double | Rectangle Double Double
+
+    area :: Shape -> Double
+    area (Circle r) = pi * r * r
+    area (Rectangle a b) = a * b
+  \end{lstlisting}
+
+\begin{itemize}
+  \item Предефиниране на функции (overloading vs. overriding)
+  \item Кога е възможен overloading?
+  \item Има ли в Haskell overriding?
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Полиморфизъм | Параметричен полиморфизъм}
+
+\begin{lstlisting}[basicstyle=\small]
+sum :: [a] -> a
+sum [] = 0
+sum (x:xs) = x + sum xs
+\end{lstlisting}
+
+\begin{center}
+\noindent\rule{6cm}{0.4pt}
+\end{center}
+
+\begin{lstlisting}[basicstyle=\small]
+template<typename T>
+T sum(const std::vector<T>& vec) {
+    T result = 0;
+    for (const T& elem : vec) 
+    {result += elem;}
+    return result;
+}
+\end{lstlisting}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Overloading}
+
+\begin{lstlisting}[basicstyle=\small]
+template<typename T>
+T sum(const std::vector<T>& vec) {
+    T result = 0;
+    for (const T& elem : vec) 
+    {result += elem;}
+    return result;
+}
+
+MyVect operator += (const MyVect& a, const MyVect& b) {
+    return MyVect{a.x + b.x, a.y + b.y};
+}
+\end{lstlisting}
+
+\begin{itemize}
+  \item Как да направим това на Haskell?
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Типови класове (Type Classes)}
+
+\begin{lstlisting}[basicstyle=\small]
+class CSVSerializable a where
+    columns :: a -> [String]
+    value :: String -> Maybe (a -> String)
+
+data Person = Person { name :: String
+                     , gender:: Gender
+                     , birthdate :: (Int,Int,Int)}
+
+instance CSVSerializable Person where
+    columns p = ["name", "gender", "birthdate"]
+    value "name" = Just (name)
+    value "gender" = Just (show . gender)
+    value "birthdate" = Just (show . birthdate)
+    value _ = Nothing
+  \end{lstlisting}
+
+
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+\frametitle{Типови класове (Type Classes)}
+
+\begin{lstlisting}[basicstyle=\small]
+data Country = Country { cname :: String
+                       , capital :: String}
+
+instance CSVSerializable Country where
+    columns c = ["name", "capital"]
+    value "name" = Just (cname)
+    value "capital" = Just (capital)
+    value _ = Nothing
+\end{lstlisting}
+
+
+\end{frame}
+
+
+
+\input{../../thankyou.tex}
+
+\end{document}
+ 
+
+\begin{columns}[t]
+  \begin{column}{0.3\textwidth}
+
+  \end{column}
+  \begin{column}{0.7\textwidth}
+
+  \end{column} 
+\end{columns}
+
+
+\begin{lstlisting}[basicstyle=\small,language=Haskell]
+\end{lstlisting}
