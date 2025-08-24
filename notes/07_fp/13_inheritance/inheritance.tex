@@ -100,7 +100,7 @@ template<typename T>
 T sum(const std::vector<T>& vec) {
     T result = 0;
     for (const T& elem : vec) 
-    {result += elem;}
+    {result = result + elem;}
     return result;
 }
 \end{lstlisting}
@@ -116,11 +116,11 @@ template<typename T>
 T sum(const std::vector<T>& vec) {
     T result = 0;
     for (const T& elem : vec) 
-    {result += elem;}
+    {result = result + elem;}
     return result;
 }
 
-MyVect operator += (const MyVect& a, const MyVect& b) {
+MyVect operator + (const MyVect& a, const MyVect& b) {
     return MyVect{a.x + b.x, a.y + b.y};
 }
 \end{lstlisting}
