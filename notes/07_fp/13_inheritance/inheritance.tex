@@ -177,6 +177,48 @@ instance CSVSerializable Country where
 
 
 
+
+\begin{frame}[fragile]
+\frametitle{Други аспекти на полиморфизма}
+
+\begin{itemize}
+  \item constraint vs. extension
+\end{itemize}
+\begin{lstlisting}[basicstyle=\small]
+sum :: Num a => [a] -> a  
+\end{lstlisting}
+
+\begin{itemize}
+  \item type union vs. type hierarchy
+\end{itemize}
+\begin{lstlisting}[basicstyle=\small]
+data Shape = Circle Double | Rectangle Double Double
+area :: Shape -> Double
+\end{lstlisting}
+
+\begin{center}  
+    \begin{tabular}{l | l}
+      \verb|std::vector<Shape*>| & \verb|[Shape]| 
+      \\ 
+      \verb|std::vector<CSVSerializable*>| & няма аналог
+      \\
+      \verb|class A : public B (extends)| & няма аналог  
+      \\
+      B b; A a = (A)b; (downcast) & няма аналог
+    \end{tabular}
+
+\begin{itemize}
+  \item Haskell ОО език ли е?
+\end{itemize}
+
+\end{center}
+
+
+
+\end{frame}
+
+
+
 \input{../../thankyou.tex}
 
 \end{document}
