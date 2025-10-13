@@ -19,7 +19,15 @@ dead w (x, y) = x < 0 || x >= length w ||
 move :: Game -> (Pos -> Pos) -> Maybe Game
 move (Game p w) mv = if dead w (mv p) then Nothing else Just $ Game (mv p) w
 
-left g = move g (\(x, y) -> (x-1, y))
-right g = move g (\(x, y) -> (x+1, y))
-up g = move g (\(x, y) -> (x, y-1))
-down g = move g (\(x, y) -> (x, y+1))
+movee :: Game -> (Pos -> Pos) -> Either String Game
+movee (Game (x,y) w) mv 
+  | newx < 0 || newx >= length w ||
+    newy < 0 || newy >= length w       = Left "Dropped offworld."
+  | (w !! newy) !! newx == Wall        = Left "Hit a wall."
+  | otherwise                          = Right $ Game (newx,newy) w
+  where (newx,newy) = mv (x,y)
+
+left g = movee g (\(x, y) -> (x-1, y))
+right g = movee g (\(x, y) -> (x+1, y))
+up g = movee g (\(x, y) -> (x, y-1))
+down g = movee g (\(x, y) -> (x, y+1))

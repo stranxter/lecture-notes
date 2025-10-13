@@ -1,0 +1,198 @@
+\documentclass{beamer}
+\usepackage{relsize}
+\usepackage{color}
+
+\usepackage{listings}
+\usetheme{CambridgeUS}
+%\usepackage{beamerthemesplit} % new
+\usepackage{enumitem}
+\usepackage{amsmath}                    % See geometry.pdf to learn the layout options.
+\usepackage{amsthm}                   % See geometry.pdf to learn the layout options. There
+\usepackage{amssymb}                    % See geometry.pdf to learn the layout options.
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage[english,bulgarian]{babel}
+
+\usepackage{caption}
+\usepackage{tikz}
+\usepackage{forest}
+
+\usetikzlibrary{shapes,arrows,positioning,calc,positioning,fit,chains}
+
+\usetheme{CambridgeUS}
+\usecolortheme{crane}
+
+\lstset{language=C++,
+                basicstyle=\ttfamily,
+                keywordstyle=\color{blue}\ttfamily,
+                stringstyle=\color{red}\ttfamily,
+                commentstyle=\color{green}\ttfamily,
+                morecomment=[l][\color{magenta}]{\#}
+}
+
+\tikzset{
+block/.style = {draw, fill=white, rectangle,align = center},
+entry/.style = {draw, fill=black, circle, radius=3em},
+condition/.style = {draw, fill=white, diamond, align = center,node distance=3cm},
+fork/.style = {draw, fill=black, circle,inner sep=1pt},
+lnode/.style={rectangle split, rectangle split parts=3,draw, rectangle split horizontal},
+treenode/.style = {align=center, inner sep=0pt, text centered, circle, font=\sffamily\bfseries, draw=black, fill=white, text width=1.5em},
+flexnode/.style = {align=center, text centered, ellipse, font=\sffamily\bfseries, draw=black, fill=white},
+token/.style={rectangle split, rectangle split parts=2,draw, rectangle split horizontal=false}
+}
+
+
+\newtheorem{mydef}{Дефиниция}[section]
+\newtheorem{lem}{Лема}[section]
+\newtheorem{thm}{Твърдение}[section]
+
+\DeclareMathOperator{\restrict}{\upharpoonright}
+
+\setitemize{label=\usebeamerfont*{itemize item}%
+  \usebeamercolor[fg]{itemize item}
+  \usebeamertemplate{itemize item}}
+
+\setbeamercovered{transparent}
+
+\captionsetup{font=tiny} 
+
+\begin{document}
+\title[Scheme]{Език за програмиране Scheme}
+\frame{\titlepage}
+
+\section{Основи}
+
+\begin{frame}
+  \centerline{Основни елементи на Scheme}
+\end{frame}
+
+
+\subsection{}
+
+\begin{frame}[fragile]
+\frametitle{Литерали, Символи, Атоми, S-изрази, комбинатори}
+
+\begin{lstlisting}[basicstyle=\small,language=Lisp]
+  5
+  #f
+  +
+  (+ 1 2 3)
+  (quotient 10 3)
+  (remainder 10 3)
+  (if #f 1 2)
+  (+ (if 0 1 2) 1)
+\end{lstlisting}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Дефиниции, функции и $\lambda$ функции}
+
+\begin{lstlisting}[basicstyle=\small,language=Lisp]
+(define x 5)
+(define (fact x) 
+        (if (> x 1) 
+            (* x (fact (- x 1))) 
+            1))
+((lambda (x) (+ x 1)) 0)
+(define inc (lambda (x) (+ x 1)))
+\end{lstlisting}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Точкови двойки}
+
+\begin{lstlisting}[basicstyle=\small,language=Lisp]
+(cons 1 2)
+(define x (cons 1 (cons (2 (cons 3 0)))))
+(car x)
+(cdr x)
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Цитирания}
+
+\begin{itemize}
+  \item Подтиска (отлага) прилагането на комбинатори и символи
+  \item Но не и на литерали
+\end{itemize}
+
+\begin{lstlisting}[basicstyle=\small,language=Lisp]
+'1
+(+ '1 '2)
+
+'(+ 1 2)
+
+('+ 1 2)
+\end{lstlisting}
+
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+\frametitle{Списъци}
+
+\begin{lstlisting}[basicstyle=\small,language=Lisp]
+'()
+(cons 1 '())
+(cons 1 (cons 2 '()))
+
+(define l (list 1 2 3))
+(car l)
+(car (cdr l))
+(cadr l)
+(cdr l)
+
+(define fl (list + inc fact))
+((car fl) 1 2)
+
+(list 1 inc 2)
+
+(list 1 (list 2 3) 4)
+
+\end{lstlisting}
+
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+\frametitle{Цитиране на S-изрази}
+
+\begin{lstlisting}[basicstyle=\small,language=Lisp]
+(cdr '(+ 2 2))
+
+(define expr '(+ 2 2))
+
+(cons '- (cdr expr))
+
+(eval (cons '- (cdr expr)))
+
+((eval (car expr)) 1 2)
+\end{lstlisting}
+
+\end{frame}
+
+\input{../../thankyou.tex}
+
+\end{document}
+ 
+
+\begin{columns}[t]
+  \begin{column}{0.3\textwidth}
+
+  \end{column}
+  \begin{column}{0.7\textwidth}
+
+  \end{column} 
+\end{columns}
+
+
+\begin{lstlisting}[basicstyle=\small,language=Haskell]
+\end{lstlisting}

@@ -255,7 +255,7 @@ class Applicative m => Monad m where
 
 
 \begin{frame}[fragile]
-  \frametitle{Кака е дефиниранo това?}
+  \frametitle{Как е дефиниранo това?}
 
 \begin{lstlisting}[basicstyle=\small,language=Haskell]
 --(>>=) :: m a -> (a -> m b) -> m b
@@ -265,7 +265,73 @@ Nothing >>= f = Nothing
 Just x >>= f = f x
 \end{lstlisting}
 
+
+\begin{lstlisting}[basicstyle=\small,language=Haskell]
+Just myWorld >>= down >>= down >>= right 
+             >>=right >>= up >>= up
+\end{lstlisting}
+
 \end{frame}
+
+\begin{frame}
+  \centerline{Either: Maybe с допълнителна информация}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Either}
+
+\begin{lstlisting}[basicstyle=\small,language=Haskell]
+data Either a b = Left a | Right b
+
+  --(>>=) :: m a -> (a -> m b) -> m b
+  --instance Monad Maybe where
+  ...
+Right x >>= f = f x
+Left x >>= f = Left x
+\end{lstlisting}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Either}
+
+\begin{lstlisting}[basicstyle=\small,language=Haskell]
+move :: Game -> (Pos -> Pos) -> Either String Game
+move (Game p w) mv = if dead w (mv p) 
+                     then Left "Player died!" 
+                     else Right $ Game (mv p) w
+\end{lstlisting}
+
+\begin{itemize}
+  \item По подобие на изключенията, дава възможност да се предаде информация за грешката
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Either}
+
+
+\begin{lstlisting}[basicstyle=\tiny,language=Haskell]
+movee :: Game -> (Pos -> Pos) -> Either String Game
+movee (Game (x,y) w) mv 
+  | newx < 0 || newx >= length w ||
+    newy < 0 || newy >= length w    = Left "Dropped offworld."
+  | (w !! newy) !! newx == Wall     = Left "Hit a wall."
+  | otherwise                       = Right $ Game (newx,newy) w
+  where (newx,newy) = mv (x,y)
+
+\end{lstlisting}
+
+\begin{lstlisting}[basicstyle=\small,language=Haskell]
+Right myWorld >>= down >>= down >>= right 
+              >>=right >>= up >>= up
+\end{lstlisting}
+
+\end{frame}
+
 
 
 \begin{frame}[fragile]
