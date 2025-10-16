@@ -20,7 +20,7 @@
 \usecolortheme{crane}
 
 \lstset{language=C++,
-                basicstyle=\ttfamily,
+                basicstyle=\ttfamily\small,
                 keywordstyle=\color{blue}\ttfamily,
                 stringstyle=\color{red}\ttfamily,
                 commentstyle=\color{green}\ttfamily,
@@ -52,7 +52,7 @@
 \begin{frame}[fragile]
   \frametitle{Състояние}
 
-\begin{lstlisting}[basicstyle=\small,language=Haskell]
+\begin{lstlisting}[language=Haskell]
 type Pos = (Int, Int)
   
 data Tile = Road | Wall | Gold
@@ -78,7 +78,7 @@ myWorld :: Game = Game { pos = (0, 0),
 \begin{frame}[fragile]
   \frametitle{Операции}
 
-\begin{lstlisting}[basicstyle=\small,language=Haskell]
+\begin{lstlisting}[language=Haskell]
 left (Game (x, y) w) = Game (x-1, y) w
 right (Game (x, y) w) = Game (x+1, y) w
 up (Game (x, y) w) = Game (x, y-1) w
@@ -91,7 +91,7 @@ down (Game (x, y) w) = Game (x, y+1) w
 \begin{frame}[fragile]
   \frametitle{Композиране на операции}
 
-\begin{lstlisting}[basicstyle=\small,language=Haskell]
+\begin{lstlisting}[language=Haskell]
 walk1 g = (up . up . right . right . down . down) g
 \end{lstlisting}
 
@@ -113,7 +113,7 @@ walk1 g = (up . up . right . right . down . down) g
 \bigskip
 \bigskip
 
-\begin{lstlisting}[basicstyle=\small,language=Haskell]
+\begin{lstlisting}[language=Haskell]
 walk1 = up . up . right . right . down . down
 
 (->>) :: Game -> (Game->Game) -> Game
@@ -133,7 +133,7 @@ walk1 g = g->>down->>down->>right->>right->>up->>up
 \begin{frame}[fragile]
   \frametitle{Грешки}
 
-\begin{lstlisting}[basicstyle=\small,language=Haskell]
+\begin{lstlisting}[language=Haskell]
 dead :: [[Tile]] -> Pos -> Bool
 dead w (x, y) = x < 0 || x >= length w ||
                 y < 0 || y >= length w || 
@@ -163,7 +163,7 @@ ghci> left myWorld
 \begin{frame}[fragile]
   \frametitle{Maybe}
 
-\begin{lstlisting}[basicstyle=\small,language=Haskell]
+\begin{lstlisting}[language=Haskell]
 data Maybe a = Nothing | Just a
 
 left :: Game -> Maybe Game
@@ -179,7 +179,7 @@ left (Game (x, y) w)
 \begin{frame}[fragile]
   \frametitle{Обобщение на операциите}
 
-\begin{lstlisting}[basicstyle=\small,language=Haskell]
+\begin{lstlisting}[language=Haskell]
 move :: Game -> (Pos -> Pos) -> Maybe Game
 move (Game p w) mv = if dead w (mv p) 
                      then Nothing 
@@ -197,7 +197,7 @@ down g = move g (\(x, y) -> (x, y+1))
 \begin{frame}[fragile]
   \frametitle{Разглеждане на случаи}
 
-\begin{lstlisting}[basicstyle=\small,language=Haskell]
+\begin{lstlisting}[language=Haskell]
 case val of
   pattern1 -> ...
   pattern2 -> ...
@@ -210,7 +210,7 @@ case val of
 \begin{frame}[fragile]
   \frametitle{Композиране на операции}
 
-\begin{lstlisting}[basicstyle=\small,language=Haskell]
+\begin{lstlisting}[language=Haskell]
 walk2 = case (down myWorld) of
              Nothing -> Nothing
              Just w -> case (down w) of
@@ -225,7 +225,7 @@ walk2 = case (down myWorld) of
   \item А преди беше:
 \end{itemize}
 
-\begin{lstlisting}[basicstyle=\small,language=Haskell]
+\begin{lstlisting}[language=Haskell]
 walk1 = myWorld->>down->>down->>right->>right->>up->>up
 \end{lstlisting}
 
@@ -236,7 +236,7 @@ walk1 = myWorld->>down->>down->>right->>right->>up->>up
 \begin{frame}[fragile]
   \frametitle{Какво ни дават монадите?}
 
-\begin{lstlisting}[basicstyle=\small,language=Haskell]
+\begin{lstlisting}[language=Haskell]
 Just myWorld >>= down >>= down >>= right >>= 
      right >>= up >>= up
 \end{lstlisting}
@@ -245,7 +245,7 @@ Just myWorld >>= down >>= down >>= right >>=
   \item Дефиниция на \verb#>>=#
 \end{itemize}
 
-\begin{lstlisting}[basicstyle=\small,language=Haskell]
+\begin{lstlisting}[language=Haskell]
 ghci>:info >>=
 type Monad :: (* -> *) -> Constraint
 class Applicative m => Monad m where
@@ -257,7 +257,7 @@ class Applicative m => Monad m where
 \begin{frame}[fragile]
   \frametitle{Как е дефиниранo това?}
 
-\begin{lstlisting}[basicstyle=\small,language=Haskell]
+\begin{lstlisting}[language=Haskell]
 --(>>=) :: m a -> (a -> m b) -> m b
 instance Monad Maybe where
   ...
@@ -266,7 +266,7 @@ Just x >>= f = f x
 \end{lstlisting}
 
 
-\begin{lstlisting}[basicstyle=\small,language=Haskell]
+\begin{lstlisting}[language=Haskell]
 Just myWorld >>= down >>= down >>= right 
              >>=right >>= up >>= up
 \end{lstlisting}
@@ -280,7 +280,7 @@ Just myWorld >>= down >>= down >>= right
 \begin{frame}[fragile]
   \frametitle{Either}
 
-\begin{lstlisting}[basicstyle=\small,language=Haskell]
+\begin{lstlisting}[language=Haskell]
 data Either a b = Left a | Right b
 
   --(>>=) :: m a -> (a -> m b) -> m b
@@ -296,7 +296,7 @@ Left x >>= f = Left x
 \begin{frame}[fragile]
   \frametitle{Either}
 
-\begin{lstlisting}[basicstyle=\small,language=Haskell]
+\begin{lstlisting}[language=Haskell]
 move :: Game -> (Pos -> Pos) -> Either String Game
 move (Game p w) mv = if dead w (mv p) 
                      then Left "Player died!" 
@@ -314,7 +314,7 @@ move (Game p w) mv = if dead w (mv p)
   \frametitle{Either}
 
 
-\begin{lstlisting}[basicstyle=\tiny,language=Haskell]
+\begin{lstlisting}[basicstyle=\tiny\ttfamily,language=Haskell]
 movee :: Game -> (Pos -> Pos) -> Either String Game
 movee (Game (x,y) w) mv 
   | newx < 0 || newx >= length w ||
@@ -325,7 +325,7 @@ movee (Game (x,y) w) mv
 
 \end{lstlisting}
 
-\begin{lstlisting}[basicstyle=\small,language=Haskell]
+\begin{lstlisting}[language=Haskell]
 Right myWorld >>= down >>= down >>= right 
               >>=right >>= up >>= up
 \end{lstlisting}
@@ -361,7 +361,7 @@ Right myWorld >>= down >>= down >>= right
   \item Стойността, получена чрез входна операция, не е ``чиста'', но изчислението с нея може да е чисто
 \end{itemize}
 
-\begin{lstlisting}[basicstyle=\small,language=Haskell]
+\begin{lstlisting}[language=Haskell]
 io = do 
     x <- getLine
     putStrLn ("You entered: " ++  x)
