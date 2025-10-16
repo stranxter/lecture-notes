@@ -72,7 +72,7 @@ token/.style={rectangle split, rectangle split parts=2,draw, rectangle split hor
 \begin{frame}[fragile]
 \frametitle{Литерали, Символи, Атоми, S-изрази, комбинатори}
 
-\begin{lstlisting}[basicstyle=\small,language=Lisp]
+\begin{lstlisting}[basicstyle=\small\ttfamily,language=Lisp]
   5
   #f
   +
@@ -89,7 +89,7 @@ token/.style={rectangle split, rectangle split parts=2,draw, rectangle split hor
 \begin{frame}[fragile]
 \frametitle{Дефиниции, функции и $\lambda$ функции}
 
-\begin{lstlisting}[basicstyle=\small,language=Lisp]
+\begin{lstlisting}[language=Lisp]
 (define x 5)
 (define (fact x) 
         (if (> x 1) 
@@ -98,6 +98,13 @@ token/.style={rectangle split, rectangle split parts=2,draw, rectangle split hor
 ((lambda (x) (+ x 1)) 0)
 (define inc (lambda (x) (+ x 1)))
 \end{lstlisting}
+\begin{itemize}
+  \item Предикати
+\end{itemize}
+
+\begin{lstlisting}[language=Lisp]
+  even? odd?
+\end{lstlisting}
 
 \end{frame}
 
@@ -105,12 +112,15 @@ token/.style={rectangle split, rectangle split parts=2,draw, rectangle split hor
 \begin{frame}[fragile]
 \frametitle{Точкови двойки}
 
-\begin{lstlisting}[basicstyle=\small,language=Lisp]
+\begin{lstlisting}[language=Lisp]
 (cons 1 2)
 (define x (cons 1 (cons (2 (cons 3 0)))))
 (car x)
 (cdr x)
 \end{lstlisting}
+\begin{itemize}
+  \item $c\{a,d\}^+r$ (до 4 влагания)
+\end{itemize}
 
 \end{frame}
 
@@ -122,7 +132,7 @@ token/.style={rectangle split, rectangle split parts=2,draw, rectangle split hor
   \item Но не и на литерали
 \end{itemize}
 
-\begin{lstlisting}[basicstyle=\small,language=Lisp]
+\begin{lstlisting}[language=Lisp]
 '1
 (+ '1 '2)
 
@@ -138,34 +148,43 @@ token/.style={rectangle split, rectangle split parts=2,draw, rectangle split hor
 \begin{frame}[fragile]
 \frametitle{Списъци}
 
-\begin{lstlisting}[basicstyle=\small,language=Lisp]
-'()
-(cons 1 '())
-(cons 1 (cons 2 '()))
+\begin{columns}[t]
+  \begin{column}{0.7\textwidth}
+    \begin{lstlisting}[language=Lisp]
+    '()
+    (cons 1 '())
+    (cons 1 (cons 2 '()))
 
-(define l (list 1 2 3))
-(car l)
-(car (cdr l))
-(cadr l)
-(cdr l)
+    (define l (list 1 2 3))
+    (car l) (cdr l)
+    (car (cdr l)) (cadr l)
+  
+    (define fl (list + inc fact))
+    ((car fl) 1 2)
 
-(define fl (list + inc fact))
-((car fl) 1 2)
+    (list 1 inc 2)
+    (list 1 (list 2 3) 4)
+  \end{lstlisting}
 
-(list 1 inc 2)
-
-(list 1 (list 2 3) 4)
-
-\end{lstlisting}
+  \end{column}
+  \begin{column}{0.3\textwidth}
+    \begin{lstlisting}[language=Lisp]
+      list
+      null?
+      length
+      member
+      append
+    \end{lstlisting}
+  \end{column} 
+\end{columns}
 
 \end{frame}
-
 
 
 \begin{frame}[fragile]
 \frametitle{Цитиране на S-изрази}
 
-\begin{lstlisting}[basicstyle=\small,language=Lisp]
+\begin{lstlisting}[language=Lisp]
 (cdr '(+ 2 2))
 
 (define expr '(+ 2 2))
@@ -178,6 +197,49 @@ token/.style={rectangle split, rectangle split parts=2,draw, rectangle split hor
 \end{lstlisting}
 
 \end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Функции от високо ниво за списъци}
+
+\begin{lstlisting}[language=Lisp]
+  (map (lambda (x) (+ x 1)) '(1 2 3 4))
+  (filter even? '(1 2 3 4))
+  (foldr + 0 '(1 2 3 4))
+\end{lstlisting}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Безкрайни списъци (потоци)}
+
+\begin{lstlisting}[language=Lisp]
+(define ones (cons 1 (lambda() ones)))
+(car ones) (car ((cdr ones)))
+
+(define (ints i) (cons i (lambda () (ints (+ i 1)))))
+(define allints (ints 0))
+(car allints) (car ((crd allints)))
+\end{lstlisting}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Безкрайни списъци (потоци)}
+
+\begin{lstlisting}[language=Lisp]
+(define (sum-streams s1 s2) 
+           (cons (+ (car s1) (car s2)) 
+                 (lambda () (sum-streams ((cdr s1)) 
+                                         ((cdr s2))))))
+((cdr (sum-streams ones ones)))
+
+(define ints 
+        (cons 0 (lambda () (sum-streams ints ones))))
+\end{lstlisting}
+\end{frame}
+
 
 \input{../../thankyou.tex}
 
