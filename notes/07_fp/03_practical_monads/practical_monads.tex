@@ -283,9 +283,7 @@ Just myWorld >>= down >>= down >>= right
 \begin{lstlisting}[language=Haskell]
 data Either a b = Left a | Right b
 
-  --(>>=) :: m a -> (a -> m b) -> m b
-  --instance Monad Maybe where
-  ...
+(>>=) :: Either e a -> (a -> Either e b) -> Either e b 
 Right x >>= f = f x
 Left x >>= f = Left x
 \end{lstlisting}

@@ -61,5 +61,16 @@ suf n l
   |otherwise = suf n (tail l)
 
 
+listype l = case l of
+              [] -> 0
+              [_] -> 1
+              _ -> 2
+
+
+listt [] = 0
+listt [x] = 1
+listt _ = 2
+
+
 
 -- f 5 = 5 : f 5 = 5 : 5 : f5 = 5 : 5 : 5 : f 5 = 5 : 5 : 5 : 5 : f5
