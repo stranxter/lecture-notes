@@ -344,6 +344,25 @@ Right myWorld >>= down >>= down >>= right
 
 \end{frame}
 
+\begin{frame}[fragile]
+  \frametitle{return... return!}
+
+\begin{itemize}
+  \item ``Облича'' стойност по ``нормания'' за монадата начини
+\end{itemize}
+
+\begin{lstlisting}[language=Haskell]
+>Just 1 >>= (\x->return $ x + 1)
+Just 2
+>x :: Either String Int = Right 1
+>x >>= (\y->return $ y + 1)
+Right 2
+\end{lstlisting}
+
+\end{frame}
+
+
+
 \section{Вход/Изход}
 \begin{frame}
   \centerline{Вход/Изход}
@@ -352,20 +371,28 @@ Right myWorld >>= down >>= down >>= right
 
 \begin{frame}[fragile]
   \frametitle{Какво е IO монада?}
+
+
 \begin{itemize}
+  \footnotesize
   \item Обвързва ``чиста'' стойност с операциите за прочитането ѝ
   \item Позволява композиране на последователност от операции, зависими от вход и изход
   \item Тъй като смисълът от някои операции е да произведат страничен ефект, понятието ``стойност'' за тях няма смисъл (\texttt{void}). Това изключва възможността на тях да гледаме ``функционално''
   \item Стойността, получена чрез входна операция, не е ``чиста'', но изчислението с нея може да е чисто
 \end{itemize}
 
-\begin{lstlisting}[language=Haskell]
-io = do 
-    x <- getLine
-    putStrLn ("You entered: " ++  x)
-    putStrLn "Thank you!"
-    return x
+
+\begin{lstlisting}[language=Haskell,basicstyle=\small\ttfamily]
+getLine :: IO String
+putStrLn :: String -> IO ()
+
+>getLine
+>getLine >>= (\x->return $ x++"!")
+>getLine >>= (\x->putStrLn $ "You entered:" ++ x) 
+         >>= (\_->putStrLn "Thank you!")
 \end{lstlisting}
+
+
   
 \end{frame}
 
@@ -376,18 +403,31 @@ io = do
   \item Опростява писането при композиране на монадични операции
   \item Подчертва последователността на операциите
   \item Улеснява извличането на чисти стойности
-  \item let vs. \verb#<-#
 \end{itemize}
-\begin{lstlisting}[basicstyle=\small,language=Haskell]
+\begin{lstlisting}[language=Haskell]
+test = do 
+    x <- getLine
+    putStrLn ("You entered: " ++  x)
+    putStrLn "Thank you!"
+    return x
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{let vs. <-}
+\begin{lstlisting}[language=Haskell]
 test = do
     line1 <- getLine
     let h1 = head line1
     line2 <- getLine
-    let h2 = head line1
+    let h2 = head line2
     let ascii = max (ord h1) (ord h2)
     return ascii
 \end{lstlisting}
 \end{frame}
+
+
 
 \begin{frame}[fragile]
   \frametitle{IO монада}
