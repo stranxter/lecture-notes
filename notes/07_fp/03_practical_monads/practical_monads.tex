@@ -449,7 +449,31 @@ test = do
 \end{frame}
 
 
+\section{Вход/Изход}
+\begin{frame}
+  \centerline{Writer монад}
+\end{frame}
 
+
+\begin{frame}[fragile]
+  \frametitle{Writer}
+\begin{lstlisting}[basicstyle=\tiny,language=Haskell]
+newtype Writer w a = Writer { runWriter :: (a, w) }
+instance (Monoid w) => Monad (Writer w) where
+    return x = Writer (x, mempty)
+    (Writer (x,v)) >>= f = let (Writer (y, v')) = f x in Writer (y, v `mappend` v')
+
+left :: Game -> Writer [String] Game
+left g = tell ["Moved left"] >> return (move g (\(x, y) -> (x-1, y)))
+
+right :: Game -> Writer [String] Game
+right g = tell ["Moved right"] >> return (move g (\(x, y) -> (x+1, y)))
+
+...
+
+runWriter (return state0 >>= down >>= down >>= right)
+\end{lstlisting}
+\end{frame}
 
 
 

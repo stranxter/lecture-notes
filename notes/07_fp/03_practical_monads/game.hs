@@ -4,9 +4,9 @@ data Tile = Road | Wall | Gold
 data Game = Game { pos :: Pos, world :: [[Tile]] }
             deriving (Show)
 
-myWorld :: Game = Game { pos = (0, 0), world = [[Road, Wall, Gold], 
-                                                [Road, Wall, Road], 
-                                                [Road, Road, Road]] }
+state0 :: Game = Game { pos = (0, 0), world = [[Road, Wall, Gold], 
+                                               [Road, Wall, Road], 
+                                               [Road, Road, Road]] }
 
 foundGold  (Game (x,y) w) = (w !! y) !! x == Gold
 stuck  (Game (x,y) w) = dead w (x, y)
