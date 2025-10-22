@@ -224,21 +224,47 @@ token/.style={rectangle split, rectangle split parts=2,draw, rectangle split hor
 
 \end{frame}
 
+\begin{frame}
+  \centerline{Функции от високо ниво}
+\end{frame}
 
 \begin{frame}[fragile]
-\frametitle{Безкрайни списъци (потоци)}
-
+\frametitle{apply}
 \begin{lstlisting}[language=Lisp]
-(define (sum-streams s1 s2) 
-           (cons (+ (car s1) (car s2)) 
-                 (lambda () (sum-streams ((cdr s1)) 
-                                         ((cdr s2))))))
-((cdr (sum-streams ones ones)))
+(apply + '(1 2 3 4))
 
-(define ints 
-        (cons 0 (lambda () (sum-streams ints ones))))
+(apply + 1 2 '(3 4))
 \end{lstlisting}
 \end{frame}
+
+\begin{frame}[fragile]
+\frametitle{map}
+
+\begin{itemize}
+  \item $(map \; f \; l_1 \; l_2 \; ... \; l_n)$
+\end{itemize}
+
+\begin{lstlisting}[language=Lisp]
+(map (lambda (x) (+ x 1)) '(1 2 3 4))
+\end{lstlisting}
+\begin{itemize}
+  \item $f$ е едноаргументна функция
+\end{itemize}
+
+\begin{lstlisting}[language=Lisp]
+(map + '(1 2 3) '(4 5 6) '(7 8 9))
+\end{lstlisting}
+\begin{itemize}
+  \item $f$ е n-аргументна функция
+\end{itemize}
+
+\begin{lstlisting}[language=Lisp]
+(apply map list '(1 2 3) '(4 5 6) '(7 8 9))
+\end{lstlisting}
+
+\end{frame}
+
+
 
 
 \input{../../thankyou.tex}
