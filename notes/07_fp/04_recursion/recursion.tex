@@ -20,8 +20,8 @@
 \usetheme{CambridgeUS}
 \usecolortheme{crane}
 
-\lstset{language=C++,
-                basicstyle=\ttfamily,
+\lstset{language=Haskell,
+                basicstyle=\ttfamily\small,
                 keywordstyle=\color{blue}\ttfamily,
                 stringstyle=\color{red}\ttfamily,
                 commentstyle=\color{green}\ttfamily,
@@ -72,7 +72,7 @@ treenode/.style = {align=center, inner sep=0pt, text centered, circle, font=\sff
   \begin{columns}[t]
     \begin{column}{0.7\textwidth}
   
-      \begin{lstlisting}[basicstyle=\small,language=Haskell]
+      \begin{lstlisting}
 firstdivisor x = divisorhelp x 2
 
 divisorhelp x k 
@@ -110,7 +110,7 @@ divisorhelp x k
 
 \bigskip
 
-\begin{lstlisting}[basicstyle=\small,language=Haskell]
+\begin{lstlisting}
 divisors 1 = []
 divisors x = fistdivisor x : 
              divisors (div x (fistdivisor x))      
@@ -141,7 +141,7 @@ divisors x = fistdivisor x :
    
 \vspace*{-2cm}
 
-\begin{lstlisting}[basicstyle=\small,language=Haskell]
+\begin{lstlisting}
   split [] _ = ([], [])
   split (x:xs) pivot 
       | x < pivot = (x:smaller, larger)
@@ -217,7 +217,7 @@ divisors x = fistdivisor x :
   \item Не е елегантно, засега върши работа
 \end{itemize}
 
-\begin{lstlisting}[basicstyle=\small,language=Haskell]
+\begin{lstlisting}
   --findGold :: game visited -> path
   findGold :: Maybe Game -> [Pos] -> [Pos]
   findGold Nothing _ = []
@@ -244,10 +244,10 @@ divisors x = fistdivisor x :
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Обощение на ``цикъл''}
+  \frametitle{Обобщение на ``цикъл''}
 
 \begin{figure}
-  \scalebox{0.6}{
+  \scalebox{0.5}{
     \begin{tikzpicture}[auto, node distance=1.5cm,>=latex']
     \node [entry, name=start](start){};
     \node [block,name=init, below of = start] (init)
@@ -275,6 +275,43 @@ divisors x = fistdivisor x :
   }
 \end{figure}
 
+$(v_0^0,..,v_n^0) \rightarrow (v_0^1,..,v_n^1) \rightarrow  ... \rightarrow  (v_0^k,..,v_n^k)$
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Опашкова рекурсия}
+
+\begin{lstlisting}
+suml :: Num a => [a] -> a
+suml [] = 0
+suml (x:xs) = x + suml xs
+
+sumiter :: Num a => [a] -> a -> a
+sumiter [] current = current
+sumiter (x:xs) current = sumiter xs (current + x)
+
+>sumiter [1,2,3,4] 0
+\end{lstlisting}
+
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Опашкова рекурсия}
+
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+splithelp :: Ord a => [a] -> a -> ([a], [a]) -> ([a], [a])
+
+splithelp [] _ current = current
+splithelp (x:xs) pivot (smaller, larger) 
+                              = splithelp xs pivot (smaller', larger')
+    where (smaller', larger') = if x < pivot 
+                                then (x:smaller, larger) 
+                                else (smaller, x:larger)
+\end{lstlisting}
 
 
 \end{frame}

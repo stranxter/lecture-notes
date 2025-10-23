@@ -64,3 +64,22 @@ findGold (Just g@(Game p w)) visited
           rightpath = findGold (right g) (p:visited)
           uppath = findGold (up g) (p:visited)
           leftpath = findGold (left g) (p:visited)
+
+
+
+suml :: Num a => [a] -> a
+suml [] = 0
+suml (x:xs) = x + suml xs
+
+sumiter :: Num a => [a] -> a -> a
+sumiter [] current = current
+sumiter (x:xs) current = sumiter xs (current + x)
+
+
+splithelp :: Ord a => [a] -> a -> ([a], [a]) -> ([a], [a])
+splithelp [] _ current = current
+splithelp (x:xs) pivot (smaller, larger) 
+                              = splithelp xs pivot (smaller', larger')
+    where (smaller', larger') = if x < pivot 
+                                then (x:smaller, larger) 
+                                else (smaller, x:larger)
