@@ -35,18 +35,15 @@ int main()
     drawTriangle(20,200,1000);
     */
 
-
-    int a = 0;
-
     drawSin(100);
 
-    for(int i = 0; i < 100000; ++i)
-    {
-        int i;
-    }
-
-
     sdlw::updateGraphics();
-    std::cin.get();
+    sdlw::waitKeypress();
 
+    return 0;
+}
+
+int SDL_main(int argc, char* argv[]) {
+    /* Това е необходимо за SDL под Windows: библиотекат сменя входната точка на програмата*/
+    return main(); 
 }

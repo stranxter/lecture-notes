@@ -116,6 +116,22 @@ namespace sdlw
             TTF_CloseFont(font);
         }
 
+        void waitKeypress()
+        {
+            SDL_Event e;
+            bool quit = false;
+            while (!quit) {
+                while (SDL_PollEvent(&e)) {
+                    if (e.type == SDL_QUIT) {
+                        quit = true;
+                    }
+                    else if (e.type == SDL_KEYDOWN) {
+                        quit = true;
+                    }
+                }
+            }
+        }
+
         void drawFillCircle(int x, int y, int radius)
         {
             int offsetx, offsety, d;

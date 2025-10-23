@@ -17,4 +17,6 @@ namespace sdlw
         void drawText(int x, int y, int size, const char* text);
 
         void updateGraphics();
+        void waitKeypress();
+
 }
