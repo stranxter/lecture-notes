@@ -107,11 +107,6 @@ In your **Command Prompt** in the `C:\intro-to-programming` directory:
 g++ main.cpp draw/sdlwrapper.cpp -o my_sdl_program.exe -std=c++17 -Wall -Wl,-subsystem,windows -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf
 ```
 
-| New Flags | Purpose |
-| :--- | :--- |
-| **`-lSDL2_image`** | Links the SDL2\_image library. |
-| **`-lSDL2_ttf`** | Links the SDL2\_ttf library. |
-
 **Important Linker Order:** The libraries are listed in order of dependency. The primary SDL libraries must come *after* `SDL2main`.
 
 ### 2\. Run the Executable
