@@ -108,6 +108,16 @@ token/.style={rectangle split, rectangle split parts=2,draw, rectangle split hor
 
 \end{frame}
 
+\begin{frame}[fragile]
+\frametitle{cond}
+\begin{lstlisting}[language=Lisp]
+(define (interval x) 
+        (cond ((< x 10) 0) 
+              ((< x 30) 1) 
+              (else 2)))  
+\end{lstlisting}
+\end{frame}
+
 
 \begin{frame}[fragile]
 \frametitle{Точкови двойки}
@@ -280,9 +290,24 @@ token/.style={rectangle split, rectangle split parts=2,draw, rectangle split hor
 
 \end{frame}
 
+\begin{frame}
+  \centerline{Модел на изпълнение}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Последователност на операциите}
+\begin{lstlisting}[language=Lisp]
+(begin (prinln "Message 1") (prinln "Message 2"))
+
+(begin (define x 5) (println x) (set! x 6) (println x))
+\end{lstlisting}
+\end{frame}
+
 % ;EQUALS!
 % ;модел на средите
-
+% ;let, let*
+% ;опашкова рекурсия
 
 
 \input{../../thankyou.tex}
@@ -303,6 +328,4 @@ token/.style={rectangle split, rectangle split parts=2,draw, rectangle split hor
 \begin{lstlisting}[basicstyle=\small,language=Haskell]
 \end{lstlisting}
 
-;let
-;cond
 
