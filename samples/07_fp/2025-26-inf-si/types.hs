@@ -23,6 +23,5 @@ data Student = Student {name :: String
                         ,grades :: [(String,Double)]}
     deriving(Eq, Show, Ord)
 
-
 data Couple a = Couple a a
 

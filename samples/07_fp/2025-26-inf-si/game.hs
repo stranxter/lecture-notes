@@ -11,14 +11,14 @@ state0 :: Game = Game { pos = (0, 0),
                                  [Road, Wall, Road], 
                                  [Road, Road, Road]]}
 
-data ErrorInfo = ErrorInfo String Pos
+data ErrorInfo = HitAWall Pos | DroppedOffWorld Pos
     deriving (Show)
 
 move :: Game -> (Pos->Pos) -> Either ErrorInfo Game
 move (Game p w) step
   | newx < 0 || newx >= length w ||
-    newy < 0 || newy >= length w       = Left $ ErrorInfo "Dropped offworld." (newx,newy)
-  | (w !! newy) !! newx == Wall        = Left $ ErrorInfo "Hit a wall." (newx,newy)
+    newy < 0 || newy >= length w       = Left $ HitAWall (newx,newy)
+  | (w !! newy) !! newx == Wall        = Left $ DroppedOffWorld (newx,newy)
   | otherwise                          = Right $ Game (newx,newy) w
   where (newx,newy) = step p
 
@@ -40,3 +40,10 @@ dead w (x, y) = x < 0 || x >= length w ||
                 (w !! y) !! x == Wall
 
   
+walkPath :: Game -> (Either ErrorInfo Game -> Either ErrorInfo Game) -> String
+walkPath game f = case (f $ return game) of
+                       (Left (HitAWall pos)) -> "Sorry, a wall was hit at " ++ (show pos)
+                       (Left (DroppedOffWorld pos)) -> "Sorry, you dropped off the map at " ++ (show pos)
+                       (Right (Game (2,0) _)) -> "Good job, treaure found!"
+                       _ -> "Game over."
+   
