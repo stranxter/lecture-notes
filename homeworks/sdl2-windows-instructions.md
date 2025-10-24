@@ -85,7 +85,7 @@ You need to add the MinGW `bin` directory to your system's PATH so the `g++` com
 
 For your executable to run, it needs the dynamic-link libraries (`.dll` files) in the same directory. Copy them from the MSYS2 installation path:
 
-In your **Command Prompt** in the `C:\SDL_Project` directory:
+In your **Command Prompt** in the `C:\intro-to-programming` directory:
 
 ```powershell
 copy C:\msys64\mingw64\bin\SDL2.dll C:\intro-to-programming
