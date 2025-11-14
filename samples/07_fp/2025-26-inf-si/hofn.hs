@@ -50,3 +50,5 @@ switch f g = \choice x->if choice then f x else g x
 
 maxfl l = foldr1 (\f a-> \x -> max (f x)(a x)) l
 
+maxfn f1 f2 = \x->max (f1 x) (f2 x)
+

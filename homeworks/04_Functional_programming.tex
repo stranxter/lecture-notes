@@ -371,10 +371,11 @@ move (Game p w) mv = if dead w (mv p)
       \label{fig:rectfn}
     \end{figure}
 
-	\item   Да се дефинира функция \code{createfn :: [(a,b)]->a->b}, която по даден списък от двойки $(a_i,b_i)$, връща функция $f:a \rightarrow b$ дефинирана за всички $a_i$, така че $f(a_i)=b_i$. Например:
+	\item   Да се дефинира функция \code{createfn :: [(a,b)]->(a->b)}, която по даден списък от двойки $(a_i,b_i)$, връща функция $f:a \rightarrow b$ дефинирана за всички $a_i$, така че $f(a_i)=b_i$. Например:
 
 \begin{lstlisting}[basicstyle=\small,language=Haskell]
-createfn [(1,2),(2,4),(3,6)] 2 -> 4
+f = createfn [(1,2),(2,4),(3,6)]
+f 2 -> 4
 \end{lstlisting}
 
 

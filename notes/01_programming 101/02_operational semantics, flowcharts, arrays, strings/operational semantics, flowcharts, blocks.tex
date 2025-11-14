@@ -12,6 +12,20 @@
 \usepackage[utf8]{inputenc} 
 \usepackage{graphicx}
 \usepackage[english,bulgarian]{babel}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning,calc,positioning,fit,chains}
+\tikzset{
+block/.style = {draw, fill=white, rectangle,align = center},
+entry/.style = {draw, fill=black, circle, radius=3em},
+condition/.style = {draw, fill=white, diamond, align = center,node distance=3cm},
+fork/.style = {draw, fill=black, circle,inner sep=1pt},
+lnode/.style={rectangle split, rectangle split parts=3,draw, rectangle split horizontal},
+treenode/.style = {align=center, inner sep=0pt, text centered, circle, font=\sffamily\bfseries, draw=black, fill=white, text width=1.5em}
+}
+
+
+\newcommand{\code}[1]{\texttt{#1}}
+
 
 \lstset{language=C++,
                 basicstyle=\ttfamily,
@@ -77,10 +91,7 @@
 
 \end{frame}
 
-
-
 \section{Изчислителен процес} 
-
 
 \begin{frame}
 \centerline{Изчислителен процес}
@@ -88,7 +99,6 @@
 
 \begin{frame}[fragile] 
 \frametitle{Последоватленост на операциите и ``състояние''}
-
 
 \begin{columns}[c]
   \begin{column}{0.3\textwidth}
@@ -576,6 +586,106 @@ cout << b;
 \end{columns}
 
 \end{frame}
+
+\section{Верификация} 
+
+\begin{frame}
+\centerline{Верификация на програми}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Инвариант на цикъл}
+
+\begin{figure}
+  \centering
+  \scalebox{0.65}{%
+    \begin{tikzpicture}[auto, node distance=1.5cm,>=latex']
+      \node [entry, name=start](start){};
+      \node [block,name=init, below of = start] (init)
+         {Инициализация на\\ $v_0,..,v_n$};
+      \node [fork,name=test1fork,below of = init,node distance = 2cm]{};
+      \node [condition,name=test1, below of = test1fork,node distance = 3cm] (test1) {Условие \\ $C(v_0,..,v_n)$};
+      \node [block,name=inc,right of = test1, node distance = 6.5cm] (inc) {Операции \\$(v_0^i,..,v_n^i) \rightarrow (v_0^{i+1},..,v_n^{i+1})$};
+      \node [fork,name=endfork,below of = test1, node distance = 3cm]{};
+      \node [entry, name=end, below of = endfork, node distance = 1cm](end){};
+
+      \node [name=cut1, left of = test1fork, node distance = 2cm](cut1){1};
+      \node [name=cut2, left of = endfork, node distance = 2cm](cut2){2};
+
+      \draw [->] (start) -- (init);
+      \draw [-] (init) -- (test1fork);
+      \draw [->] (test1fork) -- (test1);
+      \draw [->] (test1) -- node{true} (inc);
+      \draw [->] (inc) |- (test1fork);
+      \draw [-] (test1) -- node []{false}(endfork);
+      \draw [->] (endfork) -- (end);
+
+      \draw [-,dashed] (cut1) -- (test1fork);
+      \draw [-,dashed] (cut2) -- (endfork);
+    \end{tikzpicture}%
+  }
+\end{figure}
+
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Пример: Намиране на най-малък елемент в масив}
+
+
+\begin{figure}
+  \centering
+    \scalebox{0.65}{%
+    \begin{tikzpicture}[auto, node distance=1.5cm,>=latex']
+    \node [entry, name=start](start){};
+    \node [block,name=init, below of = start, align=left] (init)
+       {\code{candidate = 0;}\\\code{current = 1;}};
+
+    \node [fork,name=test1fork,below of = init,node distance = 2cm]{};
+
+    \node [block,name=inc2, right of = test1fork, node distance = 5cm,minimum height=1.5cm]{\code{current++;}};
+
+    \node [condition,name=test1, below of = test1fork,node distance = 3cm] (test1) {\code{current < m}};
+
+    \node [condition, name=test2, right of = test1, node distance = 5cm,font=\tiny] (test2) {\code{A[current]}\\\code{<A[candidate]}};
+
+    \node [block,name=inc,right of = test2, node distance = 5cm, minimum height=1.5cm] (inc) {\code{candidate = current};};
+
+    \node [fork,name=endfork,below of = test1, node distance = 3cm]{};
+    \node [entry, name=end, below of = endfork, node distance = 1cm](end){};
+
+    \node [name=cut1, left of = test1fork, node distance = 2cm](cut1){1};
+    \node [name=cut2, left of = endfork, node distance = 2cm](cut2){2};
+
+    \draw [->] (start) -- (init);
+    \draw [-] (init) -- (test1fork);
+    \draw [->] (test1fork) -- (test1);
+
+    \draw [->] (test1) -- node{true} (test2);
+    \draw [->] (test2) -- node{true} (inc);
+
+    \draw [->] (inc) |- (inc2);
+    \draw [->] (inc2) -- (test1fork);
+    \draw [->] (test2) -- node{false} (inc2);
+
+
+    \draw [-] (test1) -- node []{false}(endfork);
+    \draw [->] (endfork) -- (end);
+
+    \draw [-,dashed] (cut1) -- (test1fork);
+    \draw [-,dashed] (cut2) -- (endfork);
+    \end{tikzpicture}}
+
+\end{figure}
+
+
+\end{frame}
+
+\begin{frame}
+\centerline{Благодаря за вниманието!}
+\end{frame}
+
 
 
 \end{document}

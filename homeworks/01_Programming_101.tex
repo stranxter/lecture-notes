@@ -173,7 +173,7 @@
          {\code{0:MOVE 0 2}\\\code{1:ZERO 3}};
       \node [fork,name=test1fork,below of = init,node distance = 1cm]{};
       \node [condition,name=test1, below of = test1fork,node distance = 2cm] (test1) {\code{2:JUMP 1 3 6}};
-      \node [block,name=inc,right of = test1, node distance = 3cm,align = left] (inc) {\code{3:INC 2}\\\code{4:INC 3}\\\code{5:JUMP 3}};
+      \node [block,name=inc,right of = test1, node distance = 3cm,align = left] (inc) {\code{3:INC 2}\\\code{4:INC 3}\\\code{5:JUMP 2}};
       \node [entry, name=end, below of = test1, node distance = 2.5cm](end){};
       \draw [->] (start) -- (init);
       \draw [-] (init) -- (test1fork);

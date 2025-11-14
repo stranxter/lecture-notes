@@ -16,7 +16,8 @@
 \usepackage{caption}
 \usepackage{tikz}
 \usepackage{forest}
-\usetikzlibrary{shapes,arrows,positioning,calc,chains}
+\usetikzlibrary{shapes,arrows,positioning,calc,positioning,fit,chains}
+\usepackage{tikz}
 
 \lstset{language=C++,
                 basicstyle=\ttfamily,
@@ -51,6 +52,7 @@ fork/.style = {draw, fill=black, circle,inner sep=1pt},
 lnode/.style={rectangle split, rectangle split parts=3,draw, rectangle split horizontal},
 treenode/.style = {align=center, inner sep=0pt, text centered, circle, font=\sffamily\bfseries, draw=black, fill=white, text width=1.5em}
 }
+
 
 
 \begin{document}
@@ -127,8 +129,8 @@ treenode/.style = {align=center, inner sep=0pt, text centered, circle, font=\sff
 
 
 \begin{frame}[fragile]
-    \frametitle{Умножение по 2}
-    \relscale{0.7}
+\frametitle{Умножение по 2}
+\relscale{0.7}
 
 \begin{columns}[t]
     \begin{column}{0.75\textwidth}
@@ -186,7 +188,61 @@ treenode/.style = {align=center, inner sep=0pt, text centered, circle, font=\sff
         4: JUMP 0    
     \end{verbatim}
     
-    \end{frame}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Стъбиране на две числа}
+\relscale{0.9}
+
+\begin{figure}
+\relscale{0.8}
+  \begin{tabular}{p{7cm} p{7cm}}
+      \begin{tikzpicture}[auto, node distance=1.5cm,>=latex']
+      \node [entry, name=start](start){};
+      \node [block,name=init, below of = start,node distance = 1cm] (init)
+         {\code{result:=$a_0$}\\\code{counter:=0}};
+      \node [fork,name=test1fork,below of = init,node distance = 0.7cm]{};
+      \node [condition,name=test1, below of = test1fork,node distance = 1.5cm] (test1) {\code{counter==$a_1$}};
+      \node [block,name=inc,right of = test1, node distance = 2.5cm] (inc) {\code{result++}\\\code{counter++}};
+      \node [entry, name=end, below of = test1, node distance = 2cm](end){};
+      \draw [->] (start) -- (init);
+      \draw [-] (init) -- (test1fork);
+      \draw [->] (test1fork) -- (test1);
+      \draw [->] (test1) -- node{no} (inc);
+      \draw [->] (inc) |- (test1fork);
+      \draw [->] (test1) -- node []{yes}(end);
+      \end{tikzpicture}
+
+      Вход: $a_0$ и $a_1$ 
+      
+      Изход: $result$
+
+      &
+
+      \begin{tikzpicture}[auto, node distance=1.5cm,>=latex']
+      \node [entry, name=start](start){};
+      \node [block,name=init, below of = start,node distance = 1cm, align = left] (init)
+         {\code{0:MOVE 2 0}\\\code{1:ZERO 3}};
+      \node [fork,name=test1fork,below of = init,node distance = 0.7cm]{};
+      \node [condition,name=test1, below of = test1fork,node distance = 1.5cm] (test1) {\code{2:JUMP 1 3 6}};
+      \node [block,name=inc,right of = test1, node distance = 2.5cm,align = left] (inc) {\code{3:INC 2}\\\code{4:INC 3}\\\code{5:JUMP 2}};
+      \node [entry, name=end, below of = test1, node distance = 2cm](end){};
+      \draw [->] (start) -- (init);
+      \draw [-] (init) -- (test1fork);
+      \draw [->] (test1fork) -- (test1);
+      \draw [->] (test1) -- node{} (inc);
+      \draw [->] (inc) |- (test1fork);
+      \draw [->] (test1) -- node []{}(end);
+      \end{tikzpicture}
+
+        Вход: клетки 0 и 1
+
+        Изход: клетка 2
+  \end{tabular}
+
+\end{figure}
+
+\end{frame}
     
 
 

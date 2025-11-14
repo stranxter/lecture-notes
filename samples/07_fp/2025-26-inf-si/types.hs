@@ -25,3 +25,5 @@ data Student = Student {name :: String
 
 data Couple a = Couple a a
 
+
+
