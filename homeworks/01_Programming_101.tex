@@ -137,7 +137,7 @@
 
 На Фигура \ref{fig:mnr}~(b) е показана същата програма, като операторите от първата са заменени със съответните им инструкции на МНР. Резултатът от програмата се получава в клетката $m[2]$, а за брояч се ползва клетката $m[3]$. На блок схемата са дадени поредните номера на инструкциите в окончателната програмата на МНР:
 \begin{verbatim}
-0:MOVE 0 2
+0:MOVE 2 0
 1:ZERO 3
 2:JUMP 1 3 6
 3:INC 2
@@ -170,7 +170,7 @@
       \begin{tikzpicture}[auto, node distance=1.5cm,>=latex']
       \node [entry, name=start](start){};
       \node [block,name=init, below of = start, align = left] (init)
-         {\code{0:MOVE 0 2}\\\code{1:ZERO 3}};
+         {\code{0:MOVE 2 0}\\\code{1:ZERO 3}};
       \node [fork,name=test1fork,below of = init,node distance = 1cm]{};
       \node [condition,name=test1, below of = test1fork,node distance = 2cm] (test1) {\code{2:JUMP 1 3 6}};
       \node [block,name=inc,right of = test1, node distance = 3cm,align = left] (inc) {\code{3:INC 2}\\\code{4:INC 3}\\\code{5:JUMP 2}};
