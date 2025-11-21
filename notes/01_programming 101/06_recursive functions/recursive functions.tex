@@ -13,6 +13,19 @@
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage[english,bulgarian]{babel}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning,calc,positioning,fit,chains}
+
+
+\tikzset{
+block/.style = {draw, fill=white, rectangle,align = center},
+entry/.style = {draw, fill=black, circle, radius=3em},
+condition/.style = {draw, fill=white, diamond, align = center,node distance=3cm},
+fork/.style = {draw, fill=black, circle,inner sep=1pt},
+lnode/.style={rectangle split, rectangle split parts=3,draw, rectangle split horizontal},
+treenode/.style = {align=center, inner sep=0pt, text centered, circle, font=\sffamily\bfseries, draw=black, fill=white, text width=1.5em}
+}
+
 
 \lstset{language=C++,
                 basicstyle=\ttfamily,
@@ -917,6 +930,107 @@ bool qsort (int a[], int size)
   \end{column}
 \end{columns}
 
+
+\end{frame}
+
+
+\subsection{Опашкова рекурсия}
+
+\begin{frame}
+  \centerline{Опашкова рекурсия}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Обобщение на ``цикъл''}
+
+\begin{figure}
+  \scalebox{0.5}{
+    \begin{tikzpicture}[auto, node distance=1.5cm,>=latex']
+    \node [entry, name=start](start){};
+    \node [block,name=init, below of = start] (init)
+       {Инициализация на\\ $v_0,..,v_n$};
+    \node [fork,name=test1fork,below of = init,node distance = 2cm]{};
+    \node [condition,name=test1, below of = test1fork,node distance = 3cm] (test1) {Условие \\ $C(v_0,..,v_n)$};
+    \node [block,name=inc,right of = test1, node distance = 6.5cm] (inc) {Операции \\$(v_0^i,..,v_n^i) \rightarrow (v_0^{i+1},..,v_n^{i+1})$};
+    \node [fork,name=endfork,below of = test1, node distance = 3cm]{};
+    \node [entry, name=end, below of = endfork, node distance = 1cm](end){};
+
+    \node [name=cut1, left of = test1fork, node distance = 2cm](cut1){1};
+    \node [name=cut2, left of = endfork, node distance = 2cm](cut2){2};
+
+    \draw [->] (start) -- (init);
+    \draw [-] (init) -- (test1fork);
+    \draw [->] (test1fork) -- (test1);
+    \draw [->] (test1) -- node{true} (inc);
+    \draw [->] (inc) |- (test1fork);
+    \draw [-] (test1) -- node []{false}(endfork);
+    \draw [->] (endfork) -- (end);
+
+    \draw [-,dashed] (cut1) -- (test1fork);
+    \draw [-,dashed] (cut2) -- (endfork);
+    \end{tikzpicture}
+  }
+\end{figure}
+
+$(v_0^0,..,v_n^0) \rightarrow (v_0^1,..,v_n^1) \rightarrow  ... \rightarrow  (v_0^k,..,v_n^k)$
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{$x^y$}
+
+
+\begin{columns}[c]
+  \begin{column}{0.3\textwidth}
+\begin{tabular}{ c | c | c | c  }
+\hline
+\# & x & y & z \\\hline
+0 & 2 & 5 & 1 \\\hline
+1 & 2 & 4 & 2 \\\hline
+2 & 2 & 3 & 4 \\\hline
+3 & 2 & 2 & 8 \\\hline
+4 & 2 & 1 & 16 \\\hline
+5 & 2 & 0 & 32 \\\hline
+  
+\end{tabular}
+
+  \end{column}
+  \begin{column}{0.7\textwidth}
+
+%X\vspace*{800pt}
+\hspace*{-90pt}
+\includegraphics[width=12cm]{images/fc_cycle_arrows_2} 
+
+
+  \end{column}
+\end{columns}
+
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Опашкова рекурсия}
+
+\begin{lstlisting}[basicstyle=\ttfamily\small]
+int sum(int a[], unsigned int size)
+{
+  if(size==0)
+    return 0;
+  return a[0] + sum(a+1,size-1);
+}
+
+int sumiter(int a[], unsigned int size, int accum)
+{
+  if(size==0)
+    return accum;
+  return sumiter(a+1,size-1,accum+a[0]);  
+}
+
+//...
+int arr[] = {...};
+sumiter(arr,10,0);
+\end{lstlisting}
 
 
 \end{frame}
