@@ -114,3 +114,20 @@ prettyPrint (Node r lt rt) currentDepth = do
      putStrLn $ (replicate (2*currentDepth) ' ') ++ (show r)
      prettyPrint rt (currentDepth+1)
 
+-- (71267 (30 (15 () () ) (3 () () ) ) (77 () (15 (70 () () ) () ) ) )
+--                                                                  ^
+--                                                                  |
+
+testtr = "(71267 (30 (15 () () ) (3 () () ) ) (77 () (15 (70 () () ) () ) ) )"
+
+fromScheme :: String -> (BTree Int, String)
+fromScheme ('(':')':rest) = (Empty,rest)
+fromScheme ('(':rest) = (Node root lt rt,remaining)
+            where rootString = takeWhile (/=' ') rest
+                  root = read rootString
+                  (lt,rest') = fromScheme $ dropWhile (/='(') rest
+                  (rt,rest'') = fromScheme $ tail rest'
+                  remaining = drop 2 rest''
+
+
+
