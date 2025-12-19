@@ -26,7 +26,10 @@ addkv ((c:cs),val) (Trie v children) =
 
 lookupkv :: String -> Trie v -> Maybe v
 lookupkv "" (Trie v _) = v
+{-
 lookupkv (c:cs) (Trie _ children) = 
   case lookup c children of
     Nothing -> Nothing
     Just t -> lookupkv cs t
+-}
+lookupkv (c:cs) (Trie _ children) = (lookup c children) >>= (lookupkv cs)
