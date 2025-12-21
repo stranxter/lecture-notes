@@ -304,7 +304,43 @@ token/.style={rectangle split, rectangle split parts=2,draw, rectangle split hor
 \end{lstlisting}
 \end{frame}
 
-% ;EQUALS!
+\begin{frame}[fragile]
+\frametitle{Равенство}
+
+\begin{itemize}
+  \item \verb#eq?#: Еднакви обекти в паметта  
+\end{itemize}
+
+\begin{lstlisting}[language=Lisp]
+(define x '(1 2))
+(eq? x x)       ; #t 
+(eq? '(1 2) '(1 2)) ; #f 
+(eq? 'a 'a)     ; #t 
+\end{lstlisting}
+
+\begin{itemize}
+  \item \verb#eqv?#: Еднакви стойности за числа и (текстови)символи
+  \item \verb#=#: Слабо равенство за числови стойности
+\end{itemize}
+
+\begin{lstlisting}[language=Lisp]
+(= 1 1.0)     ; #t
+(= 5 5 5.0)   ; #t 
+(= 'a 'a)     ; ERROR
+\end{lstlisting}
+
+\begin{itemize}
+  \item \verb#equal?#: Дълбоко равенство
+\end{itemize}
+
+\begin{lstlisting}[language=Lisp]
+(equal? '(1 2 (3)) '(1 2 (3))) ; #t
+(equal? "hello" "hello")       ; #t
+\end{lstlisting}
+
+\end{frame}
+
+
 % ;модел на средите
 % ;let, let*
 % ;опашкова рекурсия
