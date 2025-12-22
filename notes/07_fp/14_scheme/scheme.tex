@@ -17,7 +17,7 @@
 \usepackage{tikz}
 \usepackage{forest}
 
-\usetikzlibrary{shapes,arrows,positioning,calc,positioning,fit,chains}
+\usetikzlibrary{shapes,arrows,positioning,calc,positioning,fit,chains,3d,arrows.meta, calc}
 
 \usetheme{CambridgeUS}
 \usecolortheme{crane}
@@ -38,7 +38,26 @@ fork/.style = {draw, fill=black, circle,inner sep=1pt},
 lnode/.style={rectangle split, rectangle split parts=3,draw, rectangle split horizontal},
 treenode/.style = {align=center, inner sep=0pt, text centered, circle, font=\sffamily\bfseries, draw=black, fill=white, text width=1.5em},
 flexnode/.style = {align=center, text centered, ellipse, font=\sffamily\bfseries, draw=black, fill=white},
-token/.style={rectangle split, rectangle split parts=2,draw, rectangle split horizontal=false}
+token/.style={rectangle split, rectangle split parts=2,draw, rectangle split horizontal=false},
+box/.style={
+        draw, 
+        rounded corners, 
+        fill=gray!15, 
+        align=left, 
+        inner sep=10pt
+    },
+    circle node/.style={
+        draw, 
+        circle, 
+        inner sep=0pt, 
+        minimum size=0.8cm,
+        font=\large
+    },
+    arrow/.style={
+        -Stealth, 
+        thick,
+        rounded corners=2pt
+    }
 }
 
 
@@ -340,10 +359,358 @@ token/.style={rectangle split, rectangle split parts=2,draw, rectangle split hor
 
 \end{frame}
 
+\section{Модел на средите}
+
+\begin{frame}
+  \centerline{Модел на средите}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Модел на средите}
+
+\begin{lstlisting}[language=Lisp]
+(define x 5)
+(define y 0)
+(define (plusx y) (+x y))
+(plusx 10)
+\end{lstlisting}
+
+
+\begin{tikzpicture}[scale=0.5,
+    transform shape]
+  % --- Global Environment ---
+    \node[box, minimum width=9cm, minimum height=2.5cm] (global) at (0,0) {};
+    
+    % Text inside Global Environment
+    \node[anchor=north west] at ($(global.north west)+(0,-0.2)$) {
+        \textbf{\textit{x:5}}
+    };
+    \node[anchor=north west] at ($(global.north west)+(0,-0.7)$) {
+        \textbf{\textit{y:0}}
+    };
+    \node[anchor=west] (square_text) at ($(global.north west)+(0, -1.4)$) {
+        \textbf{plusx:}
+    };
+
+    % Label for Global Environment
+    \node[left=1.5cm of global.north west, anchor=north east, align=left, yshift=-0.3cm] (global_label) {
+        global\\env
+    };
+    \draw[arrow] (global_label.east) -- (global.west |- global_label.east);
+
+
+    % --- Function Object (Closure) ---
+    % Place the two circles
+    \node[circle node, below=2.5cm of square_text, xshift=1cm] (car) {$\bullet$};
+    \node[circle node, right=-0.4pt of car] (cdr) {$\bullet$}; % Slightly overlap to look connected
+
+    % Pointer from "square:" to the closure
+    \draw[arrow] (square_text.south) ++(0,0) |- (car.west);
+
+    % Function details (parameters and body)
+    \node[below=1cm of car, anchor=north, align=left] (func_details) {
+        parameters: x\\[0.2em]
+        body: (+ x y)
+    };
+    \draw[arrow] (car.south) -- (func_details.north);
+
+    % Pointer from closure back to global env
+    \draw[arrow] (cdr.north)  -- (cdr.north |- global.south);
+
+
+    % --- Execution Frame E1 ---
+    \node[box, minimum width=2.5cm, right=3cm of cdr, anchor=west] (e1) {
+        \textbf{y: 10}
+    };
+
+    % Label for E1
+    \node[left=0.8cm of e1] (e1_label) {E1};
+    \draw[arrow] (e1_label) -- (e1);
+
+    % Pointer from E1 back to global env
+    \draw[arrow] (e1.north) -- (e1.north |- global.south);
+
+    % The body expression being evaluated
+    \node[below=0.8cm of e1] {
+        (\textbf{+} x y)
+    };
+
+\end{tikzpicture}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Модел на средите}
+
+\begin{lstlisting}[language=Lisp]
+(define (fact x) (if (< x 2) 
+                     1 
+                     (* x (fact (- x 1)))))
+(fact 2)
+\end{lstlisting}
+
+
+\begin{tikzpicture}[scale=0.5,
+  transform shape]
+  % --- Global Environment ---
+  \node[box, minimum width=9cm, minimum height=2.5cm] (global) at (0,0) {};
+  
+  % Text inside Global Environment
+  \node[anchor=west] (fact_text) at ($(global.north west)+(0.5, -1.4)$) {
+    \textbf{fact:}
+  };
+
+  % Label for Global Environment
+  \node[left=1.5cm of global.north west, anchor=north east, align=left, yshift=-0.3cm] (global_label) {
+    global\\env
+  };
+  \draw[arrow] (global_label.east) -- (global.west |- global_label.east);
+
+
+  % --- Function Object (Closure) ---
+  % Place the two circles
+  \node[circle node, below=2.5cm of fact_text, xshift=1cm] (car) {$\bullet$};
+  \node[circle node, right=-0.4pt of car] (cdr) {$\bullet$};
+
+  % Pointer from "fact:" to the closure
+  \draw[arrow] (fact_text.south) ++(0,0) |- (car.west);
+
+  % Function details (parameters and body)
+  \node[below=1cm of car, anchor=north, align=left] (func_details) {
+    parameters: x\\[0.2em]      
+    body: (if (< x 2)\\
+    \phantom{body: (}1\\
+    \phantom{body: (}x (fact (- x 1))))\\
+  };
+  \draw[arrow] (car.south) -- (func_details.north);
+
+  % Pointer from closure back to global env
+  \draw[arrow] (cdr.north)  -- (cdr.north |- global.south);
+
+
+  % --- Execution Frame E1 ---
+  \node[box, minimum width=2.5cm, right=3cm of cdr, anchor=west] (e1) {
+    \textbf{x: 2}
+  };
+
+  % Label for E1
+  \node[left=0.8cm of e1] (e1_label) {E1};
+  \draw[arrow] (e1_label) -- (e1);
+
+  % Pointer from E1 back to global env
+  \draw[arrow] (e1.north) -- (e1.north |- global.south);
+
+
+  % --- Execution Frame E2 ---
+  \node[box, minimum width=2.5cm, below=1.5cm of e1] (e2) {
+    \textbf{x: 1}
+  };
+
+  % Label for E2
+  \node[left=0.8cm of e2] (e2_label) {E2};
+  \draw[arrow] (e2_label) -- (e2);
+
+  % Pointer from E2 back to E1
+  \draw[arrow] (e2.north) -- (e2.north |- e1.south);
+
+
+  % The body expression being evaluated in E1
+    \node[right=0.5cm of e1.east] {
+      (if (< 2 2) (2 * (fact 1))...)
+    };
+
+  % The body expression being evaluated in E2
+  \node[right=0.5cm of e2] {
+    (if (< 1 2) ... 1)
+  };
+
+\end{tikzpicture}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Модел на средите}
+
+\begin{lstlisting}[language=Lisp]
+(define inc
+  (let ((counter 0)) 
+       (lambda (x) 
+          (begin (set! counter (+ counter x)) 
+                 counter))))
+(inc 1)                 
+(inc 2)
+\end{lstlisting}
+
+
+\begin{tikzpicture}[scale=0.5,
+    transform shape]
+  % --- Global Environment ---
+    \node[box, minimum width=9cm, minimum height=1.5cm] (global) at (0,0) {};
+    
+    % Text inside Global Environment
+    \node[anchor=west] (square_text) at ($(global.north west)+(0, -0.4)$) {
+        \textbf{inc:}
+    };
+
+    % Label for Global Environment
+    \node[left=1.5cm of global.north west, anchor=north east, align=left, yshift=-0.3cm] (global_label) {
+        global\\env
+    };
+    \draw[arrow] (global_label.east) -- (global.west |- global_label.east);
+
+
+    % --- Function Object (Closure) ---
+    % Place the two circles
+    \node[circle node, below=2.5cm of square_text, xshift=1cm] (car) {$\bullet$};
+    \node[circle node, right=-0.4pt of car] (cdr) {$\bullet$}; % Slightly overlap to look connected
+
+    % Pointer from "square:" to the closure
+    \draw[arrow] (square_text.south) ++(0,0) |- (car.west);
+
+    % Function details (parameters and body)
+    \node[below=1cm of car, anchor=north, align=left] (func_details) {
+        parameters: x\\[0.2em]
+        body: (begin (set! counter (+ counter x)) \\
+\phantom{body: (}counter))))
+    };
+    \draw[arrow] (car.south) -- (func_details.north);
+
+
+    % --- Execution Frame E1 ---
+    \node[box, minimum width=2.5cm, right=3cm of cdr] (e1) {
+        \textbf{counter: 0}
+    };
+
+    % Pointer from closure 
+    \draw[arrow] (cdr.east)  -- ($(e1.west)+(0,0)$);
+
+    % Label for E1
+    \node[right=0.8cm of e1] (e1_label) {E1};
+    \draw[arrow] (e1_label) -- (e1);
+
+    % Pointer from E1 back to global env
+    \draw[arrow] (e1.north) -- (e1.north |- global.south);
+
+    
+\end{tikzpicture}
+
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+\frametitle{Модел на средите}
+
+\begin{lstlisting}[language=Lisp]
+(define (inc)
+  (let ((counter 0)) 
+       (lambda (x) 
+          (begin (set! counter (+ counter x)) 
+                 counter))))
+(define i1 (inc)) (define i2 (inc))           
+(i1 1) (i1 1) (i1 1) (i1 1)
+(i2 1) (i2 1) (i2 1)
+\end{lstlisting}
+
+
+\begin{tikzpicture}[scale=0.5,
+    transform shape]
+  % --- Global Environment ---
+    \node[box, minimum width=18cm, minimum height=1.5cm] (global) at (0,0) {};
+    
+    % Text inside Global Environment
+    \node[anchor=west] (square_text) at ($(global.north west)+(0, -0.4)$) {
+        \textbf{i1:}
+    };
+
+    % Text inside Global Environment
+    \node[anchor=west] (square_text2) at ($(global.north west)+(9, -0.4)$) {
+        \textbf{i2:}
+    };
+
+    % Label for Global Environment
+    \node[left=1.5cm of global.north west, anchor=north east, align=left, yshift=-0.3cm] (global_label) {
+        global\\env
+    };
+    \draw[arrow] (global_label.east) -- (global.west |- global_label.east);
+
+
+    % --- Function Object (Closure) ---
+    % Place the two circles
+    \node[circle node, below=2.5cm of square_text, xshift=1cm] (car) {$\bullet$};
+    \node[circle node, right=-0.4pt of car] (cdr) {$\bullet$}; % Slightly overlap to look connected
+
+    % Place the two circles
+    \node[circle node, below=2.5cm of square_text, xshift=10cm] (car2) {$\bullet$};
+    \node[circle node, right=-0.4pt of car2] (cdr2) {$\bullet$}; % Slightly overlap to look connected
+
+
+    % Pointer from "square:" to the closure
+    \draw[arrow] (square_text.south) ++(0,0) |- (car.west);
+    % Pointer from "square:" to the closure
+    \draw[arrow] (square_text2.south) ++(0,0) |- (car2.west);
+
+    % Function details (parameters and body)
+    \node[below=1cm of car, anchor=north, align=left] (func_details) {
+        parameters: x\\[0.2em]
+        body: (begin (set! counter (+ counter x)) \\
+\phantom{body: (}counter))))
+    };
+    \draw[arrow] (car.south) -- (func_details.north);
+
+
+    % Function details (parameters and body)
+    \node[below=1cm of car2, anchor=north, align=left] (func_details2) {
+        parameters: x\\[0.2em]
+        body: (begin (set! counter (+ counter x)) \\
+\phantom{body: (}counter))))
+    };
+    \draw[arrow] (car2.south) -- (func_details2.north);
+
+
+
+    % --- Execution Frame E1 ---
+    \node[box, minimum width=2.5cm, right=1.5cm of cdr, anchor=west] (e1) {
+        \textbf{counter: 0}
+    };
+
+    % Pointer from closure back to global env
+    \draw[arrow] (cdr.east)  -- ($(e1.west)+(0,0)$);
+
+    % Label for E1
+    \node[right=0.8cm of e1] (e1_label) {E1};
+    \draw[arrow] (e1_label) -- (e1);
+
+    % Pointer from E1 back to global env
+    \draw[arrow] (e1.north) -- (e1.north |- global.south);
+
+
+
+    % --- Execution Frame E2 ---
+    \node[box, minimum width=2.5cm, right=1.5cm of cdr2, anchor=west] (e2) {
+        \textbf{counter: 0}
+    };
+
+    % Pointer from closure back to global env
+    \draw[arrow] (cdr2.east)  -- ($(e2.west)+(0,0)$);
+
+    % Label for E1
+    \node[right=0.8cm of e2] (e2_label) {E2};
+    \draw[arrow] (e2_label) -- (e2);
+
+    % Pointer from E1 back to global env
+    \draw[arrow] (e2.north) -- (e2.north |- global.south);
+
+    
+\end{tikzpicture}
+
+\end{frame}
+
 
 % ;модел на средите
 % ;let, let*
-% ;опашкова рекурсия
 
 
 \input{../../thankyou.tex}
