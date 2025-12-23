@@ -603,22 +603,22 @@ box/.style={
 \begin{frame}[fragile]
 \frametitle{Модел на средите}
 
-\begin{lstlisting}[language=Lisp]
-(define (inc)
-  (let ((counter 0)) 
-       (lambda (x) 
-          (begin (set! counter (+ counter x)) 
-                 counter))))
-(define i1 (inc)) (define i2 (inc))           
+\begin{lstlisting}[basicstyle=\tiny,language=Lisp]
+(define (inc init)
+  (let ((count init)) 
+       (lambda (step) 
+          (begin (set! count (+ count step)) 
+                 count))))
+(define i1 (inc 0)) (define i2 (inc 100))           
 (i1 1) (i1 1) (i1 1) (i1 1)
-(i2 1) (i2 1) (i2 1)
+(i2 5) (i2 5) (i2 5)
 \end{lstlisting}
 
 
 \begin{tikzpicture}[scale=0.5,
     transform shape]
   % --- Global Environment ---
-    \node[box, minimum width=18cm, minimum height=1.5cm] (global) at (0,0) {};
+    \node[box, minimum width=18cm, minimum height=1cm] (global) at (0,0) {};
     
     % Text inside Global Environment
     \node[anchor=west] (square_text) at ($(global.north west)+(0, -0.4)$) {
@@ -639,11 +639,11 @@ box/.style={
 
     % --- Function Object (Closure) ---
     % Place the two circles
-    \node[circle node, below=2.5cm of square_text, xshift=1cm] (car) {$\bullet$};
+    \node[circle node, below=3cm of square_text, xshift=1cm] (car) {$\bullet$};
     \node[circle node, right=-0.4pt of car] (cdr) {$\bullet$}; % Slightly overlap to look connected
 
     % Place the two circles
-    \node[circle node, below=2.5cm of square_text, xshift=10cm] (car2) {$\bullet$};
+    \node[circle node, below=3cm of square_text, xshift=10cm] (car2) {$\bullet$};
     \node[circle node, right=-0.4pt of car2] (cdr2) {$\bullet$}; % Slightly overlap to look connected
 
 
@@ -653,28 +653,30 @@ box/.style={
     \draw[arrow] (square_text2.south) ++(0,0) |- (car2.west);
 
     % Function details (parameters and body)
-    \node[below=1cm of car, anchor=north, align=left] (func_details) {
-        parameters: x\\[0.2em]
-        body: (begin (set! counter (+ counter x)) \\
-\phantom{body: (}counter))))
+    \node[below=1.3cm of car, anchor=north, align=left] (func_details) {
+        parameters: step\\[0.2em]
+        body: (begin (set! count (+ count step)) \\
+\phantom{body: (}count))))
     };
     \draw[arrow] (car.south) -- (func_details.north);
 
 
-    % Function details (parameters and body)
-    \node[below=1cm of car2, anchor=north, align=left] (func_details2) {
-        parameters: x\\[0.2em]
-        body: (begin (set! counter (+ counter x)) \\
-\phantom{body: (}counter))))
-    };
-    \draw[arrow] (car2.south) -- (func_details2.north);
-
-
-
     % --- Execution Frame E1 ---
     \node[box, minimum width=2.5cm, right=1.5cm of cdr, anchor=west] (e1) {
-        \textbf{counter: 3}
+        \textbf{count: 4}
     };
+
+    % --- Execution Frame E0 ---
+    \node[box, minimum width=2.5cm, above=0.7cm of e1, anchor=south] (e0) {
+        \textbf{init: 0}
+    };
+
+    % Label for E0
+    \node[right=0.8cm of e0] (e0_label) {E0};
+    \draw[arrow] (e0_label) -- (e0);
+
+    % Pointer from E0 back to global
+    \draw[arrow] (e0.north) -- (e0.north |- global.south);
 
     % Pointer from closure back to global env
     \draw[arrow] (cdr.east)  -- ($(e1.west)+(0,0)$);
@@ -683,27 +685,69 @@ box/.style={
     \node[right=0.8cm of e1] (e1_label) {E1};
     \draw[arrow] (e1_label) -- (e1);
 
-    % Pointer from E1 back to global env
-    \draw[arrow] (e1.north) -- (e1.north |- global.south);
+    % Pointer from E1 back to E0
+    \draw[arrow] (e1.north) -- (e0.south);
 
 
-
-    % --- Execution Frame E2 ---
-    \node[box, minimum width=2.5cm, right=1.5cm of cdr2, anchor=west] (e2) {
-        \textbf{counter: 2}
+    % --- Execution Frame E3 ---
+    \node[box, minimum width=2.5cm, right=1.5cm of cdr2, anchor=west] (e3) {
+        \textbf{count: 115}
     };
 
-    % Pointer from closure back to global env
-    \draw[arrow] (cdr2.east)  -- ($(e2.west)+(0,0)$);
+    % --- Execution Frame E2 ---
+    \node[box, minimum width=2.5cm, above=0.7cm of e3,anchor=south] (e2) {
+        \textbf{init: 100}
+    };
 
-    % Label for E1
+    % Label for E2
     \node[right=0.8cm of e2] (e2_label) {E2};
     \draw[arrow] (e2_label) -- (e2);
 
-    % Pointer from E1 back to global env
+
+    % Pointer from closure back to global env
+    \draw[arrow] (cdr2.east)  -- ($(e3.west)+(0,0)$);
+
+    % Label for E3
+    \node[right=0.8cm of e3] (e3_label) {E3};
+    \draw[arrow] (e3_label) -- (e3);
+
+    % Pointer from E3 back to E2
+    \draw[arrow] (e3.north) -- (e2.south);
+
+    % Pointer from E2 back to global
     \draw[arrow] (e2.north) -- (e2.north |- global.south);
 
-    
+    % --- Execution Frame E2 ---
+    \node[box, minimum width=2.5cm, above=0.7cm of e3,anchor=south] (e2) {
+        \textbf{init: 100}
+    };
+
+    % --- Execution Frame E4 ---
+    \node[box, minimum width=2.5cm, below=0.7cm of e1,anchor=north] (e4) {
+        \textbf{step: 1}
+    };
+
+    % Label for E4
+    \node[right=0.8cm of e4] (e4_label) {E4};
+    \draw[arrow] (e4_label) -- (e4);
+
+    % Pointer from E4 back to E1
+    \draw[arrow] (e4.north) -- (e1.south);
+
+
+    % --- Execution Frame E5 ---
+    \node[box, minimum width=2.5cm, below=0.7cm of e3,anchor=north] (e5) {
+        \textbf{step: 5}
+    };
+
+    % Label for E5
+    \node[right=0.8cm of e5] (e5_label) {E5};
+    \draw[arrow] (e5_label) -- (e5);
+
+    % Pointer from E5 back to E3
+    \draw[arrow] (e5.north) -- (e3.south);
+
+
 \end{tikzpicture}
 
 \end{frame}
