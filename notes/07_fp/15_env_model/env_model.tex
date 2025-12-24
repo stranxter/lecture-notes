@@ -403,7 +403,7 @@ box/.style={
 
     % --- Execution Frame E1 ---
     \node[box, minimum width=2.5cm, right=1.5cm of cdr, anchor=west] (e1) {
-        \textbf{count: 4}
+        \textbf{count: 0}
     };
 
     % --- Execution Frame E0 ---
@@ -431,7 +431,7 @@ box/.style={
 
     % --- Execution Frame E3 ---
     \node[box, minimum width=2.5cm, right=1.5cm of cdr2, anchor=west] (e3) {
-        \textbf{count: 115}
+        \textbf{count: 100}
     };
 
     % --- Execution Frame E2 ---
@@ -549,6 +549,36 @@ int main()
     std::cout<<c2(5)<<std::endl;
 }
 \end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Аналог в C++. Ad hoc полиморфизъм без класове?}
+
+\begin{lstlisting}[basicstyle=\tiny,language=C++]
+struct Counter
+{
+  std::function<int(int)> inc;
+  std::function<int()> get;
+};
+std::function<Counter()> counter(int init)
+{
+  return [count = init]() mutable -> Counter 
+        {
+           return { [&count](int step) -> int { count += step; return count; },
+                    [&count]() -> int { return count; } };
+  };
+}
+int main()
+{
+    std::function<Counter()> c1 = counter(0),
+                             c2 = counter(100);
+
+    c1().inc(1);c1().inc(1);c1().inc(1);c1().inc(1);
+    std::cout<<c1().get()<<std::endl;
+    c2().inc(5);c2().inc(5);c2().inc(5);
+    std::cout<<c2().get()<<std::endl;
+}\end{lstlisting}
 
 \end{frame}
 

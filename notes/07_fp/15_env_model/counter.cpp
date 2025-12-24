@@ -1,19 +1,26 @@
 #include <iostream>
 #include <functional>
 
-std::function<int(int)> counter(int init)
+struct Counter
 {
-    int count = init;
-    return [count](int step) mutable ->int{count+=step; return count;};
+  std::function<int(int)> inc;
+  std::function<int()> get;
+};
+std::function<Counter()> counter(int init)
+{
+  return [count = init]() mutable -> Counter 
+        {
+           return { [&count](int step) -> int { count += step; return count; },
+                    [&count]() -> int { return count; } };
+  };
 }
-
 int main()
 {
-    std::function<int(int)> c1 = counter(0),
-                            c2 = counter(100);
+    std::function<Counter()> c1 = counter(0),
+                             c2 = counter(100);
 
-    c1(1);c1(1);c1(1);
-    std::cout<<c1(1)<<std::endl;
-    c2(5);c2(5);
-    std::cout<<c2(5)<<std::endl;
+    c1().inc(1);c1().inc(1);c1().inc(1);c1().inc(1);
+    std::cout<<c1().get()<<std::endl;
+    c2().inc(5);c2().inc(5);c2().inc(5);
+    std::cout<<c2().get()<<std::endl;
 }
