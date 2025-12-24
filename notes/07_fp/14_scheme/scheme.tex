@@ -127,6 +127,45 @@ box/.style={
 
 \end{frame}
 
+
+\begin{frame}[fragile]
+\frametitle{Локални дефиниции}
+
+\begin{lstlisting}[language=Lisp]
+(let ((<n1> <e1>)...(<nk> <ek>)) <body>)
+\end{lstlisting}
+\begin{lstlisting}[language=Lisp]
+(define x 10)
+(let ((x 5)
+      (y (+ x 1))) 
+  y)
+(let* ((x 5)
+      (y (+ x 1))) 
+  y)
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Локални дефиниции}
+
+\begin{lstlisting}[language=Lisp]
+(let ((x 1) (y 2)) (+ x y ))
+<=>
+((lambda (x y) (+ x y)) 1 2)
+\end{lstlisting}
+
+\begin{lstlisting}[language=Lisp]
+(let* ((x 1) (y (+ x 1))) (+ x y ))
+<=>
+(let ((x 1))
+     (let ((y (+ x 1)))
+          (+ x y)))
+\end{lstlisting}
+
+\end{frame}
+
+
 \begin{frame}[fragile]
 \frametitle{cond}
 \begin{lstlisting}[language=Lisp]
@@ -319,7 +358,10 @@ box/.style={
 \begin{lstlisting}[language=Lisp]
 (begin (prinln "Message 1") (prinln "Message 2"))
 
-(begin (define x 5) (println x) (set! x 6) (println x))
+(begin (define x 5) 
+       (println x) 
+       (set! x 6) 
+       (println x))
 \end{lstlisting}
 \end{frame}
 
