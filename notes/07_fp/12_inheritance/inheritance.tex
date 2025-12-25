@@ -63,27 +63,9 @@ token/.style={rectangle split, rectangle split parts=2,draw, rectangle split hor
 \section{Полиморфизъм в Хаскел}
 
 \subsection{}
-\begin{frame}[fragile]
-\frametitle{Полиморфизъм | Обединение на типове}
-
-  \begin{lstlisting}[basicstyle=\small]
-    data Shape = Circle Double | Rectangle Double Double
-
-    area :: Shape -> Double
-    area (Circle r) = pi * r * r
-    area (Rectangle a b) = a * b
-  \end{lstlisting}
-
-\begin{itemize}
-  \item Предефиниране на функции (overloading vs. overriding)
-  \item Кога е възможен overloading?
-  \item Има ли в Haskell overriding?
-\end{itemize}
-
-\end{frame}
 
 \begin{frame}[fragile]
-\frametitle{Полиморфизъм | Параметричен полиморфизъм}
+\frametitle{Параметричен полиморфизъм}
 
 \begin{lstlisting}[basicstyle=\small]
 sum :: [a] -> a
@@ -108,8 +90,38 @@ T sum(const std::vector<T>& vec) {
 \end{frame}
 
 
+
 \begin{frame}[fragile]
-\frametitle{Overloading}
+\frametitle{Ad hoc полиморфизъм}
+
+
+\begin{itemize}
+  \item Предефиниране на функции (overloading vs. overriding)
+  \item Кога е възможен overloading (ad hoc полиморфизъм)?
+\end{itemize}
+
+  \begin{lstlisting}[basicstyle=\small]
+    data Shape = Circle Double | Rectangle Double Double
+
+    area :: Shape -> Double
+    area (Circle r) = pi * r * r
+    area (Rectangle a b) = a * b
+  \end{lstlisting}
+
+\begin{itemize}
+  \item Има ли в Haskell overriding?
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Ad hoc полиморфизъм}
+
+\begin{itemize}
+  \item Нов тип, за който искаме да предефинираме съществуваща операция (оепратор, функция)
+\end{itemize}
+
 
 \begin{lstlisting}[basicstyle=\small]
 MyVect operator + (const MyVect& a, const MyVect& b) {
@@ -118,7 +130,7 @@ MyVect operator + (const MyVect& a, const MyVect& b) {
 \end{lstlisting}
 
 \begin{itemize}
-  \item Как да направим това на Haskell?
+  \item Как да постигнем това на Haskell?
 \end{itemize}
 
 \end{frame}
@@ -148,8 +160,6 @@ instance CSVSerializable Person where
 \end{frame}
 
 
-
-
 \begin{frame}[fragile]
 \frametitle{Типови класове (Type Classes)}
 
@@ -168,13 +178,35 @@ instance CSVSerializable Country where
 \end{frame}
 
 
+\begin{frame}[fragile]
+\frametitle{Предефиниране на оператора +}
+
+\begin{lstlisting}[basicstyle=\small,language=haskell]
+newtype Vect2D a = Vect2D (a, a) deriving (Show, Eq)
+
+instance Num a => Num (Vect2D a) where
+    (Vect2D (x1, y1)) + (Vect2D (x2, y2)) 
+      = Vect2D (x1 + x2, y1 + y2)
+    (Vect2D (x1, y1)) - (Vect2D (x2, y2)) 
+      = Vect2D (x1 - x2, y1 - y2)
+    (Vect2D (x1, y1)) * (Vect2D (x2, y2)) 
+      = Vect2D (x1 * x2, y1 * y2)
+    abs (Vect2D (x, y)) = Vect2D (abs x, abs y)
+    signum (Vect2D (x, y)) = Vect2D (signum x, signum y)
+    fromInteger i = Vect2D (fromInteger i, fromInteger i)
+\end{lstlisting}
+
+
+\end{frame}
+
+
 
 
 \begin{frame}[fragile]
-\frametitle{Parametric vs. Ad hoc полиморфизъм}
+\frametitle{Parametric vs. Subtype полиморфизъм}
 
 \begin{itemize}
-  \item constraint vs. extension
+  \item constraint (type class) vs. extension (inheritance)
 \end{itemize}
 \begin{lstlisting}[basicstyle=\small]
 sum :: Num a => [a] -> a  
@@ -199,10 +231,6 @@ area :: Shape -> Double
       B b; A a = (A)b; (upcast) & няма аналог
       
     \end{tabular}
-
-\begin{itemize}
-  \item Haskell ОО език ли е?
-\end{itemize}
 
 \end{center}
 
