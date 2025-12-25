@@ -553,7 +553,7 @@ int main()
 \end{frame}
 
 \begin{frame}[fragile]
-\frametitle{Аналог в C++. Ad hoc полиморфизъм без класове?}
+\frametitle{Аналог в C++. Subtype полиморфизъм без наследяване?}
 
 \begin{lstlisting}[basicstyle=\tiny,language=C++]
 struct Counter
@@ -579,6 +579,77 @@ int main()
     c2().inc(5);c2().inc(5);c2().inc(5);
     std::cout<<c2().get()<<std::endl;
 }\end{lstlisting}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Subtype полиморфизъм без наследяване}
+
+\begin{lstlisting}[basicstyle=\tiny,language=C++]
+#include <iostream>
+#include <functional>
+#include <numbers>
+
+struct Shape
+{
+    std::function<double()> area;
+    std::function<double()> perimeter;
+};
+
+Shape createSquare(double a)
+{
+    return {[a]()->double{return a*a;},
+            [a]()->double{return 4*a;}};
+}
+
+Shape createCircle(double r)
+{
+    return {[r]()->double{return std::numbers::pi*r*r;},
+            [r]()->double{return 2*std::numbers::pi*r;}};
+}
+int main()
+{
+    Shape circle = createCircle(1),
+          square = createSquare(1);
+    std::cout << circle.area() << std::endl;
+    std::cout << square.area() << std::endl;
+}
+\end{lstlisting}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Subtype полиморфизъм без наследяване}
+
+\begin{lstlisting}[basicstyle=\tiny,language=JavaScript]
+type Shape = {
+    area: () => number;
+    perimeter: () => number;
+};
+
+function createCircle(r: number): Shape {
+    return {
+        radius: r,
+        area: () => Math.PI * r * r,
+        perimeter: () => 2 * Math.PI * r
+    } as Shape;
+}
+
+function createSquare(a: number): Shape {
+    return {
+        side: a, 
+        area: () => a * a,
+        perimeter: () => 4 * a
+    } as Shape;
+}
+
+const circle : Shape = createCircle(1);
+const square : Shape = createSquare(1);
+
+console.log(circle.area()); 
+console.log(square.area()); \end{lstlisting}
 
 \end{frame}
 
