@@ -57,12 +57,37 @@ token/.style={rectangle split, rectangle split parts=2,draw, rectangle split hor
 \captionsetup{font=tiny} 
 
 \begin{document}
-\title[Наследяване]{Наследяване в Haskell}
+\title[Наследяване]{Полиморфизъм в Haskell. Наследяване}
 \frame{\titlepage}
 
 \section{Полиморфизъм в Хаскел}
 
 \subsection{}
+
+\begin{frame}[fragile]
+\frametitle{Предефиниране на операции}
+
+\begin{itemize}
+  \item Нов тип, за който искаме да предефинираме съществуваща операция (оепратор, функция, метод)
+  \item
+\begin{lstlisting}[language=c++,basicstyle=\small]
+Vect2D operator + (const Vect2D& a, const Vect2D& b) {
+    return Vect2D{a.x + b.x, a.y + b.y};
+}
+\end{lstlisting}
+
+  \item
+\begin{lstlisting}[language=c++,basicstyle=\small]
+double NewShape::area() {return new_formula;}
+\end{lstlisting}
+\end{itemize}
+
+\begin{itemize}
+  \item Как да постигнем това на Haskell?
+\end{itemize}
+
+\end{frame}
+
 
 \begin{frame}[fragile]
 \frametitle{Параметричен полиморфизъм}
@@ -90,7 +115,6 @@ T sum(const std::vector<T>& vec) {
 \end{frame}
 
 
-
 \begin{frame}[fragile]
 \frametitle{Ad hoc полиморфизъм}
 
@@ -114,68 +138,38 @@ T sum(const std::vector<T>& vec) {
 
 \end{frame}
 
-
 \begin{frame}[fragile]
-\frametitle{Ad hoc полиморфизъм}
+\frametitle{Subclass полиморфизъм. Type Classes}
 
-\begin{itemize}
-  \item Нов тип, за който искаме да предефинираме съществуваща операция (оепратор, функция)
-\end{itemize}
+\begin{lstlisting}[basicstyle=\tiny]
+class Shape a where
+    area :: a->Double
+    perimeter :: a->Double
 
+newtype Circle = Circle Double deriving (Eq,Show)
+newtype Square = Square Double deriving (Eq,Show)
 
-\begin{lstlisting}[basicstyle=\small]
-MyVect operator + (const MyVect& a, const MyVect& b) {
-    return MyVect{a.x + b.x, a.y + b.y};
-}
+instance Shape Circle where
+    area (Circle r) = pi * r * r
+    perimeter (Circle r) = 2 * pi * r
+
+instance Shape Square where
+    area (Square a) = a * a
+    perimeter (Square a) = 4 * a
 \end{lstlisting}
 
-\begin{itemize}
-  \item Как да постигнем това на Haskell?
-\end{itemize}
+\begin{center}
+\noindent\rule{6cm}{0.4pt}
+\end{center}
 
-\end{frame}
-
-
-\begin{frame}[fragile]
-\frametitle{Типови класове (Type Classes)}
-
-\begin{lstlisting}[basicstyle=\small]
-class CSVSerializable a where
-    columns :: a -> [String]
-    value :: String -> Maybe (a -> String)
-
-data Person = Person { name :: String
-                     , gender:: Gender
-                     , birthdate :: (Int,Int,Int)}
-
-instance CSVSerializable Person where
-    columns p = ["name", "gender", "birthdate"]
-    value "name" = Just (name)
-    value "gender" = Just (show . gender)
-    value "birthdate" = Just (show . birthdate)
-    value _ = Nothing
-  \end{lstlisting}
-
-
-\end{frame}
-
-
-\begin{frame}[fragile]
-\frametitle{Типови класове (Type Classes)}
-
-\begin{lstlisting}[basicstyle=\small]
-data Country = Country { cname :: String
-                       , capital :: String}
-
-instance CSVSerializable Country where
-    columns c = ["name", "capital"]
-    value "name" = Just (cname)
-    value "capital" = Just (capital)
-    value _ = Nothing
+\begin{lstlisting}[basicstyle=\tiny]
+>area (Circle 1)
+>area (Square 1)
+>l :: [Shape] = [Circle 1, Square 1] --- Error
 \end{lstlisting}
 
-
 \end{frame}
+
 
 
 \begin{frame}[fragile]
@@ -199,34 +193,51 @@ instance Num a => Num (Vect2D a) where
 
 \end{frame}
 
-
-
-
 \begin{frame}[fragile]
-\frametitle{Parametric vs. Subtype полиморфизъм}
+\frametitle{Обобщение}
 
 \begin{itemize}
   \item constraint (type class) vs. extension (inheritance)
-\end{itemize}
-\begin{lstlisting}[basicstyle=\small]
+\begin{lstlisting}[basicstyle=\tiny]
 sum :: Num a => [a] -> a  
 \end{lstlisting}
-
-\begin{itemize}
   \item type union vs. type hierarchy
 \end{itemize}
-\begin{lstlisting}[basicstyle=\small]
-data Shape = Circle Double | Rectangle Double Double
-area :: Shape -> Double
-\end{lstlisting}
+\begin{columns}[t]
+  \begin{column}{0.5\textwidth}
+    \begin{lstlisting}[basicstyle=\tiny]
+    data Shape = Circle Double | 
+                 Square Double
+    area (Circle r) = ...
+    area (Square a) = ...
+    l :: [Shape] = [Circle 1, 
+                    Square 1] -- OK
+    \end{lstlisting}
+
+  \end{column}
+  \begin{column}{0.5\textwidth}
+    \begin{lstlisting}[basicstyle=\tiny]
+    class Shape a where
+        area :: a->Double
+    instance Shape Circle where ...
+    instance Shape Square where ...
+    l :: [Shape] = [Circle 1, 
+                    Square 1] -- Error
+    \end{lstlisting}
+
+  \end{column} 
+\end{columns}
+
 
 \begin{center}  
     \begin{tabular}{l | l}
-      \verb|std::vector<Shape*>| & \verb|[Shape]| 
+      \verb|std::vector<Shape*>| & \verb|[Shape]| с type union
       \\ 
-      \verb|std::vector<CSVSerializable*>| & няма аналог
-      \\
-      \verb|class A : public B (extends)| & няма аналог  
+      \verb|class A : I (implements I)| & instance ... where  
+      \\ 
+      \verb|std::vector<I*>| & няма аналог
+      \\ 
+      \verb|class A : public B (extends B)| & няма аналог  
       \\
       B b; A a = (A)b; (upcast) & няма аналог
       
@@ -234,10 +245,72 @@ area :: Shape -> Double
 
 \end{center}
 
+\end{frame}
+
+\begin{frame}
+  \centerline{CSV сериализация. Пример с типови класове}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Пример с типови класове}
+
+\begin{lstlisting}[basicstyle=\small]
+class CSVSerializable a where
+    columns :: a -> [String]
+    value :: String -> Maybe (a -> String)
+
+data Person = Person { name :: String
+                     , gender:: Gender
+                     , birthdate :: (Int,Int,Int)}
+
+instance CSVSerializable Person where
+    columns p = ["name", "gender", "birthdate"]
+    value "name" = Just (name)
+    value "gender" = Just (show . gender)
+    value "birthdate" = Just (show . birthdate)
+    value _ = Nothing
+  \end{lstlisting}
 
 
 \end{frame}
 
+
+\begin{frame}[fragile]
+\frametitle{CSVSerializable}
+
+\begin{lstlisting}[basicstyle=\small]
+data Country = Country { cname :: String
+                       , capital :: String}
+
+instance CSVSerializable Country where
+    columns c = ["name", "capital"]
+    value "name" = Just (cname)
+    value "capital" = Just (capital)
+    value _ = Nothing
+\end{lstlisting}
+
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{CSVSerializable}
+
+\begin{lstlisting}[basicstyle=\small]
+toCSV :: CSVSerializable a => [a] -> String
+toCSV [] = ""
+toCSV list = let cols = columns (head list) in
+             (intercalate "," cols) ++ "\n" ++
+             (intercalate "\n" $ map row list)
+
+row :: CSVSerializable a => a -> String
+row p = let cols = columns p 
+            vals = mapMaybe value cols in
+            intercalate "," $ map (\v -> v p) vals
+\end{lstlisting}
+
+
+\end{frame}
 
 
 \input{../../thankyou.tex}
