@@ -1,7 +1,7 @@
 data InfTree type_tag a = Node a (InfTree type_tag a) (InfTree type_tag a) deriving (Show)
   -- GHC will infer `type_tag :: *` here.
 
--- Type class to associate a tag with its type_tag function
+-- Type class to associate a tag with its generator function
 class Generator type_tag a where
   generate :: type_tag -> (a -> (a, a))
 
@@ -10,10 +10,10 @@ genTree :: Generator type_tag a => type_tag -> a -> InfTree type_tag a
 genTree gen root = Node root (genTree gen left) (genTree gen right)
   where (left, right) = generate gen root
 
--- Example: Define a specific type_tag tag
+-- Example: Define a specific type tag
 data DoubleGen = DoubleGen
 
--- Example: Associate DoubleGen with a concrete function
+-- Example: Associate DoubleGen with a concrete generator function
 instance Generator DoubleGen Int where
   generate _ x = (x * 2, x * 2 + 1)
 
