@@ -1,16 +1,16 @@
-data InfTree generator a = Node a (InfTree generator a) (InfTree generator a) deriving (Show)
-  -- GHC will infer `generattor :: *` here.
+data InfTree type_tag a = Node a (InfTree type_tag a) (InfTree type_tag a) deriving (Show)
+  -- GHC will infer `type_tag :: *` here.
 
--- Type class to associate a tag with its generator function
-class Generator generator a where
-  generate :: generator -> (a -> (a, a))
+-- Type class to associate a tag with its type_tag function
+class Generator type_tag a where
+  generate :: type_tag -> (a -> (a, a))
 
--- Create an infinite tree given a generator
-genTree :: Generator generator a => generator -> a -> InfTree generator a
+-- Create an infinite tree given a type_tag
+genTree :: Generator type_tag a => type_tag -> a -> InfTree type_tag a
 genTree gen root = Node root (genTree gen left) (genTree gen right)
   where (left, right) = generate gen root
 
--- Example: Define a specific generator tag
+-- Example: Define a specific type_tag tag
 data DoubleGen = DoubleGen
 
 -- Example: Associate DoubleGen with a concrete function
@@ -22,9 +22,9 @@ tree1 = genTree DoubleGen 1 :: InfTree DoubleGen Int
 -- tree2 = genTree DoubleGen 5 :: InfTree DoubleGen Int
 -- Both have the same type: InfTree DoubleGen Int
 
-getroot :: InfTree generator a -> a
+getroot :: InfTree type_tag a -> a
 getroot (Node x _ _) = x
 
-getleft :: InfTree generator a -> InfTree generator a
+getleft :: InfTree type_tag a -> InfTree type_tag a
 getleft (Node _ l _) = l
 
