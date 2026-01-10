@@ -1,3 +1,6 @@
 [submodule "notes/06_web tech/reveal.js"]
 	path = notes/06_web tech/reveal.js
 	url = https://github.com/hakimel/reveal.js
+[submodule "samples/01_programming 101/various/drawrec/cpppainter"]
+	path = samples/01_programming 101/various/drawrec/cpppainter
+	url = https://github.com/stranxter/cpppainter.git
