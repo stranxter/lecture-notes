@@ -7,3 +7,6 @@
 [submodule "samples/01_programming 101/various/hilbert/cpppainter"]
 	path = samples/01_programming 101/various/hilbert/cpppainter
 	url = https://github.com/stranxter/cpppainter.git
+[submodule "samples/01_programming 101/various/mandelbrot/cpppainter"]
+	path = samples/01_programming 101/various/mandelbrot/cpppainter
+	url = git@github.com:stranxter/cpppainter.git
