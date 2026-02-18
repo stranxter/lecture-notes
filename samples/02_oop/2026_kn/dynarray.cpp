@@ -10,7 +10,7 @@ struct DynArray   //DynArray<int>, DynArray<char>
 /* намалява броя на елементите на масив до число n*/
 // приемаме, че a.size > n */
 template <typename T>
-void trim(DynArray<T> &a, unsigned n)
+void da_trim(DynArray<T> &a, unsigned n)
 {   
     if(n >= a.size)
         return;
