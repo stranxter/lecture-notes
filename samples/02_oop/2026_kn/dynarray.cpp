@@ -93,9 +93,7 @@ DynArray<T> input_array()
 
 int main()
 {
-
     DynArray<int> iarr = input_array<int>();
-
 
     DynArray<double> arr1 = input_array<double>();
     DynArray<double> arr2 = input_array<double>();
@@ -107,5 +105,4 @@ int main()
 
     da_print<double>(c);
     delete c.arr;
-
 }

@@ -31,5 +31,8 @@ function connectionListener(socket:Net.Socket):void
 				                     respond(data.toString()));});
 }
 
+const port:number = 1337;
+
 let server:Net.Server = Net.createServer(connectionListener);
-server.listen(1337);
+server.listen(port);
+console.log('Listening on ' + port + '...');
