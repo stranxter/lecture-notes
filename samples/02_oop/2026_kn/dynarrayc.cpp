@@ -1,26 +1,17 @@
 #include <iostream>
 #include <cstring>
-
-/*
-
-    arr1.da_print();
-    arr2.da_print();
-
-
-*/
+#include <fstream>
 
 template <typename T>
 class DynArray   //DynArray<int>, DynArray<char>
 {
     private:
 
+    template <typename T2>
+    friend void operator<<(std::ostream&, const DynArray<T2>&);
+
     T *arr;
     unsigned size;
-
-    /*
-    arr1.print();
-    arr2.print();
-    */
 
     public:
 
@@ -32,14 +23,7 @@ class DynArray   //DynArray<int>, DynArray<char>
 
     DynArray(const DynArray<T>& original)
     {
-        this->arr = new T[original.size];
-        this->size = original.size;
-
-        for (int i = 0; i < size; ++i)
-        {
-            this->arr[i] = original.arr[i];
-        }
-
+        copy(original);
     }
 
     DynArray (const char *original)
@@ -52,17 +36,13 @@ class DynArray   //DynArray<int>, DynArray<char>
         }
     }
     
-    DynArray(unsigned n)
+    DynArray(T singleton)
     {
-        arr = new T[n];
-        for (int i = 0; i < n; ++i)
-        {
-            arr[i] = 0;
-        }
-        size = 50;
+        arr = new T[1];
+        arr[0] = singleton;
+        size = 0;
     }
     
-
     void print(/*DynArray *this*/)
     {
         for(int i = 0; i < this->size; ++i)
@@ -88,10 +68,9 @@ class DynArray   //DynArray<int>, DynArray<char>
         delete arr;
         arr = new_array;
         size = n;
-
     }
 
-    void insert(T x)
+    DynArray<T>& insert(T x)
     {
         T *new_array = new T[this->size+1];
         for (int i = 0; i < this->size; ++i)
@@ -103,15 +82,10 @@ class DynArray   //DynArray<int>, DynArray<char>
         
         delete arr;
         arr = new_array;
+        return *this;
     }
 
-    /*
-
-        arr1.input();
-        arr2.input();
-
-    */
-    void input()
+    DynArray<T>& input()
     {
         T x;
         do
@@ -124,6 +98,24 @@ class DynArray   //DynArray<int>, DynArray<char>
 
             std::cout << "Ще въвеждате ли още елементи?";
         } while (std::cin.get()=='y');
+
+        return *this;
+    }
+
+    DynArray<T>& operator=(const DynArray<T>& original)
+    {
+        if(this != &original)
+        {
+            delete this->arr;
+            copy(original);            
+        }
+        return *this;
+    }
+
+    DynArray<T>& operator+=(DynArray<T> a2)
+    {
+        *this = (*this + a2);
+        return *this;
     }
 
     DynArray<T> operator+(DynArray<T> a2)
@@ -132,7 +124,6 @@ class DynArray   //DynArray<int>, DynArray<char>
                         //this->size + a2.size}; //result.size 
         result.arr = new T[this->size + a2.size];
         result.size = this->size + a2.size;
-
 
         for(int i = 0; i < this->size; ++i)
         {
@@ -144,65 +135,85 @@ class DynArray   //DynArray<int>, DynArray<char>
             result.arr[this->size+i] = a2.arr[i];
         }
             
-        return result;
+        return result;  //(a+b)
     }
 
+    ~DynArray()
+    {
+        delete arr;        
+    }
+
+    private:
+
+    void copy(const DynArray<T>& original)
+    {
+        this->arr = new T[original.size];
+        this->size = original.size;
+
+        for (int i = 0; i < size; ++i)
+        {
+            this->arr[i] = original.arr[i];
+        }
+    }
 };
+
+template <typename T>
+void operator<<(std::ostream& out, const DynArray<T>&d)
+{
+    out << "{";
+    for(int i = 0; i < d.size; ++i)
+    {
+        out << d.arr[i] << " ";
+    }
+    out << std::endl;
+    out << "}";
+    
+}
+
 
 void f(DynArray<double> d)
 {
-    //cwenhjkfwenlk
+    //
 }
 
 int main()
 {
-
     /*
     DynArray<double> arr1 = input_array<double>();
     DynArray<double> arr2 = input_array<double>();
     */
+    DynArray<double> arr1 = 20, arr2;
 
-    DynArray<double> arr1, arr2;
+    arr1.insert(1).insert(2).insert(3).insert(4).insert(5);
 
-    f("Hello");
-
-    arr1.insert(1);
-    arr1.insert(2);
-    arr1.insert(3);
-    arr1.insert(4);
-    arr1.insert(5);
-
-    arr2.insert(9);
-    arr2.insert(8);
-    arr2.insert(7);
-    arr2.insert(6);
-    arr2.insert(5);
-    arr2.insert(4);
-  
-    arr1.trim(2);
+    arr2.insert(0);
 
     arr1.print();
     arr2.print();
 
-    //da_concat(arr1,arr2).print();
-    (arr1+arr2).print();
-    arr1.operator+(arr2).print();
+    arr2 = arr1;
 
-    DynArray<double> arr3 = arr2;
+    arr2.insert(6);
 
-    std::cout << "ARR2 \n";
     arr2.print();
+    arr1.print();
 
-    arr3.insert(100);
+    DynArray<double> *p = new DynArray<double>[10];
+    delete []p;
 
-    std::cout << "ARR2 \n";
-    arr2.print();
+    DynArray<double> arr3(5);
 
-    DynArray<double> strange = "Hello world!";
-    
-    strange.print();
+    //arr3 = arr2 = arr1;
+    //arr3.operator=(arr2.operator=(arr1));
 
-    //strange.operator=(arr2);
+
+    std::ofstream f("data.txt");
+
+    f << (arr1 += arr2).insert(10).insert(20).insert(30);
+
+    //arr3.input().print();
+
+    //std::cout << arr1;
 
 
 }

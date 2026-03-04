@@ -33,6 +33,11 @@ p
     font-style: italic;
 }
 
+#intro-paragraphs
+{
+    font-weight: bold;
+}
+
 .blue-para[important="yes"]
 {
     font-style: italic;
