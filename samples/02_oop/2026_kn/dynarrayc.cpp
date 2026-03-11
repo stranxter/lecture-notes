@@ -138,9 +138,14 @@ class DynArray   //DynArray<int>, DynArray<char>
         return result;  //(a+b)
     }
 
+    int& operator[](unsigned index)
+    {
+        return arr[index];
+    }
+
     ~DynArray()
     {
-        delete arr;        
+        delete []arr;        
     }
 
     private:
@@ -215,6 +220,9 @@ int main()
 
     //std::cout << arr1;
 
+    std::cout << arr1[10];
+
+    arr1[10] = 7;
 
 }
 
