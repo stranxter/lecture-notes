@@ -61,3 +61,4 @@ findGold (Just g@(Game p w)) visited
     | otherwise = Just $ p : (head routes)
     where routes = mapMaybe ((flip findGold) (p:visited))
                             [down g, right g, up g, left g] 
+
