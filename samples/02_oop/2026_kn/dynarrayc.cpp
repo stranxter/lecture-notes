@@ -3,6 +3,10 @@
 #include <fstream>
 
 template <typename T>
+using BinOp = T(*)(T,T);
+
+
+template <typename T>
 class DynArray   //DynArray<int>, DynArray<char>
 {
     private:
@@ -143,10 +147,30 @@ class DynArray   //DynArray<int>, DynArray<char>
         return arr[index];
     }
 
+    unsigned lenght() const
+    {
+        return size;
+    }
+
     ~DynArray()
     {
         delete []arr;        
     }
+
+    //агрегиране на елементите на масив чрез двуместна операция
+    //(събиране, умножеснир и др.)
+    T reduce(BinOp<T> op, T null_val)
+    {
+        T result = null_val;
+        for (int i = 0; i < this->size; ++i)
+        {
+            result = op(result,this->arr[i]);
+        }
+
+        return result;
+    }
+
+
 
     private:
 
@@ -180,6 +204,28 @@ void f(DynArray<double> d)
 {
     //
 }
+
+
+std::function<double(double)> maxf(std::function<double(double)>f, 
+                         std::function<double(double)>g)
+{
+    return [f,g](double x)->double {return std::max(f(x),g(x)); };
+}
+
+std::function<double(double)> maxall(DynArray<std::function<double(double)>> functions)
+{
+    std::function<double(double)> result = functions[0];
+    for(int i = 1; i < functions.lenght(); ++i)
+    {
+        result = maxf(functions[i],result);
+    }
+
+    return result;
+
+}
+
+
+
 
 int main()
 {
@@ -223,6 +269,21 @@ int main()
     std::cout << arr1[10];
 
     arr1[10] = 7;
+
+
+    DynArray<std::function<double(double)>> fs;
+
+    fs.insert([](double x)->double{return x*x;});
+    fs.insert([](double x)->double{return x*x*x;});
+    fs.insert([](double x)->double{return x;});
+
+    std::cout << fs[1](10) << std::endl;
+
+    std::cout << maxall(fs)(10) << " " << maxall(fs)(0.5) << std::endl;
+
+    std::function<double(double)> maxf2 = fs.reduce(maxf,fs[0]);
+
+    std::cout << maxf2(10) << " " << maxf2(0.5) << std::endl;
 
 
 }
