@@ -40,7 +40,7 @@ class DynArray   //DynArray<int>, DynArray<char>
     {
         arr = new T[1];
         arr[0] = singleton;
-        size = 0;
+        size = 1;
     }
     
     void print(/*DynArray *this*/)
@@ -65,7 +65,7 @@ class DynArray   //DynArray<int>, DynArray<char>
         {
             new_array[i] = arr[i];
         }
-        delete arr;
+        delete []arr;
         arr = new_array;
         size = n;
     }
@@ -80,7 +80,7 @@ class DynArray   //DynArray<int>, DynArray<char>
         new_array[this->size] = x;
         ++this->size;
         
-        delete arr;
+        delete []arr;
         arr = new_array;
         return *this;
     }
@@ -106,7 +106,7 @@ class DynArray   //DynArray<int>, DynArray<char>
     {
         if(this != &original)
         {
-            delete this->arr;
+            delete []this->arr;
             copy(original);            
         }
         return *this;
@@ -138,7 +138,7 @@ class DynArray   //DynArray<int>, DynArray<char>
         return result;  //(a+b)
     }
 
-    int& operator[](unsigned index)
+    T& operator[](unsigned index)
     {
         return arr[index];
     }
@@ -224,18 +224,6 @@ int main()
 
     arr1[10] = 7;
 
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
