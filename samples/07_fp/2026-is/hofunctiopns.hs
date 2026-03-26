@@ -124,6 +124,39 @@ maxfl::[(Int->Int)]->(Int->Int)
 maxfl l = \x-> maximum $ map (\f->f x) l
 
 
+{--
+Да се дефинира функция makepred :: [a]->(a->Bool), която по списък създава предикат, проверяващ дали аргумента му е в списика.
 
+p = makepred [1..100]
+q = makepred [5..20]
+
+p 4 -> True
+p 101 -> False
+
+--}
+makepred :: Eq a => [a]->(a->Bool)
+makepred l = \x -> elem x l
+
+
+{--
+Да се дефинира фунцкия inRange :: Int->Int->(Int->Bool), която по краища на интервал създава предикат, който проверява длаи аргумента му е в дадения инервал
+
+p = inRange 1 100
+p 4 -> True
+p 101 -> False
+--}
+
+inRange :: Int->Int->(Int->Bool)
+inRange a b = \x -> x >= a && x <= b
+
+--inRande a b = makepred [a..b]
+
+{--
+Да се дефинира фунцкия derive :: (Double->Double)->(Double->Double), която по дадена функция намира нейната производна (*)
+
+(*) приближено по дадената формула
+--}
+
+derive f = \x -> ((f (x + 0.001)) - (f x)) / 0.001
 
 

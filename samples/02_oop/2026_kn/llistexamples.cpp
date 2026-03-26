@@ -1,5 +1,6 @@
 //Employee
-//-name
+//-char name[100]
+//-Employee boss
 
 
 int main()

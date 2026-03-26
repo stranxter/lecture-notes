@@ -33,7 +33,6 @@ class LList
                *newElement = nullptr,
                *lastCreated = nullptr;
 
-
         first = new box<T>{other.first->data, nullptr};
 
         crr=crr->next;
@@ -48,7 +47,6 @@ class LList
         }
 
         crrsize = other.crrsize;
-
     }
 
     bool insertAfter(const T& newdata, unsigned position)
@@ -115,11 +113,9 @@ class LList
         }
     }
 
-
     private:
     box<T>* first;
     unsigned crrsize;
-
 
     box<T>* findByIndex(unsigned index) const
     {
@@ -133,7 +129,6 @@ class LList
         }
         return crr;
     }
-
 
 };
 
@@ -162,10 +157,7 @@ int main()
 
     std::cout << l << std::endl;
 
-    LList<int> l2 (l);
+    LList<int> l2(l);
 
     std::cout << l2 << std::endl;
-
-
-
 }
