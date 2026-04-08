@@ -80,8 +80,8 @@ int main ()
      {new Circle (2,0,0),
       new Circle (4,0,0)};
 
-  cout << sumSurf<Square> (squares,3) +
-          sumSurf<Circle> (circles,2);
+  cout << sumArea<Square> (squares,3) +
+          sumArea<Circle> (circles,2);
 
   return 0;
 }
@@ -95,7 +95,7 @@ int main ()
 \relscale{0.6}
 \begin{lstlisting}
 template <typename F>
-double sumSurf (F* figures[], int n)
+double sumArea(F* figures[], int n)
 {
   double sum = 0;
 
@@ -148,7 +148,7 @@ int main ()
       new Square (3,0,0,0),
       new Circle (4,0,0)};
 
-  cout << sumSurf (figures,5);
+  cout << sumArea (figures,5);
 
   return 0;
 }
@@ -161,7 +161,7 @@ int main ()
 \begin{flushleft}
 \relscale{0.7}
 \begin{lstlisting}
-double sumSurf (Figures* figures[], 
+double sumArea (Figures* figures[], 
                 int n)
 {
   double sum = 0;
