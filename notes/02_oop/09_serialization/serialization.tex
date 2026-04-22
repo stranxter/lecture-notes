@@ -13,6 +13,9 @@
 \usepackage{graphicx}
 \usepackage[english,bulgarian]{babel}
 
+\usepackage{tikz}
+
+
 \lstset{language=C++,
                 basicstyle=\ttfamily,
                 keywordstyle=\color{blue}\ttfamily,
@@ -42,11 +45,21 @@
 
 \section{Сериализация}
 
-\begin{frame}
-\centerline{\texttt{f << data;}}
-\centerline{\texttt{f >> data;}}
+\begin{frame}[fragile]
+  \frametitle{Сериализация}
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[xshift=0,yshift=-14mm,anchor=north] at (current page.north){%
+    \includegraphics[width=70mm]{images/serialization}};
+  \end{tikzpicture}
 \end{frame}
 
+\begin{frame}[fragile]
+  \frametitle{Десериализация}
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[xshift=0,yshift=-14mm,anchor=north] at (current page.north){%
+    \includegraphics[width=70mm]{images/deserialization}};
+  \end{tikzpicture}
+\end{frame}
 
 
 
