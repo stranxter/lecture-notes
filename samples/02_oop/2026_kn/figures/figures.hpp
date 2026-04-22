@@ -2,6 +2,7 @@
 
 #include <functional>
 #include <string>
+#include <iostream>
 
 struct Point {
 	double x, y;
@@ -15,6 +16,8 @@ class Figure {
 
 	virtual double area() const		 = 0;
 	virtual double perimeter() const = 0;
+	virtual void serialize(std::ostream&) const = 0;
+	virtual void deserialize(std::istream&) = 0;
 
 	bool contains(const Point &p) const { return this->containsCentered({p.x - center.x, p.y - center.y}); }
 
@@ -30,6 +33,9 @@ class Square : public Figure {
 
 	Square(const Point &pos, double size, const char *_label);
 
+	void serialize(std::ostream& out) const override;
+	virtual void deserialize(std::istream&) override;
+
 	double area() const override;
 	double perimeter() const override;
 	double side() const;
@@ -41,6 +47,9 @@ class Circle : public Figure {
 	double r;
 
 	Circle(const Point &point, double _r, const char *_label);
+
+	void serialize(std::ostream& out) const override;
+	virtual void deserialize(std::istream&) override;
 
 	double area() const override;
 	double perimeter() const override;
@@ -54,6 +63,9 @@ class FunctionPlot : public Figure {
 
    public:
 	FunctionPlot(const Point &center, std::function<double(double)> f, double width, const char *_label);
+
+	void serialize(std::ostream& out) const override;
+	virtual void deserialize(std::istream&) override;
 
 	double area() const override;
 	double perimeter() const override;
@@ -69,6 +81,9 @@ class HalfPlane : public Figure {
 	HalfPlane(double a, double b, double c);
 	HalfPlane(const Point &a, const Point &b);
 
+	void serialize(std::ostream& out) const override;
+	virtual void deserialize(std::istream&) override;
+
 	double area() const override;
 	double perimeter() const override;
 	bool   containsCentered(const Point &) const override;
@@ -78,7 +93,12 @@ class Triangle : public Figure {
 	Point	  A, B, C;
 	HalfPlane a, b, c;
 
+	public:
 	Triangle(const Point &_A, const Point &_B, const Point &_C);
+	void serialize(std::ostream& out) const override;
+	virtual void deserialize(std::istream&) override;
+
+
 
 	double area() const override;
 	double perimeter() const override;
@@ -87,4 +107,4 @@ class Triangle : public Figure {
 
 
 void graphToPPM(const std::vector<Figure *> &cofigures, std::ostream &out);
-
+std::ostream& operator << (std::ostream& out, const Point& p);

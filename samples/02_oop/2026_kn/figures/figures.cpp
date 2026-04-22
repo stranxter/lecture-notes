@@ -18,6 +18,30 @@ Square::Square(const Point &pos, double size, const char *_label) : Figure(pos, 
 	std::cout << "Square::Square()\n";
 }
 
+std::ostream& operator << (std::ostream& out, const Point& p)
+{
+	return out << p.x << " " << p.y;
+}
+
+std::istream& operator >> (std::istream& in, Point& p)
+{
+	return in >> p.x >> p.y;
+}
+
+void Square::serialize(std::ostream& out) const
+{
+	out << "[Sq] "
+		<< label << "\n"
+	    << center << " "
+		<< size << " ";
+}
+
+void Square::deserialize(std::istream& in)
+{
+	std::getline(in, label);
+	in >> center >> size;
+}
+
 double Square::side() const { return size; }
 
 double Square::area() const {
@@ -40,6 +64,21 @@ double Circle::area() const {
 
 double Circle::perimeter() const { return 2 * 3.14 * r; }
 
+void Circle::serialize(std::ostream& out) const
+{
+	out << "[Cir] "
+		<< label << "\n"
+	    << center << " "
+		<< r << " ";
+}
+
+void Circle::deserialize(std::istream& in)
+{
+	std::getline(in, label);
+	in >> center >> r;
+}
+
+
 bool Circle::containsCentered(const Point &p) const {
 	double distSq = p.x * p.x + p.y * p.y;
 	return distSq <= r * r;
@@ -61,12 +100,36 @@ double FunctionPlot::area() const { return 0; }
 double FunctionPlot::perimeter() const { return FLT_MAX; }
 bool   FunctionPlot::containsCentered(const Point &p) const { return std::abs(p.y - f(p.x)) < width; }
 
+void FunctionPlot::serialize(std::ostream& out) const
+{
+	throw "Unable to serialize function.";
+}
+
+void FunctionPlot::deserialize(std::istream& in)
+{
+	throw "Unable to deserialize function.";
+}
+
 HalfPlane::HalfPlane(double _a, double _b, double _c) : a(_a), b(_b), c(_c) {}
 HalfPlane::HalfPlane(const Point &A, const Point &B)
 	: a(A.y - B.y),
 	  b(B.x - A.x),
 	  c(A.x * B.y - B.x * A.y)	   //
 {}
+
+
+void HalfPlane::serialize(std::ostream& out) const
+{
+	out << "[Hpl] "
+	    << label << "\n"
+	    << a << " " << b << " " << c;
+}
+
+void HalfPlane::deserialize(std::istream& in)
+{
+	std::getline(in, label);
+	in >> a >> b >> c;
+}
 
 double HalfPlane::area() const { return FLT_MAX; }
 double HalfPlane::perimeter() const { return FLT_MAX; }
@@ -91,6 +154,21 @@ double Triangle::perimeter() const {
 	double c = std::sqrt(square(A.x - B.x) + square(A.y - B.y));
 	return a + b + c;
 }
+
+void Triangle::serialize(std::ostream& out) const
+{
+	out << "[Tri] "
+	    << label << "\n"
+	    << A << " " << B << " " << C;
+}
+
+void Triangle::deserialize(std::istream& in)
+{
+	std::getline(in, label);
+	in >> A >> B >> C;
+}
+
+
 bool Triangle::containsCentered(const Point &p) const {
 	return a.containsCentered(p) && b.containsCentered(p) && c.containsCentered(p);
 }
