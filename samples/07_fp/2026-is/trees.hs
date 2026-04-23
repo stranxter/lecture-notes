@@ -156,3 +156,32 @@ search (dir : dirs) (Node root left right) =
 
 -- >>> search [R,L] tree5
 -- *** Exception: no element in this position
+
+
+{--
+data BinTree a = Empty_ | Node_ a IntTree IntTree
+    deriving (Show, Eq)
+
+td :: BinTree Double = Node_ 10.0 Empty_ Empty_
+ts :: BinTree String = Node_ "Hello" Empty_ Empty_
+
+getRoot :: BinTree a -> a
+getRoot (Node_ x _ _) = x
+
+--}
+
+{--
+getRootOrZero :: IntTree -> Int
+getRootOrZero Empty = 0
+getRoot (Node r _ _) = r
+
+--}
+
+getRootOrZero :: IntTree -> Int
+
+getRootOrZero t = case t of
+                   Empty -> 0
+                   (Node r _ _) ->r
+
+
+
