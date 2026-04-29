@@ -1,4 +1,14 @@
 #include "figures.hpp"
+#include "group.hpp"
+#include "circle.hpp"
+#include "figure.hpp"
+#include "fplot.hpp"
+#include "halfplane.hpp"
+#include "square.hpp"
+#include "triangle.hpp"
+
+
+
 #include <cfloat>
 #include <iostream>
 #include <cmath>
@@ -49,6 +59,11 @@ double Square::area() const {
 	return side() * side();
 }
 
+Figure* Square::copy() const
+{
+	return new Square(*this);
+}
+
 double Square::perimeter() const { return 4 * side(); }
 
 bool Square::containsCentered(const Point &p) const { return std::max(std::abs(p.x), std::abs(p.y)) < size / 2; }
@@ -84,6 +99,11 @@ bool Circle::containsCentered(const Point &p) const {
 	return distSq <= r * r;
 }
 
+Figure* Circle::copy() const
+{
+	return new Circle(*this);
+}
+
 double sumArea(Figure *figs[], unsigned size) {
 	double result = 0;
 	for (unsigned int i = 0; i < size; ++i) {
@@ -108,6 +128,11 @@ void FunctionPlot::serialize(std::ostream& out) const
 void FunctionPlot::deserialize(std::istream& in)
 {
 	throw "Unable to deserialize function.";
+}
+
+Figure* FunctionPlot::copy() const
+{
+	return new FunctionPlot(*this);
 }
 
 HalfPlane::HalfPlane(double _a, double _b, double _c) : a(_a), b(_b), c(_c) {}
@@ -135,6 +160,11 @@ double HalfPlane::area() const { return FLT_MAX; }
 double HalfPlane::perimeter() const { return FLT_MAX; }
 bool   HalfPlane::containsCentered(const Point &p) const { return p.x * a + p.y * b + c >= 0; }
 
+Figure* HalfPlane::copy() const
+{
+	return new HalfPlane(*this);
+}
+
 Triangle::Triangle(const Point &_A, const Point &_B, const Point &_C)
 	: A(_A), B(_B), C(_C), a(_B, _C), b(_C, _A), c(_A, _B) {}
 
@@ -155,6 +185,11 @@ double Triangle::perimeter() const {
 	return a + b + c;
 }
 
+Figure* Triangle::copy() const
+{
+	return new Triangle(*this);
+}
+
 void Triangle::serialize(std::ostream& out) const
 {
 	out << "[Tri] "
@@ -173,22 +208,28 @@ bool Triangle::containsCentered(const Point &p) const {
 	return a.containsCentered(p) && b.containsCentered(p) && c.containsCentered(p);
 }
 
-void graphToPPM(const std::vector<Figure *> &figures, std::ostream &out) {
-	const unsigned int size	  = 500;	 // [0...size-1]
-	const double	   bounds = 5;		 // [-bounds, +bounds]
 
-	out << "P3\n" << size << " " << size << "\n" << 255 << "\n";
-
-	for (unsigned int j = 0; j < size; ++j) {
-		for (unsigned int i = 0; i < size; ++i) {
-			Point currentPoint = {-bounds + i * bounds * 2 / size, -bounds + (size - j - 1) * bounds * 2 / size};
-			bool  isInside	   = false;
-			for (Figure *f : figures) {
-				if (f->contains(currentPoint)) { isInside = true; }
-			}
-			if (isInside) out << "255 255 255 ";
-			else out << "0 0 0 ";
-			out << "\n";
-		}
+Figure* figureFactory(const std::string& figure)
+{
+	if (figure == "[Cir]")
+	{
+		return new Circle({0,0},0,"dummy");
+	} else if (figure == "[Sq]")
+	{
+		return new Square({0,0},0,"dummy");
+	} else if (figure == "[Tri]")
+	{
+		return new Triangle({0,0},{0,0},{0,0});
+	} else if (figure == "[HPl]")
+	{
+		return new HalfPlane(0,0,0);
+	} else if (figure == "[Grp]")
+	{
+		return new Group;
+	} else 
+	{
+		std::cerr << "Unrecognized figure type: " << figure << std::endl;
+		throw "Unrecognized figure type.";
 	}
+	return nullptr;
 }

@@ -1,0 +1,24 @@
+[Grp]
+5
+[Cir] John
+2 2 1 
+[Cir] Mary
+0 0 1 
+[Grp]
+3
+[Cir] Ivan
+7 7 2 
+[Sq] Ivan
+2 2 1 
+[Grp]
+2
+[Sq] Stefan
+4 4 1 
+[Cir] Boyana
+4 4 1 
+
+
+[Sq] Ivan
+0 0 2 
+[Sq] Mariya
+2 1 2 

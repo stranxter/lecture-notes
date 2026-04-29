@@ -4,94 +4,72 @@
 #include <fstream>
 
 #include "figures.hpp"
+#include "figure.hpp"
+#include "group.hpp"
+#include "circle.hpp"
+#include "fplot.hpp"
+#include "halfplane.hpp"
+#include "square.hpp"
+#include "triangle.hpp"
 
-std::ostream& operator <<(std::ostream &out, const std::vector<Figure*>& figures) 
+
+Group createGroup()
 {
-	out << figures.size() << "\n";
-	for (const Figure *fig : figures)
-	{
-		fig->serialize(out);
-		out << "\n";
-	}
+	Group maindoc,
+	      g,
+		  inner;
 
-	return out;
-} 
+	Circle c1({{7,7},2,"Ivan"}), 
+	       c2({{4,4},1,"Boyana"}), 
+		   c3({{2, 2}, 1, "John"}),
+		   c4({{0, 0}, 1, "Mary"});
 
-Figure* figureFactory(const std::string& figure)
-{
-	if (figure == "[Cir]")
-	{
-		return new Circle({0,0},0,"dummy");
-	} else if (figure == "[Sq]")
-	{
-		return new Square({0,0},0,"dummy");
-	} else if (figure == "[Tri]")
-	{
-		return new Triangle({0,0},{0,0},{0,0});
-	} else if (figure == "[HPl]")
-	{
-		return new HalfPlane(0,0,0);
-	} else 
-	{
-		std::cerr << "Unrecognized figure type: " << figure << std::endl;
-		throw "Unrecognized figure type.";
-	}
-	return nullptr;
-}
+	Square s1 ({{2,2},1,"Ivan"}), 
+	       s2({{4,4},1,"Stefan"}), 
+		   s3({{0, 0}, 2, "Ivan"}),
+		   s4({{2, 1}, 2, "Mariya"});
+	
+	g.addFigure(&c1);
+	g.addFigure(&s1);
 
-std::istream& operator >>(std::istream &in, std::vector<Figure*>& figures) 
-{
+	inner.addFigure(&s2);
+	inner.addFigure(&c2);
 
-	std::string type;
-	int count;
-	in >> count;
+	g.addFigure(&inner);
 
-	for(int i = 0; i < count; ++i)
-	{
-		in >> type;
-		Figure *fig = figureFactory(type);
-		fig->deserialize(in);
-		figures.push_back(fig);
-	}
+	maindoc.addFigure(&c3);
+	maindoc.addFigure(&c4);
+	maindoc.addFigure(&g);
+	maindoc.addFigure(&s3);
+	maindoc.addFigure(&s4);
 
-	return in;
+	return maindoc;
+	
 }
 
 
 int main() {
-	std::vector<Figure *> c = {new Circle{{2, 2}, 1, "John"},	  //
-							   new Circle{{0, 0}, 1, "Mary"},	  //
-							   new Square{{0, 0}, 2, "Ivan"},	  //
-							   new Square{{2, 1}, 2, "Mariya"}};//,	  //
-							   //new FunctionPlot({-2, 0}, [](double x) -> double { return x * x; }, 0.1, "x*x")};
 
-							   
-	std::cout << sumArea(c.data(), 4) << std::endl;
-
-	std::cout << c[0]->contains({1, 1}) << std::endl;
-	std::cout << c[0]->contains({0.5, 0.5}) << std::endl;
-
-	std::cout << c[2]->contains({0.5, 0.5}) << std::endl;
-	std::cout << c[2]->contains({2, 2}) << std::endl;
-
-	//std::cout << c[4]->contains({2, 4}) << std::endl;
-	//std::cout << c[4]->contains({3, 10}) << std::endl;
+	Group doc = createGroup();
 
 	{
 		std::ofstream out("image.ppm");
-		graphToPPM(c, out);
+		doc.drawToPPM(out);
 	}
 
 	std::ofstream file ("figures.fig");
-	file << c;
+	doc.serialize(file);
 
 	file.close();
 
 	std::ifstream in("figures.fig");
-	std::vector<Figure*> d;
-	in >> d;
 
-	std::cout << d;
+	std::string dummy;
+	in >> dummy;
+
+	Group d;
+	d.deserialize(in);
+	d.serialize(std::cout);
 
 
 }
