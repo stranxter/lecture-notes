@@ -1,0 +1,6 @@
+<expression> ::= <number> | (<expression> <operator> <exprerssion>) | <assign var> | <get var>
+<assign var> ::= set <id> = <number>
+<get var>   ::= <id>
+<id> ::= a..z
+<number> ::= {0,..,9}+
+<operator> ::= + | - | * | 
