@@ -1,10 +1,14 @@
 #pragma once
 
+#include <iosfwd>
 #include <string>
 
 struct Point {
 	double x, y;
 };
+
+std::ostream &operator<<(std::ostream &out, const Point &p);
+std::istream &operator>>(std::istream &in, Point &p);
 
 class Figure {
    public:
