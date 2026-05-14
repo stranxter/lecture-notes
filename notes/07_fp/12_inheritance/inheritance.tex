@@ -57,36 +57,13 @@ token/.style={rectangle split, rectangle split parts=2,draw, rectangle split hor
 \captionsetup{font=tiny} 
 
 \begin{document}
-\title[Наследяване]{Полиморфизъм в Haskell. Наследяване}
+\title[Наследяване]{Полиморфизъм и ООП в Haskell. Наследяване}
 \frame{\titlepage}
 
 \section{Полиморфизъм в Хаскел}
 
 \subsection{}
 
-\begin{frame}[fragile]
-\frametitle{Предефиниране на операции}
-
-\begin{itemize}
-  \item Нов тип, за който искаме да предефинираме съществуваща операция (оепратор, функция, метод)
-  \item
-\begin{lstlisting}[language=c++,basicstyle=\small]
-Vect2D operator + (const Vect2D& a, const Vect2D& b) {
-    return Vect2D{a.x + b.x, a.y + b.y};
-}
-\end{lstlisting}
-
-  \item
-\begin{lstlisting}[language=c++,basicstyle=\small]
-double NewShape::area() {return new_formula;}
-\end{lstlisting}
-\end{itemize}
-
-\begin{itemize}
-  \item Как да постигнем това на Haskell?
-\end{itemize}
-
-\end{frame}
 
 
 \begin{frame}[fragile]
@@ -116,12 +93,38 @@ T sum(const std::vector<T>& vec) {
 
 
 \begin{frame}[fragile]
-\frametitle{Ad hoc полиморфизъм}
+\frametitle{Предефиниране на операции}
+
+\begin{itemize}
+  \item Нов тип, за който искаме да предефинираме съществуваща операция (оепратор, функция, метод)
+  \item Overloading (предефиниране)
+\begin{lstlisting}[language=c++,basicstyle=\small]
+Vect2D operator + (const Vect2D& a, const Vect2D& b) {
+    return Vect2D{a.x + b.x, a.y + b.y};
+}
+\end{lstlisting}
+
+  \item Overriding (имлементация на интерфейс)
+\begin{lstlisting}[language=c++,basicstyle=\small]
+double NewShape::area() override {return new_formula;}
+\end{lstlisting}
+\end{itemize}
+
+\begin{itemize}
+  \item Как да постигнем това на Haskell?
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Ad hoc полиморфизъм vs Subclass полиморфизъм}
 
 
 \begin{itemize}
   \item Предефиниране на функции (overloading vs. overriding)
   \item Кога е възможен overloading (ad hoc полиморфизъм)?
+  \item Кога е възможен overriding (subclass полиморфизъм)?
 \end{itemize}
 
   \begin{lstlisting}[basicstyle=\small]
@@ -133,9 +136,18 @@ T sum(const std::vector<T>& vec) {
   \end{lstlisting}
 
 \begin{itemize}
-  \item Има ли в Haskell overriding?
+  \item Има ли в Haskell ``истински'' overriding?
 \end{itemize}
 
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{data vs. type vs. newtype}
+\begin{itemize}
+  \item data - създава нов тип, който може да има няколко конструктора
+  \item type - създава синоним на съществуващ тип. Двата типа се считат за един и същ навсякъде в програмата
+  \item newtype - създава нов тип, който има точно един конструктор. По време на компилация се държи като data (типовете са различни), но по време на изпълнение се държи като type (няма runtime overhead)
+\end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]
