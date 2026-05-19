@@ -125,6 +125,151 @@ treenode/.style = {align=center, inner sep=0pt, text centered, circle, font=\sff
 
 \end{frame}
 
+\begin{frame}
+\centerline{Exception Safety}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Какво е Exception Safety?}
+
+\begin{itemize}
+  \item Декларация за поедение относно изключения
+  \item Три нива на гаранция (по Abrahams)
+  \begin{itemize}
+    \item Basic exception safety
+    \item Strong exception safety  
+    \item No-throw exception safety
+  \end{itemize}
+  \item Отражение върху за RAII инварианта
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Unsafe code}
+
+\begin{itemize}
+  \item Състоянито на обекта може да се инвалидира 
+  \item Унищожение на обекта води до изтичане на памет
+  \item Няма начин да разберем дали операцията е успешна
+  \item Създават се условия за катастрофални грешки
+\end{itemize}
+
+\begin{flushleft}
+\relscale{0.65}
+\begin{lstlisting}
+class Vector {
+private:
+    int* data;
+    size_t size;
+public:
+    void push_back(int x) {
+        data = realloc(data, (size+1)*sizeof(int));
+        // ralloc may be nullpt
+        data[size++] = x;
+    }
+};
+\end{lstlisting}
+\end{flushleft}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Basic Exception Safety}
+
+\begin{itemize}
+  \item Гарантирано няма изтичане на ресурси
+  \item Сътоянието на обекта може да стане ``нелогично'', но не и катастрофално
+  \item ``Може да се счупи'', но няма ``да счупи програмата''
+\end{itemize}
+
+\begin{flushleft}
+\relscale{0.65}
+\begin{lstlisting}
+class Vector {
+private:
+    int* data;
+    size_t size;
+public:
+    void push_back(int x) {
+        int *save = data;
+        data = realloc(data, (size+1)*sizeof(int));
+        // ralloc may be nullpt
+        if (data == nullptr) {
+           delete[] save;  //!!!
+           size = 0;       //!!!
+           throw std::bad_alloc();
+        } else {
+           data[size++] = x;
+        }
+    }
+};
+\end{lstlisting}
+\end{flushleft}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Strong Exception Safety}
+
+\begin{itemize}
+  \item Операцията невинаги е успешна, но ако не е, състоянието на обекта не се променя
+  \item ``Всичко или нищо''
+\end{itemize}
+
+\begin{flushleft}
+\relscale{0.65}
+\begin{lstlisting}
+class Vector {
+private:
+    int* data;
+    size_t size;
+public:
+    void push_back(int x) {
+        int *save = data;
+        data = realloc(data, (size+1)*sizeof(int));
+        // ralloc may be nullpt
+        if (data == nullptr) {
+           data = save;  //!!!
+           throw std::bad_alloc();
+        }
+
+        data[size++] = x;
+    }
+};
+\end{lstlisting}
+\end{flushleft}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Nothrow Exception Safety}
+
+\begin{itemize}
+  \item Операцията винаги е успешна
+  \item Деструкторите ТРЯБВА да са no-throw
+\end{itemize}
+
+\begin{flushleft}
+\relscale{0.65}
+\begin{lstlisting}
+class MyVector {
+public:
+    void swap(MyVector& other) noexcept {
+        std::swap(data, other.data);
+        std::swap(size, other.size);
+    }
+
+};
+\end{lstlisting}
+\end{flushleft}
+
+\end{frame}
+
+
 
 \begin{frame}[fragile]
   \frametitle{Алтернативи във функционален стил}
