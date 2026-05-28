@@ -316,7 +316,7 @@ tokens :: String -> [Token]
           node [treenode] {3}
         };
       \end{tikzpicture}
-      \caption{Дърво на израза \texttt{(1+2)*3}.}
+      \caption{Дърво на израза \texttt{((1+2)*3)}.}
       \label{fig:treeexpr}
       \end{figure}
       
@@ -364,7 +364,7 @@ parsestr = (unfoldr parse) . tokens
           node [treenode] {3}
         };
       \end{tikzpicture}
-      \caption{Дърво на израза \texttt{(1+2)*3}.}
+      \caption{Дърво на израза \texttt{((1+2)*3)}.}
       \label{fig:treeexpr}
       \end{figure}
       
@@ -408,7 +408,7 @@ eval (Op left op right) = ...
           node [treenode] {3}
         };
       \end{tikzpicture}
-      \caption{Дърво на израза \texttt{(1+x)*3}.}
+      \caption{Дърво на израза \texttt{((1+x)*3)}.}
       \label{fig:treeexpr}
       \end{figure}
       
@@ -462,7 +462,7 @@ data Expression =
           node [treenode] {3}
         };
       \end{tikzpicture}
-      \caption{Дърво на израза \texttt{(1+x)*3}.}
+      \caption{Дърво на израза \texttt{((1+x)*3)}.}
       \label{fig:treeexpr}
       \end{figure}
       
