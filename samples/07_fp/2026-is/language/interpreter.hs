@@ -11,4 +11,4 @@ tree :: String -> AST.Expression
 tree expr = let (t,_) = AST.parse $ tokens expr in t
 
 run :: String -> Int
-run = Eval.eval . tree
+run string = Eval.eval (tree string) []

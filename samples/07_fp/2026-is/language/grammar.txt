@@ -1,0 +1,14 @@
+<expression> ::= read
+<expression> ::= let <id> = <exprerssion> in <exprerssion>
+<expression> ::= if <expression> then <exprerssion> else <exprerssion>
+<expression> ::= <number> 
+<expression> ::= (<expression> <operator> <exprerssion>)
+<number> ::= {0,..,9}+
+<operator> ::= + | - | * | /
+<id> ::= {a..z}+
+
+
+
+let x = read in (x+10)
+
+(read + 1)

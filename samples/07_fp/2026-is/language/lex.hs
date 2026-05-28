@@ -5,7 +5,15 @@ import qualified Data.Char
 data Token = Number Int | 
              Operator Char | 
              OpenParen | 
-             CloseParen 
+             CloseParen |
+             If |
+             Then |
+             Else |
+             Let |
+             In |
+             Assign |
+             VarName String |
+             Read
         deriving (Show,Eq)
 
 isWhite :: Char -> Bool
@@ -32,9 +40,17 @@ lexer s
 token :: String -> Token
 token "(" = OpenParen
 token ")" = CloseParen
+token "if" = If
+token "then" = Then
+token "else" = Else
+token "let" = Let
+token "in" = In
+token "=" = Assign
+token "read" = Read
 token s   
    | elem (head s) operators = Operator (head s)
-   | otherwise = Number (read s)
+   | Data.Char.isDigit (head s) = Number (read s)
+   | otherwise = VarName s
 
 
 tokenizer :: [String] -> [Token]
