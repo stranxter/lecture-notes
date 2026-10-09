@@ -4,7 +4,7 @@ import qualified AST
 
 operators = [('+',(+)),('-',(-)),('*',(*)),('/',div)]
 
-eval :: AST.Expression -> [(String,Int)] ->Int
+eval :: AST.Expression -> [(String,Int)] -> Int
 eval (AST.Constant c) memory = c
 eval (AST.Op left op right) memory = opfn (eval left memory) (eval right memory)
          where opfn = case lookup op operators of
