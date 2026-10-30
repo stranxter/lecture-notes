@@ -81,3 +81,6 @@ l = [253,645,85,965,7643,634,35,42323,435,6,45765,87,9670,567,44,123,235,645678]
 countall l = foldr (\current accum->1+accum) 0 l
 countevens l = foldr (\current accum->(if even current then 1 else 0)+accum) 0 l
 hasevens l = foldr (\current accum->accum || (even current)) False l
+
+hasevens l = foldr (\current accum->accum || (even current)) False l
+

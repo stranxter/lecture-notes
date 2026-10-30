@@ -145,6 +145,29 @@
 
 \end{frame}
 
+\begin{frame}
+  \frametitle{type, newtype, data}
+
+\footnotesize
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{|p{0.11\textwidth}|p{0.38\textwidth}|p{0.39\textwidth}|}
+  \hline
+  & \textbf{Пример} &  \\
+  \hline
+  \texttt{type} & \texttt{type Point = (Double, Double)}
+    & Синоним: ново име за съществуващ тип. \texttt{Point} и \texttt{(Double, Double)} са взаимозаменяеми. \\
+  \hline
+  \texttt{newtype} & \texttt{newtype Age = Age Int}
+    & Нов тип с точно един конструктор с точно едно поле. \texttt{Age} $\neq$ \texttt{Int}, но ``опаковката'' изчезва при компилация. \\
+  \hline
+  \texttt{data} & \texttt{data Shape = Circle Double | Rectangle Double Double}
+    & Нов тип с произволен брой конструктори с произволен брой полета. \\
+  \hline
+\end{tabular}
+
+\end{frame}
+
+
 
 \begin{frame}[fragile]
   \frametitle{Полиморфизъм}
