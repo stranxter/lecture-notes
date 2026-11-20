@@ -68,3 +68,17 @@ left g = move g (\(x, y) -> (x-1, y))
 right g = move g (\(x, y) -> (x+1, y))
 up g = move g (\(x, y) -> (x, y-1))
 down g = move g (\(x, y) -> (x, y+1))
+
+
+--Just state >>= down >>= down >>= right >>= right >>= up >>= up
+
+walk :: Game -> Maybe Game
+walk s = do
+          m1 <- down s
+          m2 <- down m1
+          m3 <- right m2
+          m4 <- right m3
+          m5 <- up m4
+          up m5
+          
+     
